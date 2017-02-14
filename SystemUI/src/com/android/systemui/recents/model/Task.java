@@ -44,7 +44,7 @@ public class Task {
     /** The ComponentNameKey represents the unique primary key for a component
      * belonging to a specified user. */
     public static class ComponentNameKey {
-        final ComponentName component;
+        public final ComponentName component;
         final int userId;
 
         public ComponentNameKey(ComponentName cn, int user) {
@@ -69,7 +69,7 @@ public class Task {
 
     /* The Task Key represents the unique primary key for the task */
     public static class TaskKey {
-        final ComponentNameKey mComponentNameKey;
+        public final ComponentNameKey mComponentNameKey;
         public final int id;
         public int stackId;
         public final Intent baseIntent;

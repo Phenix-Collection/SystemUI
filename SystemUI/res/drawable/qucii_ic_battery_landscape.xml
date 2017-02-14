@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/battery_frame"
+        android:drawable="@drawable/qucii_ic_battery_landscape_frame"/>
+    <item
+        android:id="@+id/battery_fill"
+        android:drawable="@drawable/qucii_ic_battery_landscape_avd"/>
+    <item
+        android:id="@+id/battery_charge_indicator"
+        android:gravity="center"
+        android:drawable="@drawable/qucii_ic_battery_bolt_land_bmp"/>
+
+</layer-list>

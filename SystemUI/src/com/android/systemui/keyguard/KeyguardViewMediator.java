@@ -81,6 +81,17 @@ import java.util.List;
 
 import static android.provider.Settings.System.SCREEN_OFF_TIMEOUT;
 
+//add by wumin
+import java.io.FileOutputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import android.content.ComponentName;
+import com.android.internal.statusbar.IStatusBarService;
+import android.os.ServiceManager;
+//add end
 /**
  * Mediates requests related to the keyguard.  This includes queries about the
  * state of the keyguard, power management events that effect whether the keyguard
@@ -134,7 +145,10 @@ public class KeyguardViewMediator extends SystemUI {
 
     private static final String DELAYED_KEYGUARD_ACTION =
         "com.android.internal.policy.impl.PhoneWindowManager.DELAYED_KEYGUARD";
-
+    //add by wumin
+    private static final String PERSIST_NAVIGATION_BAR = "persist.sys.navg_bar_visible";
+    private static final String GF_MODE = "/sys/bus/spi/devices/spi0.0/gf_mode/gf_mode";
+    //add end
     // used for handler messages
     private static final int SHOW = 2;
     private static final int HIDE = 3;
@@ -628,6 +642,12 @@ public class KeyguardViewMediator extends SystemUI {
             mSystemReady = true;
             doKeyguardLocked(null);
             mUpdateMonitor.registerCallback(mUpdateCallback);
+            
+    	    //4 lines add by wumin
+    	    if(!isNavigationEnable()){
+                	writeFile(GF_MODE,"0");
+    	    }
+    	    //add end
         }
         // Most services aren't available until the system reaches the ready state, so we
         // send it here when the device first boots.
@@ -785,11 +805,33 @@ public class KeyguardViewMediator extends SystemUI {
     public void onScreenTurnedOn() {
         notifyScreenTurnedOn();
         mUpdateMonitor.dispatchScreenTurnedOn();
+        
+	    //this log add by wumin
+		Log.d(TAG,"onScreenTurnedOn");
+		if(mLockPatternUtils.isLockScreenDisabled(
+	                KeyguardUpdateMonitor.getCurrentUser()) || shouldWaitForProvisioning() || (!mShowing)){
+		    if(!isNavigationEnable()){
+	                writeFile(GF_MODE,"0");
+		    }
+		}else if(mLockPatternUtils.isSecure(KeyguardUpdateMonitor.getCurrentUser()) && mShowing && mOccluded){
+	                writeFile(GF_MODE,"0");
+		}        
     }
 
     public void onScreenTurnedOff() {
         notifyScreenTurnedOff();
         mUpdateMonitor.dispatchScreenTurnedOff();
+        
+	    //this log add by wumin
+		Log.d(TAG,"onScreenTurnedOn");
+		if(mLockPatternUtils.isLockScreenDisabled(
+	                KeyguardUpdateMonitor.getCurrentUser()) || shouldWaitForProvisioning() || (!mShowing)){
+		    if(!isNavigationEnable()){
+	                writeFile(GF_MODE,"0");
+		    }
+		}else if(mLockPatternUtils.isSecure(KeyguardUpdateMonitor.getCurrentUser()) && mShowing && mOccluded){
+	                writeFile(GF_MODE,"0");
+		}
     }
 
     private void maybeSendUserPresentBroadcast() {
@@ -978,6 +1020,12 @@ public class KeyguardViewMediator extends SystemUI {
                 mStatusBarKeyguardViewManager.setOccluded(isOccluded);
                 updateActivityLockScreenState();
                 adjustStatusBarLocked();
+        		//add by wumin
+                if(!isNavigationEnable() && isOccluded){
+    	            writeFile(GF_MODE,"0");
+                }else if(!isNavigationEnable() && !isOccluded){
+    	            writeFile(GF_MODE,"1");
+		        }
             }
         }
     }
@@ -1509,6 +1557,11 @@ public class KeyguardViewMediator extends SystemUI {
             updateActivityLockScreenState();
             adjustStatusBarLocked();
             sendUserPresentBroadcast();
+    	    //add by wumin
+    	    if(!isNavigationEnable()){
+    	    	writeFile(GF_MODE,"0");
+    	    }
+    	    //add end            
         }
     }
 
@@ -1739,4 +1792,43 @@ public class KeyguardViewMediator extends SystemUI {
             }
         }
     }
+
+	// add by wumin
+	public void writeFile(String fileName, String write_str) {
+		File file = new File(fileName);
+		try {
+			FileOutputStream fos = new FileOutputStream(file);
+			byte[] bytes = write_str.getBytes();
+			fos.write(bytes);
+			fos.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private boolean isNavigationEnable() {
+		if (SystemProperties.getBoolean(PERSIST_NAVIGATION_BAR, false)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	private String readFile(String fileName) {
+		String res = "";
+		File file = new File(fileName);
+		try {
+			FileInputStream fis = new FileInputStream(file);
+			int length = fis.available();
+			byte[] buffer = new byte[length];
+			fis.read(buffer);
+			res = new String(buffer);
+			// res = EncodingUtils.getString(buffer, "UTF-8");
+			fis.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return res;
+	}    
 }

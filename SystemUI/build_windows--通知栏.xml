@@ -90,8 +90,7 @@
 <!-- 应用名称 -->  
     <property name="appName" value="${ant.project.name}"/>  
     <!-- SDK目录(获取操作系统环境变量ANDROID_SDK_HOME的便 -->  
-    <property name="sdk-folder" value="D:/Tools/Android/adt-bundle-windows-x86_64-20140702/sdk" />  
-    <!--  <property name="sdk-folder" value="${env.Android_SDK_HOME}" />   -->    
+    <property name="sdk-folder" value="${env.Android_SDK_HOME}" />     
     <!-- SDK指定平台目录 -->  
     <property name="sdk-platform-folder" value="${sdk-folder}/platforms/android-23"/>  
     <!-- SDK中tools目录 -->  

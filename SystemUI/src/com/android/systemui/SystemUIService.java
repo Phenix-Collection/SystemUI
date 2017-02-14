@@ -16,12 +16,14 @@
 
 package com.android.systemui;
 
+import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-
+import android.view.OrientationEventListener;
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
+import com.android.systemui.statusbar.phone.PhoneStatusBarView;
 
 public class SystemUIService extends Service {
 
@@ -29,6 +31,11 @@ public class SystemUIService extends Service {
     public void onCreate() {
         super.onCreate();
         ((SystemUIApplication) getApplication()).startServicesIfNeeded();
+        //add by lrh begin 这里是调用的android.view.OrientationEventListener这个监听屏幕转换方向的类，
+        //获取到屏幕的转换的度数之后就可以判断是否左旋还是右旋，并将布尔数值赋给PhoneStatusBarView类中的属性，
+        //用户在点击状态栏就会将Bitmap旋转为合适的度数
+        startOrientationChangeListener();
+        //add by lrh end
     }
 
     @Override
@@ -54,5 +61,33 @@ public class SystemUIService extends Service {
             }
         }
     }
+    //add by lrh 取到的Bitmap会被旋转，这里需要考虑到将获取到的Bitmap转换方向，
+    //此处还必须的考虑是左旋还是右旋到的横屏，转屏的方向不一样的话，那么得到的Bitmap也不一样
+	private OrientationEventListener mOrientationListener;
+	private boolean mScreenProtrait = true;
+	private boolean mCurrentOrient = false;
+
+	private final void startOrientationChangeListener() {
+		mOrientationListener = new OrientationEventListener(this) {
+			@Override
+			public void onOrientationChanged(int rotation) {
+				if ((rotation >= 0) && (rotation <= 180)) {// portrait
+					mCurrentOrient = true;
+					if (mCurrentOrient != mScreenProtrait) {
+						mScreenProtrait = mCurrentOrient;
+						PhoneStatusBarView.leftOrRightLandscape = true;
+					}
+				} else if ((rotation > 180) && (rotation < 360)) {// landscape
+					mCurrentOrient = false;
+					if (mCurrentOrient != mScreenProtrait) {
+						mScreenProtrait = mCurrentOrient;
+						PhoneStatusBarView.leftOrRightLandscape = false;
+					}
+				}
+			}
+		};
+		mOrientationListener.enable();
+	}
+	//add by lrh end
 }
 

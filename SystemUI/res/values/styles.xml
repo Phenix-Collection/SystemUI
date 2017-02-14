@@ -86,15 +86,15 @@
     <style name="TextAppearance.StatusBar.Expanded" parent="@*android:style/TextAppearance.StatusBar" />
 
     <style name="TextAppearance.StatusBar.Expanded.Clock">
-        <item name="android:textSize">@dimen/qs_time_expanded_size</item>
+        <item name="android:textSize">@dimen/qucii_qs_time_expanded_size</item>
         <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:textColor">#ffffff</item>
     </style>
 
     <style name="TextAppearance.StatusBar.Expanded.Date">
-        <item name="android:textSize">@dimen/qs_date_collapsed_size</item>
+        <item name="android:textSize">@dimen/qucii_qs_date_collapsed_size</item>
         <item name="android:textStyle">normal</item>
-        <item name="android:textColor">#b2ffffff</item>
+        <item name="android:textColor">#ffffff</item>
     </style>
 
     <style name="TextAppearance.StatusBar.Expanded.AboveDateTime">
@@ -193,7 +193,18 @@
     </style>
 
     <style name="BrightnessDialogContainer" parent="@style/BaseBrightnessDialogContainer" />
-
+    
+    <style name="BrightnessSeekBar" parent="@android:style/Widget.SeekBar">  
+        <item name="android:maxHeight">2.0dip</item>
+        <item name="android:indeterminateOnly">false</item>  
+        <item name="android:splitTrack">false</item>
+        <item name="android:indeterminateDrawable">@android:drawable/progress_indeterminate_horizontal</item>  
+        <item name="android:progressDrawable">@drawable/qucii_ic_brightness_progresstyle</item>
+        <item name="android:minHeight">2.0dip</item>
+        <item name="android:thumb">@drawable/qucii_ic_brightness_thumb</item>  
+        <item name="android:thumbOffset">10.0dip</item>  
+    </style>  
+    
     <style name="Animation" />
 
     <style name="Animation.ShirtPocketPanel">
@@ -300,4 +311,19 @@
         <item name="android:background">@drawable/btn_borderless_rect</item>
     </style>
 
+    <!-- Base battery metter drawable style -->
+    <style name="BatteryMeterViewDrawable">
+
+        <!-- gravity used for positioning text within the battery meter -->
+        <item name="android:gravity">center</item>
+        <item name="blendMode">clear</item>
+    </style>
+    <!-- Battery meter drawable styles -->
+    <style name="BatteryMeterViewDrawable.Portrait" />
+
+    <style name="BatteryMeterViewDrawable.Landscape" />
+
+    <style name="BatteryMeterViewDrawable.Circle">
+        <item name="blendMode">overlay</item>
+    </style>
 </resources>

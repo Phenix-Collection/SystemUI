@@ -38,11 +38,11 @@ public interface NetworkController {
         void setWifiIndicators(boolean enabled, IconState statusIcon, IconState qsIcon,
                 boolean activityIn, boolean activityOut, String description);
 
-        void setMobileDataIndicators(IconState statusIcon, IconState qsIcon, int statusType,
+        void setMobileDataIndicators(IconState statusIcon, IconState qsIcon, int statusType,boolean showDataIcon,
                 int qsType, boolean activityIn, boolean activityOut, int dataActivityId,
                 int mobileActivityId, int stackedDataIcon, int stackedVoiceIcon,
                 String typeContentDescription, String description,
-                boolean isWide, int subId);
+                boolean isWide, int subId,String networkName,final boolean showNetworkClass);// modified by yangfan 
         void setSubs(List<SubscriptionInfo> subs);
         void setNoSims(boolean show);
 
@@ -51,15 +51,17 @@ public interface NetworkController {
         void setIsAirplaneMode(IconState icon);
 
         void setMobileDataEnabled(boolean enabled);
+
+        void setNetworkLabelEnable(boolean enable ,boolean noServiceEnable);// added by yangfan 
     }
 
     public interface SignalCallbackExtended extends SignalCallback {
-        void setMobileDataIndicators(IconState statusIcon, IconState qsIcon, int statusType,
+        void setMobileDataIndicators(IconState statusIcon, IconState qsIcon, int statusType,boolean showDataIcon,
                 int qsType, boolean activityIn, boolean activityOut, int dataActivityId,
                 int mobileActivityId, int stackedDataIcon, int stackedVoiceIcon,
                 String typeContentDescription, String description, boolean isWide,
                 int subId, int imsIconId, boolean isImsOverWifi, int dataNetworkTypeInRoamingId,
-                int embmsIconId);
+                int embmsIconId,String networkName,final boolean showNetworkClass);// modified by yangfan 
     }
 
     public static class IconState {

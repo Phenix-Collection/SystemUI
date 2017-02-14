@@ -39,6 +39,7 @@ import com.android.systemui.statusbar.policy.KeyguardMonitor;
 import com.android.systemui.statusbar.policy.Listenable;
 import com.android.systemui.statusbar.policy.LocationController;
 import com.android.systemui.statusbar.policy.NetworkController;
+import com.android.systemui.statusbar.policy.ProfilesController;
 import com.android.systemui.statusbar.policy.RotationLockController;
 import com.android.systemui.statusbar.policy.ZenModeController;
 
@@ -336,6 +337,7 @@ public abstract class QSTile<TState extends State> implements Listenable {
         HotspotController getHotspotController();
         CastController getCastController();
         FlashlightController getFlashlightController();
+        ProfilesController getProfilesController();//added by yangfan 
         KeyguardMonitor getKeyguardMonitor();
 
         public interface Callback {
@@ -436,6 +438,7 @@ public abstract class QSTile<TState extends State> implements Listenable {
         public String contentDescription;
         public String dualLabelContentDescription;
         public boolean autoMirrorDrawable = true;
+        public boolean enableClick = true;//added by yangfan 
 
         public boolean copyTo(State other) {
             if (other == null) throw new IllegalArgumentException();
@@ -446,13 +449,16 @@ public abstract class QSTile<TState extends State> implements Listenable {
                     || !Objects.equals(other.contentDescription, contentDescription)
                     || !Objects.equals(other.autoMirrorDrawable, autoMirrorDrawable)
                     || !Objects.equals(other.dualLabelContentDescription,
-                    dualLabelContentDescription);
+                    dualLabelContentDescription)
+                    || !Objects.equals(other.enableClick,
+                            enableClick);//added by yangfan
             other.visible = visible;
             other.icon = icon;
             other.label = label;
             other.contentDescription = contentDescription;
             other.dualLabelContentDescription = dualLabelContentDescription;
             other.autoMirrorDrawable = autoMirrorDrawable;
+            other.enableClick = enableClick;//added by yangfan 
             return changed;
         }
 
@@ -469,6 +475,7 @@ public abstract class QSTile<TState extends State> implements Listenable {
             sb.append(",contentDescription=").append(contentDescription);
             sb.append(",dualLabelContentDescription=").append(dualLabelContentDescription);
             sb.append(",autoMirrorDrawable=").append(autoMirrorDrawable);
+            sb.append(",enableClick=").append(enableClick);//added by yangfan 
             return sb.append(']');
         }
     }

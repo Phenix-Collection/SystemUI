@@ -419,7 +419,9 @@ public class StatusBarKeyguardViewManager {
     private Runnable mMakeNavigationBarVisibleRunnable = new Runnable() {
         @Override
         public void run() {
-            mPhoneStatusBar.getNavigationBarView().setVisibility(View.VISIBLE);
+            if(mPhoneStatusBar.getNavigationBarView() != null){
+                mPhoneStatusBar.getNavigationBarView().setVisibility(View.VISIBLE);
+            }
         }
     };
 

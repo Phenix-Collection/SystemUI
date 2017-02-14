@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="21.2dp"
+    android:height="14dp"
+    android:viewportHeight="54"
+    android:viewportWidth="82">
+
+    <clip-path
+        android:name="mask"
+        android:pathData="@string/battery_landscape_clip_path_new" />
+
+    <!-- Path will be tinted based on battery level -->
+    <path
+        android:name="battery_level"
+        android:fillColor="#000000"
+        android:pathData="@string/battery_landscape_path_empty_new" />
+</vector>

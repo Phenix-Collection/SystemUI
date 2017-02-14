@@ -48,15 +48,15 @@ public class TunerFragment extends PreferenceFragment {
 
     private static final String KEY_QS_TUNER = "qs_tuner";
     private static final String KEY_DEMO_MODE = "demo_mode";
-    private static final String KEY_BATTERY_PCT = "battery_pct";
+    //private static final String KEY_BATTERY_PCT = "battery_pct";// modified by  yangfan 
 
     public static final String SETTING_SEEN_TUNER_WARNING = "seen_tuner_warning";
 
     private static final int MENU_REMOVE = Menu.FIRST + 1;
 
-    private final SettingObserver mSettingObserver = new SettingObserver();
+    //private final SettingObserver mSettingObserver = new SettingObserver();// modified by  yangfan 
 
-    private SwitchPreference mBatteryPct;
+    //private SwitchPreference mBatteryPct;// modified by  yangfan 
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,7 +85,7 @@ public class TunerFragment extends PreferenceFragment {
                 return true;
             }
         });
-        mBatteryPct = (SwitchPreference) findPreference(KEY_BATTERY_PCT);
+        /**mBatteryPct = (SwitchPreference) findPreference(KEY_BATTERY_PCT);**/  // modified by  yangfan 
         if (Settings.Secure.getInt(getContext().getContentResolver(), SETTING_SEEN_TUNER_WARNING,
                 0) == 0) {
             new AlertDialog.Builder(getContext())
@@ -104,9 +104,11 @@ public class TunerFragment extends PreferenceFragment {
     @Override
     public void onResume() {
         super.onResume();
-        updateBatteryPct();
+// modified by  yangfan 
+        /**updateBatteryPct();
         getContext().getContentResolver().registerContentObserver(
-                System.getUriFor(SHOW_PERCENT_SETTING), false, mSettingObserver);
+                System.getUriFor(SHOW_PERCENT_SETTING), false, mSettingObserver);**/ 
+// modified by  yangfan 
 
         registerPrefs(getPreferenceScreen());
         MetricsLogger.visibility(getContext(), MetricsLogger.TUNER, true);
@@ -115,7 +117,7 @@ public class TunerFragment extends PreferenceFragment {
     @Override
     public void onPause() {
         super.onPause();
-        getContext().getContentResolver().unregisterContentObserver(mSettingObserver);
+        //getContext().getContentResolver().unregisterContentObserver(mSettingObserver);// modified by  yangfan 
 
         unregisterPrefs(getPreferenceScreen());
         MetricsLogger.visibility(getContext(), MetricsLogger.TUNER, false);
@@ -170,7 +172,7 @@ public class TunerFragment extends PreferenceFragment {
         return super.onOptionsItemSelected(item);
     }
 
-    private void updateBatteryPct() {
+   /** private void updateBatteryPct() {
         mBatteryPct.setOnPreferenceChangeListener(null);
         mBatteryPct.setChecked(System.getInt(getContext().getContentResolver(),
                 SHOW_PERCENT_SETTING, 0) != 0);
@@ -197,5 +199,5 @@ public class TunerFragment extends PreferenceFragment {
             System.putInt(getContext().getContentResolver(), SHOW_PERCENT_SETTING, v ? 1 : 0);
             return true;
         }
-    };
+    };**/ // modified by yangfan 
 }

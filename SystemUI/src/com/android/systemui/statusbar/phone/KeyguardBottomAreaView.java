@@ -309,7 +309,7 @@ public class KeyguardBottomAreaView extends FrameLayout implements View.OnClickL
             drawableId = R.drawable.ic_phone_24dp;
             contentDescription = R.string.accessibility_phone_button;
         }
-        mLeftAffordanceView.setVisibility(visible ? View.VISIBLE : View.GONE);
+        mLeftAffordanceView.setVisibility(visible ? View.GONE : View.GONE);// hide left Call Button by yangfan
         mLeftAffordanceView.setImageDrawable(mContext.getDrawable(drawableId));
         mLeftAffordanceView.setContentDescription(mContext.getString(contentDescription));
     }

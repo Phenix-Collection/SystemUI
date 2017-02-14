@@ -225,8 +225,10 @@ public class VolumeDialog {
         final DisplayMetrics dm = mContext.getResources().getDisplayMetrics();
         if (D.BUG) Log.d(TAG, "updateWindowWidth dm.w=" + dm.widthPixels);
         int w = dm.widthPixels;
+        //modify the volumedialog panel width as 416dp begin
         final int max = mContext.getResources()
-                .getDimensionPixelSize(R.dimen.standard_notification_panel_width);
+                .getDimensionPixelSize(R.dimen.volumedialog_panel_width);
+       //modify the volumedialog panel width as 416dp end
         if (w > max) {
             w = max;
         }

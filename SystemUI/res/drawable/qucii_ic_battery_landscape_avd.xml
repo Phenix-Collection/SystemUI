@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/qucii_ic_battery_landscape_fill">
+
+    <target
+        android:name="battery_level"
+        android:animation="@animator/qucii_battery_landscape" />
+
+</animated-vector>

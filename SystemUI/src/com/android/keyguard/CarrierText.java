@@ -42,7 +42,6 @@ import com.android.internal.telephony.IccCardConstants.State;
 import com.android.internal.telephony.TelephonyIntents;
 import com.android.settingslib.WirelessUtils;
 
-@SuppressLint("NewApi")
 public class CarrierText extends TextView {
     private static final boolean DEBUG = KeyguardConstants.DEBUG;
     private static final String TAG = "CarrierText";

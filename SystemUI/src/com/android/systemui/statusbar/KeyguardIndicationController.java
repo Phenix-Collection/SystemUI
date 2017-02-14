@@ -321,4 +321,9 @@ public class KeyguardIndicationController {
             StatusBarKeyguardViewManager statusBarKeyguardViewManager) {
         mStatusBarKeyguardViewManager = statusBarKeyguardViewManager;
     }
+
+    public void cleanup() {
+        KeyguardUpdateMonitor.getInstance(mContext).removeCallback(mUpdateMonitor);
+        mContext.unregisterReceiver(mReceiver);
+    }//added by yangfan 
 }

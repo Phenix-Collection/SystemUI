@@ -27,6 +27,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
@@ -84,6 +85,20 @@ public class QSPanel extends ViewGroup {
     private QSFooter mFooter;
     private boolean mGridContentVisible = true;
     CarrierAppUtils.CARRIER carrier = CarrierAppUtils.getCarrierId();
+    private static boolean DEBUG =true;
+    private UpdateIndicator mIndicatorListener;// added by yangfan 
+    //add by lrh for land screen layout begin 20170110
+     private static int mCurrentScreenConfig = Configuration.ORIENTATION_PORTRAIT;
+    //add by lrh for land screen layout end 20170110
+
+    private void logf(String text){
+        logf("%s", text);
+    }
+    
+    private  void logf(String format,Object... args){
+        if(!DEBUG) return;
+        Log.v(this.getClass().getSimpleName(), String.format(format, args));
+    }
 
     public QSPanel(Context context) {
         this(context, null);
@@ -177,15 +192,49 @@ public class QSPanel extends ViewGroup {
         }
         updateDetailText();
     }
-
+	
+    //add by lrh for land screen layout begin 20170110
+    public void updateResources(int col) {
+        final Resources res = mContext.getResources();
+        final int columns = Math.max(1,col);
+        mCellHeight = res.getDimensionPixelSize(R.dimen.qs_tile_height);
+        mCellWidth = (int)(mCellHeight * TILE_ASPECT);
+        mLargeCellHeight = res.getDimensionPixelSize(R.dimen.qs_dual_tile_height);
+        mLargeCellWidth = (int)(mLargeCellHeight * TILE_ASPECT);
+        mPanelPaddingBottom = res.getDimensionPixelSize(R.dimen.qs_panel_padding_bottom);
+        mDualTileUnderlap = res.getDimensionPixelSize(R.dimen.qs_dual_tile_padding_vertical);
+        mBrightnessPaddingTop = 0/*res.getDimensionPixelSize(R.dimen.qs_brightness_padding_top)*/;
+        if (mColumns != columns) {
+            mColumns = columns;
+            postInvalidate();
+        }
+        for (TileRecord r : mRecords) {
+            r.tile.clearState();
+        }
+        if (mListening) {
+            refreshAllTiles();
+        }
+        updateDetailText();
+    }
+    //add by lrh for land screen layout end 20170110
+	
     @Override
     protected void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        FontSizeUtils.updateFontSize(mDetailDoneButton, R.dimen.qs_detail_button_text_size);
-        FontSizeUtils.updateFontSize(mDetailSettingsButton, R.dimen.qs_detail_button_text_size);
+        //FontSizeUtils.updateFontSize(mDetailDoneButton, R.dimen.qs_detail_button_text_size);// mdoified by yangfan
+        //FontSizeUtils.updateFontSize(mDetailSettingsButton, R.dimen.qs_detail_button_text_size);// mdoified by yangfan 
 
         // We need to poke the detail views as well as they might not be attached to the view
         // hierarchy but reused at a later point.
+        //add by lrh for land screen layout begin 20170110
+         if(newConfig.orientation==Configuration.ORIENTATION_LANDSCAPE){
+            updateResources(mContext.getResources().getInteger(R.integer.quick_settings_num_columns_landscreen));
+            mCurrentScreenConfig = Configuration.ORIENTATION_LANDSCAPE;
+         }else{
+            updateResources();
+            mCurrentScreenConfig = Configuration.ORIENTATION_PORTRAIT;
+         }
+      //add by lrh for land screen layout end 20170110
         int count = mRecords.size();
         for (int i = 0; i < count; i++) {
             View detailView = mRecords.get(i).detailView;
@@ -249,6 +298,9 @@ public class QSPanel extends ViewGroup {
 
     private void showDetail(boolean show, Record r) {
         mHandler.obtainMessage(H.SHOW_DETAIL, show ? 1 : 0, 0, r).sendToTarget();
+		// added by yangfan 
+        mIndicatorListener.updateIndicatorVisibility(show ? View.GONE : View.VISIBLE);// gone indicator when show detail
+		// added by yangfan end
     }
 
     private void setTileVisibility(View v, int visibility) {
@@ -463,6 +515,7 @@ public class QSPanel extends ViewGroup {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         final int width = MeasureSpec.getSize(widthMeasureSpec);
+        final int height = MeasureSpec.getSize(heightMeasureSpec);
 
         int simswitcherHeight = 0;
         if (isVoicePrefEnabled()) {
@@ -470,8 +523,12 @@ public class QSPanel extends ViewGroup {
             simswitcherHeight = mSimSwitcherView.getMeasuredHeight() + mBrightnessPaddingTop;
         }
         mBrightnessView.measure(exactly(width), MeasureSpec.UNSPECIFIED);
+		//modified by yangfan
+        /**final int brightnessHeight =
+                mBrightnessView.getMeasuredHeight() + mBrightnessPaddingTop + simswitcherHeight;**/
         final int brightnessHeight =
-                mBrightnessView.getMeasuredHeight() + mBrightnessPaddingTop + simswitcherHeight;
+                mBrightnessView.getMeasuredHeight() + mBrightnessPaddingTop *2+ simswitcherHeight;
+		//modified by yangfan end
         mFooter.getView().measure(exactly(width), MeasureSpec.UNSPECIFIED);
         int r = -1;
         int c = -1;
@@ -492,19 +549,26 @@ public class QSPanel extends ViewGroup {
             record.col = c;
             rows = r + 1;
         }
-
+        //add by lrh for land screen layout begin 20170110
+        if(mCurrentScreenConfig == Configuration.ORIENTATION_LANDSCAPE){
+            rows = 2;//quiltsettings defualt value when landscreen
+         }
+        //add by lrh for land screen layout end 20170110
         View previousView = mBrightnessView;
         for (TileRecord record : mRecords) {
             if (record.tileView.setDual(record.tile.supportsDualTargets())) {
                 record.tileView.handleStateChanged(record.tile.getState());
             }
             if (record.tileView.getVisibility() == GONE) continue;
-            final int cw = record.row == 0 ? mLargeCellWidth : mCellWidth;
-            final int ch = record.row == 0 ? mLargeCellHeight : mCellHeight;
+            final int cw = record.row == 0 ? /*mLargeCellWidth*/mCellWidth : mCellWidth;// remove Large Cell
+            final int ch = record.row == 0 ? /*mLargeCellHeight*/mCellHeight : mCellHeight;
             record.tileView.measure(exactly(cw), exactly(ch));
             previousView = record.tileView.updateAccessibilityOrder(previousView);
         }
-        int h = rows == 0 ? brightnessHeight : (getRowTop(rows) + mPanelPaddingBottom);
+		// add brightnessHeight by yangfan 
+        //int h = rows == 0 ? brightnessHeight : (getRowTop(rows) + mPanelPaddingBottom);
+		int h = rows == 0 ? brightnessHeight : (getRowTop(rows) + mPanelPaddingBottom + brightnessHeight) ;
+		// add brightnessHeight by yangfan end
         if (mFooter.hasFooter()) {
             h += mFooter.getView().getMeasuredHeight();
         }
@@ -526,20 +590,34 @@ public class QSPanel extends ViewGroup {
         int padding = mBrightnessPaddingTop;
         if (isVoicePrefEnabled()) {
             if (mSimSwitcherView.getVisibility() != View.GONE) {
-                padding = mBrightnessPaddingTop*2 + mSimSwitcherView.getMeasuredHeight();
+                padding = mBrightnessPaddingTop/**2**/ + mSimSwitcherView.getMeasuredHeight();//adjust paddingTop by yangfan
             }
             mSimSwitcherView.layout(0, mBrightnessPaddingTop,
                     mSimSwitcherView.getMeasuredWidth(),
                     mBrightnessPaddingTop + mSimSwitcherView.getMeasuredHeight());
         }
-        mBrightnessView.layout(0, padding,
+        /**mBrightnessView.layout(0, padding,
                 mBrightnessView.getMeasuredWidth(),
-                padding + mBrightnessView.getMeasuredHeight());
+                padding + mBrightnessView.getMeasuredHeight());**/ //adjust brgihtnessBlock by yangfan
         boolean isRtl = getLayoutDirection() == LAYOUT_DIRECTION_RTL;
-        for (TileRecord record : mRecords) {
+// adjust layout of Panel  by yangfan
+        int curTop = 0;
+        int tilesSumH = getRowTop(0);
+        int curTileH = 0;
+        for (int i =0;i< mRecords.size();i++){
+        //for (TileRecord record : mRecords) {
+            TileRecord record = mRecords.get(i);
+            //add by lrh for land screen layout begin 20170110
+            if((mCurrentScreenConfig == Configuration.ORIENTATION_LANDSCAPE)
+                &&(i==(mRecords.size()-1))){
+                 record.tileView.setVisibility(GONE);
+            }else{
+                 record.tileView.setVisibility(VISIBLE);
+            }
+            //add by lrh for land screen layout end 20170110
             if (record.tileView.getVisibility() == GONE) continue;
             final int cols = getColumnCount(record.row);
-            final int cw = record.row == 0 ? mLargeCellWidth : mCellWidth;
+            final int cw = record.row == 0 ? /*mLargeCellWidth*/ mCellWidth: mCellWidth;
             final int extra = (w - cw * cols) / (cols + 1);
             int left = record.col * cw + (record.col + 1) * extra;
             final int top = getRowTop(record.row);
@@ -551,8 +629,28 @@ public class QSPanel extends ViewGroup {
             } else {
                 right = left + tileWith;
             }
-            record.tileView.layout(left, top, right, top + record.tileView.getMeasuredHeight());
+            curTileH = record.tileView.getMeasuredHeight();
+            record.tileView.layout(left, top, right, top + curTileH);
+            boolean isNewRow = false;
+            if (top != curTop ) {
+                isNewRow = true;
+                curTop = top;
+            }
+            if (isNewRow) {
+                tilesSumH += curTileH;
+                logf("curTileH : %d,tilesSumH : %d",curTileH ,tilesSumH);
+            }
         }
+        tilesSumH += curTileH;
+        //add by lrh for land screen layout begin 20170110
+        if(mCurrentScreenConfig == Configuration.ORIENTATION_LANDSCAPE){
+            tilesSumH -= 30; //landscreen mBrightnessView paddingTop
+        }
+         //add by lrh for land screen layout end 20170110
+
+        mBrightnessView.layout(0, mBrightnessPaddingTop + tilesSumH,
+                mBrightnessView.getMeasuredWidth(), mBrightnessPaddingTop + mBrightnessView.getMeasuredHeight() + tilesSumH);
+// adjust layout of Panel  by yangfan end       
         final int dh = Math.max(mDetail.getMeasuredHeight(), getMeasuredHeight());
         mDetail.layout(0, 0, mDetail.getMeasuredWidth(), dh);
         if (mFooter.hasFooter()) {
@@ -564,16 +662,18 @@ public class QSPanel extends ViewGroup {
 
     private int getRowTop(int row) {
         if (!isVoicePrefEnabled() || mSimSwitcherView.getVisibility() == View.GONE) {
-            if (row <= 0) return mBrightnessView.getMeasuredHeight() + mBrightnessPaddingTop;
-            return mBrightnessView.getMeasuredHeight() + mBrightnessPaddingTop
-                    + mLargeCellHeight - mDualTileUnderlap + (row - 1) * mCellHeight;
+// added by yangfan
+            if (row <= 0) return /*mBrightnessView.getMeasuredHeight() + mBrightnessPaddingTop*/0;
+            return/* mBrightnessView.getMeasuredHeight() + mBrightnessPaddingTop
+                    +*/ /*mLargeCellHeight*/mCellHeight - mDualTileUnderlap + (row - 1) * mCellHeight;
         } else {
-            if (row <= 0) return mSimSwitcherView.getMeasuredHeight() + mBrightnessPaddingTop*2
-                    + mBrightnessView.getMeasuredHeight();
-            return mBrightnessView.getMeasuredHeight() + mBrightnessPaddingTop*2
+            if (row <= 0) return mSimSwitcherView.getMeasuredHeight() /*+ mBrightnessPaddingTop*2
+                    + mBrightnessView.getMeasuredHeight()*/;
+            return /*mBrightnessView.getMeasuredHeight() + mBrightnessPaddingTop*2
                     + mBrightnessView.getMeasuredHeight()
-                    + mLargeCellHeight - mDualTileUnderlap + (row - 1) * mCellHeight;
+                    + *//*mLargeCellHeight*/mCellHeight - mDualTileUnderlap + (row - 1) * mCellHeight;
         }
+// added by yangfan
     }
 
     private int getColumnCount(int row) {
@@ -644,6 +744,7 @@ public class QSPanel extends ViewGroup {
         public void onAnimationEnd(Animator animation) {
             mDetailContent.removeAllViews();
             setDetailRecord(null);
+            mIndicatorListener.updateIndicatorVisibility(VISIBLE);// added by yangfan 
             mClosingDetail = false;
         };
     };
@@ -653,6 +754,7 @@ public class QSPanel extends ViewGroup {
             // If we have been cancelled, remove the listener so that onAnimationEnd doesn't get
             // called, this will avoid accidentally turning off the grid when we don't want to.
             animation.removeListener(this);
+            mIndicatorListener.updateIndicatorVisibility(GONE);// added by yangfan 
             redrawTile();
         };
 
@@ -688,4 +790,14 @@ public class QSPanel extends ViewGroup {
         }
         return status;
     }
+
+// added by yangfan    
+    public void setIndicatorListener(UpdateIndicator listener){
+        this.mIndicatorListener = listener;
+    }
+    
+    public interface UpdateIndicator{
+        public void updateIndicatorVisibility(int vis);
+    }
+// added by yangfan end
 }

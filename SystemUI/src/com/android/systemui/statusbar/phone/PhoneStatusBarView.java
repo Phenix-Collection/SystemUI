@@ -17,16 +17,31 @@
 package com.android.systemui.statusbar.phone;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
+import android.graphics.Canvas;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.Shader.TileMode;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.SystemProperties;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.util.EventLog;
+import android.util.Log;
 import android.view.MotionEvent;
+import android.view.SurfaceControl;
 import android.view.View;
 import android.view.accessibility.AccessibilityEvent;
 
 import com.android.systemui.DejankUtils;
 import com.android.systemui.EventLogTags;
 import com.android.systemui.R;
+import com.qucii.systemui.utils.FastBlur;
 
 public class PhoneStatusBarView extends PanelBar {
     private static final String TAG = "PhoneStatusBarView";
@@ -85,7 +100,7 @@ public class PhoneStatusBarView extends PanelBar {
         return mBar.panelsEnabled();
     }
 
-    @Override
+	@Override
     public boolean onRequestSendAccessibilityEventInternal(View child, AccessibilityEvent event) {
         if (super.onRequestSendAccessibilityEventInternal(child, event)) {
             // The status bar is very small so augment the view that the user is touching
@@ -126,7 +141,7 @@ public class PhoneStatusBarView extends PanelBar {
         DejankUtils.removeCallbacks(mHideExpandedRunnable);
     }
 
-    @Override
+	@Override
     public void onPanelFullyOpened(PanelView openPanel) {
         super.onPanelFullyOpened(openPanel);
         if (openPanel != mLastFullyOpenedPanel) {
@@ -134,9 +149,120 @@ public class PhoneStatusBarView extends PanelBar {
         }
         mLastFullyOpenedPanel = openPanel;
     }
+    /**
+     * *add by lrh 截取桌面图片并且做虚化处理 begin
+     */
+	public static boolean leftOrRightLandscape = true;
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
+	private boolean isNavigationEnable() {
+		if (SystemProperties.getBoolean("persist.sys.navg_bar_visible", false)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	protected Bitmap shot() {
+		DisplayMetrics dm = getResources().getDisplayMetrics();
+		int width, height;
+		int navigationHeight = 108;
+		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+			width = dm.widthPixels;
+			height = dm.heightPixels+navigationHeight;
+		} else {
+			if(isNavigationEnable()){
+				width = dm.heightPixels;
+				height = dm.widthPixels+navigationHeight;
+			}else{
+				width = dm.heightPixels;
+				height = dm.widthPixels;
+			}
+			
+		}
+		Bitmap mBitmap = SurfaceControl.screenshot(width, height);
+		return mBitmap;
+	}
+
+	protected Bitmap fastBlur(Bitmap bkg) {
+		float scaleFactor = 7;
+		float radius = 10;
+
+		Bitmap overlay = Bitmap.createBitmap(
+				(int) (bkg.getWidth() / scaleFactor),
+				(int) (bkg.getHeight() / scaleFactor), Bitmap.Config.ARGB_8888);
+		Canvas canvas = new Canvas(overlay);
+		canvas.translate(0, 0);
+		canvas.scale(1 / scaleFactor, 1 / scaleFactor);
+		Paint paint = new Paint();
+		paint.setFlags(Paint.FILTER_BITMAP_FLAG);
+		canvas.drawBitmap(bkg, 0, 0, paint);
+
+		overlay = FastBlur.doBlur(overlay, (int) radius, true);
+		DisplayMetrics dm = getResources().getDisplayMetrics();
+		int width = bkg.getWidth();
+		int height = bkg.getHeight();
+		Bitmap mBitmap = overlay.createScaledBitmap(overlay, width, height,
+				true);
+		return mBitmap;
+	}
+
+	protected Bitmap darkBitmap(Bitmap srcBitmap) {
+		int imgHeight, imgWidth;
+		imgHeight = srcBitmap.getHeight();
+		imgWidth = srcBitmap.getWidth();
+
+		Bitmap dstBitmap = Bitmap.createBitmap(imgWidth, imgHeight,
+				Config.ARGB_8888);
+		Bitmap bmp = Bitmap.createBitmap(imgWidth, imgHeight, Config.ARGB_8888);
+		float contrast = (float) (35 / 100.0);
+		ColorMatrix cMatrix = new ColorMatrix();
+		cMatrix.set(new float[] { contrast, 0, 0, 0, 0, 0, contrast, 0, 0, 0,
+				0, 0, contrast, 0, 0, 0, 0, 0, 1, 0 });
+
+		Paint paint = new Paint();
+		paint.setColorFilter(new ColorMatrixColorFilter(cMatrix));
+
+		Canvas canvas = new Canvas(bmp);
+		canvas.drawBitmap(srcBitmap, 0, 0, paint);
+		return bmp;
+	}
+
+	protected Bitmap rotateBitmap(Bitmap bmp) {
+		Bitmap mbmp = Bitmap.createBitmap(bmp.getWidth(), bmp.getHeight(),
+				Config.ARGB_8888);
+		Canvas canvas = new Canvas(mbmp);
+		canvas.drawBitmap(bmp, 0, 0, null);
+		Matrix matrix = new Matrix();
+		matrix.postScale(1f, 1f);
+		if (leftOrRightLandscape == true) {
+			matrix.postRotate(90);
+		} else {
+			matrix.postRotate(-90);
+		}
+		Bitmap dstbmp = Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(),
+				bmp.getHeight(), matrix, true);
+		canvas.drawBitmap(dstbmp, 0, 0, null);
+		return dstbmp;
+	}
+	 /**
+     * *add by lrh 截取桌面图片并且做虚化处理 end
+     */
+	@Override
+    public boolean onTouchEvent(MotionEvent event) {	
+		// add by lrh 当用户点击最上面的状态栏时就会触发事件，而我们获取到这个事件，并在这时截取屏幕
+		if (event.getAction() == MotionEvent.ACTION_DOWN) {
+			BitmapDrawable mBitmapDrawable;
+			if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+				mBitmapDrawable = new BitmapDrawable(getResources(),
+						darkBitmap(fastBlur(shot())));
+			} else {
+				mBitmapDrawable = new BitmapDrawable(getResources(),
+						darkBitmap(fastBlur(rotateBitmap(shot()))));
+			}
+			mBitmapDrawable.setTileModeXY(TileMode.REPEAT, TileMode.REPEAT);
+			mBar.mNotificationPanel.setBackground(mBitmapDrawable);
+		}
+		// add by lrh
         boolean barConsumedEvent = mBar.interceptTouchEvent(event);
 
         if (DEBUG_GESTURES) {

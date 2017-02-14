@@ -45,11 +45,13 @@ import java.io.FileDescriptor;
 import java.io.PrintWriter;
 
 public abstract class PanelView extends FrameLayout {
-    public static final boolean DEBUG = PanelBar.DEBUG;
-    public static final String TAG = PanelView.class.getSimpleName();
-
-    private final void logf(String fmt, Object... args) {
-        Log.v(TAG, (mViewName != null ? (mViewName + ": ") : "") + String.format(fmt, args));
+    public static final boolean DEBUG =  true ;//PanelBar.DEBUG;
+    public static final String TAG = PanelView.class.getSimpleName();  
+    // protected final String TAG = "PanelView." + getClass().getSimpleName();
+	
+    public void logf(String fmt, Object... args) {
+        //Log.v(TAG, (mViewName != null ? (mViewName + ": ") : "") + String.format(fmt, args));
+        Log.v("weiliji", (mViewName != null ? (mViewName + ": ") : "") + String.format(fmt, args));
     }
 
     protected PhoneStatusBar mStatusBar;
@@ -654,13 +656,13 @@ public abstract class PanelView extends FrameLayout {
         mOverExpandedBeforeFling = getOverExpansionAmount() > 0f;
         ValueAnimator animator = createHeightAnimator(target);
         if (expand) {
-            if (expandBecauseOfFalsing) {
+//            if (expandBecauseOfFalsing) {
                 vel = 0;
-            }
+//            }
             mFlingAnimationUtils.apply(animator, mExpandedHeight, target, vel, getHeight());
-            if (expandBecauseOfFalsing) {
-                animator.setDuration(350);
-            }
+//            if (expandBecauseOfFalsing) {
+                animator.setDuration(100);
+//            }
         } else {
             mFlingAnimationUtils.applyDismissing(animator, mExpandedHeight, target, vel,
                     getHeight());
@@ -748,6 +750,8 @@ public abstract class PanelView extends FrameLayout {
     }
 
     public void setExpandedHeightInternal(float h) {
+        logf("setExpandedHeightInternal() h = " + h );
+		
         float fhWithoutOverExpansion = getMaxPanelHeight() - getOverExpansionAmount();
         if (mHeightAnimator == null) {
             float overExpansionPixels = Math.max(0, h - fhWithoutOverExpansion);
@@ -1097,4 +1101,7 @@ public abstract class PanelView extends FrameLayout {
     public void setHeadsUpManager(HeadsUpManager headsUpManager) {
         mHeadsUpManager = headsUpManager;
     }
+
 }
+
+

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <com.android.systemui.qs.QSContainer
+        android:id="@+id/qucii_quick_settings_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/qs_background_primary"
+        android:elevation="2dp"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp" >
+
+        <com.android.systemui.qs.QSPanel
+            android:id="@+id/qucii_quick_settings_panel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#0000" />
+    </com.android.systemui.qs.QSContainer>
+
+    <com.android.systemui.qs.QSContainer
+        android:id="@+id/quick_settings_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/qs_background_primary"
+        android:elevation="2dp"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp" >
+
+        <com.android.systemui.qs.QSPanel
+            android:id="@+id/quick_settings_panel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#0000" />
+    </com.android.systemui.qs.QSContainer>
+
+</FrameLayout>

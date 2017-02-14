@@ -18,10 +18,13 @@ package com.android.systemui.statusbar.phone;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import com.android.systemui.R;
+import com.android.systemui.statusbar.policy.Clock;
+import com.qucii.systemui.statusbar.phone.ClockController;
 
 public class IconMerger extends LinearLayout {
     private static final String TAG = "IconMerger";
@@ -29,6 +32,7 @@ public class IconMerger extends LinearLayout {
 
     private int mIconSize;
     private View mMoreView;
+    private int mClockLocation;
 
     public IconMerger(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -50,7 +54,15 @@ public class IconMerger extends LinearLayout {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         // we need to constrain this to an integral multiple of our children
         int width = getMeasuredWidth();
-        setMeasuredDimension(width - (width % mIconSize), getMeasuredHeight());
+		//modified  by yangfan
+        if (mClockLocation == ClockController.STYLE_CLOCK_CENTER) {
+            int totalWidth = getResources().getDisplayMetrics().widthPixels;
+            width = totalWidth / 2 - mIconSize * 2;
+        }
+        int iconMegerSize = width - (width % mIconSize);
+        Log.d(TAG, "iconMegerSize : " + iconMegerSize + "mIconSize : " + mIconSize);
+        setMeasuredDimension(iconMegerSize, getMeasuredHeight());
+		//modified  by yangfan
     }
 
     @Override
@@ -69,15 +81,30 @@ public class IconMerger extends LinearLayout {
         }
         final boolean overflowShown = (mMoreView.getVisibility() == View.VISIBLE);
         // let's assume we have one more slot if the more icon is already showing
-        if (overflowShown) visibleChildren --;
+		//modified  by yangfan
+        final boolean configOnlyShowUSB = getContext().getResources().getBoolean(R.bool.config_only_show_usb_adb);
+        if (overflowShown) {
+            int totalWidth = getResources().getDisplayMetrics().widthPixels;
+            if ((mClockLocation != ClockController.STYLE_CLOCK_CENTER &&
+                    mClockLocation != ClockController.STYLE_CLOCK_LEFT) ||
+                    (visibleChildren > (totalWidth / mIconSize / 2 + 1))) {
+                visibleChildren--;
+            }
+        }
         final boolean moreRequired = visibleChildren * mIconSize > width;
-        if (moreRequired != overflowShown) {
-            post(new Runnable() {
-                @Override
-                public void run() {
-                    mMoreView.setVisibility(moreRequired ? View.VISIBLE : View.GONE);
-                }
-            });
+        setMoreVisibility(moreRequired || overflowShown ? VISIBLE : GONE);
+		//modified  by yangfan
+    }
+	
+	//added by yangfan 
+    public void setClockAndDateStatus(int mode) {
+        mClockLocation = mode;
+    }
+
+    public void setMoreVisibility(int vis) {
+        if (mMoreView.getVisibility() != vis) {
+            mMoreView.setVisibility(vis);
         }
     }
+	//added by yangfan 
 }

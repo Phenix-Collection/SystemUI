@@ -1,57 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-     Copyright (C) 2014 The Android Open Source Project
-
-     Licensed under the Apache License, Version 2.0 (the "License");
-     you may not use this file except in compliance with the License.
-     You may obtain a copy of the License at
-
-          http://www.apache.org/licenses/LICENSE-2.0
-
-     Unless required by applicable law or agreed to in writing, software
-     distributed under the License is distributed on an "AS IS" BASIS,
-     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-     See the License for the specific language governing permissions and
-     limitations under the License.
--->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:name="root"
-    android:alpha="0.3"
-    android:height="48dp"
-    android:width="48dp"
-    android:viewportHeight="48"
-    android:viewportWidth="48" >
-    <group
-        android:name="ic_signal_airplane"
-        android:translateX="21.9995"
-        android:translateY="25.73401" >
-        <group
-            android:name="ic_signal_airplane_pivot"
-            android:translateX="-23.21545"
-            android:translateY="-18.86649" >
-            <clip-path
-                android:name="mask"
-                android:pathData="M 37.8337860107,-40.3974914551 c 0.0,0.0 -35.8077850342,31.5523681641 -35.8077850342,31.5523681641 c 0.0,0.0 40.9884796143,40.9278411865 40.9884796143,40.9278411865 c 0.0,0.0 -2.61700439453,2.0938873291 -2.61700439453,2.0938873291 c 0.0,0.0 -41.1884460449,-40.9392852783 -41.1884460449,-40.9392852783 c 0.0,0.0 -34.6200408936,25.4699249268 -34.6200408936,25.4699249268 c 0.0,0.0 55.9664764404,69.742401123 55.9664764404,69.742401123 c 0.0,0.0 73.2448120117,-59.1047973633 73.2448120117,-59.1047973633 c 0.0,0.0 -55.9664916992,-69.7423400879 -55.9664916992,-69.7423400879 Z" />
-            <group
-                android:name="cross" >
-                <path
-                    android:name="cross_1"
-                    android:pathData="M 7.54049682617,3.9430847168 c 0.0,0.0 31.5749816895,31.4499664307 31.5749816895,31.4499664307 "
-                    android:strokeColor="#FFFFFFFF"
-                    android:strokeAlpha="1"
-                    android:strokeWidth="3.5"
-                    android:fillColor="#00000000" />
-            </group>
-            <group
-                android:name="plane"
-                android:translateX="23.481"
-                android:translateY="18.71151" >
-                <path
-                    android:name="plane_1"
-                    android:pathData="M 18.9439849854,7.98849487305 c 0.0,0.0 0.0,-4.0 0.0,-4.0 c 0.0,0.0 -16.0,-10.0 -16.0,-10.0 c 0.0,0.0 0.0,-11.0 0.0,-11.0 c 0.0,-1.70001220703 -1.30000305176,-3.0 -3.0,-3.0 c -1.69999694824,0.0 -3.0,1.29998779297 -3.0,3.0 c 0.0,0.0 0.0,11.0 0.0,11.0 c 0.0,0.0 -16.0,10.0 -16.0,10.0 c 0.0,0.0 0.0,4.0 0.0,4.0 c 0.0,0.0 16.0,-5.0 16.0,-5.0 c 0.0,0.0 0.0,11.0 0.0,11.0 c 0.0,0.0 -4.0,3.0 -4.0,3.0 c 0.0,0.0 0.0,3.0 0.0,3.0 c 0.0,0.0 7.0,-2.0 7.0,-2.0 c 0.0,0.0 7.0,2.0 7.0,2.0 c 0.0,0.0 0.0,-3.0 0.0,-3.0 c 0.0,0.0 -4.0,-3.0 -4.0,-3.0 c 0.0,0.0 0.0,-11.0 0.0,-11.0 c 0.0,0.0 16.0,5.0 16.0,5.0 Z"
-                    android:fillColor="#FFFFFFFF"
-                    android:fillAlpha="1" />
-            </group>
-        </group>
-    </group>
+    android:width="124dp"
+    android:height="124dp"
+    android:viewportWidth="124"
+    android:viewportHeight="124">
+
+    <path
+        android:fillColor="#d9d9d9"
+        android:fillAlpha="0.85"
+        android:strokeAlpha="0.85"
+        android:strokeWidth="1"
+        android:pathData="M 52.62 1.77 C 66.57 -0.43 81.26 2.41 93.34 9.74 C 106.45 17.55 116.37 30.48
+120.60 45.13 C 124.56 59.00 123.54 74.33 117.39 87.41 C 110.71 102.15 97.84
+113.96 82.59 119.37 C 69.42 124.16 54.58 124.16 41.41 119.39 C 26.14 113.99
+13.26 102.19 6.56 87.44 C -0.12 73.24 -0.79 56.38 4.47 41.62 C 11.71 20.90 30.85
+4.89 52.62 1.77 M 80.87 33.87 C 77.42 37.10 74.18 40.55 70.82 43.88 C 60.92
+42.16 51.06 40.24 41.16 38.50 C 38.92 40.75 36.68 43.00 34.44 45.25 C 42.21
+49.14 49.98 53.03 57.75 56.90 C 53.92 60.76 50.06 64.58 46.24 68.46 C 43.12
+68.36 40.01 68.01 36.88 68.04 C 35.05 69.37 33.59 71.12 31.99 72.70 C 35.57
+74.64 38.97 76.92 42.76 78.45 C 43.96 78.92 45.09 79.80 45.46 81.08 C 46.83
+85.02 49.35 88.38 51.35 91.99 C 52.85 90.50 54.34 89.01 55.85 87.54 C 55.64
+84.44 55.38 81.34 55.12 78.24 C 59.14 74.20 63.17 70.17 67.21 66.15 C 71.08
+73.95 74.90 81.78 78.75 89.59 C 81.04 87.30 83.32 85.00 85.63 82.72 C 83.94
+72.75 82.23 62.79 80.53 52.82 C 83.71 49.55 87.05 46.43 90.16 43.10 C 92.64
+40.67 92.54 36.34 90.06 33.96 C 87.68 31.40 83.31 31.41 80.87 33.87 Z" />
+    <path
+        android:fillColor="#d9d9d9"
+        android:fillAlpha="0.85"
+        android:strokeAlpha="0.85"
+        android:strokeWidth="1"
+        android:pathData="M 82.75 35.70 C 84.89 33.48 88.95 34.99 89.37 37.95 C 89.75 39.76 88.48 41.21
+87.30 42.38 C 84.12 45.57 80.93 48.74 77.75 51.94 C 79.44 61.90 81.15 71.86
+82.84 81.83 C 81.72 82.95 80.59 84.07 79.47 85.18 C 75.59 77.38 71.82 69.53
+67.94 61.74 C 62.75 66.89 57.62 72.09 52.43 77.24 C 52.28 80.77 54.21 84.83
+52.05 87.97 C 51.07 85.72 48.12 83.55 49.41 80.93 C 47.35 78.79 45.25 76.69
+43.09 74.65 C 40.43 75.53 38.31 73.00 36.07 71.99 C 39.18 69.41 43.55 71.45
+47.23 71.12 C 52.20 66.15 57.16 61.19 62.13 56.22 C 54.36 52.33 46.59 48.43
+38.82 44.55 C 39.90 43.46 40.97 42.37 42.05 41.29 C 51.93 43.05 61.79 44.95
+71.68 46.67 C 75.39 43.03 78.92 39.20 82.75 35.70 Z" />
 </vector>

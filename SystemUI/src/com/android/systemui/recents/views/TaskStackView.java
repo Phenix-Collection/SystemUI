@@ -23,6 +23,7 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -43,6 +44,8 @@ import com.android.systemui.recents.model.Task;
 import com.android.systemui.recents.model.TaskStack;
 import com.android.systemui.statusbar.DismissView;
 
+import java.lang.Override;
+import java.lang.Runnable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -979,8 +982,10 @@ public class TaskStackView extends FrameLayout implements TaskStack.TaskStackCal
     public void startDismissAllAnimation(final Runnable postAnimationRunnable) {
         // Clear the focused task
         resetFocusedTask();
+        //hsp 2016-10-12 Don't need to use dismiss all button @{
+
         // Animate the dismiss-all button
-        hideDismissAllButton(new Runnable() {
+        /*hideDismissAllButton(new Runnable() {
             @Override
             public void run() {
                 List<TaskView> taskViews = getTaskViews();
@@ -988,11 +993,21 @@ public class TaskStackView extends FrameLayout implements TaskStack.TaskStackCal
                 int count = 0;
                 for (int i = taskViewCount - 1; i >= 0; i--) {
                     TaskView tv = taskViews.get(i);
-                    tv.startDeleteTaskAnimation(i > 0 ? null : postAnimationRunnable, count * 50);
+                    tv.startDeleteTaskAnimation(i > 0 ? null : postAnimationRunnable, count * 100);
                     count++;
                 }
             }
-        });
+        });*/
+
+        List<TaskView> taskViews = getTaskViews();
+        int taskViewCount = taskViews.size();
+        int count = 0;
+        for (int i = taskViewCount - 1; i >= 0; i--) {
+            TaskView tv = taskViews.get(i);
+            tv.startDeleteTaskAnimation(i > 0 ? null : postAnimationRunnable, count * 100);
+            count++;
+        }
+        // @}
     }
 
     /** Animates a task view in this stack as it launches. */
@@ -1075,6 +1090,17 @@ public class TaskStackView extends FrameLayout implements TaskStack.TaskStackCal
             }
         }
     }
+
+    // hsp 2016-09-12 : Add for clear all task @{
+    public void onClearAllTask() {
+        mStack.removeAllTasks();
+    }
+
+    public int getTaskSize() {
+        ArrayList<Task> tasks = mStack.getTasks();
+        return tasks.size();
+    }
+    // @}
 
     /** Final callback after Recents is finally hidden. */
     void onRecentsHidden() {

@@ -61,7 +61,7 @@ public class QSTileView extends ViewGroup {
 
     private TextView mLabel;
     private QSDualTileLabel mDualLabel;
-    private boolean mDual;
+    private boolean mDual = false;//modified by yangfan 
     private OnClickListener mClickPrimary;
     private OnClickListener mClickSecondary;
     private OnLongClickListener mLongClick;
@@ -175,6 +175,7 @@ public class QSTileView extends ViewGroup {
     }
 
     public boolean setDual(boolean dual) {
+        mDual = false;//added by yangfan 
         final boolean changed = dual != mDual;
         mDual = dual;
         if (changed) {

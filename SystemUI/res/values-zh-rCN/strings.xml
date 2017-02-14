@@ -29,6 +29,7 @@
       <item quantity="other">概览中有 %d 个屏幕</item>
       <item quantity="one">概览中有 1 个屏幕</item>
     </plurals>
+    <string name="notification_manager" >通知管理</string>
     <string name="status_bar_no_notifications_title" msgid="4755261167193833213">"无通知"</string>
     <string name="status_bar_ongoing_events_title" msgid="1682504513316879202">"正在进行的"</string>
     <string name="status_bar_latest_events_title" msgid="6594767438577593172">"通知"</string>
@@ -123,7 +124,7 @@
     <string name="accessibility_wimax_signal_full" msgid="2768089986795579558">"WiMAX 信号满格。"</string>
     <string name="accessibility_ethernet_disconnected" msgid="5896059303377589469">"以太网已断开连接。"</string>
     <string name="accessibility_ethernet_connected" msgid="2692130313069182636">"以太网已连接。"</string>
-    <string name="accessibility_no_signal" msgid="7064645320782585167">"无信号。"</string>
+    <string name="accessibility_no_signal" msgid="7064645320782585167">"无信号"</string>
     <string name="accessibility_not_connected" msgid="6395326276213402883">"未连接。"</string>
     <string name="accessibility_zero_bars" msgid="3806060224467027887">"信号强度为零格。"</string>
     <string name="accessibility_one_bar" msgid="1685730113192081895">"信号强度为一格。"</string>
@@ -145,10 +146,10 @@
     <string name="accessibility_data_connection_roaming" msgid="5977362333466556094">"数据漫游"</string>
     <string name="accessibility_data_connection_edge" msgid="4477457051631979278">"EDGE"</string>
     <string name="accessibility_data_connection_wifi" msgid="2324496756590645221">"WLAN"</string>
-    <string name="accessibility_no_sim" msgid="8274017118472455155">"无 SIM 卡。"</string>
+    <string name="accessibility_no_sim" msgid="8274017118472455155">"无SIM"</string>
     <string name="accessibility_bluetooth_tether" msgid="4102784498140271969">"蓝牙网络共享。"</string>
     <string name="accessibility_airplane_mode" msgid="834748999790763092">"飞行模式。"</string>
-    <string name="accessibility_no_sims" msgid="3957997018324995781">"没有 SIM 卡。"</string>
+    <string name="accessibility_no_sims" msgid="3957997018324995781">"无SIM"</string>
     <string name="accessibility_carrier_network_change_mode" msgid="4017301580441304305">"运营商网络正在更改。"</string>
     <!-- String.format failed for translation -->
     <!-- no translation found for accessibility_battery_level (7451474187113371965) -->
@@ -434,4 +435,16 @@
     <string name="enable_bluetooth_message" msgid="9106595990708985385">"要将您的键盘连接到平板电脑，您必须先开启蓝牙。"</string>
     <string name="enable_bluetooth_confirmation_ok" msgid="6258074250948309715">"开启"</string>
     <string name="hotspot_apm_message">"飞行模式开启的情况下不能够链接到移动网络,请关闭飞行模式后重试。"</string>
+
+    <string name="qs_tile_ringing">响铃</string>
+    <string name="qs_tile_vibrate">震动</string>
+    <string name="qs_tile_silent">静音</string>
+    <string name="gotocalling">轻触此处返回通话</string>
+    <string name="mobile_network_namae_filter">中国</string>
+    
+        <string name="clear_all_tasks">关闭全部</string>
+
+    <string name="clear_all_task_memory_text"><xliff:g id="number">%s</xliff:g>G 可用 | 4G</string>
+    <string name="clear_all_task_memory_release_text">释放了 <xliff:g id="number">%d</xliff:g>M 内存</string>
+    <string name="no_need_to_clear">已经清理至最佳状态</string>
 </resources>

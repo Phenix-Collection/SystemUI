@@ -443,7 +443,7 @@ public class TaskView extends FrameLayout implements Task.TaskCallbacks,
             .alpha(0f)
             .setStartDelay(delay)
             .setUpdateListener(null)
-            .setInterpolator(mConfig.fastOutSlowInInterpolator)
+            .setInterpolator(mConfig.fastOutLinearInInterpolator)
             .setDuration(mConfig.taskViewRemoveAnimDuration)
             .withEndAction(new Runnable() {
                 @Override

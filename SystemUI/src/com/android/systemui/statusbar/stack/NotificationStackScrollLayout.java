@@ -48,6 +48,7 @@ import com.android.systemui.statusbar.SpeedBumpView;
 import com.android.systemui.statusbar.StackScrollerDecorView;
 import com.android.systemui.statusbar.StatusBarState;
 import com.android.systemui.statusbar.phone.NotificationGroupManager;
+import com.android.systemui.statusbar.phone.NotificationPanelView;
 import com.android.systemui.statusbar.phone.PhoneStatusBar;
 import com.android.systemui.statusbar.phone.ScrimController;
 import com.android.systemui.statusbar.policy.HeadsUpManager;
@@ -230,6 +231,9 @@ public class NotificationStackScrollLayout extends ViewGroup
     private ScrimController mScrimController;
     private boolean mForceNoOverlappingRendering;
     private NotificationOverflowContainer mOverflowContainer;
+    
+    private NotificationPanelView panelView;
+    
     private final ArrayList<Pair<ExpandableNotificationRow, Boolean>> mTmpList = new ArrayList<>();
 
     public NotificationStackScrollLayout(Context context) {
@@ -520,9 +524,9 @@ public class NotificationStackScrollLayout extends ViewGroup
         if (stackHeight != mCurrentStackHeight) {
             mCurrentStackHeight = stackHeight;
             updateAlgorithmHeightAndPadding();
-            requestChildrenUpdate();
+            //requestChildrenUpdate();//
         }
-        setStackTranslation(paddingOffset);
+        //setStackTranslation(paddingOffset);
     }
 
     public float getStackTranslation() {
@@ -1211,7 +1215,7 @@ public class NotificationStackScrollLayout extends ViewGroup
             setOverScrolledPixels(amount / getRubberBandFactor(onTop), onTop);
             mAmbientState.setOverScrollAmount(amount, onTop);
             if (onTop) {
-                notifyOverscrollTopListener(amount, isRubberbanded);
+                //notifyOverscrollTopListener(amount, isRubberbanded);modified by yangfan 
             }
             requestChildrenUpdate();
         }
@@ -1552,6 +1556,9 @@ public class NotificationStackScrollLayout extends ViewGroup
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
+    	if(!panelView.isNotificationView()){
+    		return false;
+    	}
         if (mInterceptDelegateEnabled) {
             transformTouchEvent(ev, this, mScrollView);
             if (mScrollView.onInterceptTouchEvent(ev)) {
@@ -3188,6 +3195,10 @@ public class NotificationStackScrollLayout extends ViewGroup
             }
             return length;
         }
+    }
+    
+    public void setNotificationPanelView(NotificationPanelView view){
+    	panelView = view;
     }
 
 }

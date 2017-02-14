@@ -120,7 +120,7 @@ public class NetworkControllerImpl extends BroadcastReceiver
     // The current user ID.
     private int mCurrentUserId;
 
-    private TextView mNetWorkNameLabelView;
+    /**private TextView mNetWorkNameLabelView;**/ // modified by yangfan 
 
     private OnSubscriptionsChangedListener mSubscriptionListener;
 
@@ -281,7 +281,7 @@ public class NetworkControllerImpl extends BroadcastReceiver
 
     public String getMobileDataNetworkName() {
         MobileSignalController controller = getDataController();
-        return controller != null ? controller.getState().networkNameData : "";
+        return controller != null ? controller.getState().networkNameData.replaceAll(" ",""): "";// modified by yangfan 
     }
 
     public boolean isEmergencyOnly() {
@@ -368,10 +368,10 @@ public class NetworkControllerImpl extends BroadcastReceiver
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (CHATTY) {
-            Log.d(TAG, "onReceive: intent=" + intent);
-        }
         final String action = intent.getAction();
+        if (CHATTY) {
+            Log.d(TAG, "onReceive: intent=" + intent + ", action : " + action);// modified by yangfan 
+        }
         if (action.equals(ConnectivityManager.CONNECTIVITY_ACTION) ||
                 action.equals(ConnectivityManager.INET_CONDITION_ACTION)) {
             updateConnectivity();
@@ -627,7 +627,15 @@ public class NetworkControllerImpl extends BroadcastReceiver
         mEthernetSignalController.updateConnectivity(mConnectedTransports, mValidatedTransports);
     }
 
-    private void setTextViewVisibility(TextView v) {
+ // modified by yangfan  begin
+    public void setNetworkLabelViewVisibility(boolean enable,boolean noServiceEnable) {
+        String networkName = getMobileDataNetworkName();
+        boolean disable = networkName.contains(mContext.getString(com.android.internal.R.string.lockscreen_carrier_default))
+                || networkName.contains(mContext.getString(com.android.internal.R.string.emergency_calls_only));
+        mCallbackHandler.setNetworkLabelEnable(enable ,noServiceEnable && disable);
+    }
+
+/*    private void setTextViewVisibility(TextView v) {
         String networkName = getMobileDataNetworkName();
         if (networkName.equals(mContext.getString(
                 com.android.internal.R.string.lockscreen_carrier_default))
@@ -658,8 +666,9 @@ public class NetworkControllerImpl extends BroadcastReceiver
             mNetWorkNameLabelView.setText(getMobileDataNetworkName());
             setTextViewVisibility(mNetWorkNameLabelView);
         }
-    }
-
+    }*/
+ // modified by yangfan  end
+    
     public void dump(FileDescriptor fd, PrintWriter pw, String[] args) {
         pw.println("NetworkController state:");
 

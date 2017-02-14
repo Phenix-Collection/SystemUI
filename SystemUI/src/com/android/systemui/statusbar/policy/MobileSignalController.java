@@ -47,6 +47,7 @@ import com.android.systemui.statusbar.policy.NetworkControllerImpl.Config;
 import com.android.systemui.statusbar.policy.NetworkControllerImpl.SubscriptionDefaults;
 
 import java.io.PrintWriter;
+import java.util.Arrays;
 import java.util.BitSet;
 import java.util.Objects;
 import java.util.List;
@@ -93,6 +94,7 @@ public class MobileSignalController extends SignalController<
     private int mStyle = STATUS_BAR_STYLE_ANDROID_DEFAULT;
     private DataEnabledSettingObserver mDataEnabledSettingObserver;
     CarrierAppUtils.CARRIER carrier = CarrierAppUtils.getCarrierId();
+    private int tmpLevel = 0;// added by yangfan 
 
     // TODO: Reduce number of vars passed in, if we have the NetworkController, probably don't
     // need listener lists anymore.
@@ -329,23 +331,28 @@ public class MobileSignalController extends SignalController<
         }
         showDataIcon &= (mStyle == STATUS_BAR_STYLE_ANDROID_DEFAULT
                 || mStyle == STATUS_BAR_STYLE_EXTENDED);
+		//modified by yangfan begin
         int typeIcon = showDataIcon ? icons.mDataType : 0;
         int dataActivityId = showMobileActivity() ? 0 : icons.mActivityId;
         int mobileActivityId = showMobileActivity() ? icons.mActivityId : 0;
-        mCallbackHandler.setMobileDataIndicators(statusIcon, qsIcon, typeIcon, qsTypeIcon,
+        String networkLabelName = mCurrentState.networkNameData.replace(" ", "");
+        Log.i(mTag, " MobileSignalController >> networkLabelName : " + networkLabelName);
+        int dataTypeIcon = typeIcon; //added by yangfan
+        mCallbackHandler.setMobileDataIndicators(statusIcon, qsIcon, typeIcon,showDataIcon, qsTypeIcon,
                 activityIn, activityOut, dataActivityId, mobileActivityId,
                 icons.mStackedDataIcon, icons.mStackedVoiceIcon,
                 dataContentDescription, description, icons.mIsWide,
                 mSubscriptionInfo.getSubscriptionId(), getImsIconId(),
                 isImsRegisteredInWifi(), getdataNetworkTypeInRoamingId(),
-                getEmbmsIconId());
+                getEmbmsIconId(), networkLabelName,mCurrentState.isForbidden);
 
         mCallbackHandler.post(new Runnable() {
             @Override
             public void run() {
-                mNetworkController.updateNetworkLabelView();
+                mNetworkController.setNetworkLabelViewVisibility(true, true);
             }
         });
+		//modified by yangfan end
     }
 
     private boolean isImsRegisteredInWifi() {
@@ -473,7 +480,7 @@ public class MobileSignalController extends SignalController<
 
     public void handleBroadcast(Intent intent) {
         String action = intent.getAction();
-        if (action.equals(TelephonyIntents.SPN_STRINGS_UPDATED_ACTION)) {
+		if (action.equals(TelephonyIntents.SPN_STRINGS_UPDATED_ACTION)) {
             updateNetworkName(intent.getBooleanExtra(TelephonyIntents.EXTRA_SHOW_SPN, false),
                     intent.getStringExtra(TelephonyIntents.EXTRA_SPN),
                     intent.getStringExtra(TelephonyIntents.EXTRA_DATA_SPN),
@@ -508,9 +515,12 @@ public class MobileSignalController extends SignalController<
     }
 
     private String getLocalString(String originalString) {
-        return android.util.NativeTextHelper.getLocalString(mContext, originalString,
-                          com.android.internal.R.array.origin_carrier_names,
-                          com.android.internal.R.array.locale_carrier_names);
+		//modified by yangfan
+        String result = android.util.NativeTextHelper.getLocalString(mContext, originalString,
+                com.android.internal.R.array.origin_carrier_names,
+                com.android.internal.R.array.locale_carrier_names);
+        return result.replace(" ", "");
+		//modified by yangfan
     }
 
     private String getNetworkClassString(ServiceState state) {
@@ -550,11 +560,11 @@ public class MobileSignalController extends SignalController<
         mLastDataSpn = dataSpn;
         mLastShowPlmn = showPlmn;
         mLastPlmn = plmn;
-        if (CHATTY) {
+        //if (CHATTY) {
             Log.d("CarrierLabel", "updateNetworkName showSpn=" + showSpn
                     + " spn=" + spn + " dataSpn=" + dataSpn
                     + " showPlmn=" + showPlmn + " plmn=" + plmn);
-        }
+        //}
         if (mConfig.showLocale) {
             if (showSpn && !TextUtils.isEmpty(spn)) {
                 spn = getLocalString(spn);
@@ -613,6 +623,7 @@ public class MobileSignalController extends SignalController<
         } else {
             mCurrentState.networkNameData = mNetworkNameDefault;
         }
+        Log.e(mTag, " yangfan networkname: " + mCurrentState.networkNameData );
     }
 
     /**
@@ -626,19 +637,26 @@ public class MobileSignalController extends SignalController<
                     + " ss=" + mSignalStrength);
         }
         mCurrentState.connected = hasService() && mSignalStrength != null;
+//modified by yangfan begin
+        boolean isDelay = false;
         if (mCurrentState.connected) {
             if (!mSignalStrength.isGsm() && mConfig.alwaysShowCdmaRssi) {
-                mCurrentState.level = mSignalStrength.getCdmaLevel();
+                tmpLevel = mSignalStrength.getCdmaLevel();
             } else {
-                mCurrentState.level = mSignalStrength.getLevel();
+                tmpLevel = mSignalStrength.getLevel();
                 if (mConfig.showRsrpSignalLevelforLTE) {
                     int dataType = mServiceState.getDataNetworkType();
                     if (dataType == TelephonyManager.NETWORK_TYPE_LTE ||
                             dataType == TelephonyManager.NETWORK_TYPE_LTE_CA) {
-                        mCurrentState.level = getAlternateLteLevel(mSignalStrength);
+                        tmpLevel = getAlternateLteLevel(mSignalStrength);
                     }
                 }
             }
+        }
+        if (tmpLevel < mCurrentState.level) {
+            isDelay = true;
+        }else if(tmpLevel > mCurrentState.level){
+            mCallbackHandler.removeCallbacks(mSignalChanged);
         }
         if (mNetworkToIconLookup.indexOfKey(mDataNetType) >= 0) {
             mCurrentState.iconGroup = mNetworkToIconLookup.get(mDataNetType);
@@ -670,9 +688,22 @@ public class MobileSignalController extends SignalController<
         if (mStyle == STATUS_BAR_STYLE_EXTENDED) {
             mCurrentState.imsRadioTechnology = mServiceState.getRilImsRadioTechnology();
         }
-
-        notifyListenersIfNecessary();
+        Log.e(mTag, "tmpLevel : " + tmpLevel);
+        mCallbackHandler.postDelayed(mSignalChanged, isDelay ? 20 * 1000 : 0);
     }
+
+    Runnable mSignalChanged = new Runnable() {
+        @Override
+        public void run() {
+            if (mCurrentState.level == tmpLevel) {
+                return ;
+            }
+            mCurrentState.level = tmpLevel;
+            Log.e(mTag, "mCurrentState.level : " + mCurrentState.level);
+            notifyListenersIfNecessary();
+        }
+    } ;
+//modified by yangfan end
 
     private void generateIconGroup() {
         final int level = mCurrentState.level;
@@ -1050,6 +1081,7 @@ public class MobileSignalController extends SignalController<
         int dataActivity;
         int voiceLevel;
         int imsRadioTechnology;
+        boolean showNetworkClass;//modified by yangfan
 
         @Override
         public void copyFrom(State s) {
@@ -1067,6 +1099,7 @@ public class MobileSignalController extends SignalController<
             dataActivity = state.dataActivity;
             voiceLevel = state.voiceLevel;
             imsRadioTechnology = state.imsRadioTechnology;
+            showNetworkClass = state.showNetworkClass;//modified by yangfan
         }
 
         @Override
@@ -1076,6 +1109,7 @@ public class MobileSignalController extends SignalController<
             builder.append("dataSim=").append(dataSim).append(',');
             builder.append("networkName=").append(networkName).append(',');
             builder.append("networkNameData=").append(networkNameData).append(',');
+            builder.append("showNetworkClass=").append(showNetworkClass).append(',');//modified by yangfan
             builder.append("dataConnected=").append(dataConnected).append(',');
             builder.append("isDefault=").append(isDefault).append(',');
             builder.append("isEmergency=").append(isEmergency).append(',');
@@ -1091,6 +1125,7 @@ public class MobileSignalController extends SignalController<
             return super.equals(o)
                     && Objects.equals(((MobileState) o).networkName, networkName)
                     && Objects.equals(((MobileState) o).networkNameData, networkNameData)
+                    && ((MobileState) o).showNetworkClass == showNetworkClass/**modified by yangfan**/
                     && ((MobileState) o).dataSim == dataSim
                     && ((MobileState) o).dataConnected == dataConnected
                     && ((MobileState) o).isEmergency == isEmergency

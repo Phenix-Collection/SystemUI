@@ -52,6 +52,7 @@ import com.android.systemui.statusbar.phone.QSTileHost;
 import com.android.systemui.statusbar.policy.SecurityController;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class QsTuner extends Fragment implements Callback {
@@ -68,6 +69,13 @@ public class QsTuner extends Fragment implements Callback {
     private ScrollView mScrollRoot;
 
     private FrameLayout mAddTarget;
+	//yangfan  just for debug
+    private final static boolean DEBUG =true;
+    
+    protected final static void logf(String fmt, Object... args) {
+        if(!DEBUG) return ;
+        Log.v(TAG,  String.format(fmt, args));
+    }//yangfan  just for debug
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -200,6 +208,7 @@ public class QsTuner extends Fragment implements Callback {
         else if (spec.equals("location")) return R.string.quick_settings_location_label;
         else if (spec.equals("cast")) return R.string.quick_settings_cast_title;
         else if (spec.equals("hotspot")) return R.string.quick_settings_hotspot_label;
+        else if (spec.equals("profile")) return R.string.qs_tile_ringing;//add'profile' by yangfan
         return 0;
     }
 
@@ -207,7 +216,7 @@ public class QsTuner extends Fragment implements Callback {
 
         public CustomHost(Context context) {
             super(context, null, null, null, null, null, null, null, null, null,
-                    null, null, new BlankSecurityController());
+                    null, null, new BlankSecurityController(),null);//add'profile' by yangfan
         }
 
         @Override
@@ -242,6 +251,9 @@ public class QsTuner extends Fragment implements Callback {
         public void add(String tile) {
             MetricsLogger.action(getContext(), MetricsLogger.TUNER_QS_ADD, tile);
             List<String> tiles = new ArrayList<>(mTileSpecs);
+            if (tile.equals(tag)) {
+                return ;
+            }// yangfan (avoid added duplicately )
             tiles.add(tile);
             setTiles(tiles);
         }
@@ -256,6 +268,7 @@ public class QsTuner extends Fragment implements Callback {
                     TextUtils.join(",", tiles), ActivityManager.getCurrentUser());
         }
 
+        private String tag = "intent(org.codeaurora.qs.tiles.wificallingtile)";// yangfan add
         public void showAddDialog() {
             List<String> tiles = mTileSpecs;
             int numBroadcast = 0;
@@ -264,11 +277,19 @@ public class QsTuner extends Fragment implements Callback {
                     numBroadcast++;
                 }
             }
+			// yangfan begin 
+            for (String str : tiles) {
+                if (str.equals(tag)) {
+                    mTileSpecs.remove(str);
+                }
+            }
+//            wifi,bt,inversion,dnd,cell,airplane,rotation,flashlight,location,cast,hotspot
+            logf( "showAddDialog : mTileSpecs " +Arrays.toString(mTileSpecs.toArray()));
             String[] defaults =
                 getContext().getString(R.string.quick_settings_tiles_default).split(",");
-            final String[] available = new String[defaults.length + 1
-                                                  - (tiles.size() - numBroadcast)];
-            final String[] availableTiles = new String[available.length];
+            final String[] available = new String[defaults.length + 1 - (tiles.size() - numBroadcast)];
+            final String[] availableTiles = new String[available.length];// 11
+            
             int index = 0;
             for (int i = 0; i < defaults.length; i++) {
                 if (tiles.contains(defaults[i])) {
@@ -284,16 +305,23 @@ public class QsTuner extends Fragment implements Callback {
                 }
             }
             available[index++] = getContext().getString(R.string.broadcast_tile);
+            logf("tiles : " +Arrays.toString(tiles.toArray())+
+                    ",available : " +Arrays.toString(available)+"\n,availableTiles:"
+                    + Arrays.toString(availableTiles));// yangfan debug
             new AlertDialog.Builder(getContext())
                     .setTitle(R.string.add_tile)
                     .setItems(available, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             if (which < available.length - 1) {
-                                add(availableTiles[which]);
+                                if (availableTiles[which].equals(tag)) {
+                                    add(availableTiles[which]);
+                                }else {
+                                    add(availableTiles[which]);
+                                }
                             } else {
                                 showBroadcastTileDialog();
                             }
-                        }
+                        }// modified by yangfan end
                     }).show();
         }
 
@@ -392,7 +420,7 @@ public class QsTuner extends Fragment implements Callback {
 
         @Override
         public boolean supportsDualTargets() {
-            return "wifi".equals(mSpec) || "bt".equals(mSpec);
+            return /*"wifi".equals(mSpec) || "bt".equals(mSpec)*/ false;// remove Large Cell by yangfan
         }
 
         @Override
@@ -443,6 +471,7 @@ public class QsTuner extends Fragment implements Callback {
             else if (mSpec.equals("location")) return R.drawable.ic_signal_location_enable;
             else if (mSpec.equals("cast")) return R.drawable.ic_qs_cast_on;
             else if (mSpec.equals("hotspot")) return R.drawable.ic_hotspot_enable;
+            else if (mSpec.equals("profile")) return R.drawable.ic_qs_profile_ring;// add 'profile' by yangfan
             return R.drawable.android;
         }
 
