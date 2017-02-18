@@ -446,5 +446,16 @@
 
     <string name="clear_all_task_memory_text"><xliff:g id="number">%s</xliff:g>G 可用 | 4G</string>
     <string name="clear_all_task_memory_release_text">释放了 <xliff:g id="number">%d</xliff:g>M 内存</string>
+        <!-- add by wumin -->
+    <string name="confirm_password_title">确认密码</string>
+    <string name="confirm_password_input_clear">清除</string>
+    <string name="confirm_password_header_title1">确认应用锁密码</string>
+    <string name="confirm_password_header_title2">确认应用锁密码（指纹识别）</string>
+    <string name="confirm_password_header_errorstring1">密码不匹配，请重试</string>
+    <string name="confirm_password_header_errorstring2">指纹不匹配，请重试</string>
+    <string name="confirm_password_header_errorstring3">尝试使用指纹次数过多，请输入密码</string>
+    <string name="confirm_password_header_errorstring4">尝试次数过多，请在<xliff:g id="NUMBER_S">%d</xliff:g>秒后重试</string>
+    <string name="confirm_password_cancel">取消</string>
+    <string name="confirm_password_noteheader_title">多次指纹不匹配后需要输入密码才能使用指纹识别</string>
     <string name="no_need_to_clear">已经清理至最佳状态</string>
 </resources>

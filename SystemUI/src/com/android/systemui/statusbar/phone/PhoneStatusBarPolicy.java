@@ -107,7 +107,9 @@ public class PhoneStatusBarPolicy implements Callback {
             }
             else if (action.equals(AudioManager.RINGER_MODE_CHANGED_ACTION) ||
                     action.equals(AudioManager.INTERNAL_RINGER_MODE_CHANGED_ACTION)) {
-                updateVolumeZen();
+					//modified by yangfan
+                //updateVolumeZen();
+				updateProfile();
             }
             else if (action.equals(TelephonyIntents.ACTION_SIM_STATE_CHANGED)) {
                 updateSimState(intent);

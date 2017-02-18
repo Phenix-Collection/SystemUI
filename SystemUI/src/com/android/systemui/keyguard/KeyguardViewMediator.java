@@ -84,10 +84,7 @@ import static android.provider.Settings.System.SCREEN_OFF_TIMEOUT;
 //add by wumin
 import java.io.FileOutputStream;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import android.content.ComponentName;
 import com.android.internal.statusbar.IStatusBarService;
 import android.os.ServiceManager;
@@ -148,6 +145,9 @@ public class KeyguardViewMediator extends SystemUI {
     //add by wumin
     private static final String PERSIST_NAVIGATION_BAR = "persist.sys.navg_bar_visible";
     private static final String GF_MODE = "/sys/bus/spi/devices/spi0.0/gf_mode/gf_mode";
+    private static final String SETTINGS_NEEDLOCK_APP_GLOBAL_PACKAGENAMES = "global_needlock_app_packagenames";
+    private static final String SETTINGS_NEEDLOCK_APP_PACKAGENAMES = "needlock_app_packagenames";
+    private static final String FINGERPRINT_UNLOCK_SCREEN = "persist.sys.fingerprint_unlock";
     //add end
     // used for handler messages
     private static final int SHOW = 2;
@@ -301,7 +301,15 @@ public class KeyguardViewMediator extends SystemUI {
     private int mUnlockSoundId;
     private int mTrustedSoundId;
     private int mLockSoundStreamId;
-
+    //add by wumin
+    
+    private boolean StartLockAppActivity = false;
+    private String LockClassName = null;
+    private String LockPackName = null;
+    private String LockRunMode = null;
+    private boolean LockResumeFromUS = false;
+    private IStatusBarService mStatusBarService; 
+    //add end
     /**
      * The animation used for hiding keyguard. This is used to fetch the animation timings if
      * WindowManager is not providing us with them.
@@ -571,7 +579,13 @@ public class KeyguardViewMediator extends SystemUI {
         mShowKeyguardWakeLock.setReferenceCounted(false);
 
         mContext.registerReceiver(mBroadcastReceiver, new IntentFilter(DELAYED_KEYGUARD_ACTION));
-
+    	//add by wumin
+        final IntentFilter mIntentFilter = new IntentFilter();
+        mIntentFilter.addAction("start.applockactivity.delay");
+        mContext.registerReceiver(mLunchAppLockReceiver,mIntentFilter);
+	    mStatusBarService = IStatusBarService.Stub.asInterface(
+               ServiceManager.getService("statusbar"));
+	//add end
         mKeyguardDisplayManager = new KeyguardDisplayManager(mContext);
 
         mAlarmManager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
@@ -647,6 +661,9 @@ public class KeyguardViewMediator extends SystemUI {
     	    if(!isNavigationEnable()){
                 	writeFile(GF_MODE,"0");
     	    }
+    	    Settings.System.putString(mContext.getContentResolver(), SETTINGS_NEEDLOCK_APP_PACKAGENAMES,null);
+            String appString = Settings.System.getString(mContext.getContentResolver(), SETTINGS_NEEDLOCK_APP_GLOBAL_PACKAGENAMES);
+            Settings.System.putString(mContext.getContentResolver(), SETTINGS_NEEDLOCK_APP_PACKAGENAMES,appString);
     	    //add end
         }
         // Most services aren't available until the system reaches the ready state, so we
@@ -806,32 +823,35 @@ public class KeyguardViewMediator extends SystemUI {
         notifyScreenTurnedOn();
         mUpdateMonitor.dispatchScreenTurnedOn();
         
-	    //this log add by wumin
-		Log.d(TAG,"onScreenTurnedOn");
-		if(mLockPatternUtils.isLockScreenDisabled(
-	                KeyguardUpdateMonitor.getCurrentUser()) || shouldWaitForProvisioning() || (!mShowing)){
-		    if(!isNavigationEnable()){
-	                writeFile(GF_MODE,"0");
-		    }
-		}else if(mLockPatternUtils.isSecure(KeyguardUpdateMonitor.getCurrentUser()) && mShowing && mOccluded){
-	                writeFile(GF_MODE,"0");
-		}        
+        //this log add by wumin
+	Log.d(TAG,"onScreenTurnedOn");
+	if(mLockPatternUtils.isLockScreenDisabled(
+                KeyguardUpdateMonitor.getCurrentUser()) || shouldWaitForProvisioning() || (!mShowing)){
+	    if(!isNavigationEnable()){
+                writeFile(GF_MODE,"0");
+	    }
+	}else if(mLockPatternUtils.isSecure(KeyguardUpdateMonitor.getCurrentUser()) && mShowing && mOccluded){
+                writeFile(GF_MODE,"0");
+	}
     }
 
     public void onScreenTurnedOff() {
         notifyScreenTurnedOff();
         mUpdateMonitor.dispatchScreenTurnedOff();
         
-	    //this log add by wumin
-		Log.d(TAG,"onScreenTurnedOn");
-		if(mLockPatternUtils.isLockScreenDisabled(
-	                KeyguardUpdateMonitor.getCurrentUser()) || shouldWaitForProvisioning() || (!mShowing)){
-		    if(!isNavigationEnable()){
-	                writeFile(GF_MODE,"0");
-		    }
-		}else if(mLockPatternUtils.isSecure(KeyguardUpdateMonitor.getCurrentUser()) && mShowing && mOccluded){
-	                writeFile(GF_MODE,"0");
-		}
+    	String mode = readFile(GF_MODE).substring(20,21);
+    	//add by wumin
+    	Log.d(TAG,"onScreenTurnedOff");
+            StartLockAppActivity = false;
+    	if(!isNavigationEnable()){
+    		writeFile(GF_MODE,"1");
+    	}else if(mode.equals("0")){
+    		writeFile(GF_MODE,"1");
+    	}
+            Settings.System.putString(mContext.getContentResolver(), SETTINGS_NEEDLOCK_APP_PACKAGENAMES,null);
+            String appString = Settings.System.getString(mContext.getContentResolver(), SETTINGS_NEEDLOCK_APP_GLOBAL_PACKAGENAMES);
+            Settings.System.putString(mContext.getContentResolver(), SETTINGS_NEEDLOCK_APP_PACKAGENAMES,appString);
+            //add end
     }
 
     private void maybeSendUserPresentBroadcast() {
@@ -1021,11 +1041,11 @@ public class KeyguardViewMediator extends SystemUI {
                 updateActivityLockScreenState();
                 adjustStatusBarLocked();
         		//add by wumin
-                if(!isNavigationEnable() && isOccluded){
-    	            writeFile(GF_MODE,"0");
-                }else if(!isNavigationEnable() && !isOccluded){
-    	            writeFile(GF_MODE,"1");
-		        }
+				if (!isNavigationEnable() && isOccluded) {
+					writeFile(GF_MODE, "0");
+				} else if (!isNavigationEnable() && !isOccluded) {
+					writeFile(GF_MODE, "1");
+				}
             }
         }
     }
@@ -1557,11 +1577,21 @@ public class KeyguardViewMediator extends SystemUI {
             updateActivityLockScreenState();
             adjustStatusBarLocked();
             sendUserPresentBroadcast();
-    	    //add by wumin
-    	    if(!isNavigationEnable()){
-    	    	writeFile(GF_MODE,"0");
-    	    }
-    	    //add end            
+			// add by wumin
+			if (!isNavigationEnable()) {
+				writeFile(GF_MODE, "0");
+			}
+
+			if (StartLockAppActivity) {
+				startAct(
+						"com.android.systemui",
+						"com.android.systemui.applock.ConfirmAppLockPasswordActivity",
+						LockPackName, LockClassName, LockRunMode,
+						LockResumeFromUS);
+				StartLockAppActivity = false;
+			}
+
+			// add end         
         }
     }
 
@@ -1793,7 +1823,7 @@ public class KeyguardViewMediator extends SystemUI {
         }
     }
 
-	// add by wumin
+    //add by wumin
 	public void writeFile(String fileName, String write_str) {
 		File file = new File(fileName);
 		try {
@@ -1806,11 +1836,102 @@ public class KeyguardViewMediator extends SystemUI {
 		}
 	}
 
+	private BroadcastReceiver mLunchAppLockReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if (intent.getAction().equals("start.applockactivity.delay")) {
+				Bundle bundle = intent.getExtras();
+				LockPackName = bundle.getString("packname");
+				LockClassName = bundle.getString("classname");
+				LockRunMode = bundle.getString("runmode");
+				LockResumeFromUS = bundle.getBoolean("resumefromUS");
+				if (mShowing) {
+					StartLockAppActivity = true;
+				} else {
+					if (!StartLockAppActivity) {
+						startAct(
+								"com.android.systemui",
+								"com.android.systemui.applock.ConfirmAppLockPasswordActivity",
+								LockPackName, LockClassName, LockRunMode,
+								LockResumeFromUS);
+					}
+				}
+			}
+		}
+	};
+
+	private void startAct(String packageName, String className,
+			String extraPackageString, String extraClassname, String runmode,
+			boolean resumefromUS) {
+		ActivityManager am = (ActivityManager) mContext
+				.getSystemService(Context.ACTIVITY_SERVICE);
+		int stackSize = am.getStacksSize();
+		List<ComponentName> mcomponentNameList = null;
+		mcomponentNameList = am.getHistTaskActivity(stackSize);
+		if (mcomponentNameList != null && mcomponentNameList.size() > 0) {
+			// if(mcomponentNameList.get(0).getPackageName().equals(LockPackName)
+			// &&
+			// mcomponentNameList.get(0).getClassName().equals(LockClassName)){
+			if (mcomponentNameList.get(0).getPackageName().equals(LockPackName)) {
+				Intent intent = new Intent(Intent.ACTION_MAIN);
+				// intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK |
+				// Intent.FLAG_ACTIVITY_NEW_TASK |
+				// Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
+						| Intent.FLAG_ACTIVITY_NEW_TASK);
+				ComponentName cn = new ComponentName(packageName, className);
+				intent.setComponent(cn);
+				intent.putExtra("packagename", extraPackageString);
+				intent.putExtra("classname", extraClassname);
+				intent.putExtra("runmode", runmode);
+				intent.putExtra("resumefromUS", resumefromUS);
+				mContext.startActivity(intent);
+			}
+		}
+	}
+
 	private boolean isNavigationEnable() {
 		if (SystemProperties.getBoolean(PERSIST_NAVIGATION_BAR, false)) {
 			return true;
 		} else {
 			return false;
+		}
+	}
+
+	private boolean isFingerprintUnlockEnable() {
+		return SystemProperties.getBoolean(FINGERPRINT_UNLOCK_SCREEN, false) ? true
+				: false;
+	}
+
+	public void makeExpandedInvisible() {
+		try {
+			if (mStatusBarService != null)
+				mStatusBarService.makeExpandedInvisible();
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		Log.d("wumin", "makeExpandedInvisible ... ");
+		if (mLockPatternUtils.isSecure(KeyguardUpdateMonitor.getCurrentUser())
+				&& mShowing && (!isFingerprintUnlockEnable())) {
+			if (!isNavigationEnable()) {
+				writeFile(GF_MODE, "0");
+			}
+		}
+	}
+
+	public void makeExpandedVisible() {
+		try {
+			if (mStatusBarService != null)
+				mStatusBarService.makeExpandedVisible();
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		Log.d("wumin", " makeExpandedVisible... ");
+		if (mLockPatternUtils.isSecure(KeyguardUpdateMonitor.getCurrentUser())
+				&& mShowing && (!isFingerprintUnlockEnable())) {
+			if (!isNavigationEnable()) {
+				writeFile(GF_MODE, "1");
+			}
 		}
 	}
 
@@ -1830,5 +1951,7 @@ public class KeyguardViewMediator extends SystemUI {
 		}
 
 		return res;
-	}    
+	}
+
+	// add by end
 }

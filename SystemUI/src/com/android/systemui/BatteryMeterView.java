@@ -414,7 +414,7 @@ public class BatteryMeterView extends View implements DemoMode, BatteryStateChan
     protected void onDraw(Canvas canvas) {
         if (mBatteryMeterDrawable != null) {
             BatteryTracker tracker = mDemoMode ? mDemoTracker : mTracker;
-            mBatteryMeterDrawable.onDraw(canvas, tracker);
+            mBatteryMeterDrawable.draw(canvas, tracker);
         }
     }
 
@@ -448,7 +448,7 @@ public class BatteryMeterView extends View implements DemoMode, BatteryStateChan
     }
 
     protected interface BatteryMeterDrawable {
-        void onDraw(Canvas c, BatteryTracker tracker);
+        void draw(Canvas c, BatteryTracker tracker);
         void onSizeChanged(int w, int h, int oldw, int oldh);
         void onDispose();
         void setDarkIntensity(int backgroundColor, int fillColor);
@@ -520,7 +520,7 @@ public class BatteryMeterView extends View implements DemoMode, BatteryStateChan
         }
 
         @Override
-        public void onDraw(Canvas c, BatteryTracker tracker) {
+        public void draw(Canvas c, BatteryTracker tracker) {
             if (mDisposed) return;
 
             if (!mInitialized) {
@@ -672,9 +672,6 @@ public class BatteryMeterView extends View implements DemoMode, BatteryStateChan
             } else {
                 d.setAlpha(tracker.plugged ? 255 : 0);
             }
-            Log.e(TAG, "tracker.plugged :" + tracker.plugged + ",bolt.alpha : "
-                    + mTextAndBoltPaint.getAlpha() +" mTextAndBoltPaint.getColor() : " + mTextAndBoltPaint.getColor());
-
             // Now draw the level indicator
             // set the level and tint color of the fill drawable
             //modified by mare for charge animtion start 2017/01/10

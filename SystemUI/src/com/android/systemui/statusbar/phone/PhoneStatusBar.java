@@ -195,6 +195,14 @@ import java.io.IOException;
 
 import android.os.SystemProperties;
 //add end
+//rw
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.telephony.PhoneStateListener;
+import android.view.Gravity;
+import android.content.ComponentName;
+
+
 public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         DragDownHelper.DragDownCallback, ActivityStarter, OnUnlockMethodChangedListener,
         HeadsUpManager.OnHeadsUpChangedListener {
@@ -400,6 +408,8 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 
     // ensure quick settings is disabled until the current user makes it through the setup wizard
     private boolean mUserSetup = false;
+    //1 line add by wumin
+    private KeyguardViewMediator keyguardViewMediator;
     private ContentObserver mUserSetupObserver = new ContentObserver(new Handler()) {
         @Override
         public void onChange(boolean selfChange) {
@@ -1083,6 +1093,9 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                 "GestureWakeLock");
         mVibrator = mContext.getSystemService(Vibrator.class);
 
+        //rw
+        final TelephonyManager manager = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
+        manager.listen(new MyPhoneCallListener(), PhoneStateListener.LISTEN_CALL_STATE);
         // receive broadcasts
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
@@ -1195,7 +1208,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
     }
 
     private void startKeyguard() {
-        KeyguardViewMediator keyguardViewMediator = getComponent(KeyguardViewMediator.class);
+        keyguardViewMediator = getComponent(KeyguardViewMediator.class);
         mFingerprintUnlockController = new FingerprintUnlockController(mContext,
                 mStatusBarWindowManager, mDozeScrimController, keyguardViewMediator,
                 mScrimController, this);
@@ -1374,9 +1387,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             return;
         }
         boolean isHeadsUped = mUseHeadsUp && shouldInterrupt(shadeEntry);
-        Log.i(TAG,"addNotification >> isHeadsUped : " +isHeadsUped +",mUseHeadsUp : " +mUseHeadsUp);
         if (isHeadsUped) {
-        	mNotificationPanel.showNotification(0);// showNotification by yangfan
             mHeadsUpManager.showNotification(shadeEntry);
             // Mark as seen immediately
             setNotificationShown(notification);
@@ -1388,7 +1399,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             awakenDreams();
 
             // not immersive & a full-screen alert should be shown
-            Log.d(TAG, "Notification has fullScreenIntent; sending fullScreenIntent");
+            if (DEBUG) Log.d(TAG, "Notification has fullScreenIntent; sending fullScreenIntent");
             try {
                 EventLog.writeEvent(EventLogTags.SYSUI_FULLSCREEN_NOTIFICATION,
                         notification.getKey());
@@ -2337,7 +2348,9 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         if (!force && (mExpandedVisible || !panelsEnabled())) {
             return;
         }
-
+        //this line add by wumin
+        keyguardViewMediator.makeExpandedVisible();
+        
         mExpandedVisible = true;
         if (mNavigationBarView != null)
             mNavigationBarView.setSlippery(true);
@@ -2381,7 +2394,14 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
     }
 
     public void animateCollapsePanels(int flags, boolean force, boolean delayed,
-            float speedUpFactor) {
+                                      float speedUpFactor) {
+        //modified by wumin
+        animateCollapsePanels(flags, force, delayed, speedUpFactor, true);
+    }
+
+    //this method add by wumin
+    public void animateCollapsePanels(int flags, boolean force, boolean delayed,
+                                      float speedUpFactor, boolean animate) {
         if (!force &&
                 (mState == StatusBarState.KEYGUARD || mState == StatusBarState.SHADE_LOCKED)) {
             runPostCollapseRunnables();
@@ -2405,9 +2425,10 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             mStatusBarWindowManager.setStatusBarFocusable(false);
 
             mStatusBarWindow.cancelExpandHelper();
-            mStatusBarView.collapseAllPanels(true /* animate */, delayed, speedUpFactor);
+            mStatusBarView.collapseAllPanels(animate /* animate */, delayed, speedUpFactor);
         }
     }
+
 
     private void runPostCollapseRunnables() {
         ArrayList<Runnable> clonedList = new ArrayList<>(mPostCollapseRunnables);
@@ -2470,14 +2491,15 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         }
     }
 
-    void makeExpandedInvisible() {
+    public void makeExpandedInvisible() {
         if (SPEW) Log.d(TAG, "makeExpandedInvisible: mExpandedVisible=" + mExpandedVisible
                 + " mExpandedVisible=" + mExpandedVisible);
 
         if (!mExpandedVisible || mStatusBarWindow == null) {
             return;
         }
-
+        //this line add by wumin
+        keyguardViewMediator.makeExpandedInvisible();
         // Ensure the panel is fully collapsed (just in case; bug 6765842, 7260868)
         mStatusBarView.collapseAllPanels(/*animate=*/ false, false /* delayed*/,
                 1.0f /* speedUpFactor */);
@@ -3176,7 +3198,27 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 
             }
          // hsp 2016-08-11 : Add button to show or hide navigatin bar @{
-            else if (ACTION_NAVIGATION_BAR_VISIBLE.equals(action)) {                    //add by wumin
+            else if (ACTION_NAVIGATION_BAR_VISIBLE.equals(action)) {                    
+            	  ActivityManager activityManager = (ActivityManager) mContext.getSystemService(mContext.ACTIVITY_SERVICE);
+
+                  List<ActivityManager.RunningTaskInfo> tasks = activityManager.getRunningTasks(1);
+
+                  ActivityManager.RunningTaskInfo taskInfo = tasks.get(0);
+                  String className = taskInfo.topActivity.getClassName();
+
+                  final TelephonyManager tm = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
+                  //  System.out.println("=======sss============>" + className+"======getCallState============"+(tm.getCallState() == TelephonyManager.CALL_STATE_IDLE));
+
+                  if ("shows".equals(intent.getStringExtra("callbar"))) {
+                      if (tm.getCallState() != TelephonyManager.CALL_STATE_IDLE && !className.equals("com.android.incallui.InCallActivity")) {
+                          showCallBar();
+                      }
+                  } else if ("hides".equals(intent.getStringExtra("callbar"))) {
+
+                      hideCallBar();
+
+                  } else {
+            	//add by wumin
                     boolean show = intent.getBooleanExtra("show", false);
                     boolean settings = intent.getBooleanExtra("settings", false);
                     showNavBar = show;
@@ -3185,6 +3227,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                         mRemoveOrShowNavBar.run();
                     }
                 //add end
+                  }
             }
         }
     };
@@ -3232,6 +3275,8 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
     private void dismissKeyguardThenExecute(OnDismissAction action, Runnable cancelAction,
             boolean afterKeyguardGone) {
         if (mStatusBarKeyguardViewManager.isShowing()) {
+            //this line add by wumin
+            makeExpandedInvisible();
             mStatusBarKeyguardViewManager.dismissWithAction(action, cancelAction,
                     afterKeyguardGone);
         } else {
@@ -4625,6 +4670,116 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                         break;
                 }
             }
+        }
+    }
+    //add rw
+    private WindowManager mWM;
+    private WindowManager.LayoutParams params;
+    private View view;
+    private boolean isCalling;
+    private boolean isadd;
+
+    public void showCallBar() {
+        if (mWM == null) {
+
+            mWM = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
+            params = new WindowManager.LayoutParams();
+
+            params.width = WindowManager.LayoutParams.MATCH_PARENT;
+            params.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN;
+
+            params.format = PixelFormat.TRANSLUCENT;
+            params.gravity = Gravity.TOP;
+            params.type = WindowManager.LayoutParams.TYPE_SYSTEM_ERROR;
+            params.height = 72;
+        }
+        if (view == null) {
+            view = View.inflate(mContext, R.layout.calling, null);
+        }
+        final TextView tv = (TextView) view.findViewById(R.id.calling);
+        tv.setTextColor(0xffffffff);
+        final AlphaAnimation animation2 = new AlphaAnimation(1, 0);
+        final AlphaAnimation animation1 = new AlphaAnimation(0, 1);
+        animation2.setDuration(1000);
+        animation1.setDuration(1000);
+        tv.startAnimation(animation2);
+        animation2.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                tv.startAnimation(animation1);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+        });
+        animation1.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                tv.startAnimation(animation2);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                    final Intent intent = new Intent(Intent.ACTION_MAIN);
+                    intent.addCategory(Intent.CATEGORY_LAUNCHER);
+                    ComponentName cn = new ComponentName("com.android.dialer", "com.android.incallui.InCallActivity");
+                    intent.setComponent(cn);
+                     intent.setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    mContext.startActivity(intent);
+
+
+            }
+        });
+        if (!isadd)
+            mWM.addView(view, params);
+        isadd = true;
+    }
+
+    public void hideCallBar() {
+        if (mWM != null) {
+            mWM.removeView(view);
+            isadd = false;
+            mWM = null;
+
+        }
+    }
+
+    public class MyPhoneCallListener extends PhoneStateListener {
+
+        @Override
+        public void onCallStateChanged(int state, String incomingNumber) {
+
+            switch (state) {
+                case TelephonyManager.CALL_STATE_OFFHOOK:
+                    isCalling = true;
+                    break;
+
+                case TelephonyManager.CALL_STATE_RINGING:
+                    isCalling = true;
+                    break;
+                case TelephonyManager.CALL_STATE_IDLE:
+                    isCalling = false;
+                    hideCallBar();
+                    break;
+            }
+
+            super.onCallStateChanged(state, incomingNumber);
         }
     }
 }

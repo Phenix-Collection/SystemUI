@@ -181,13 +181,24 @@ public class FlashlightController {
         }
     }
 
-    private final CameraManager.TorchCallback mTorchCallback =
+    private boolean isCameraOpen = false;
+    
+    public boolean isCameraOpen() {
+		return isCameraOpen;
+	}
+
+	public void setCameraOpen(boolean isCameraOpen) {
+		this.isCameraOpen = isCameraOpen;
+	}
+
+	private final CameraManager.TorchCallback mTorchCallback =
             new CameraManager.TorchCallback() {
 
         @Override
         public void onTorchModeUnavailable(String cameraId) {
             if (TextUtils.equals(cameraId, mCameraId)) {
                 setCameraAvailable(false);
+                setCameraOpen(true);
             }
         }
 
@@ -196,6 +207,7 @@ public class FlashlightController {
             if (TextUtils.equals(cameraId, mCameraId)) {
                 setCameraAvailable(true);
                 setTorchMode(enabled);
+                setCameraOpen(false);
             }
         }
 

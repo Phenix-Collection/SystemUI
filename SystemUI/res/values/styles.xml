@@ -326,4 +326,19 @@
     <style name="BatteryMeterViewDrawable.Circle">
         <item name="blendMode">overlay</item>
     </style>
+        <!-- add by wumin -->
+    <style name="dialpad">
+        <item name="android:textSize">@dimen/dialpad_font_size</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+    
+    <style name="FragmentTheme" parent="@android:style/Theme.Material.Light.LightStatusBar" >
+        <item name="android:colorPrimaryDark">#F7F7F7</item>
+        <item name="android:actionBarStyle">@style/Theme.ActionBar</item>
+        <item name="android:colorPrimary">#F7F7F7</item>
+    </style>
+
+    <style name="Theme.ActionBar" parent="@android:style/Widget.Material.Light.ActionBar.Solid">
+        <item name="android:homeAsUpIndicator">@mipmap/ic_settings_back</item>
+    </style>
 </resources>

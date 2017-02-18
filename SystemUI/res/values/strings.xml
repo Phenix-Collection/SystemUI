@@ -1178,5 +1178,20 @@
     <!-- Path data for circle battery -->
     <string name="battery_circle_path" translatable="false">M 12 3.5 C 16.6944203736 3.5 20.5 7.30557962644 20.5 12 C 20.5 16.6944203736 16.6944203736 20.5 12 20.5 C 7.30557962644 20.5 3.5 16.6944203736 3.5 12 C 3.5 7.30557962644 7.30557962644 3.5 12 3.5 Z</string>
     <string name="mobile_network_namae_filter">China</string>
+    <string name="clear_all_task_memory_text"><xliff:g id="number">%s</xliff:g>G Free | 4G</string>
+    <string name="clear_all_task_memory_release_text">Has released <xliff:g id="number">%d</xliff:g>M memory</string>
+    <string name="no_need_to_clear">The phone have been cleaned to the best state</string>
     <string name="clear_all_tasks">Clear all</string>
+        <!-- add by wumin-->
+    <string name="confirm_password_title">Confirm applock password</string>
+    <string name="confirm_password_input_clear">Clear</string>
+    <string name="confirm_password_header_title1">Confirm applock password</string>
+    <string name="confirm_password_header_title2">Confirm applock password(confirm fingerprint)</string>
+    <string name="confirm_password_header_errorstring1">Password don\'t match,retry please </string>
+    <string name="confirm_password_header_errorstring2">Fingerprint don\'t match,retry please</string>
+    <string name="confirm_password_header_errorstring3">Too many attempts,Please enter password</string>
+    <string name="confirm_password_header_errorstring4">Too many attempts，Please retry after <xliff:g id="NUMBER_S">%d</xliff:g> seconds</string>
+    <string name="confirm_password_cancel">Cancel</string>
+    <string name="confirm_password_noteheader_title">Need to enter a password to use fingerprint recognition</string>
+    <string name="gotocalling">Touch your return calls here</string>
 </resources>

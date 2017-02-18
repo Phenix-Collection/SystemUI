@@ -78,12 +78,15 @@ public class StatusBarKeyguardViewManager {
     private OnDismissAction mAfterKeyguardGoneAction;
     private boolean mDeviceWillWakeUp;
     private boolean mDeferScrimFadeOut;
-
+    //add by wumin
+    private KeyguardUpdateMonitor mKeyguardUpdateMonitor;
     public StatusBarKeyguardViewManager(Context context, ViewMediatorCallback callback,
             LockPatternUtils lockPatternUtils) {
         mContext = context;
         mViewMediatorCallback = callback;
         mLockPatternUtils = lockPatternUtils;
+    	//add by wumin
+    	mKeyguardUpdateMonitor = KeyguardUpdateMonitor.getInstance(mContext);
     }
 
     public void registerStatusBar(PhoneStatusBar phoneStatusBar,
@@ -224,6 +227,8 @@ public class StatusBarKeyguardViewManager {
                             @Override
                             public void run() {
                                 mStatusBarWindowManager.setKeyguardOccluded(mOccluded);
+                				//add by wumin
+                				mKeyguardUpdateMonitor.setKeyguardOccluded(mOccluded);
                                 reset();
                             }
                         });
@@ -232,6 +237,8 @@ public class StatusBarKeyguardViewManager {
         }
         mOccluded = occluded;
         mStatusBarWindowManager.setKeyguardOccluded(occluded);
+    	//add by wumin
+    	mKeyguardUpdateMonitor.setKeyguardOccluded(mOccluded);
         reset();
     }
 
@@ -247,11 +254,15 @@ public class StatusBarKeyguardViewManager {
      *                       no action should be run
      */
     public void startPreHideAnimation(Runnable finishRunnable) {
-        if (mBouncer.isShowing()) {
-            mBouncer.startPreHideAnimation(finishRunnable);
-        } else if (finishRunnable != null) {
-            finishRunnable.run();
-        }
+    	//modified by wumin
+    	/*
+            if (mBouncer.isShowing()) {
+                mBouncer.startPreHideAnimation(finishRunnable);
+            } else if (finishRunnable != null) {
+    	*/
+            if (finishRunnable != null) {
+                finishRunnable.run();
+            }
     }
 
     /**
@@ -524,9 +535,20 @@ public class StatusBarKeyguardViewManager {
         mPhoneStatusBar.keyguardGoingAway();
     }
 
+    //add by wumin
+	public void keyguardDone() {
+		mViewMediatorCallback.keyguardDone(false);
+	}
+    
     public void animateCollapsePanels(float speedUpFactor) {
         mPhoneStatusBar.animateCollapsePanels(CommandQueue.FLAG_EXCLUDE_NONE, true /* force */,
                 false /* delayed */, speedUpFactor);
+    }
+
+    //this method add by wumin
+    public void animateCollapsePanels(float speedUpFactor,boolean animate) {
+        mPhoneStatusBar.animateCollapsePanels(CommandQueue.FLAG_EXCLUDE_NONE, true /* force */,
+                false /* delayed */, speedUpFactor,animate);
     }
 
     /**

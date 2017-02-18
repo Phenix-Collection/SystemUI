@@ -1215,7 +1215,7 @@ public class NotificationStackScrollLayout extends ViewGroup
             setOverScrolledPixels(amount / getRubberBandFactor(onTop), onTop);
             mAmbientState.setOverScrollAmount(amount, onTop);
             if (onTop) {
-                //notifyOverscrollTopListener(amount, isRubberbanded);modified by yangfan 
+                notifyOverscrollTopListener(amount, isRubberbanded);
             }
             requestChildrenUpdate();
         }

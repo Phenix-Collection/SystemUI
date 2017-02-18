@@ -200,7 +200,7 @@
         <activity android:name=".tuner.TunerActivity"
                   android:enabled="false"
                   android:icon="@drawable/tuner"
-                  android:theme="@android:style/Theme.Material.Settings"
+                  android:theme="@style/FragmentTheme"
                   android:label="@string/system_ui_tuner"
                   android:process=":tuner"
                   android:exported="true">
@@ -404,7 +404,13 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
+        	<!-- add by wumin -->
+        <activity 
+            android:name=".applock.ConfirmAppLockPasswordActivity"
+            android:screenOrientation="portrait" 
+            android:exported="true"
+            android:autoRemoveFromRecents="true"
+            android:theme="@android:style/Theme.Material.Light.NoActionBar.Fullscreen"/>
         <!-- Doze with notifications, run in main sysui process for every user  -->
         <service
             android:name=".doze.DozeService"
@@ -426,7 +432,7 @@
             android:label="@string/demo_mode"
             android:permission="android.permission.STATUS_BAR"
             android:process=":tuner"
-            android:theme="@android:style/Theme.Material.Settings" />
+            android:theme="@style/FragmentTheme" />
         <activity
             android:name=".tuner.TunerActivity$StatusBarIconActivity"
             android:exported="true"
@@ -434,6 +440,6 @@
             android:label="@string/status_bar"
             android:permission="android.permission.STATUS_BAR"
             android:process=":tuner"
-            android:theme="@android:style/Theme.Material.Settings" />
+            android:theme="@style/FragmentTheme" />
     </application>
 </manifest>

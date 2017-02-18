@@ -539,21 +539,25 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-        if (v == mSettingsButton||v == mQuciiSettingsButton) {
-            if (mSettingsButton.isTunerClick()) {
-                if (TunerService.isTunerEnabled(mContext)) {
-                    TunerService.showResetRequest(mContext, new Runnable() {
-                        @Override
-                        public void run() {
-                            // Relaunch settings so that the tuner disappears.
-                            startSettingsActivity();
-                        }
-                    });
-                } else {
-                    Toast.makeText(getContext(), R.string.tuner_toast, Toast.LENGTH_LONG).show();
-                    TunerService.setTunerEnabled(mContext, true);
-                }
-            }
+// modified by yangfan 
+        //if (v == mSettingsButton||v == mQuciiSettingsButton) {
+		    if (v == mSettingsButton) {
+//            if (mSettingsButton.isTunerClick()) {
+//                if (TunerService.isTunerEnabled(mContext)) {
+//                    TunerService.showResetRequest(mContext, new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            // Relaunch settings so that the tuner disappears.
+//
+//                            startSettingsActivity();
+//                        }
+//                    });
+//                } else {
+//                    Toast.makeText(getContext(), R.string.tuner_toast, Toast.LENGTH_LONG).show();
+//                    TunerService.setTunerEnabled(mContext, true);
+//                }
+//            }
+// modified by yangfan 
             startSettingsActivity();
         } else if (v == mSystemIconsSuperContainer) {
             startBatteryActivity();
@@ -695,7 +699,7 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
         }
         if (!mSettingsButton.isAnimating()) {
             mSettingsContainer.setTranslationY(mSystemIconsSuperContainer.getTranslationY());
-            mSettingsContainer.setTranslationX(values.settingsTranslation);
+            //mSettingsContainer.setTranslationX(values.settingsTranslation);// modified by yangfan 
             mSettingsButton.setRotation(values.settingsRotation);
         }
         applyAlpha(mEmergencyCallsOnly, values.emergencyCallsOnlyAlpha);
