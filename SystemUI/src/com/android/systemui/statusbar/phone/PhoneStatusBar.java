@@ -1387,7 +1387,9 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             return;
         }
         boolean isHeadsUped = mUseHeadsUp && shouldInterrupt(shadeEntry);
+        Log.d(TAG, "isHeadsUped : " + isHeadsUped);
         if (isHeadsUped) {
+        	mNotificationPanel.showPage(0);// show Notification by yangfan 
             mHeadsUpManager.showNotification(shadeEntry);
             // Mark as seen immediately
             setNotificationShown(notification);
@@ -2452,6 +2454,13 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
          * add by lrh 滑动桌面弹出状态栏，此时需要更新状态栏背景
          * 
          */
+		blurPanelBg();
+		//add by lrh end
+        mNotificationPanel.expand();
+        if (false) postStartTracing();
+    }
+
+    public void blurPanelBg() {
         final Context context = mContext;
         Resources res = context.getResources();
         BitmapDrawable mBitmapDrawable;
@@ -2465,12 +2474,9 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 		}
 		mBitmapDrawable.setTileModeXY(TileMode.REPEAT, TileMode.REPEAT);
 		mNotificationPanel.setBackground(mBitmapDrawable);
-		//add by lrh end
-        mNotificationPanel.expand();
-        if (false) postStartTracing();
-    }
+	}
 
-    @Override
+	@Override
     public void animateExpandSettingsPanel() {
         if (SPEW) Log.d(TAG, "animateExpand: mExpandedVisible=" + mExpandedVisible);
         if (!panelsEnabled()) {
@@ -4174,6 +4180,9 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 
     @Override
     public boolean onDraggedDown(View startingChild, int dragLengthY) {
+    	// 下拉显示快捷块 by yangfan begin
+    	mNotificationPanel.showPage(NotificationPanelView.QUICKSETTINGS_PAGE_INDEX);
+    	// 下拉显示快捷块 by yangfan end
         if (hasActiveNotifications()) {
             EventLogTags.writeSysuiLockscreenGesture(
                     EventLogConstants.SYSUI_LOCKSCREEN_GESTURE_SWIPE_DOWN_FULL_SHADE,

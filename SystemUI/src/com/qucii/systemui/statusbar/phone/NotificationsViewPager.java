@@ -8,6 +8,7 @@ import android.database.DataSetObserver;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ViewConfiguration;
 
@@ -15,10 +16,11 @@ import android.view.ViewConfiguration;
  * Created by ansen on 9/14/16.
  */
 public class NotificationsViewPager extends ViewPager {
+	private final static String TAG = NotificationsViewPager.class.getSimpleName();
 	private boolean mIsAnti;
 	private NotificationPanelView mPanelView;
 	private NotificationStackScrollLayout mNotificationStackScroller;
-	private boolean mIsDisable;
+	private boolean mIsDisable;//screen sldie when Keyguard
 	private float mLastX, mLastY;
 	private boolean mPagerWantsIntercept = false;
 	private float mSwipTheshold;
@@ -54,11 +56,8 @@ public class NotificationsViewPager extends ViewPager {
 
 	@Override
 	public boolean onInterceptTouchEvent(MotionEvent ev) {
-		if (mIsDisable) {
-			mPagerWantsIntercept = false;
-			return false;
-		}
 		boolean isNotificationView = mPanelView.isNotificationView();
+		Log.i(TAG, "isTrackingHeadsUp() : " + mNotificationStackScroller.isTrackingHeadsUp());
 		int action = ev.getAction();
 		switch (action) {
 		case MotionEvent.ACTION_DOWN:
@@ -87,9 +86,14 @@ public class NotificationsViewPager extends ViewPager {
 					mPagerWantsIntercept = super.onInterceptTouchEvent(ev);//force intercept when 1 --> 0
 				}
 			} else if (deltaX <= -mSwipTheshold) {// left flip
-				if (isNotificationView) {
+				if (isNotificationView && (mIsDisable || mNotificationStackScroller.isTrackingHeadsUp()) ) {// swallowEvent t when isTrackingHeadsUp
+					// swallowEvent
+					// ....
+					mPagerWantsIntercept = false;
+				} else if (isNotificationView) {
 					mPagerWantsIntercept = super.onInterceptTouchEvent(ev);//force intercept when 0 --> 1
-				} else {
+					
+				}else {
 					mPagerWantsIntercept = false;//don`t intercept when 0 --> 1
 				}
 			} else {// don`t intercept when not beyond slop 
@@ -107,6 +111,25 @@ public class NotificationsViewPager extends ViewPager {
 		}
 		return super.onInterceptTouchEvent(ev);
 	}
+	
+//	@Override
+//	public boolean dispatchTouchEvent(MotionEvent ev) {
+//		int action = ev.getAction();
+//		Log.i(TAG, "isAllowDispatch : " + isAllowDispatch + MotionEvent.actionToString(action));
+//		switch (action) {
+//		case MotionEvent.ACTION_DOWN:
+//			return  false;
+//		case MotionEvent.ACTION_MOVE:
+//			if (mNotificationStackScroller.isTrackingHeadsUp()) {// force dispatch 
+//				return  true;
+//			}
+//			break;
+//		case MotionEvent.ACTION_CANCEL:
+//		case MotionEvent.ACTION_UP:
+//			return  false;
+//		}
+//		return super.dispatchTouchEvent(ev);
+//	}
 
 	public void resetState() {
 		mPagerWantsIntercept = false;
@@ -123,7 +146,7 @@ public class NotificationsViewPager extends ViewPager {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent ev) {
-		if (mIsDisable) {
+		if (mIsDisable || mNotificationStackScroller.isTrackingHeadsUp()) {
 			return false;
 		}
 		return super.onTouchEvent(ev);

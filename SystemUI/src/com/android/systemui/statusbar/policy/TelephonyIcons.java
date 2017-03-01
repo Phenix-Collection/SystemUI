@@ -33,7 +33,7 @@ import com.android.systemui.statusbar.policy.MobileSignalController.MobileIconGr
 class TelephonyIcons {
     //***** Signal strength icons
 
-    static final int TELEPHONY_NUM_LEVELS = /**5**/4;// modified by yangfan 
+    static final int TELEPHONY_NUM_LEVELS = 5;// modified by yangfan 
 
     //GSM/UMTS
     static final int TELEPHONY_NO_NETWORK = /*R.drawable.stat_sys_signal_null*/ R.drawable.qucii_stat_sys_no_service;// modified by yangfan 

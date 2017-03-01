@@ -107,7 +107,7 @@ public class BluetoothTile extends QSTile<QSTile.BooleanState>  {
         if (enabled) {
             state.label = null;
             if (connected) {
-                state.icon = ResourceIcon.get(R.drawable.ic_qs_bluetooth_connected);
+                state.icon = ResourceIcon.get(/*R.drawable.ic_qs_bluetooth_connected*/R.drawable.ic_qs_bluetooth_on);
                 state.contentDescription = mContext.getString(
                         R.string.accessibility_quick_settings_bluetooth_connected);
                 state.label = mController.getLastDeviceName();

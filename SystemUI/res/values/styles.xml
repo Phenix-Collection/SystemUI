@@ -96,6 +96,12 @@
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">#ffffff</item>
     </style>
+    
+    <style name="TextAppearance.StatusBar.Expanded.NotificationManager">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">#ffffff</item>
+    </style>
 
     <style name="TextAppearance.StatusBar.Expanded.AboveDateTime">
         <item name="android:textSize">@dimen/qs_emergency_calls_only_text_size</item>

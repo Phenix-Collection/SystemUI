@@ -194,7 +194,7 @@ public class KeyguardIndicationController {
         } catch (RemoteException e) {
             Log.e(TAG, "Error calling IBatteryStats: ", e);
         }
-        final boolean hasChargingTime = chargingTimeRemaining > 0;
+        final boolean hasChargingTime = /*chargingTimeRemaining > 0*/ false;// 去掉显示"还有xx时间充满" by yangfan 
 
         int chargingId;
         switch (mChargingSpeed) {
@@ -215,9 +215,11 @@ public class KeyguardIndicationController {
                 break;
         }
 
+        // 只显示'正在充电' by yangfan 
+        chargingId = R.string.keyguard_plugged_in;
         if (hasChargingTime) {
-            String chargingTimeFormatted = Formatter.formatShortElapsedTimeRoundingUpToMinutes(
-                    mContext, chargingTimeRemaining);
+        	String chargingTimeFormatted = Formatter.formatShortElapsedTimeRoundingUpToMinutes(
+        			mContext, chargingTimeRemaining);
             return mContext.getResources().getString(chargingId, chargingTimeFormatted);
         } else {
             return mContext.getResources().getString(chargingId);

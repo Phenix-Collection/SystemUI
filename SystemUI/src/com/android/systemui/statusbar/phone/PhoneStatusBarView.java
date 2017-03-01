@@ -325,4 +325,12 @@ public class PhoneStatusBarView extends PanelBar {
         float scrimFraction = Math.max(mPanelFraction - mMinFraction / (1.0f - mMinFraction), 0);
         mScrimController.setPanelExpansion(scrimFraction);
     }
+    
+    // show QS page when pull down by yangfan begin   
+    @Override
+    public void showPage(int target) {
+    	super.showPage(target);
+    	mBar.mNotificationPanel.showPage(target);
+    }
+    // show QS page when pull down by yangfan end  
 }

@@ -53,10 +53,10 @@ public class DndTile extends QSTile<QSTile.BooleanState> {
 
     private static final String ACTION_SET_VISIBLE = "com.android.systemui.dndtile.SET_VISIBLE";
     private static final String EXTRA_VISIBLE = "visible";
-
-    private static final QSTile.Icon TOTAL_SILENCE =
-            ResourceIcon.get(R.drawable.ic_qs_dnd_on_total_silence);
-
+    //delete by zqs 2017/2/24 begin
+//    private static final QSTile.Icon TOTAL_SILENCE =
+//            ResourceIcon.get(R.drawable.ic_qs_dnd_on_total_silence);
+    //delete by zqs 2017/2/24 end
     private final AnimationIcon mDisable =
             new AnimationIcon(R.drawable.ic_dnd_disable_animation);
     private final AnimationIcon mDisableTotalSilence =
@@ -145,7 +145,7 @@ public class DndTile extends QSTile<QSTile.BooleanState> {
         } else {
             //hsp : Don't need to show detail
             //int zen = Prefs.getInt(mContext, Prefs.Key.DND_FAVORITE_ZEN, Global.ZEN_MODE_ALARMS);  //weiliji modify the defualt value
-            int zen = Prefs.getInt(mContext, Prefs.Key.DND_FAVORITE_ZEN, Global.ZEN_MODE_IMPORTANT_INTERRUPTIONS);
+            int zen = Prefs.getInt(mContext, Prefs.Key.DND_FAVORITE_ZEN, Global.ZEN_MODE_NO_INTERRUPTIONS);
             mController.setZen(zen, null, TAG);
             //showDetail(true);
             // mController.setZen(Global.ZEN_MODE_IMPORTANT_INTERRUPTIONS, null, TAG);

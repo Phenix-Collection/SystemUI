@@ -1,0 +1,34 @@
+From 9321099ad7624040fc3dd31231340b4db632a844 Mon Sep 17 00:00:00 2001
+From: dubin <dubin@qucii.com>
+Date: Thu, 8 Dec 2016 10:10:07 +0800
+Subject: [PATCH]    [OverView]:headsUp - only for mms to remove it
+
+   [Solution]:
+[Side_Effect]:not by this way. check it
+
+       [Path]:SystemUI
+     [Review]:dubin
+    [Project]:V3
+         [CR]:SM-2248
+
+Change-Id: I0dc548704c69f4bbb98f4e265e7da0a33a8d2cc5
+---
+ .../src/com/android/systemui/statusbar/policy/HeadsUpManager.java       | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/policy/HeadsUpManager.java b/packages/SystemUI/src/com/android/systemui/statusbar/policy/HeadsUpManager.java
+index 4a95d3a..a38204c 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/policy/HeadsUpManager.java
++++ b/SystemUI/src/com/android/systemui/statusbar/policy/HeadsUpManager.java
+@@ -572,7 +572,7 @@ public class HeadsUpManager implements ViewTreeObserver.OnComputeInternalInsetsL
+             earliestRemovaltime = currentTime + mMinimumDisplayTime;
+             postTime = Math.max(postTime, currentTime);
+             removeAutoRemovalCallbacks();
+-            if (!hasFullScreenIntent(entry)) {
++            if (!hasFullScreenIntent(entry) || (hasFullScreenIntent(entry)) && entry.key != null && entry.key.contains("com.android.mms")) {//TODO dubin - not by this way - 2016-12-08
+                 long finishTime = postTime + mHeadsUpNotificationDecay;
+                 long removeDelay = Math.max(finishTime - currentTime, mMinimumDisplayTime);
+                 mHandler.postDelayed(mRemoveHeadsUpRunnable, removeDelay);
+-- 
+1.9.1
+

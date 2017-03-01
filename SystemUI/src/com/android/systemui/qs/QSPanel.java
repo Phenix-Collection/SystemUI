@@ -509,6 +509,7 @@ public class QSPanel extends ViewGroup {
             if (tileRecord.tile.getState().visible) {
                 MetricsLogger.visible(mContext, tileRecord.tile.getMetricsCategory());
             }
+            logf(tileRecord.tile.getState().label +" visible=%b",tileRecord.tile.getState().visible);//yangfan debug tiles
         }
     }
 
@@ -516,7 +517,7 @@ public class QSPanel extends ViewGroup {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         final int width = MeasureSpec.getSize(widthMeasureSpec);
         final int height = MeasureSpec.getSize(heightMeasureSpec);
-
+        //logTiles();// yangfan debug
         int simswitcherHeight = 0;
         if (isVoicePrefEnabled()) {
             mSimSwitcherView.measure(exactly(width), MeasureSpec.UNSPECIFIED);

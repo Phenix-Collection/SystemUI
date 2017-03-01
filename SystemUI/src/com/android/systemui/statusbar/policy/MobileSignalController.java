@@ -623,7 +623,7 @@ public class MobileSignalController extends SignalController<
         } else {
             mCurrentState.networkNameData = mNetworkNameDefault;
         }
-        Log.e(mTag, " yangfan networkname: " + mCurrentState.networkNameData );
+        Log.e(mTag, "networkname: " + mCurrentState.networkNameData );
     }
 
     /**
@@ -632,9 +632,10 @@ public class MobileSignalController extends SignalController<
      * This will call listeners if necessary.
      */
     private final void updateTelephony() {
+    	boolean hasService = hasService();
         if (DEBUG) {
-            Log.d(mTag, "updateTelephony: hasService=" + hasService()
-                    + " ss=" + mSignalStrength);
+            Log.d(mTag, "updateTelephony: hasService=" + hasService
+                    + " ss=" + mSignalStrength );
         }
         mCurrentState.connected = hasService() && mSignalStrength != null;
 //modified by yangfan begin
@@ -653,10 +654,13 @@ public class MobileSignalController extends SignalController<
                 }
             }
         }
-        if (tmpLevel < mCurrentState.level) {
+        if (hasService && tmpLevel < mCurrentState.level) {
             isDelay = true;
-        }else if(tmpLevel > mCurrentState.level){
+            Log.e(mTag, "postDelayedCallbacks: " + tmpLevel);
+        }else {
             mCallbackHandler.removeCallbacks(mSignalChanged);
+            isDelay = false;
+            Log.e(mTag, "removeCallbacks : " + tmpLevel);
         }
         if (mNetworkToIconLookup.indexOfKey(mDataNetType) >= 0) {
             mCurrentState.iconGroup = mNetworkToIconLookup.get(mDataNetType);
@@ -689,15 +693,12 @@ public class MobileSignalController extends SignalController<
             mCurrentState.imsRadioTechnology = mServiceState.getRilImsRadioTechnology();
         }
         Log.e(mTag, "tmpLevel : " + tmpLevel);
-        mCallbackHandler.postDelayed(mSignalChanged, isDelay ? 20 * 1000 : 0);
+        mCallbackHandler.postDelayed(mSignalChanged, 0);
     }
 
     Runnable mSignalChanged = new Runnable() {
         @Override
         public void run() {
-            if (mCurrentState.level == tmpLevel) {
-                return ;
-            }
             mCurrentState.level = tmpLevel;
             Log.e(mTag, "mCurrentState.level : " + mCurrentState.level);
             notifyListenersIfNecessary();

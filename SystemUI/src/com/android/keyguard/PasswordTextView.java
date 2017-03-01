@@ -20,6 +20,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
+import android.app.PendingIntent.OnFinished;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -30,15 +31,20 @@ import android.os.PowerManager;
 import android.os.SystemClock;
 import android.os.UserHandle;
 import android.provider.Settings;
+import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Stack;
@@ -47,7 +53,7 @@ import java.util.Stack;
  * A View similar to a textView which contains password text and can animate when the text is
  * changed
  */
-public class PasswordTextView extends View {
+public class PasswordTextView extends TextView implements TextWatcher {
 
     private static final float DOT_OVERSHOOT_FACTOR = 1.5f;
     private static final long DOT_APPEAR_DURATION_OVERSHOOT = 320;
@@ -93,6 +99,7 @@ public class PasswordTextView extends View {
     private Interpolator mFastOutSlowInInterpolator;
     private boolean mShowPassword;
     private UserActivityListener mUserActivityListener;
+    private final static int MAXLENGTH = 6;
 
     public interface UserActivityListener {
         void onUserActivity();
@@ -115,6 +122,7 @@ public class PasswordTextView extends View {
         super(context, attrs, defStyleAttr, defStyleRes);
         setFocusableInTouchMode(true);
         setFocusable(true);
+        addTextChangedListener(this);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.PasswordTextView);
         try {
             mTextHeightRaw = a.getInt(R.styleable.PasswordTextView_scaledTextSize, 0);
@@ -209,6 +217,10 @@ public class PasswordTextView extends View {
         }
         userActivity();
         sendAccessibilityEventTypeViewTextChanged(textbefore, textbefore.length(), 0, 1);
+    	//added by yangfan
+    	if (mText.length() >= MAXLENGTH) {
+    		mFinishedListener.OnFinished();
+		}//added by yangfan
     }
 
     public void setUserActivityListener(UserActivityListener userActivitiListener) {
@@ -680,4 +692,42 @@ public class PasswordTextView extends View {
             return charWidth + mCharPadding * currentWidthFactor;
         }
     }
+
+    //added by yangfan begin
+	@Override
+	public void beforeTextChanged(CharSequence s, int start, int count,
+			int after) {
+		Log.e(this.getClass().getSimpleName(), "beforeTextChanged");
+	}
+	
+	@Override
+	public void onTextChanged(CharSequence s, int start, int before, int count) {
+		Log.e(this.getClass().getSimpleName(), "onTextChanged");
+	}
+	
+	@Override
+	public void afterTextChanged(Editable s) {
+		Log.e(this.getClass().getSimpleName(), "afterTextChanged");
+		int curLength = s.length();
+		if (curLength >= MAXLENGTH) {
+			//执行ok内容
+			Log.i(this.getClass().getSimpleName(), "curLength : "  + curLength );
+			Toast.makeText(mContext, curLength + "", Toast.LENGTH_SHORT).show();
+			mFinishedListener.OnFinished();
+		}else {
+			
+		}
+	}
+	
+	public void setOnFinishedListener(OnFinishedListener listener){
+		mFinishedListener = listener;
+	}
+	
+	private OnFinishedListener mFinishedListener;
+	
+	public static interface OnFinishedListener{
+		public void OnFinished();
+		public void OnUnFinished();
+	}
+    //added by yangfan end
 }

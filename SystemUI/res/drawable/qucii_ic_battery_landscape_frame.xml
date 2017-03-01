@@ -18,11 +18,11 @@ C 76.12 42.61 73.47 44.38 71.07 44.00 C 49.04 43.97 27.01 44.05 4.98 43.97 C
 74.04 22.69 73.95 14.08 C 74.15 11.88 71.56 11.92 70.05 11.98 C 48.12 12.12
 26.17 11.79 4.24 12.15 Z"
         android:strokeAlpha="1.00"
-        android:strokeWidth="1" />
+        android:strokeWidth="2" />
     <path
         android:fillAlpha="1.00"
         android:fillColor="#000000"
         android:pathData="M78 21.8 L 82 22.60 V31.4 L 78 32.2 V21.8 Z"
         android:strokeAlpha="1.00"
-        android:strokeWidth="1" />
+        android:strokeWidth="2" />
 </vector>

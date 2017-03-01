@@ -16,6 +16,8 @@
 
 package com.android.keyguard;
 
+import com.android.keyguard.PasswordTextView.OnFinishedListener;
+
 import android.content.Context;
 import android.graphics.Rect;
 import android.util.AttributeSet;
@@ -26,7 +28,7 @@ import android.view.View;
  * A Pin based Keyguard input view
  */
 public abstract class KeyguardPinBasedInputView extends KeyguardAbsKeyInputView
-        implements View.OnKeyListener {
+        implements View.OnKeyListener, OnFinishedListener {
 
     protected PasswordTextView mPasswordEntry;
     private View mOkButton;
@@ -161,6 +163,7 @@ public abstract class KeyguardPinBasedInputView extends KeyguardAbsKeyInputView
     protected void onFinishInflate() {
         mPasswordEntry = (PasswordTextView) findViewById(getPasswordTextViewId());
         mPasswordEntry.setOnKeyListener(this);
+        mPasswordEntry.setOnFinishedListener(this);
 
         // Set selected property on so the view can send accessibility events.
         mPasswordEntry.setSelected(true);
@@ -174,7 +177,7 @@ public abstract class KeyguardPinBasedInputView extends KeyguardAbsKeyInputView
 
         mOkButton = findViewById(R.id.key_enter);
         if (mOkButton != null) {
-            mOkButton.setOnClickListener(new View.OnClickListener() {
+            /*mOkButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     doHapticKeyClick();
@@ -183,7 +186,7 @@ public abstract class KeyguardPinBasedInputView extends KeyguardAbsKeyInputView
                     }
                 }
             });
-            mOkButton.setOnHoverListener(new LiftToActivateListener(getContext()));
+            mOkButton.setOnHoverListener(new LiftToActivateListener(getContext()));*/
         }
 
         mDeleteButton = findViewById(R.id.delete_button);
@@ -232,5 +235,18 @@ public abstract class KeyguardPinBasedInputView extends KeyguardAbsKeyInputView
             return true;
         }
         return false;
+    }
+    
+    //added by yangfan
+    @Override
+    public void OnFinished() {
+    	mPasswordEntry.setEnabled(true);
+        doHapticKeyClick();
+        verifyPasswordAndUnlock();
+    }
+    
+    @Override
+    public void OnUnFinished() {
+    	//提示不足6位
     }
 }

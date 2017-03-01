@@ -171,14 +171,13 @@
     
      <path id="lib_classpath">
          <!-- <fileset dir="${jar-path}" includes="*.jar" /> -->
-		<fileset dir="${ext-lib}">  	
-         	<!-- <include name="android-support-v4.jar" />
-         	<include name="core-libart_intermediates.jar" />
-			<include name="core-tests_intermediates.jar" />
-         	<include name="framework_intermediates.jar" />
-			<include name="services_intermediates.jar" />
-         	<include name="telephony-common_intermediates.jar" /> -->
-         	
+		<fileset dir="${ext-lib}">
+<!-- 
+		    <include name="core-libart.jar" />
+         	<include name="framework.jar" />
+         	<include name="services.jar" />
+         	<include name="telephony-common.jar" />
+ -->    	
          	<include name="*.jar" />
          </fileset>
         <path refid="libs_classpath"/>
@@ -195,7 +194,6 @@
         <mkdir dir="${outdir-gen}" />
         <mkdir dir="${outdir-bin}" />  
         <mkdir dir="${outdir-classes}" />  
-        <mkdir dir="${external-lib}" />  <!-- if null == libs --> 
     </target>
     
     <!-- 根据工程中的资源文件生成R.java文件  -->  

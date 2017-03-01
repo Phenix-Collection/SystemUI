@@ -2128,11 +2128,11 @@ public abstract class BaseStatusBar extends SystemUI implements
             }
             return false;
         }
-
+        
         if (isSnoozedPackage(sbn)) {
             return false;
         }
-
+        
         Notification notification = sbn.getNotification();
         // some predicates to make the boolean logic legible
         boolean isNoisy = (notification.defaults & Notification.DEFAULT_SOUND) != 0

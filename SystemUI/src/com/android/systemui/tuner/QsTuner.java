@@ -471,7 +471,7 @@ public class QsTuner extends Fragment implements Callback {
             else if (mSpec.equals("location")) return R.drawable.ic_signal_location_enable;
             else if (mSpec.equals("cast")) return R.drawable.ic_qs_cast_on;
             else if (mSpec.equals("hotspot")) return R.drawable.ic_hotspot_enable;
-            else if (mSpec.equals("profile")) return R.drawable.ic_qs_profile_ring;// add 'profile' by yangfan
+            else if (mSpec.equals("profile")) return R.drawable.ic_qs_profile_ringing;// add 'profile' by yangfan
             return R.drawable.android;
         }
 

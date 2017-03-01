@@ -40,20 +40,26 @@ public class ProfileTile extends QSTile<QSTile.BooleanState> {
         mController = mHost.getProfilesController();
         mAudioManager = (AudioManager) mContext
                 .getSystemService(Context.AUDIO_SERVICE);
-        IntentFilter filter = new IntentFilter("action_dnd_update");
+        IntentFilter filter = new IntentFilter();
+        // 添加监听震动 静音的改变 by yangfan 
+        filter.addAction(AudioManager.RINGER_MODE_CHANGED_ACTION);
+        filter.addAction(AudioManager.INTERNAL_RINGER_MODE_CHANGED_ACTION);
+        filter.addAction("action_dnd_update");
+     // 添加监听震动 静音的改变 by yangfan  end
         mContext.registerReceiver(mReceiver, filter);
     }
 
     BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+        	
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     refreshState();
 
                 }
-            }, 500);
+            }, 0);
 
         }
     };

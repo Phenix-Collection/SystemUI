@@ -187,6 +187,12 @@ public abstract class QSTile<TState extends State> implements Listenable {
     protected void handleClearState() {
         mTmpState = newTileState();
         mState = newTileState();
+        //add by zqs 2017/2/24 start
+        //================>
+        //新建tile时清空ResourceIcon里数据
+        ResourceIcon.clearICONS();
+        //add by zqs 2017/2/24 end
+        //<================
     }
 
     protected void handleRefreshState(Object arg) {
@@ -363,8 +369,25 @@ public abstract class QSTile<TState extends State> implements Listenable {
             mResId = resId;
         }
 
-        public static Icon get(int resId) {
+        //add by zqs 2017/2/24 start
+        //================>
+        //清空缓存（数据混乱）
+        public static void clearICONS(){
+        	if(ICONS!=null&&ICONS.size()>0)
+        		ICONS.clear();
+        }
+        //<================
+        //add by zqs 2017/2/24 end
+        
+        
+        //add by zqs 2017/2/28 begin
+        //================>
+        //由于是静态类这里加锁
+        public synchronized static Icon get(int resId) {
+        //<================
+        //add by zqs 2017/2/28 end
             Icon icon = ICONS.get(resId);
+            Log.e("====ResourceIcon.get==zqs==", "icon!=null:"+String.valueOf(icon!=null)+",resId:"+resId);
             if (icon == null) {
                 icon = new ResourceIcon(resId);
                 ICONS.put(resId, icon);

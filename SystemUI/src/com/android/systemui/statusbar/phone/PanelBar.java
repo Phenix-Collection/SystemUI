@@ -149,6 +149,13 @@ public abstract class PanelBar extends FrameLayout {
     // called from PanelView when self-expanding, too
     public void startOpeningPanel(PanelView panel) {
         if (DEBUG) LOG("startOpeningPanel: " + panel);
+        
+        //=======================
+        // show QS page when pull down by yangfan begin
+        showPage(1);
+        // show QS page when pull down by yangfan begin
+        //=======================
+        
         mTouchingPanel = panel;
         mPanelHolder.setSelectedPanel(mTouchingPanel);
         for (PanelView pv : mPanels) {
@@ -249,4 +256,10 @@ public abstract class PanelBar extends FrameLayout {
     public void onClosingFinished() {
 
     }
+    
+ // show QS page when pull down by yangfan begin
+    public void showPage(int target){
+    	
+    }
+ // show QS page when pull down by yangfan end
 }

@@ -178,12 +178,7 @@
          	<include name="services.jar" />
          	<include name="telephony-common.jar" />
  -->    	
-         	<include name="android-support-v4.jar" />
-         	<include name="core-libart_intermediates.jar" />
-			<include name="core-tests_intermediates.jar" />
-         	<include name="framework_intermediates.jar" />
-			<include name="services_intermediates.jar" />
-         	<include name="telephony-common_intermediates.jar" />
+         	<include name="*.jar" />
          </fileset>
         <path refid="libs_classpath"/>
          <pathelement location="${android-jar}" />

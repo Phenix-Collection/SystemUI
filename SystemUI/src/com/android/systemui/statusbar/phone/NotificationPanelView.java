@@ -218,8 +218,8 @@ public class NotificationPanelView extends PanelView implements
     private NotificationsViewPager mNotificationsViewPager;
     private String mLastCameraLaunchSource = KeyguardBottomAreaView.CAMERA_LAUNCH_SOURCE_AFFORDANCE;
     private boolean mIndicatorVisible = false;// added by yangfan 
-    private static final int NOTIFICATION_PAGE_INDEX = 0;
-    private static final int QUICKSETTINGS_PAGE_INDEX = 1;
+    public static final int NOTIFICATION_PAGE_INDEX = 0;
+    public static final int QUICKSETTINGS_PAGE_INDEX = 1;
     private int mCurPage = NOTIFICATION_PAGE_INDEX;
     
     //added by dongwei-17-2-17,add function of double click to go to sleep {start
@@ -792,6 +792,12 @@ public class NotificationPanelView extends PanelView implements
 
     private boolean handleQsTouch(MotionEvent event) {
         final int action = event.getActionMasked();
+        // screen statusBar animator by yangfan 
+        if(mStatusBarState==StatusBarState.KEYGUARD){
+        	  if(event.getY()<getResources().getDimensionPixelOffset(R.dimen.status_bar_height))
+        	       return true;
+        }
+        // screen statusBar animator by yangfan 
         if (action == MotionEvent.ACTION_DOWN && getExpandedFraction() == 1f
                 && mStatusBar.getBarState() != StatusBarState.KEYGUARD && !mQsExpanded
                 && mQsExpansionEnabled) {
@@ -1358,13 +1364,23 @@ public class NotificationPanelView extends PanelView implements
             }
         }
         mQsExpansionHeight = height;
+        
         if(mQsExpansionEnabled){
         	 mHeader.setExpansion(getHeaderExpansionFraction());
              setQsTranslation(height);
              requestScrollerTopPaddingUpdate(false /* animate */);
              updateNotificationScrim(height);
         }
-       
+        
+        //add by zqs 2017/2/24 begin
+        //=========================>
+        //加入设置通知栏page1位置解决显示半屏问题
+        mQsContainer_Qucii.setY(getHeaderTranslation());
+        mQsContainer_Qucii.invalidate();
+        //<=========================
+        //add by zqs 2017/2/24 end 
+        
+        
         if (mKeyguardShowing) {
             updateHeaderKeyguard();
         }
@@ -1416,9 +1432,12 @@ public class NotificationPanelView extends PanelView implements
         if (!mHeaderAnimating) {
             mQsContainer.setY(height - mQsContainer.getDesiredHeight() + getHeaderTranslation());
         }
-        if(mCurPage==QUICKSETTINGS_PAGE_INDEX&&!mQsExpansionEnabled){
-        	 mQsContainer_Qucii.setY(getHeaderTranslation());
-        }
+        //delete by zqs 2017/2/24 begin
+        //这里判断有冲突，不可能执行移到了上层
+//        if(mCurPage==QUICKSETTINGS_PAGE_INDEX&&!mQsExpansionEnabled){
+//        	 mQsContainer_Qucii.setY(getHeaderTranslation());
+//        }
+        //delete by zqs 2017/2/24 end 
         if (mKeyguardShowing && !mHeaderAnimating) {
             mHeader.setY(interpolate(getQsExpansionFraction(), -mHeader.getHeight(), 0));
         }
@@ -2402,9 +2421,25 @@ public class NotificationPanelView extends PanelView implements
     @Override
     public void onHeadsUpPinnedModeChanged(final boolean inPinnedMode) {
         if (inPinnedMode) {
+        	//add by lrh 在锁屏状态下，不需要截图虚化背景 begin
+    		if (mStatusBarState != StatusBarState.KEYGUARD) {
+    			 setBackground(null); 
+    		}
+    		//add by lrh 在锁屏状态下，不需要截图虚化背景 end
+//        	setBackgroundResource(0); // clear bg by yangfan
+        	updateIndicatorVisibility(GONE);// gone indicator by yangfan
             mHeadsUpExistenceChangedRunnable.run();
             updateNotificationTranslucency();
         } else {
+        	//add by lrh 在锁屏状态下，不需要截图虚化背景 begin
+        	//remove by zqs
+//    		if (mStatusBarState != StatusBarState.KEYGUARD) {
+//    			mStatusBar.blurPanelBg();// blurred bg by yangfan 
+//    		}
+    		//remove by zqs
+    		//add by lrh 在锁屏状态下，不需要截图虚化背景 end
+        	
+        	updateIndicatorVisibility(mStatusBarState != StatusBarState.KEYGUARD?VISIBLE:GONE);// visible indicator by yangfan
             mHeadsUpAnimatingAway = true;
             mNotificationStackScroller.runAfterAnimationFinished(
                     mHeadsUpExistenceChangedRunnable);
@@ -2608,6 +2643,11 @@ public class NotificationPanelView extends PanelView implements
 //added by yangfan begin
 	public boolean isQsExpansionEnabled(){
 		return mQsExpansionEnabled;
+	}
+	
+	public void showPage(int page){
+		mNotificationsViewPager.setCurrentItem(page);
+		onPageSelected(page);
 	}
 //added by yangfan end
 }

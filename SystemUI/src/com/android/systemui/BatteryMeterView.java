@@ -5,7 +5,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -529,7 +528,6 @@ public class BatteryMeterView extends View implements DemoMode, BatteryStateChan
 
             drawBattery(c, tracker);
             if (mAnimationsEnabled) {
-                // TODO: Allow custom animations to be used
             }
         }
 
@@ -543,7 +541,7 @@ public class BatteryMeterView extends View implements DemoMode, BatteryStateChan
             mIconTint = fillColor;
             // Make bolt fully opaque for increased visibility
             mBoltDrawable.setTint(0xff000000 | mIconTint);
-            mFrameDrawable.setTint(backgroundColor);
+            mFrameDrawable.setTint(0xff000000 | backgroundColor);
             updateBoltDrawableLayer(mBatteryDrawable, mBoltDrawable);
             invalidate();
         }
@@ -611,9 +609,7 @@ public class BatteryMeterView extends View implements DemoMode, BatteryStateChan
             int drawableResId = getBatteryDrawableResourceForMode(mode);
             mBatteryDrawable = (LayerDrawable) getContext().getDrawable(drawableResId);
             mFrameDrawable = mBatteryDrawable.findDrawableByLayerId(R.id.battery_frame);
-            mFrameDrawable.setTint(mCurrentBackgroundColor != 0
-                    ? mCurrentBackgroundColor
-                    : res.getColor(R.color.batterymeter_frame_color));
+            mFrameDrawable.setTint(mCurrentBackgroundColor);
             // set the animated vector drawable we will be stop animating
             Drawable levelDrawable = mBatteryDrawable.findDrawableByLayerId(R.id.battery_fill);
             mLevelDrawable = new StopMotionVectorDrawable(levelDrawable);

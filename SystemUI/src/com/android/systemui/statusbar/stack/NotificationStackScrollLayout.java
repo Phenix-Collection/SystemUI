@@ -516,6 +516,12 @@ public class NotificationStackScrollLayout extends ViewGroup
                 translationY += (1 - partiallyThere) * (mBottomStackPeekSize +
                         mCollapseSecondCardPadding);
             } else {
+            	//add by zqs 2017/2/24 begin
+            	//弹出悬浮框时选择page 0
+            	//===================>
+            	panelView.showPage(0);
+            	//《===================
+            	//add by zqs 2017/2/24 end
                 translationY = (int) (height - mHeadsUpManager.getTopHeadsUpHeight());
             }
             paddingOffset = translationY - mTopPadding;
@@ -524,9 +530,19 @@ public class NotificationStackScrollLayout extends ViewGroup
         if (stackHeight != mCurrentStackHeight) {
             mCurrentStackHeight = stackHeight;
             updateAlgorithmHeightAndPadding();
-            //requestChildrenUpdate();//
+            requestChildrenUpdate();//禁止通知在当前container内滚动
         }
-        //setStackTranslation(paddingOffset);
+        //modify by zqs 2017/02/28 begin
+        //=============================>
+        //这里修改快捷图标面板显示半屏可以滑动问题
+        if(!panelView.isNotificationView()&&!trackingHeadsUp){
+        	setStackTranslation(0);//不允许通知和头部一起滚动
+        }else{
+        	setStackTranslation(paddingOffset);//允许通知和头部一起滚动
+        }
+        //<=============================
+        //modify by zqs 2017/02/28 end
+        
     }
 
     public float getStackTranslation() {
@@ -535,9 +551,9 @@ public class NotificationStackScrollLayout extends ViewGroup
 
     private void setStackTranslation(float stackTranslation) {
         if (stackTranslation != mStackTranslation) {
-            mStackTranslation = stackTranslation;
-            mAmbientState.setStackTranslation(stackTranslation);
-            requestChildrenUpdate();
+        	mStackTranslation = stackTranslation;
+        	mAmbientState.setStackTranslation(stackTranslation);
+        	requestChildrenUpdate();
         }
     }
 
@@ -3200,5 +3216,9 @@ public class NotificationStackScrollLayout extends ViewGroup
     public void setNotificationPanelView(NotificationPanelView view){
     	panelView = view;
     }
-
+//added by yangfan 
+    public boolean isTrackingHeadsUp(){
+    	return mTrackingHeadsUp || mHeadsUpManager.hasPinnedHeadsUp();
+    }
+//added by yangfan  end
 }

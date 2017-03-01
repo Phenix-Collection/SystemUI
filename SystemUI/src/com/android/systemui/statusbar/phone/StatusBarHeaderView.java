@@ -175,7 +175,7 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
         mNotificationManager = (TextView) findViewById(R.id.qucii_notification_manage);
         mNotificationManager.setOnClickListener(this);
         //add by lrh begin add qucii NotificationManager bt
-        mSettingsButton.setOnClickListener(this);
+        //mSettingsButton.setOnClickListener(this);
         mClock.setOnClickListener(this);
         mDateGroup.setOnClickListener(this);
         mQsDetailHeader = findViewById(R.id.qs_detail_header);
@@ -541,7 +541,7 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
     public void onClick(View v) {
 // modified by yangfan 
         //if (v == mSettingsButton||v == mQuciiSettingsButton) {
-		    if (v == mSettingsButton) {
+		    if (v == /*mSettingsButton*/ mQuciiSettingsButton) {
 //            if (mSettingsButton.isTunerClick()) {
 //                if (TunerService.isTunerEnabled(mContext)) {
 //                    TunerService.showResetRequest(mContext, new Runnable() {
