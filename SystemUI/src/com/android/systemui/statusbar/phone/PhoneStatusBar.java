@@ -228,6 +228,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
     private boolean isSettings = false;
     private boolean isFpTouchMode;
     private boolean isBroadcastAction = false;
+    private LockIcon mLockIcon = null;
     //add end
     // additional instrumentation for testing purposes; intended to be left on during development
     public static final boolean CHATTY = DEBUG;
@@ -913,6 +914,8 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                 (KeyguardBottomAreaView) mStatusBarWindow.findViewById(R.id.keyguard_bottom_area);
         mKeyguardBottomArea.setActivityStarter(this);
         mKeyguardBottomArea.setAssistManager(mAssistManager);
+	//add by wumin
+	mLockIcon = mKeyguardBottomArea.getLockIcon();
         mKeyguardIndicationController = new KeyguardIndicationController(mContext,
                 (KeyguardIndicationTextView) mStatusBarWindow.findViewById(
                         R.id.keyguard_indication_text),
@@ -1215,6 +1218,11 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         mStatusBarKeyguardViewManager = keyguardViewMediator.registerStatusBar(this,
                 mStatusBarWindow, mStatusBarWindowManager, mScrimController,
                 mFingerprintUnlockController);
+	//add by wumin
+	if(mLockIcon != null){ 
+	    mStatusBarKeyguardViewManager.setLockIcon(mLockIcon);
+	}
+	//add end
         mKeyguardIndicationController.setStatusBarKeyguardViewManager(
                 mStatusBarKeyguardViewManager);
         mFingerprintUnlockController.setStatusBarKeyguardViewManager(mStatusBarKeyguardViewManager);
@@ -1387,7 +1395,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             return;
         }
         boolean isHeadsUped = mUseHeadsUp && shouldInterrupt(shadeEntry);
-        Log.d(TAG, "isHeadsUped : " + isHeadsUped);
         if (isHeadsUped) {
         	mNotificationPanel.showPage(0);// show Notification by yangfan 
             mHeadsUpManager.showNotification(shadeEntry);
@@ -2476,7 +2483,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 		mNotificationPanel.setBackground(mBitmapDrawable);
 	}
 
-	@Override
+    @Override
     public void animateExpandSettingsPanel() {
         if (SPEW) Log.d(TAG, "animateExpand: mExpandedVisible=" + mExpandedVisible);
         if (!panelsEnabled()) {
@@ -4180,15 +4187,14 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 
     @Override
     public boolean onDraggedDown(View startingChild, int dragLengthY) {
-    	// 下拉显示快捷块 by yangfan begin
-    	mNotificationPanel.showPage(NotificationPanelView.QUICKSETTINGS_PAGE_INDEX);
-    	// 下拉显示快捷块 by yangfan end
+    	// 下拉显示通知by yangfan begin
+    	mNotificationPanel.showPage(NotificationPanelView.NOTIFICATION_PAGE_INDEX);
+    	// 下拉显示通知 by yangfan end
         if (hasActiveNotifications()) {
             EventLogTags.writeSysuiLockscreenGesture(
                     EventLogConstants.SYSUI_LOCKSCREEN_GESTURE_SWIPE_DOWN_FULL_SHADE,
                     (int) (dragLengthY / mDisplayMetrics.density),
                     0 /* velocityDp - N/A */);
-
             // We have notifications, go to locked shade.
             goToLockedShade(startingChild);
             return true;
@@ -4751,6 +4757,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                     intent.setComponent(cn);
                      intent.setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION | Intent.FLAG_ACTIVITY_NEW_TASK);
                     mContext.startActivity(intent);
+                hideCallBar();
 
 
             }

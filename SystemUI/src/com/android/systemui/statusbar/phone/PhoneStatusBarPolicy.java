@@ -172,7 +172,7 @@ public class PhoneStatusBarPolicy implements Callback {
         mService.setIconVisibility(SLOT_ALARM_CLOCK, false);
 
         // zen
-        mService.setIcon(SLOT_ZEN, R.drawable.stat_sys_zen_important, 0, null);
+        mService.setIcon(SLOT_ZEN,/* R.drawable.stat_sys_zen_important*/R.drawable.stat_sys_dnd, 0, null);
         mService.setIconVisibility(SLOT_ZEN, false);
 
         // volume

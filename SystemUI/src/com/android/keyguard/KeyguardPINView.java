@@ -207,4 +207,9 @@ public class KeyguardPINView extends KeyguardPinBasedInputView {
     public boolean hasOverlappingRendering() {
         return false;
     }
+    
+    @Override
+    public boolean isPinView() {
+    	return true;
+    }// added by yangfan 
 }

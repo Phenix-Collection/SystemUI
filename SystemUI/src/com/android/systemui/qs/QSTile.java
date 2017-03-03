@@ -387,7 +387,7 @@ public abstract class QSTile<TState extends State> implements Listenable {
         //<================
         //add by zqs 2017/2/28 end
             Icon icon = ICONS.get(resId);
-            Log.e("====ResourceIcon.get==zqs==", "icon!=null:"+String.valueOf(icon!=null)+",resId:"+resId);
+//            Log.e("====ResourceIcon.get==zqs==", "icon!=null:"+String.valueOf(icon!=null)+",resId:"+resId);
             if (icon == null) {
                 icon = new ResourceIcon(resId);
                 ICONS.put(resId, icon);

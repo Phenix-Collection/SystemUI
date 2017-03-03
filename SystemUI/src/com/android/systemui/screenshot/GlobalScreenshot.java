@@ -67,6 +67,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import android.widget.Toast;
+import android.media.AudioManager;
 /**
  * POD used in the AsyncTask which saves an image in the background.
  */
@@ -413,6 +414,7 @@ public class GlobalScreenshot {
 
     private Context mContext;
     private TelephonyManager tm;
+    private AudioManager  rm;
     private WindowManager mWindowManager;
     private WindowManager.LayoutParams mWindowLayoutParams;
     private NotificationManager mNotificationManager;
@@ -443,6 +445,7 @@ public class GlobalScreenshot {
     public GlobalScreenshot(Context context) {
         Resources r = context.getResources();
         tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        rm = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
         mContext = context;
         LayoutInflater layoutInflater = (LayoutInflater)
                 context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -705,7 +708,7 @@ public class GlobalScreenshot {
             @Override
             public void run() {
                 // Play the shutter sound to notify that we've taken a screenshot
-                if (tm.getCallState() == TelephonyManager.CALL_STATE_IDLE) {
+                if (tm.getCallState() == TelephonyManager.CALL_STATE_IDLE&&rm.getRingerMode()== AudioManager.RINGER_MODE_NORMAL) {
                     mCameraSound.play(MediaActionSound.SHUTTER_CLICK);
                 }
                 mScreenshotView.setLayerType(View.LAYER_TYPE_HARDWARE, null);

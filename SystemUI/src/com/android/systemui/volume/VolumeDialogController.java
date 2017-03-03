@@ -311,6 +311,11 @@ public class VolumeDialogController {
         if (changed && fromKey) {
             Events.writeEvent(mContext, Events.EVENT_KEY, stream, lastAudibleStreamVolume);
         }
+        if(fromKey && stream == AudioManager.STREAM_RING){// save the volume_ring by headset_on
+            boolean headset_on = mAudio.isWiredHeadsetOn();
+            Settings.Secure.putInt(mContext.getContentResolver(),
+                headset_on ? Settings.Global.RINGTONE_VOLUME_HEADSET_ON : Settings.Global.RINGTONE_VOLUME_HEADSET_OFF, mAudio.getStreamVolume(stream));
+        }
     }
 
     private boolean updateActiveStreamW(int activeStream) {

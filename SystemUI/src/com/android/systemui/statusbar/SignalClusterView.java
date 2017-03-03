@@ -23,6 +23,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
 import android.telephony.SubscriptionInfo;
 import android.telephony.SubscriptionManager;
 import android.telephony.TelephonyManager;
@@ -106,6 +107,7 @@ public class SignalClusterView
     private boolean mBlockWifi;
     private boolean mBlockEthernet;
     private boolean mBlockNetworkLabel;// added by yangfan
+    private Handler mDelaySignaHandler = new  Handler();
 
     public SignalClusterView(Context context) {
         this(context, null);
@@ -254,7 +256,7 @@ public class SignalClusterView
                                         boolean activityOut, int dataActivityId, int mobileActivityId,
                                         int stackedDataId, int stackedVoiceId,
                                         String typeContentDescription, String description, boolean isWide,
-                                        int subId, String networkName,boolean showNetworkClass) {// add 'showDataIcon,networkName,showNetworkClass' by yangfan
+                                        int subId, String networkName,boolean showNetworkClass,boolean isDelaySignal) {// add 'showDataIcon,networkName,showNetworkClass' by yangfan
         PhoneState state = getState(subId);
         if (state == null) {
             return;
@@ -273,6 +275,7 @@ public class SignalClusterView
 		state.mShowDataIcon = showDataIcon;
         state.mNetworkLabelName = networkName;
         state.mShowNetworkClass = showNetworkClass;
+        state.mDelaySignal = isDelaySignal;
 // added by yangfan
         apply();
     }
@@ -285,7 +288,7 @@ public class SignalClusterView
                                         int stackedDataId, int stackedVoiceId,
                                         String typeContentDescription, String description, boolean isWide,
                                         int subId, int imsIconId, boolean isImsOverWifi,
-                                        int dataNetworkTypeInRoamingId, int embmsIconId, String networkName,boolean showNetworkClass) {
+                                        int dataNetworkTypeInRoamingId, int embmsIconId, String networkName,boolean showNetworkClass,boolean isDelaySignal) {
         PhoneState state = getState(subId);
         if (state == null) {
             return;
@@ -298,7 +301,7 @@ public class SignalClusterView
         this.setMobileDataIndicators(statusIcon, qsIcon, statusType,showDataIcon, qsType,
                 activityIn, activityOut, dataActivityId, mobileActivityId,
                 stackedDataId, stackedVoiceId, typeContentDescription,
-                description, isWide, subId, networkName,showNetworkClass);
+                description, isWide, subId, networkName,showNetworkClass, isDelaySignal);
     }
 // add 'showDataIcon,networkName,showNetworkClass' by yangfan end
 
@@ -644,6 +647,7 @@ public class SignalClusterView
         private boolean mNoserviceEnable;
         private SubscriptionManager mSubscriptionManager;
         private boolean mShowNetworkClass;
+        private boolean mDelaySignal;
 //declare variable by yangfan end
 
         public PhoneState(int subId, Context context) {
@@ -725,51 +729,31 @@ public class SignalClusterView
             mMobileSingleGroup = (ViewGroup) root.findViewById(R.id.mobile_signal_single);
             mMobileStackedGroup = (ViewGroup) root.findViewById(R.id.mobile_signal_stacked);
             mRoaming        = (ImageView) root.findViewById(R.id.mobile_roaming);
-//add 'label and label container' by yangfan 
             mMobileNetworkLaberGroup = root
                     .findViewById(R.id.mobile_network_label);
             mNetWorkNameLabelView = (TextView) root
                     .findViewById(R.id.network_label);
-//add 'label and label container' by yangfan  end
         }
 
         public boolean apply(boolean isSecondaryIcon) {
-//add 'tm' by yangfan 
             TelephonyManager tm = (TelephonyManager) mContext
                     .getSystemService(Context.TELEPHONY_SERVICE);
-//add 'tm' by yangfan end
-
-//update labelName by yangfan
             String networkLabelName = getNetworkLabelName(tm,mShowDataIcon);
-            mNetWorkNameLabelView.setText(networkLabelName);
-            mNetWorkNameLabelView.setVisibility(mIsNetworkLabelEnable && !TextUtils.isEmpty(networkLabelName) ? VISIBLE : GONE);
-//                mMobileSingleGroup.setVisibility(mNoserviceEnable ? GONE : VISIBLE);
+            updateOperator(networkLabelName);
 
-            int mobileStrengthId =  TextUtils.isEmpty(networkLabelName) ? R.drawable.qucii_stat_sys_no_service : mMobileStrengthId;
-//update labelName by yangfan end
             if (mMobileVisible && !mIsAirplaneMode) {
-                mMobile.setImageResource(mMobileStrengthId);
-                Drawable mobileDrawable = mMobile.getDrawable();
-                if (mobileDrawable instanceof Animatable) {
-                    Animatable ad = (Animatable) mobileDrawable;
-                    if (!ad.isRunning()) {
-                        ad.start();
-                    }
-                }
-//added by yangfan 
-                mMobileDark.setImageResource(mMobileStrengthId);
-//added by yangfan end
-                Drawable mobileDarkDrawable = mMobileDark.getDrawable();
-                if (mobileDarkDrawable instanceof Animatable) {
-                    Animatable ad = (Animatable) mobileDarkDrawable;
-                    if (!ad.isRunning()) {
-                        ad.start();
-                    }
-                }
+            	// add delay strength by yangfan begin 
+            	if (mDelaySignal) {
+					if (mDelaySignaHandler.hasCallbacks(mSignalChanged)) {
+						mDelaySignaHandler.removeCallbacks(mSignalChanged);
+					}
+				}else {
+					mDelaySignaHandler.removeCallbacks(mSignalChanged);
+				}
+            	mDelaySignaHandler.postDelayed(mSignalChanged,mDelaySignal ? 20 * 1000 : 0);
+            	// add delay strength by yangfan end 
                 mMobileType.setImageResource(mMobileTypeId);
-				
                 mMobileDataType.setImageResource(0);
-
                 mDataActivity.setImageResource(mDataActivityId);
                 Drawable dataActivityDrawable = mDataActivity.getDrawable();
                 if (dataActivityDrawable instanceof Animatable) {
@@ -797,9 +781,7 @@ public class SignalClusterView
                     mStackedData.setImageResource(mStackedDataId);
                     mStackedVoice.setImageResource(mStackedVoiceId);
                     mMobileSingleGroup.setVisibility(View.GONE);
-// added by yangfan
                     mMobileDataType.setVisibility(GONE);
-// added by yangfan end
                     mMobileStackedGroup.setVisibility(View.VISIBLE);
                 } else {
                     mStackedData.setImageResource(0);
@@ -847,6 +829,42 @@ public class SignalClusterView
             mMobileEmbms.setVisibility(mMobileEmbmsId != 0 ? View.VISIBLE : View.GONE);
             return mMobileVisible;
         }
+
+		private void updateOperator(String networkLabelName) {
+			mNetWorkNameLabelView.setText(networkLabelName);
+            mNetWorkNameLabelView.setVisibility(mIsNetworkLabelEnable && !TextUtils.isEmpty(networkLabelName) ? VISIBLE : GONE);
+		}
+		
+        public void updateMobileStrength(){
+            TelephonyManager tm = (TelephonyManager) mContext
+                    .getSystemService(Context.TELEPHONY_SERVICE);
+            String networkLabelName = getNetworkLabelName(tm,mShowDataIcon);
+        	int mobileStrengthId =  TextUtils.isEmpty(networkLabelName) ? R.drawable.qucii_stat_sys_no_service : mMobileStrengthId;
+            mMobile.setImageResource(mobileStrengthId);
+            Drawable mobileDrawable = mMobile.getDrawable();
+            if (mobileDrawable instanceof Animatable) {
+                Animatable ad = (Animatable) mobileDrawable;
+                if (!ad.isRunning()) {
+                    ad.start();
+                }
+            }
+            mMobileDark.setImageResource(mobileStrengthId);
+            Drawable mobileDarkDrawable = mMobileDark.getDrawable();
+            if (mobileDarkDrawable instanceof Animatable) {
+                Animatable ad = (Animatable) mobileDarkDrawable;
+                if (!ad.isRunning()) {
+                    ad.start();
+                }
+            }
+        }
+        
+        Runnable mSignalChanged = new  Runnable() {
+			
+			@Override
+			public void run() {
+				updateMobileStrength();
+			}
+		};
 
         public void populateAccessibilityEvent(AccessibilityEvent event) {
             if (mMobileVisible && mMobileGroup != null

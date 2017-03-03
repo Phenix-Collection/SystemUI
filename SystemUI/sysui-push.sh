@@ -1,4 +1,5 @@
 #!/bin/sh
+#set -x
 adb remount
 cur_dir=$(cd "$(dirname "$0")"; pwd)
 adb push $cur_dir/bin/SystemUI.apk system/priv-app/SystemUI/
@@ -13,5 +14,5 @@ do
   adb shell kill -9 $i
 done
 
-#  echo 按任意键继续
-#read -n 1
+echo 按任意键继续
+read -n 1

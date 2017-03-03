@@ -42,7 +42,7 @@ public interface NetworkController {
                 int qsType, boolean activityIn, boolean activityOut, int dataActivityId,
                 int mobileActivityId, int stackedDataIcon, int stackedVoiceIcon,
                 String typeContentDescription, String description,
-                boolean isWide, int subId,String networkName,final boolean showNetworkClass);// modified by yangfan 
+                boolean isWide, int subId,String networkName,final boolean showNetworkClass,boolean isDelaySignal);// modified by yangfan 
         void setSubs(List<SubscriptionInfo> subs);
         void setNoSims(boolean show);
 
@@ -61,7 +61,7 @@ public interface NetworkController {
                 int mobileActivityId, int stackedDataIcon, int stackedVoiceIcon,
                 String typeContentDescription, String description, boolean isWide,
                 int subId, int imsIconId, boolean isImsOverWifi, int dataNetworkTypeInRoamingId,
-                int embmsIconId,String networkName,final boolean showNetworkClass);// modified by yangfan 
+                int embmsIconId,String networkName,final boolean showNetworkClass,boolean isDelaySignal);// modified by yangfan 
     }
 
     public static class IconState {

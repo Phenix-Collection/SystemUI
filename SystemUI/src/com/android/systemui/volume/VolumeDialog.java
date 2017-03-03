@@ -42,6 +42,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.os.SystemClock;
+import android.provider.Settings;
 import android.provider.Settings.Global;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -1027,6 +1028,11 @@ public class VolumeDialog {
                     mRow.requestedLevel = userLevel;
                     Events.writeEvent(mContext, Events.EVENT_TOUCH_LEVEL_CHANGED, mRow.stream,
                             userLevel);
+                    if(mRow.stream == AudioManager.STREAM_RING){// save the volume_ring by headset_on
+                        boolean headset_on = mAudioManager.isWiredHeadsetOn();
+                        Settings.Secure.putInt(mContext.getContentResolver(),
+                            headset_on ? Settings.Global.RINGTONE_VOLUME_HEADSET_ON : Settings.Global.RINGTONE_VOLUME_HEADSET_OFF, userLevel);
+                    }
                 }
             }
         }

@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -528,6 +529,7 @@ public class BatteryMeterView extends View implements DemoMode, BatteryStateChan
 
             drawBattery(c, tracker);
             if (mAnimationsEnabled) {
+                // TODO: Allow custom animations to be used
             }
         }
 

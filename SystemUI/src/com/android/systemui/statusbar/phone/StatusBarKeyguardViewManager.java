@@ -29,10 +29,13 @@ import android.view.WindowManagerGlobal;
 
 import com.android.internal.widget.LockPatternUtils;
 import com.android.keyguard.KeyguardUpdateMonitor;
+//add by wumin
+import com.android.keyguard.KeyguardUpdateMonitor.FingerprintVerifyCallback;
 import com.android.keyguard.ViewMediatorCallback;
 import com.android.systemui.statusbar.CommandQueue;
 
 import static com.android.keyguard.KeyguardHostView.OnDismissAction;
+import android.util.Log;
 
 /**
  * Manages creating, showing, hiding and resetting the keyguard within the status bar. Calls back
@@ -80,6 +83,8 @@ public class StatusBarKeyguardViewManager {
     private boolean mDeferScrimFadeOut;
     //add by wumin
     private KeyguardUpdateMonitor mKeyguardUpdateMonitor;
+    private LockIcon mLockIcon = null;
+
     public StatusBarKeyguardViewManager(Context context, ViewMediatorCallback callback,
             LockPatternUtils lockPatternUtils) {
         mContext = context;
@@ -87,6 +92,7 @@ public class StatusBarKeyguardViewManager {
         mLockPatternUtils = lockPatternUtils;
     	//add by wumin
     	mKeyguardUpdateMonitor = KeyguardUpdateMonitor.getInstance(mContext);
+	mKeyguardUpdateMonitor.setFreshLockIconListener(mFingerprintVerifyCallback);
     }
 
     public void registerStatusBar(PhoneStatusBar phoneStatusBar,
@@ -108,6 +114,9 @@ public class StatusBarKeyguardViewManager {
      */
     public void show(Bundle options) {
         mShowing = true;
+	//add by wumin
+	mKeyguardUpdateMonitor.keyguardShow();
+
         mStatusBarWindowManager.setKeyguardShowing(true);
         mScrimController.abortKeyguardFadingOut();
         reset();
@@ -270,6 +279,8 @@ public class StatusBarKeyguardViewManager {
      */
     public void hide(long startTime, final long fadeoutDuration) {
         mShowing = false;
+	//add by wumin
+	mKeyguardUpdateMonitor.keyguardHide();
 
         long uptimeMillis = SystemClock.uptimeMillis();
         long delay = Math.max(0, startTime + HIDE_TIMING_CORRECTION_MS - uptimeMillis);
@@ -539,7 +550,12 @@ public class StatusBarKeyguardViewManager {
 	public void keyguardDone() {
 		mViewMediatorCallback.keyguardDone(false);
 	}
-    
+
+    public void setLockIcon(LockIcon lockIcon){
+	mLockIcon = lockIcon;
+    }
+    //add end
+ 
     public void animateCollapsePanels(float speedUpFactor) {
         mPhoneStatusBar.animateCollapsePanels(CommandQueue.FLAG_EXCLUDE_NONE, true /* force */,
                 false /* delayed */, speedUpFactor);
@@ -566,4 +582,15 @@ public class StatusBarKeyguardViewManager {
     public ViewRootImpl getViewRootImpl() {
         return mPhoneStatusBar.getStatusBarView().getViewRootImpl();
     }
+
+    //add by wumin
+    private KeyguardUpdateMonitor.FingerprintVerifyCallback mFingerprintVerifyCallback = new FingerprintVerifyCallback(){
+
+	@Override
+	public void freshLockIcon(){
+	    if(mLockIcon != null){
+	        mLockIcon.update();	
+	    }
+	}
+    };
 }

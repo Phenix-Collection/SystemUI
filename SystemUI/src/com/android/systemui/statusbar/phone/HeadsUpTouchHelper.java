@@ -18,6 +18,7 @@ package com.android.systemui.statusbar.phone;
 
 import android.content.Context;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewConfiguration;
 
 import com.android.systemui.Gefingerpoken;
@@ -111,7 +112,10 @@ public class HeadsUpTouchHelper implements Gefingerpoken {
                 	//在悬浮框出现下滑时才加入模糊背景
                 	if(h>0){
                 		if (mPanel.mStatusBarState != StatusBarState.KEYGUARD&&mPanel.getBackground()==null) {
-                			mPanel.mStatusBar.blurPanelBg();// blurred bg by yangfan 
+                			mPanel.mStatusBar.blurPanelBg();
+                			//=========>
+                			mPanel.updateIndicatorVisibility(View.VISIBLE);
+                			//<=========
                 		}
                 	}
                 	//<========================

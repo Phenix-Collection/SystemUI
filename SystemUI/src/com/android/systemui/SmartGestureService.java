@@ -97,7 +97,19 @@ public class SmartGestureService extends Service {
     private boolean mCall = false;
     private boolean mCanAnswerCall = false;
     private boolean isCallStateChanged = false;
-
+	private boolean isBringUp = false;
+    private static int gSensorChangedCount = 0;
+    private static double[][] g_Value = { {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0},
+                                            {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0},
+                                            {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0} };
+    private static long[] gSensorTimestamp = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    private static boolean oneAction = false;
+    private static boolean twoAction = false;
+    private static boolean threeAction = false;
+    private static double oneActionTimesStep = 0;
+    private static double twoActionTimesStep = 0;
+    private static double threeActionTimesStep = 0;
+    
     @Override
     public void onCreate() {
         super.onCreate();
@@ -133,6 +145,10 @@ public class SmartGestureService extends Service {
                 if (bundle == null) {
                     return;
                 }
+                if(gSensorChangedCount >= 15)
+                {
+                    gSensorChangedCount = 0;
+                }
                 String state = bundle.getString(TelephonyManager.EXTRA_STATE);
                 if (state.equals(TelephonyManager.EXTRA_STATE_RINGING)) {
                     isCallRinging = true;
@@ -152,6 +168,7 @@ public class SmartGestureService extends Service {
                     } else {
                         mCanSmartAnswerCall = false;
                     }
+                    
                 } else {
                     isCallRinging = false;
                 }
@@ -160,9 +177,9 @@ public class SmartGestureService extends Service {
                     isCallStateChanged = false;
                     mCanSmartAnswerCall = false;
                     mCanSilentCall = false;
-                }
+                }                
                 updateGravitySensor();
-                updateProximitySensor();
+                updateProximitySensor();          
             }
             else if (action.equals(ACTION_ALARM_ALERT)) {
                 isFirstDegreeValue = false;
@@ -245,6 +262,8 @@ public class SmartGestureService extends Service {
                     updateGravitySensor();
                 }
             }
+
+            
         }
     };
 
@@ -259,7 +278,7 @@ public class SmartGestureService extends Service {
             Log.d(TAG, "Start PSensor");
             mSensorMgr.registerListener(mSensorEventListener,
                     mProximitySensor,
-                    SensorManager.SENSOR_DELAY_NORMAL);
+                    SensorManager.SENSOR_DELAY_UI);
             mProximitySensorStarted = true;
         }
         boolean stopSensor = mProximitySensorStarted
@@ -287,6 +306,15 @@ public class SmartGestureService extends Service {
                 && (mCanSilentCall || mCanSmartDialed || isAlarmAlert || mCanSmartAnswerCall);
         if (start) {
             Log.d(TAG, "Start Gravity Sensor");
+            
+            gSensorChangedCount = 0;
+            isBringUp = false;
+            threeActionTimesStep = 0;
+            twoActionTimesStep = 0;
+            oneActionTimesStep = 0;
+            oneAction = false;
+            twoAction = false;
+            threeAction = false;
             mSensorMgr.registerListener(mSensorEventListener,
                     mGravitySensor,
                     SensorManager.SENSOR_DELAY_NORMAL);
@@ -307,6 +335,7 @@ public class SmartGestureService extends Service {
             mGravitySensorStarted = false;
         }
     }
+
 
     private final SensorEventListener mSensorEventListener = new SensorEventListener() {
         @Override
@@ -342,27 +371,49 @@ public class SmartGestureService extends Service {
                 }
             }
             
-            if(mPSensorNear && mGSensorChanged && !isAlarmAlert && mCanCallNow)
+            if(mPSensorNear &&  !isAlarmAlert && mCanCallNow && !mCanSmartAnswerCall && isBringUp &&mGSensorChanged)
             {
-                dial();
                 mCanCallNow = false;
-                /*    if(mCanCallNow && mCanSmartDialed)
-                    {
-                        dial();
-                        mCanCallNow = false;
-                    }else if(mCanSmartAnswerCall){
-                        sendBroadcastToAcceptCall();
-                        mCanSmartAnswerCall = false;
-                    }  */ 
+                mPSensorNear = false;
+                isBringUp = false;
+                threeActionTimesStep = 0;
+                twoActionTimesStep = 0;
+                oneActionTimesStep = 0;
+                oneAction = false;
+                twoAction = false;
+                threeAction = false;
+                for(int k = 0; k <= 14; k++ ){
+                    g_Value[k][0] = 0.0;
+                    g_Value[k][1] = 0.0;
+                    g_Value[k][2] = 0.0;
+                } 
+                gSensorChangedCount = 0;
+                dial();
             }
-            else if(mPSensorNear && mGSensorChanged && !isAlarmAlert && mCanSmartAnswerCall)
+            else if(mPSensorNear && !isAlarmAlert && mCanSmartAnswerCall && isBringUp && mGSensorChanged)
             {
-                sendBroadcastToAcceptCall();
                 mCanSmartAnswerCall = false;
+                mPSensorNear = false;
+                isBringUp = false;
+                threeActionTimesStep = 0;
+                twoActionTimesStep = 0;
+                oneActionTimesStep = 0;
+                oneAction = false;
+                twoAction = false;
+                threeAction = false;
+                for(int l = 0; l <= 14; l++ )
+                {
+                    g_Value[l][0] = 0.0;
+                    g_Value[l][1] = 0.0;
+                    g_Value[l][2] = 0.0;
+                } 
+                gSensorChangedCount = 0;
+                sendBroadcastToAcceptCall();
             }
             
         }
     };
+ 
 
     private void movePhoto() {
         Log.d(TAG, "Switch to next photo");
@@ -393,7 +444,7 @@ public class SmartGestureService extends Service {
     }
 
     private void gravitySensorChanged(SensorEvent event) {
-        double x = event.values[SensorManager.DATA_X];
+	    double x = event.values[SensorManager.DATA_X];
         double y = event.values[SensorManager.DATA_Y];
         double z = event.values[SensorManager.DATA_Z];
 
@@ -432,6 +483,46 @@ public class SmartGestureService extends Service {
         }else{
             mGSensorChanged = false;
         }
+		
+        if(gSensorChangedCount == 15){
+            long timesstap = gSensorTimestamp[14] - gSensorTimestamp[0];
+        }
+            
+        if((gSensorChangedCount == 15) && ((gSensorTimestamp[14] - gSensorTimestamp[0] >= 550000000) && (gSensorTimestamp[14] - gSensorTimestamp[0] <= 1000000000))){
+            for(int ll = 0; ll <= 14; ll++){
+                if(g_Value[ll][1] > 7.0)
+                {
+                    threeActionTimesStep = gSensorTimestamp[ll];
+                    threeAction = true;
+                }else if( (g_Value[ll][1] > 3.0 && g_Value[ll][1] < 7.0) && (g_Value[ll][2] > 3.0 && g_Value[ll][2] < 9.0) )
+                {
+                    twoActionTimesStep = gSensorTimestamp[ll];
+                    twoAction = true;
+                }else if( ((g_Value[ll][0] < -4.0 && g_Value[ll][0] > -8.0) || (g_Value[ll][0] > 3.5 && g_Value[ll][0] < 8.0)) && (g_Value[ll][1] > 3.0 && g_Value[ll][1] < 7.0))
+                {
+                    oneActionTimesStep = gSensorTimestamp[ll];
+                    oneAction = true;
+                }
+            }
+
+            if(threeAction && (twoAction || oneAction) && (threeActionTimesStep > oneActionTimesStep) && (threeActionTimesStep > oneActionTimesStep))
+            {
+                isBringUp = true;
+            }else{
+                isBringUp = false;
+            }
+            gSensorChangedCount = 0;
+        }else if((gSensorChangedCount >= 0) && (gSensorChangedCount <= 14)){ 
+            g_Value[gSensorChangedCount][0] = event.values[SensorManager.DATA_X];
+            g_Value[gSensorChangedCount][1] = event.values[SensorManager.DATA_Y];
+            g_Value[gSensorChangedCount][2] = event.values[SensorManager.DATA_Z];
+            gSensorTimestamp[gSensorChangedCount] = event.timestamp;
+            gSensorChangedCount++;
+        }else if(gSensorChangedCount == 15)
+        {
+            gSensorChangedCount = 0;
+        }
+        
     }
         
     private void dial() {

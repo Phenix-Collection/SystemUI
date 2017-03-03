@@ -779,6 +779,7 @@ public class NotificationPanelView extends PanelView implements
             return true;
         }
         mHeadsUpTouchHelper.onTouchEvent(event);
+        //锁屏解锁卡住使这里截取了event
         if (!mHeadsUpTouchHelper.isTrackingHeadsUp() && handleQsTouch(event)) {
             return true;
         }
@@ -795,7 +796,12 @@ public class NotificationPanelView extends PanelView implements
         // screen statusBar animator by yangfan 
         if(mStatusBarState==StatusBarState.KEYGUARD){
         	  if(event.getY()<getResources().getDimensionPixelOffset(R.dimen.status_bar_height))
-        	       return true;
+        		  //modify by zqs 2017/3/2
+        		  //=====================>
+        		  //这里之前返回为true会导致上面截取action的传递使锁屏卡住
+        	       return false;
+        	  	  //<=====================
+        	  	  //modify by zqs 2017/3/2
         }
         // screen statusBar animator by yangfan 
         if (action == MotionEvent.ACTION_DOWN && getExpandedFraction() == 1f
@@ -1798,10 +1804,19 @@ public class NotificationPanelView extends PanelView implements
         }
         float stackTranslation = mNotificationStackScroller.getStackTranslation();
         float translation = stackTranslation / HEADER_RUBBERBAND_FACTOR;
-        if (mHeadsUpManager.hasPinnedHeadsUp() || mIsExpansionFromHeadsUp) {
-            translation = mNotificationStackScroller.getTopPadding() + stackTranslation
+        //modify by zqs 2017/3/1 begin
+    	//===================>
+        //通知栏上滑时动画不一致问题
+        if(mStatusBarState!=StatusBarState.KEYGUARD){
+        	translation = mNotificationStackScroller.getTopPadding() + stackTranslation
                     - mNotificationTopPadding - mQsMinExpansionHeight;
         }
+//        if (mHeadsUpManager.hasPinnedHeadsUp() || mIsExpansionFromHeadsUp) {
+//            translation = mNotificationStackScroller.getTopPadding() + stackTranslation
+//                    - mNotificationTopPadding - mQsMinExpansionHeight;
+//        }
+        //===================>
+        //modify by zqs 2017/3/1 end
         return Math.min(0, translation);
     }
 
@@ -2424,10 +2439,10 @@ public class NotificationPanelView extends PanelView implements
         	//add by lrh 在锁屏状态下，不需要截图虚化背景 begin
     		if (mStatusBarState != StatusBarState.KEYGUARD) {
     			 setBackground(null); 
+    			 updateIndicatorVisibility(GONE);// gone indicator by yangfan
     		}
     		//add by lrh 在锁屏状态下，不需要截图虚化背景 end
 //        	setBackgroundResource(0); // clear bg by yangfan
-        	updateIndicatorVisibility(GONE);// gone indicator by yangfan
             mHeadsUpExistenceChangedRunnable.run();
             updateNotificationTranslucency();
         } else {
@@ -2439,7 +2454,6 @@ public class NotificationPanelView extends PanelView implements
     		//remove by zqs
     		//add by lrh 在锁屏状态下，不需要截图虚化背景 end
         	
-        	updateIndicatorVisibility(mStatusBarState != StatusBarState.KEYGUARD?VISIBLE:GONE);// visible indicator by yangfan
             mHeadsUpAnimatingAway = true;
             mNotificationStackScroller.runAfterAnimationFinished(
                     mHeadsUpExistenceChangedRunnable);

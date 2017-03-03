@@ -163,7 +163,11 @@ public class ConfirmAppLockPasswordActivity extends Activity implements OnClickL
         }*/
 	
 	updateMonitor = KeyguardUpdateMonitor.getInstance(this);
-	mFpm = (FingerprintManager) getSystemService(Context.FINGERPRINT_SERVICE);
+	mFpm = updateMonitor.getFpInstance();
+	if(mFpm == null){
+	     mFpm = (FingerprintManager) getSystemService(Context.FINGERPRINT_SERVICE);
+	     updateMonitor.setFpInstance(mFpm);
+	}
 	
         if(updateMonitor.isUnlockWithFingerprintPossible(ActivityManager.getCurrentUser()) && isUnlockAppEnable() && (!mFpm.isFpUnlockAppLock())){
             headerString = getResources().getString(R.string.confirm_password_header_title2);
@@ -288,16 +292,18 @@ public class ConfirmAppLockPasswordActivity extends Activity implements OnClickL
 	if(deadline >0){
 	    countDownTimes(deadline);	
 	}else{
-        if (updateMonitor.isUnlockWithFingerprintPossible(userId) && isUnlockAppEnable() && (!mFpm.isFpUnlockAppLock())) {
+        if (updateMonitor.isUnlockWithFingerprintPossible(userId) && isUnlockAppEnable() && (!mFpm.isFpUnlockAppLock()) && updateMonitor.getKeyguardStatus()) {
 	    if(!updateMonitor.isFingerUp){
 		mgfObserver.startObserving(DEV_PATH);
 		isObserving = true;
 		return;
 	    }
+	    mFingerprintCancelSignal = updateMonitor.getCancelSignalInstance();
             if (mFingerprintCancelSignal != null) {
                 mFingerprintCancelSignal.cancel();
             }
             mFingerprintCancelSignal = new CancellationSignal();
+	    updateMonitor.setCancelSignalInstance(mFingerprintCancelSignal);
             mFpm.authenticate(null, mFingerprintCancelSignal, 0, mAuthenticationCallback, null, userId);
 	    updateMonitor.setFingerprintRunningState(updateMonitor.FINGERPRINT_STATE_RUNNING);
 	    AuthenticationRunning = true;
@@ -322,15 +328,17 @@ public class ConfirmAppLockPasswordActivity extends Activity implements OnClickL
         //if (updateMonitor.mFingerprintRunningState == updateMonitor.FINGERPRINT_STATE_RUNNING && mFingerprintCancelSignal != null) {
         if (AuthenticationRunning && mFingerprintCancelSignal != null) {
             if(DEBUG) Log.d("cdfinger","onPause, mFingerprintCancelSignal.cancel");
-	    updateMonitor.applock_cancle_verify=true;
+	    updateMonitor.applock_cancle_verify=false;
             mFingerprintCancelSignal.cancel();
             mFingerprintCancelSignal = null;
+	    updateMonitor.setCancelSignalInstance(mFingerprintCancelSignal);
 	    AuthenticationRunning = false;
 	    updateMonitor.setFingerprintRunningState(updateMonitor.FINGERPRINT_STATE_CANCELLING);
 	    updateMonitor.applock_verify=false;
-	    mFpm.setFpUnlockApp(false);
+	    //mFpm.setFpUnlockApp(false);
+	    updateMonitor.updateFingerprintListener();
         }
-	if(!SystemProperties.getBoolean(PERSIST_NAVIGATION_BAR, false)){
+	if(!SystemProperties.getBoolean(PERSIST_NAVIGATION_BAR, false) && updateMonitor.getKeyguardStatus()){
 	    writeFile(GF_MODE,"0");
 	}
 	mFailedAttempts = 0;
@@ -472,6 +480,7 @@ public class ConfirmAppLockPasswordActivity extends Activity implements OnClickL
 		if (updateMonitor.mFingerprintRunningState == updateMonitor.FINGERPRINT_STATE_RUNNING && mFingerprintCancelSignal != null) {
             		mFingerprintCancelSignal.cancel();
             		mFingerprintCancelSignal = null;
+			updateMonitor.setCancelSignalInstance(mFingerprintCancelSignal);
             		updateMonitor.setFingerprintRunningState(updateMonitor.FINGERPRINT_STATE_CANCELLING);
         	}
             }
@@ -480,10 +489,12 @@ public class ConfirmAppLockPasswordActivity extends Activity implements OnClickL
             public void onFinish() {
         	header.setText(headerString);
 	        if (updateMonitor.isUnlockWithFingerprintPossible(UserHandle.myUserId()) && isUnlockAppEnable() && (!mFpm.isFpUnlockAppLock())) {
+		    mFingerprintCancelSignal = updateMonitor.getCancelSignalInstance();
         	    if (mFingerprintCancelSignal != null) {
                 	mFingerprintCancelSignal.cancel();
             	    }
             	    mFingerprintCancelSignal = new CancellationSignal();
+		    updateMonitor.setCancelSignalInstance(mFingerprintCancelSignal);
             	    mFpm.authenticate(null, mFingerprintCancelSignal, 0, mAuthenticationCallback, null, UserHandle.myUserId());
             	    updateMonitor.setFingerprintRunningState(updateMonitor.FINGERPRINT_STATE_RUNNING);
 		    AuthenticationRunning = true;
@@ -555,6 +566,7 @@ public class ConfirmAppLockPasswordActivity extends Activity implements OnClickL
                 case MSG_FP_ONSUCCESS:
                     DeletePackageName();
                     StartProtectedActivity();
+		    mFpm.setFpUnlockApp(false); 
                     finish();
                     break;
                 case MSG_FP_ONFAIL:
@@ -569,6 +581,7 @@ public class ConfirmAppLockPasswordActivity extends Activity implements OnClickL
 
                             mFingerprintCancelSignal.cancel();
                             mFingerprintCancelSignal = null;
+			    updateMonitor.setCancelSignalInstance(mFingerprintCancelSignal);
                             updateMonitor.setFingerprintRunningState(updateMonitor.FINGERPRINT_STATE_CANCELLING);
 			    mFpm.setFpUnlockAppLock(true);
                 	}
@@ -580,125 +593,6 @@ public class ConfirmAppLockPasswordActivity extends Activity implements OnClickL
         };
     };
 
-/*
-    private IFc909ResultListener mIFc909Result = new IFc909ResultListener.Stub() {
-        @Override
-        public void success() throws RemoteException {
-            if(DEBUG) Log.i(TAG, "qucii fp verfy success");
-	    mQcFingerprintManager.SetCancelFlag();
-	    mQcFingerprintManager.ReleaseExcuteLock();
-            Message msg = new Message();
-            msg.what = MSG_FP_ONSUCCESS;
-            mFingerprintVerifyHandler.sendMessage(msg);
-        }
-
-        @Override
-        public void fail() throws RemoteException {
-            if(DEBUG) Log.i(TAG, "qucii fp verfy fail");
-	    mQcFingerprintManager.SetCancelFlag();
-	    mQcFingerprintManager.ReleaseExcuteLock();
-                Message msg = new Message();
-                msg.what = MSG_FP_ONFAIL;
-                mFingerprintVerifyHandler.sendMessage(msg);
-                return;
-        }
-        @Override
-        public void cancel() throws RemoteException {
-            if(DEBUG) Log.i(TAG, "qucii fp cancel");
-	    mQcFingerprintManager.SetCancelFlag();
-	    mQcFingerprintManager.ReleaseExcuteLock();
-            Message msg = new Message();
-            msg.what = MSG_FP_CANCEL;
-            mFingerprintVerifyHandler.sendMessage(msg);
-        }
-    };
-
-
-
-    private final Runnable mCheckFingerDetectRunnable = new Runnable() {
-        @Override
-        public void run() {
-            synchronized(this){
-                while(true){
-                    if(mQcFingerprintManager.isFingerDetect() && mQcFingerprintManager.isKeyguardDone()){
-                        if(DEBUG) Log.i(TAG,"fingerprint verify........");
-                        FingerprintVerify();
-                        return;
-                    }else{
-                        if(DEBUG) Log.i(TAG,"fingerprint not detect...");
-                    }
-    
-                    try {
-                        Thread.currentThread().sleep(100);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    
-                    if(!mQcFingerprintManager.isFingerDetect() && !mQcFingerprintManager.isKeyguardDone() && !activityStatus){
-                        if(DEBUG) Log.i(TAG,"fingerprint not detect,and not detect,return...");
-                        return;
-                    }
-                }
-            }
-        }
-    };
-
-    private void FingerprintVerify(){
-        if(mIFc909Result != null){
-            if(DEBUG) Log.i(TAG,"SetDevicelistener...");
-            mQcFingerprintManager.SetResultlistener(mIFc909Result);
-        }
-
-        if(mQcFingerprintManager != null){
-            if(mQcFingerprintManager.GetOprStatus()){
-                if(DEBUG) Log.d(TAG, "CancelAction... ");
-                mQcFingerprintManager.CancelAction();
-            }
-            if(DEBUG) Log.d(TAG, "verify... ");
-            mQcFingerprintManager.Verify();
-        }
-    }
-
-    private final Runnable mFingerprintTouchDetectRunnable = new Runnable() {
-        @Override
-        public void run() {
-            synchronized(this){
-                while(true){
-                    if(mQcFingerprintManager != null){
-                        if(mQcFingerprintManager.TouchDetect()){
-                            if(DEBUG) Log.d(TAG, "touch detect and mQcFingerprintManager.Verify ...");
-                            mFingerprintVerifyHandler.removeCallbacks(mFpVfRunnable);
-                            mFingerprintVerifyHandler.postDelayed(mFpVfRunnable, 250);
-                            return;
-                        }else{
-                            if(DEBUG) Log.d(TAG, "keyguardDone finger not detected...");
-                            if(mQcFingerprintManager.GetOprStatus()){
-                                if(DEBUG) Log.d(TAG, "CancelAction... ");
-                                mQcFingerprintManager.CancelAction();
-                            }
-                        }
-                        if(!mQcFingerprintManager.isKeyguardDone()){
-                            return;
-                        }
-
-                    }else{
-                        return;
-                    }
-                } 
-            }
-        }
-    };
-    private final Runnable mFpVfRunnable = new Runnable(){
-        @Override
-        public void run() {
-            if(mQcFingerprintManager.GetOprStatus()){
-                if(DEBUG) Log.d(TAG, "mFpVfRunnable CancelAction... ");
-                mQcFingerprintManager.CancelAction();
-            }
-            mQcFingerprintManager.Verify();
-        }
-    };
-*/
     private void startLauncher(){
         Intent mIntent = new Intent();
         mIntent.addCategory("android.intent.category.HOME");
@@ -801,7 +695,9 @@ public class ConfirmAppLockPasswordActivity extends Activity implements OnClickL
 	    updateMonitor.applock_cancle_verify=false;
 	    updateMonitor.applock_verify=false;
 	    AuthenticationRunning = false;
-	    if(!SystemProperties.getBoolean(PERSIST_NAVIGATION_BAR, false)){
+	    mFpm.setFpUnlockApp(false);
+	    updateMonitor.updateFingerprintListener();
+	    if(!SystemProperties.getBoolean(PERSIST_NAVIGATION_BAR, false) && updateMonitor.getKeyguardStatus()){
 	    	writeFile(GF_MODE,"0");
 	    }
         }
@@ -830,15 +726,18 @@ public class ConfirmAppLockPasswordActivity extends Activity implements OnClickL
         public void onUEvent(UEvent event) {
 	    String status = event.get("STATUS");
 	    if(status.equals("up")){ 
-                if (updateMonitor.isUnlockWithFingerprintPossible(ActivityManager.getCurrentUser()) && isUnlockAppEnable()) {
+                if (updateMonitor.isUnlockWithFingerprintPossible(ActivityManager.getCurrentUser()) && isUnlockAppEnable() && updateMonitor.getKeyguardStatus()) {
+		    mFingerprintCancelSignal = updateMonitor.getCancelSignalInstance();
             	    if (mFingerprintCancelSignal != null) {
                     	mFingerprintCancelSignal.cancel();
             	    }
             	    mFingerprintCancelSignal = new CancellationSignal();
+		    updateMonitor.setCancelSignalInstance(mFingerprintCancelSignal);
             	    mFpm.authenticate(null, mFingerprintCancelSignal, 0, mAuthenticationCallback, null, ActivityManager.getCurrentUser());
             	    updateMonitor.setFingerprintRunningState(updateMonitor.FINGERPRINT_STATE_RUNNING);
             	    AuthenticationRunning = true;
             	    updateMonitor.applock_verify=true;
+	    	    mFpm.setFpUnlockApp(true);
             	    if(!SystemProperties.getBoolean(PERSIST_NAVIGATION_BAR, false)){
                     	writeFile(GF_MODE,"1");
             	    }

@@ -200,6 +200,7 @@ public class CellularTile extends QSTile<QSTile.BooleanState> {
         boolean isDataTypeIconWide;
         String networkName;// added by yangfan
         boolean isForbidden;// added by yangfan
+        boolean isDelaySignal;
     }
 
     private final class CellSignalCallback extends SignalCallbackAdapter {
@@ -217,7 +218,7 @@ public class CellularTile extends QSTile<QSTile.BooleanState> {
                                             boolean activityIn, boolean activityOut, int dataActivityId,
                                             int mobileActivityId, int stackedDataIcon,
                                             int stackedVoiceIcon, String typeContentDescription,
-                                            String description, boolean isWide, int subId,String networkName,boolean showNetworkClass) {// added by yangfan
+                                            String description, boolean isWide, int subId,String networkName,boolean showNetworkClass,boolean isDelaySignal) {// added by yangfan
             if (qsIcon == null) {
                 // Not data sim, don't display.
                 return;
@@ -233,6 +234,7 @@ public class CellularTile extends QSTile<QSTile.BooleanState> {
             mInfo.isDataTypeIconWide = qsType != 0 && isWide;
             mInfo.networkName = networkName;// added by yangfan
             mInfo.isForbidden = showNetworkClass;// added by yangfan
+            mInfo.isDelaySignal = isDelaySignal;
             refreshState(mInfo);
         }
 

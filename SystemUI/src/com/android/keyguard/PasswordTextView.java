@@ -53,7 +53,7 @@ import java.util.Stack;
  * A View similar to a textView which contains password text and can animate when the text is
  * changed
  */
-public class PasswordTextView extends TextView implements TextWatcher {
+public class PasswordTextView extends TextView  {
 
     private static final float DOT_OVERSHOOT_FACTOR = 1.5f;
     private static final long DOT_APPEAR_DURATION_OVERSHOOT = 320;
@@ -122,7 +122,6 @@ public class PasswordTextView extends TextView implements TextWatcher {
         super(context, attrs, defStyleAttr, defStyleRes);
         setFocusableInTouchMode(true);
         setFocusable(true);
-        addTextChangedListener(this);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.PasswordTextView);
         try {
             mTextHeightRaw = a.getInt(R.styleable.PasswordTextView_scaledTextSize, 0);
@@ -218,7 +217,7 @@ public class PasswordTextView extends TextView implements TextWatcher {
         userActivity();
         sendAccessibilityEventTypeViewTextChanged(textbefore, textbefore.length(), 0, 1);
     	//added by yangfan
-    	if (mText.length() >= MAXLENGTH) {
+    	if (mText.length() >= MAXLENGTH && null != mFinishedListener ) {
     		mFinishedListener.OnFinished();
 		}//added by yangfan
     }
@@ -692,33 +691,7 @@ public class PasswordTextView extends TextView implements TextWatcher {
             return charWidth + mCharPadding * currentWidthFactor;
         }
     }
-
     //added by yangfan begin
-	@Override
-	public void beforeTextChanged(CharSequence s, int start, int count,
-			int after) {
-		Log.e(this.getClass().getSimpleName(), "beforeTextChanged");
-	}
-	
-	@Override
-	public void onTextChanged(CharSequence s, int start, int before, int count) {
-		Log.e(this.getClass().getSimpleName(), "onTextChanged");
-	}
-	
-	@Override
-	public void afterTextChanged(Editable s) {
-		Log.e(this.getClass().getSimpleName(), "afterTextChanged");
-		int curLength = s.length();
-		if (curLength >= MAXLENGTH) {
-			//执行ok内容
-			Log.i(this.getClass().getSimpleName(), "curLength : "  + curLength );
-			Toast.makeText(mContext, curLength + "", Toast.LENGTH_SHORT).show();
-			mFinishedListener.OnFinished();
-		}else {
-			
-		}
-	}
-	
 	public void setOnFinishedListener(OnFinishedListener listener){
 		mFinishedListener = listener;
 	}

@@ -205,9 +205,6 @@
                     android:paddingBottom="11sp"
                     android:src="@drawable/ic_done_wht"
                     android:background="@drawable/ripple_drawable"
-                    android:visibility="invisible"
-                    android:clickable="false"
-                    android:focusable="false"
                     android:contentDescription="@string/keyboardview_keycode_enter"
                     />
         </LinearLayout>

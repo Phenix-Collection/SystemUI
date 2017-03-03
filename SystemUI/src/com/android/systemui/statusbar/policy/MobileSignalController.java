@@ -95,6 +95,7 @@ public class MobileSignalController extends SignalController<
     private DataEnabledSettingObserver mDataEnabledSettingObserver;
     CarrierAppUtils.CARRIER carrier = CarrierAppUtils.getCarrierId();
     private int tmpLevel = 0;// added by yangfan 
+    private boolean  isDelaySignal = false;//added by yangfan
 
     // TODO: Reduce number of vars passed in, if we have the NetworkController, probably don't
     // need listener lists anymore.
@@ -338,13 +339,14 @@ public class MobileSignalController extends SignalController<
         String networkLabelName = mCurrentState.networkNameData.replace(" ", "");
         Log.i(mTag, " MobileSignalController >> networkLabelName : " + networkLabelName);
         int dataTypeIcon = typeIcon; //added by yangfan
+        
         mCallbackHandler.setMobileDataIndicators(statusIcon, qsIcon, typeIcon,showDataIcon, qsTypeIcon,
                 activityIn, activityOut, dataActivityId, mobileActivityId,
                 icons.mStackedDataIcon, icons.mStackedVoiceIcon,
                 dataContentDescription, description, icons.mIsWide,
                 mSubscriptionInfo.getSubscriptionId(), getImsIconId(),
                 isImsRegisteredInWifi(), getdataNetworkTypeInRoamingId(),
-                getEmbmsIconId(), networkLabelName,mCurrentState.isForbidden);
+                getEmbmsIconId(), networkLabelName,mCurrentState.isForbidden,isDelaySignal);
 
         mCallbackHandler.post(new Runnable() {
             @Override
@@ -638,8 +640,8 @@ public class MobileSignalController extends SignalController<
                     + " ss=" + mSignalStrength );
         }
         mCurrentState.connected = hasService() && mSignalStrength != null;
-//modified by yangfan begin
-        boolean isDelay = false;
+        //modified by yangfan begin
+        isDelaySignal = false;
         if (mCurrentState.connected) {
             if (!mSignalStrength.isGsm() && mConfig.alwaysShowCdmaRssi) {
                 tmpLevel = mSignalStrength.getCdmaLevel();
@@ -654,13 +656,10 @@ public class MobileSignalController extends SignalController<
                 }
             }
         }
-        if (hasService && tmpLevel < mCurrentState.level) {
-            isDelay = true;
-            Log.e(mTag, "postDelayedCallbacks: " + tmpLevel);
+        if (hasService && tmpLevel <= mCurrentState.level) {
+        	isDelaySignal = true;
         }else {
-            mCallbackHandler.removeCallbacks(mSignalChanged);
-            isDelay = false;
-            Log.e(mTag, "removeCallbacks : " + tmpLevel);
+        	isDelaySignal = false;
         }
         if (mNetworkToIconLookup.indexOfKey(mDataNetType) >= 0) {
             mCurrentState.iconGroup = mNetworkToIconLookup.get(mDataNetType);
@@ -692,18 +691,10 @@ public class MobileSignalController extends SignalController<
         if (mStyle == STATUS_BAR_STYLE_EXTENDED) {
             mCurrentState.imsRadioTechnology = mServiceState.getRilImsRadioTechnology();
         }
-        Log.e(mTag, "tmpLevel : " + tmpLevel);
-        mCallbackHandler.postDelayed(mSignalChanged, 0);
+        mCurrentState.level = tmpLevel;
+        Log.d(mTag, "mCurrentState.level : " + mCurrentState.level);
+        notifyListenersIfNecessary();
     }
-
-    Runnable mSignalChanged = new Runnable() {
-        @Override
-        public void run() {
-            mCurrentState.level = tmpLevel;
-            Log.e(mTag, "mCurrentState.level : " + mCurrentState.level);
-            notifyListenersIfNecessary();
-        }
-    } ;
 //modified by yangfan end
 
     private void generateIconGroup() {
@@ -975,11 +966,7 @@ public class MobileSignalController extends SignalController<
                         + " dataState=" + state.getDataRegState());
             }
             mServiceState = state;
-            boolean isCdma = TelephonyManager.PHONE_TYPE_CDMA == TelephonyManager.getDefault()
-                    .getCurrentPhoneType(mSubscriptionInfo.getSubscriptionId());
-            if (!isCdma) {
-            	updateNetworkName(mLastShowSpn, mLastSpn, mLastDataSpn, mLastShowPlmn, mLastPlmn);
-			}
+            updateNetworkName(mLastShowSpn, mLastSpn, mLastDataSpn, mLastShowPlmn, mLastPlmn);
             updateTelephony();
         }
 

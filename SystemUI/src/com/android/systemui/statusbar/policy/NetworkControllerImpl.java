@@ -507,6 +507,27 @@ public class NetworkControllerImpl extends BroadcastReceiver
                         mHasMobileDataFeature, mPhone, mCallbackHandler,
                         this, subscriptions.get(i), mSubDefaults, mReceiverHandler.getLooper());
                 mMobileSignalControllers.put(subId, controller);
+
+                String iccId = subscriptions.get(i).getIccId();
+                Log.d(TAG, "machao---BROCAST_SPN_FORCE---IccId:"+iccId);
+
+                if(iccId != null) {
+                    Log.d(TAG, "machao---BROCAST_SPN_FORCE---$$$$");
+                    String iccIdFirst = iccId.substring(0, 4); 
+                    String iccIdSec = iccId.substring(4, 6); 
+                    if (iccIdFirst.contains("8986") && ((iccIdSec.contains("03")) || (iccIdSec.contains("05")) || (iccIdSec.contains("11")))) {
+                        Log.d(TAG, "machao---BROCAST_SPN_FORCE_CDMA---set 1 !!");
+                        Settings.Global.putInt(mContext.getContentResolver(), Settings.Global.BROCAST_SPN_FORCE_CDMA, 1); 
+                    } else if (iccIdFirst.contains("8986")) {
+                        Log.d(TAG, "machao---BROCAST_SPN_FORCE_GSM---set 1 !!");
+                        Settings.Global.putInt(mContext.getContentResolver(), Settings.Global.BROCAST_SPN_FORCE_GSM, 1); 
+                    } else {
+                        Log.e(TAG, "@@@ERROR: iccId invalid !");
+                    }
+                } else {
+                    Log.e(TAG, "@@@ERROR: iccId is NULL !!!");
+                }
+
                 if (subscriptions.get(i).getSimSlotIndex() == 0) {
                     mDefaultSignalController = controller;
                 }

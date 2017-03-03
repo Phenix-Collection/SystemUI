@@ -658,9 +658,11 @@ public class KeyguardViewMediator extends SystemUI {
             mUpdateMonitor.registerCallback(mUpdateCallback);
             
     	    //4 lines add by wumin
+	    /*
     	    if(!isNavigationEnable()){
                 	writeFile(GF_MODE,"0");
     	    }
+	    */
     	    Settings.System.putString(mContext.getContentResolver(), SETTINGS_NEEDLOCK_APP_PACKAGENAMES,null);
             String appString = Settings.System.getString(mContext.getContentResolver(), SETTINGS_NEEDLOCK_APP_GLOBAL_PACKAGENAMES);
             Settings.System.putString(mContext.getContentResolver(), SETTINGS_NEEDLOCK_APP_PACKAGENAMES,appString);
@@ -1280,6 +1282,8 @@ public class KeyguardViewMediator extends SystemUI {
         EventLog.writeEvent(70000, 2);
         Message msg = mHandler.obtainMessage(KEYGUARD_DONE, authenticated ? 1 : 0);
         mHandler.sendMessage(msg);
+	//add by wumin
+	mUpdateMonitor.keyguardDone();
     }
 
     /**
