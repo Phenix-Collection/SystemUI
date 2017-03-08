@@ -22,12 +22,15 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.Shader.TileMode;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.os.SystemProperties;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -56,6 +59,9 @@ public class PhoneStatusBarView extends PanelBar {
     private ScrimController mScrimController;
     private float mMinFraction;
     private float mPanelFraction;
+    //add by zqs 2017/3/4 begin
+    private int mIconSize;
+    //add by zqs 2017/3/4 end
     private Runnable mHideExpandedRunnable = new Runnable() {
         @Override
         public void run() {
@@ -68,6 +74,14 @@ public class PhoneStatusBarView extends PanelBar {
 
         Resources res = getContext().getResources();
         mBarTransitions = new PhoneStatusBarTransitions(this);
+        
+        //add by zqs 2017/3/4 begin
+        //=======================>
+        //通知栏小图标宽度和中间时钟一半宽度
+        mIconSize = res.getDimensionPixelSize(
+                R.dimen.status_bar_icon_size);
+        //<=======================
+        //add by zqs 2017/3/4 end
     }
 
     public BarTransitions getBarTransitions() {
@@ -82,12 +96,48 @@ public class PhoneStatusBarView extends PanelBar {
         mScrimController = scrimController;
     }
 
+    //add by zqs 2017/3/6 begin
+    //=======================>
+    //这里判断左侧大于时钟左边，然后截取部分显示
+    private View mNotificationIconsParent;
+    private View centerClock;
+    Rect outRect=new Rect();
+    //add by zqs 2017/3/6 end
     @Override
     public void onFinishInflate() {
         mBarTransitions.init();
+        //add by zqs 2017/3/6 begin
+        //=======================>
+        //这里判断左侧大于时钟左边，然后截取部分显示
+        mNotificationIconsParent=findViewById(R.id.notification_icon_area_inner);
+        centerClock=findViewById(R.id.center_clock);
+        //add by zqs 2017/3/6 end
+        
     }
-
+    //add by zqs 2017/3/6 begin
+    //=======================>
+    //这里判断左侧大于时钟左边，然后截取部分显示
+   
     @Override
+	protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+		super.onLayout(changed, left, top, right, bottom);
+		if(centerClock.getVisibility()==View.VISIBLE){
+			mNotificationIconsParent.getBoundsOnScreen(outRect);
+			int totalWidth = centerClock.getLeft();
+			// 这里判断左侧大于时钟左边
+			if (outRect.right > totalWidth) {
+				// 按图标大小截取宽度
+				int width = (totalWidth - outRect.left) - (totalWidth - outRect.left) % mIconSize - 10;
+				mNotificationIconsParent.layout(mNotificationIconsParent.getLeft(), mNotificationIconsParent.getTop(),
+						mNotificationIconsParent.getLeft() + width, mNotificationIconsParent.getBottom());
+			}
+		}else{
+			mNotificationIconsParent.layout(mNotificationIconsParent.getLeft(), mNotificationIconsParent.getTop(),
+					mNotificationIconsParent.getLeft() + mNotificationIconsParent.getMeasuredWidth(), mNotificationIconsParent.getBottom());
+		}
+	}
+    //add by zqs 2017/3/6 end
+	@Override
     public void addPanel(PanelView pv) {
         super.addPanel(pv);
         if (pv.getId() == R.id.notification_panel) {
@@ -318,19 +368,30 @@ public class PhoneStatusBarView extends PanelBar {
     public void panelExpansionChanged(PanelView panel, float frac, boolean expanded) {
         super.panelExpansionChanged(panel, frac, expanded);
         mPanelFraction = frac;
-        updateScrimFraction();
+        //remove by zqs 2017/3/7 begin
+        //===========================>
+        //这里去掉作用是不改变锁屏滑动解锁时的亮度变化
+//        updateScrimFraction();
+        //remove by zqs 2017/3/7 end
     }
-
+    //Note by zqs 2017/3/7
+    //通知前的蒙层画布
     private void updateScrimFraction() {
         float scrimFraction = Math.max(mPanelFraction - mMinFraction / (1.0f - mMinFraction), 0);
         mScrimController.setPanelExpansion(scrimFraction);
     }
     
-    // show QS page when pull down by yangfan begin   
+// show QS page when pull down by yangfan begin   
     @Override
     public void showPage(int target) {
     	super.showPage(target);
     	mBar.mNotificationPanel.showPage(target);
     }
-    // show QS page when pull down by yangfan end  
+ // show QS page when pull down by yangfan end  
+
+    @Override
+    protected boolean isInCallUIActivity() {
+    	 return mBar.isInCallUIActivity();
+    }
+    
 }

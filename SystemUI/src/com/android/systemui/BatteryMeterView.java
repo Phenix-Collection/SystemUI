@@ -15,6 +15,7 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.BitmapDrawable;
@@ -220,15 +221,12 @@ public class BatteryMeterView extends View implements DemoMode, BatteryStateChan
         mCriticalLevel = getContext().getResources().getInteger(
                 com.android.internal.R.integer.config_criticalBatteryWarningLevel);
 
-        mDarkModeBackgroundColor =
-                context.getColor(R.color.dark_mode_icon_color_dual_tone_background);
+        mDarkModeBackgroundColor =/*
+                context.getColor(R.color.dark_mode_icon_color_dual_tone_background)*/Color.argb(255, 0, 0, 0);
         mDarkModeFillColor = context.getColor(R.color.dark_mode_icon_color_dual_tone_fill);
         mLightModeBackgroundColor =
                 context.getColor(R.color.light_mode_icon_color_dual_tone_background);
         mLightModeFillColor = context.getColor(R.color.light_mode_icon_color_dual_tone_fill);
-
-       // mLightModeBackgroundColor = context.getColor(R.color.dark_mode_icon_color_dual_tone_background);
-       // mLightModeFillColor = Color.parseColor("#4cc79a");
 
         setAnimationsEnabled(true);
     }
@@ -251,8 +249,8 @@ public class BatteryMeterView extends View implements DemoMode, BatteryStateChan
 
         if (mMeterMode == BatteryMeterMode.BATTERY_METER_ICON_LANDSCAPE) {
             Drawable  frame  = getContext().getDrawable(R.drawable.qucii_ic_battery_landscape_frame);
-            height = frame.getIntrinsicHeight();
-            width = frame.getIntrinsicWidth();
+            height = frame.getIntrinsicHeight() + getPaddingEnd() + getPaddingStart();
+            width = frame.getIntrinsicWidth() + getPaddingTop() + getPaddingBottom();
         }else {
             height = MeasureSpec.getSize(heightMeasureSpec);
             if (mMeterMode == BatteryMeterMode.BATTERY_METER_TEXT) {
@@ -260,7 +258,6 @@ public class BatteryMeterView extends View implements DemoMode, BatteryStateChan
             }
         }
         mHeight = height;
-
         setMeasuredDimension(width, height);
     }
 
@@ -390,7 +387,7 @@ public class BatteryMeterView extends View implements DemoMode, BatteryStateChan
 
     public void setDarkIntensity(float darkIntensity) {
         if (mBatteryMeterDrawable != null) {
-            mCurrentBackgroundColor = getBackgroundColor(darkIntensity);
+            mCurrentBackgroundColor  = getBackgroundColor(darkIntensity);
             mCurrentFillColor = getFillColor(darkIntensity);
             mBatteryMeterDrawable.setDarkIntensity(mCurrentBackgroundColor, mCurrentFillColor);
         }
@@ -577,6 +574,7 @@ public class BatteryMeterView extends View implements DemoMode, BatteryStateChan
             // now check that the required layers exist and are of the correct type
             Log.e(TAG, "bolt == " + bolt );
             if (frame == null) {
+            	Log.e(TAG, "frame == null ");
                 throw new BatteryMeterDrawableException("Missing battery_frame drawble");
             }
             if (bolt == null) {
@@ -681,6 +679,12 @@ public class BatteryMeterView extends View implements DemoMode, BatteryStateChan
             mLevelDrawable.setTint(currentColor);
             //#SM-2174,2986,2567,2145 add by lrh for bettery charging animation end 20170113
             mBatteryDrawable.draw(canvas);
+            Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+            paint.setColor(Color.RED);
+            Rect  bounds = mFrameDrawable.getBounds();
+            Log.i(TAG, "mFrameDrawable.bounds : " + mFrameDrawable.getBounds().toString() +"\n mBatteryDrawable.Bounds : " + mBatteryDrawable.getBounds().toString());
+            Log.i(TAG, "mLevelDrawable.bounds : " + mLevelDrawable.getBounds().toString() );
+            mFrameDrawable.draw(canvas);//
 
             // if chosen by options, draw percentage text in the middle
             // always skip percentage when 100, so layout doesnt break
@@ -722,6 +726,7 @@ public class BatteryMeterView extends View implements DemoMode, BatteryStateChan
             mWarningTextPaint.setTextSize(textSize);
 
             int pLeft = getPaddingLeft();
+            Log.i(TAG, "mBatteryDrawable getPaddingLeft : " + pLeft);
             Rect iconBounds = new Rect(pLeft, 0, pLeft + mWidth, mHeight);
             mBatteryDrawable.setBounds(iconBounds);
 

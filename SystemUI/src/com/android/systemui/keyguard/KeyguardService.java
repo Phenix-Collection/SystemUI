@@ -30,6 +30,8 @@ import com.android.internal.policy.IKeyguardExitCallback;
 import com.android.internal.policy.IKeyguardService;
 import com.android.internal.policy.IKeyguardStateCallback;
 import com.android.systemui.SystemUIApplication;
+//add by wumin
+import com.android.systemui.AdjustSystemClock;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
@@ -38,12 +40,16 @@ public class KeyguardService extends Service {
     static final String PERMISSION = android.Manifest.permission.CONTROL_KEYGUARD;
 
     private KeyguardViewMediator mKeyguardViewMediator;
+    //add by wumin
+    private AdjustSystemClock mAdjustSystemClock;
 
     @Override
     public void onCreate() {
         ((SystemUIApplication) getApplication()).startServicesIfNeeded();
         mKeyguardViewMediator =
                 ((SystemUIApplication) getApplication()).getComponent(KeyguardViewMediator.class);
+	//add by wumin
+	mAdjustSystemClock = new AdjustSystemClock(this);
     }
 
     @Override
@@ -154,6 +160,8 @@ public class KeyguardService extends Service {
         public void onSystemReady() {
             checkPermission();
             mKeyguardViewMediator.onSystemReady();
+	    //add by wumin
+	    mAdjustSystemClock.onSystemReady();
         }
 
         @Override // Binder interface

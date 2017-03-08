@@ -3,13 +3,15 @@
 
     <item
         android:id="@+id/battery_frame"
-        android:drawable="@drawable/qucii_ic_battery_landscape_frame"/>
+        android:drawable="@drawable/qucii_ic_battery_landscape_frame"
+        android:gravity="center"/>
     <item
         android:id="@+id/battery_fill"
-        android:drawable="@drawable/qucii_ic_battery_landscape_avd"/>
+        android:drawable="@drawable/qucii_ic_battery_landscape_avd"
+        android:gravity="center"/>
     <item
         android:id="@+id/battery_charge_indicator"
-        android:gravity="center"
-        android:drawable="@drawable/qucii_ic_battery_bolt_land_bmp"/>
+        android:drawable="@drawable/qucii_ic_battery_bolt_land_bmp"
+        android:gravity="center"/>
 
 </layer-list>

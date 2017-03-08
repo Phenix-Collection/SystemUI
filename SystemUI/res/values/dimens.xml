@@ -603,4 +603,11 @@
      <dimen name="clear_all_ring_size">1dp</dimen>
          <!-- add by wumin -->
      <dimen name="dialpad_font_size">36sp</dimen>
+     
+     <dimen name="signal_container_paddingtop">2.5dp</dimen><!-- added by yangfan -->
+     <dimen name="notification_container_paddingtop">2.5dp</dimen><!-- added by yangfan -->
+     <dimen name="statusbar_nosim_text_size">12sp</dimen><!-- added by yangfan -->
+     
+     <dimen name="battery_land_width">22dp</dimen>
+     <dimen name="battery_land_height">14dp</dimen>
 </resources>

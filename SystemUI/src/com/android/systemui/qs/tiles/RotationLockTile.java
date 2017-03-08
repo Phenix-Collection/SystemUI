@@ -22,6 +22,7 @@ import android.content.res.Configuration;
 import com.android.internal.logging.MetricsLogger;
 import com.android.systemui.R;
 import com.android.systemui.qs.QSTile;
+import com.android.systemui.qs.QSTile.ResourceIcon;
 import com.android.systemui.statusbar.policy.RotationLockController;
 import com.android.systemui.statusbar.policy.RotationLockController.RotationLockControllerCallback;
 
@@ -40,6 +41,9 @@ public class RotationLockTile extends QSTile<QSTile.BooleanState> {
             = new AnimationIcon(R.drawable.ic_portrait_from_auto_rotate_animation);// modified by yangfan
 
     private final RotationLockController mController;
+    
+    private final int mRotateEnable = R.drawable.ic_qs_rotate_enable;
+    private final int mRotateDisable = R.drawable.ic_qs_rotate_disable;
 
     public RotationLockTile(Host host) {
         super(host);
@@ -88,17 +92,21 @@ public class RotationLockTile extends QSTile<QSTile.BooleanState> {
         state.value = rotationLocked;
         final boolean portrait = isCurrentOrientationLockPortrait();
         final AnimationIcon icon;
+     // modified  by yangfan begin========================
         if (rotationLocked) {
             final int label = portrait ? R.string.quick_settings_rotation_locked_portrait_label
                     : R.string.quick_settings_rotation_locked_landscape_label;
             state.label = mContext.getString(label);
             icon = portrait ? mAutoToPortrait : mAutoToLandscape;
+            state.icon = ResourceIcon.get(mRotateDisable);//
         } else {
             state.label = mContext.getString(R.string.quick_settings_rotation_unlocked_label);
             icon = portrait ? mPortraitToAuto : mLandscapeToAuto;
+            state.icon = ResourceIcon.get(mRotateEnable) ;//
         }
         icon.setAllowAnimation(userInitiated);
-        state.icon = icon;
+        //state.icon = icon;
+        // modified  by yangfan end========================
         state.contentDescription = getAccessibilityString(rotationLocked,
                 R.string.accessibility_rotation_lock_on_portrait,
                 R.string.accessibility_rotation_lock_on_landscape,

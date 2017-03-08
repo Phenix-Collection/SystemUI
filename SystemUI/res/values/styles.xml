@@ -290,7 +290,17 @@
         <item name="fillColor">@color/dark_mode_icon_color_dual_tone_fill</item>
         <item name="singleToneColor">@color/dark_mode_icon_color_single_tone</item>
     </style>
-
+    
+    <!-- added by yangfan begin -->
+    <style name="LightNoSimTextStyle" parent="DualToneLightTheme">
+        <item name="android:textSize">@dimen/statusbar_nosim_text_size</item>
+    </style>
+    
+     <style name="DarkNoSimTextStyle" parent="DualToneDarkTheme">
+         <item name="android:textSize">@dimen/statusbar_nosim_text_size</item>
+    </style>
+	<!-- added by yangfan end -->
+	
     <style name="TextAppearance.Volume">
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">#ffffffff</item>

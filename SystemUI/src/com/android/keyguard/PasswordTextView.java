@@ -216,10 +216,14 @@ public class PasswordTextView extends TextView  {
         }
         userActivity();
         sendAccessibilityEventTypeViewTextChanged(textbefore, textbefore.length(), 0, 1);
-    	//added by yangfan
-    	if (mText.length() >= MAXLENGTH && null != mFinishedListener ) {
-    		mFinishedListener.OnFinished();
-		}//added by yangfan
+        
+    	//added by yangfan 
+        if (null != mFinishedListener) {
+			if (mText.length() >= MAXLENGTH) {
+				mFinishedListener.OnFinished();
+			}
+		}
+      //added by yangfan end
     }
 
     public void setUserActivityListener(UserActivityListener userActivitiListener) {
@@ -700,7 +704,6 @@ public class PasswordTextView extends TextView  {
 	
 	public static interface OnFinishedListener{
 		public void OnFinished();
-		public void OnUnFinished();
 	}
     //added by yangfan end
 }

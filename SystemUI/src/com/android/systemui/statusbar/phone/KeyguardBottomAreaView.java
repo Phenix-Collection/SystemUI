@@ -198,6 +198,11 @@ public class KeyguardBottomAreaView extends FrameLayout implements View.OnClickL
         mPreviewContainer = (ViewGroup) findViewById(R.id.preview_container);
         mEmergencyButton = (EmergencyButton) findViewById(R.id.emergency_call_button);
         mCameraImageView = (KeyguardAffordanceView) findViewById(R.id.camera_button);
+        //add by zqs 2017/3/4 begin
+        //========================>
+        mCameraImageView.setImageChangeEnable(false);
+        //<========================
+        //add by zqs 2017/3/4 end
         mLeftAffordanceView = (KeyguardAffordanceView) findViewById(R.id.left_button);
         mLockIcon = (LockIcon) findViewById(R.id.lock_icon);
         mIndicationText = (TextView) findViewById(R.id.keyguard_indication_text);

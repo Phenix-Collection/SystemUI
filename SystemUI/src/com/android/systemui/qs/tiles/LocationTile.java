@@ -29,12 +29,15 @@ import com.android.systemui.statusbar.policy.LocationController.LocationSettings
 public class LocationTile extends QSTile<QSTile.BooleanState> {
 
     private static final Intent LOCATION_SETTINGS_INTENT
-    = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);// added by yangfan
+    = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
     private final AnimationIcon mEnable =
             new AnimationIcon(R.drawable.ic_signal_location_enable_animation);
     private final AnimationIcon mDisable =
             new AnimationIcon(R.drawable.ic_signal_location_disable_animation);
-
+    
+    private final int ON = R.drawable.ic_qs_location_enable;
+    private final int OFF = R.drawable.ic_qs_location_disable;
+    
     private final LocationController mController;
     private final KeyguardMonitor mKeyguard;
     private final Callback mCallback = new Callback();
@@ -85,12 +88,12 @@ public class LocationTile extends QSTile<QSTile.BooleanState> {
         state.visible = /*!mKeyguard.isShowing()*/true;// yangfan modify
         state.value = locationEnabled;
         if (locationEnabled) {
-            state.icon = mEnable;
+            state.icon = /*mEnable*/ResourceIcon.get(ON);
             state.label = mContext.getString(R.string.quick_settings_location_label);
             state.contentDescription = mContext.getString(
                     R.string.accessibility_quick_settings_location_on);
         } else {
-            state.icon = mDisable;
+            state.icon = /*mDisable*/ResourceIcon.get(OFF);
             state.label = mContext.getString(R.string.quick_settings_location_label);
             state.contentDescription = mContext.getString(
                     R.string.accessibility_quick_settings_location_off);

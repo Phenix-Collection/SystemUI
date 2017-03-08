@@ -4,9 +4,11 @@
 <com.android.systemui.statusbar.SignalClusterView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:systemui="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:gravity="center_vertical"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:paddingTop="@dimen/signal_container_paddingtop"
+    android:paddingBottom="@dimen/signal_container_paddingtop">
 
     <!-- order -->
     <!-- no_sim/air¡¢mobile_signal¡¢net_operator¡¢rat¡¢hotspot/wifi¡¢vpn¡¢¡¢¡¢¡¢¡¢¡¢¡¢¡¢¡¢¡¢¡¢¡¢¡¢¡¢¡¢ -->
@@ -24,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:theme="@style/DualToneLightTheme" />
+            android:theme="@style/LightNoSimTextStyle" />
 
         <TextView
             android:id="@+id/no_sims_dark"
@@ -32,7 +34,7 @@
             android:layout_height="wrap_content"
             android:alpha="0.0"
             android:gravity="center"
-            android:theme="@style/DualToneDarkTheme" />
+            android:theme="@style/DarkNoSimTextStyle" />
     </FrameLayout>
 
     <ImageView
@@ -48,6 +50,7 @@
 
     <LinearLayout
         android:id="@+id/mobile_signal_group"
+        android:gravity="center_vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"></LinearLayout>
 
@@ -60,7 +63,8 @@
     <FrameLayout
         android:id="@+id/wifi_combo"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:gravity="center">
 
         <com.android.systemui.statusbar.AlphaOptimizedImageView
             android:id="@+id/wifi_signal"
@@ -80,7 +84,7 @@
         <com.android.systemui.statusbar.AlphaOptimizedImageView
             android:id="@+id/wifi_inout"
             android:layout_width="18.41dp"
-            android:layout_height="17dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center|bottom"
             android:layout_marginStart="6dp"
             android:theme="@style/DualToneLightTheme"

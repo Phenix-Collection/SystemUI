@@ -98,6 +98,7 @@ import android.view.animation.LinearInterpolator;
 import android.view.animation.PathInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.android.internal.logging.MetricsLogger;
 import com.android.internal.statusbar.NotificationVisibility;
 import com.android.internal.statusbar.StatusBarIcon;
@@ -163,6 +164,7 @@ import com.android.systemui.statusbar.stack.NotificationStackScrollLayout.OnChil
 import com.android.systemui.statusbar.stack.StackStateAnimator;
 import com.android.systemui.statusbar.stack.StackViewState;
 import com.android.systemui.volume.VolumeComponent;
+
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -173,6 +175,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
+
 import static android.app.StatusBarManager.NAVIGATION_HINT_BACK_ALT;
 import static android.app.StatusBarManager.NAVIGATION_HINT_IME_SHOWN;
 import static android.app.StatusBarManager.WINDOW_STATE_HIDDEN;
@@ -185,6 +188,7 @@ import static com.android.systemui.statusbar.phone.BarTransitions.MODE_SEMI_TRAN
 import static com.android.systemui.statusbar.phone.BarTransitions.MODE_TRANSLUCENT;
 import static com.android.systemui.statusbar.phone.BarTransitions.MODE_TRANSPARENT;
 import static com.android.systemui.statusbar.phone.BarTransitions.MODE_WARNING;
+
 //add by wumin
 import java.io.FileOutputStream;
 import java.io.FileInputStream;
@@ -218,6 +222,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
     // hsp 2016-08-11 : Add button to show or hide navigatin bar @{
     private static final String PERSIST_NAVIGATION_BAR = "persist.sys.navg_bar_visible";
     private static final String ACTION_NAVIGATION_BAR_VISIBLE = "action_navigation_bar_visible";
+    private static final String INCALL_UI_ACTIVITY = "com.android.incallui.InCallActivity";
     // @}
     //add by wumin
     private boolean showNavBar = true;
@@ -2644,7 +2649,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         final int oldVal = mSystemUiVisibility;
         final int newVal = (oldVal&~mask) | (vis&mask);
         final int diff = newVal ^ oldVal;
-        if (DEBUG) Log.d(TAG, String.format(
+        /*if (DEBUG)*/ Log.d(TAG, String.format(
                 "setSystemUiVisibility vis=%s mask=%s oldVal=%s newVal=%s diff=%s",
                 Integer.toHexString(vis), Integer.toHexString(mask),
                 Integer.toHexString(oldVal), Integer.toHexString(newVal),
@@ -3223,7 +3228,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                   //  System.out.println("=======sss============>" + className+"======getCallState============"+(tm.getCallState() == TelephonyManager.CALL_STATE_IDLE));
 
                   if ("shows".equals(intent.getStringExtra("callbar"))) {
-                      if (tm.getCallState() != TelephonyManager.CALL_STATE_IDLE && !className.equals("com.android.incallui.InCallActivity")) {
+                      if (tm.getCallState() != TelephonyManager.CALL_STATE_IDLE && !className.equals(INCALL_UI_ACTIVITY)) {
                           showCallBar();
                       }
                   } else if ("hides".equals(intent.getStringExtra("callbar"))) {
@@ -3726,6 +3731,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             // Keyguard.
             mNotificationPanel.setTouchDisabled(true);
         }
+        
         instantExpandNotificationsPanel();
         mLeaveOpenOnKeyguardHide = false;
         if (mDraggedDownRow != null) {
@@ -4075,11 +4081,23 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
     private void instantExpandNotificationsPanel() {
 
         // Make our window larger and the panel expanded.
+        if (isInCallUIActivity()) {
+			return ;
+		}// added by yangfan
         makeExpandedVisible(true);
         mNotificationPanel.instantExpand();
     }
 
-    private void instantCollapseNotificationPanel() {
+    /***
+     * 判断 top Activity 是否是来电界面  by yangfan 
+     */
+    public boolean isInCallUIActivity() {
+    	ActivityManager	activityManager = (ActivityManager)mContext.getSystemService(Context.ACTIVITY_SERVICE);
+    	String runningActivity=activityManager.getRunningTasks(1).get(0).topActivity.getClassName();
+    	return INCALL_UI_ACTIVITY.equals(runningActivity);
+	}
+
+	private void instantCollapseNotificationPanel() {
         mNotificationPanel.instantCollapse();
     }
 
@@ -4753,7 +4771,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 
                     final Intent intent = new Intent(Intent.ACTION_MAIN);
                     intent.addCategory(Intent.CATEGORY_LAUNCHER);
-                    ComponentName cn = new ComponentName("com.android.dialer", "com.android.incallui.InCallActivity");
+                    ComponentName cn = new ComponentName("com.android.dialer", INCALL_UI_ACTIVITY);
                     intent.setComponent(cn);
                      intent.setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION | Intent.FLAG_ACTIVITY_NEW_TASK);
                     mContext.startActivity(intent);
@@ -4797,5 +4815,18 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 
             super.onCallStateChanged(state, incomingNumber);
         }
+    }
+    
+    /**
+     * 是否是无卡或者飞行模式  true = 隐藏通知
+     * FALSE= 显示通知
+     * @author mare
+     */
+    public static interface SignalStateChangeListener{
+    	/**
+    	 * 是否是无卡或者飞行模式 by yangfan
+    	 * @param isNoSimOrAirPlaneMode
+    	 */
+    	public void onSignalStateChanged(boolean isNoSimOrAirPlaneMode);
     }
 }

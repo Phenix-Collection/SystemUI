@@ -186,6 +186,7 @@ int string kg_password_wrong_pin_code_pukked 0x7f05004c
 int string kg_password_wrong_puk_code_dead 0x7f05004d
 int string kg_pattern_instructions 0x7f050033
 int string kg_pin_accepted 0x7f050050
+int string kg_pin_bits_limit 0x7f050064
 int string kg_pin_instructions 0x7f050036
 int string kg_prompt_reason_restart_password 0x7f05005b
 int string kg_prompt_reason_restart_pattern 0x7f050059

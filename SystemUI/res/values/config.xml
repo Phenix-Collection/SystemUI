@@ -173,7 +173,7 @@
     <integer name="status_bar_style_extended">4</integer>
 
     <!-- Control whether status bar should fetch mobile signal icons from xml file dynamically -->
-    <bool name="config_read_icons_from_xml">false</bool>
+    <bool name="config_read_icons_from_xml">true</bool>
 
     <!-- milliseconds before the heads up notification auto-dismisses. -->
     <integer name="heads_up_notification_decay">5000</integer>

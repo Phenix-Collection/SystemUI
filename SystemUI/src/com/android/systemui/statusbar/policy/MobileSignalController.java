@@ -73,6 +73,7 @@ public class MobileSignalController extends SignalController<
     private boolean mLastShowPlmn;
     private String mLastPlmn;
     private boolean mIsDataSignalControlEnabled;
+    private boolean mReadPlmnForwardly;
 
     // Since some pieces of the phone state are interdependent we store it locally,
     // this could potentially become part of MobileState for simplification/complication
@@ -111,6 +112,7 @@ public class MobileSignalController extends SignalController<
         mPhone = phone;
         mDefaults = defaults;
         mSubscriptionInfo = info;
+        Log.d(mTag, "machao---mSubscriptionInfo=" + info);
         mPhoneStateListener = new MobilePhoneStateListener(info.getSubscriptionId(),
                 receiverLooper);
         mNetworkNameSeparator = getStringIfExists(R.string.status_bar_network_name_separator);
@@ -656,7 +658,7 @@ public class MobileSignalController extends SignalController<
                 }
             }
         }
-        if (hasService && tmpLevel <= mCurrentState.level) {
+        if (hasService && tmpLevel < mCurrentState.level) {
         	isDelaySignal = true;
         }else {
         	isDelaySignal = false;
@@ -966,6 +968,24 @@ public class MobileSignalController extends SignalController<
                         + " dataState=" + state.getDataRegState());
             }
             mServiceState = state;
+
+            if(!mReadPlmnForwardly) {
+                mReadPlmnForwardly = true;
+                mLastPlmn = state.getOperatorAlphaLong();
+                mLastDataSpn = state.getDataOperatorAlphaLong();
+                int voiceClass = state.getRilVoiceRadioTechnology();
+                int dataClass = state.getRilDataRadioTechnology();
+                mLastShowPlmn =  true;
+                //mLastShowSpn =  true;
+                Log.d(mTag, "machao---onServiceStateChanged mLastPlmn=" + mLastPlmn
+                            + " mLastDataSpn=" + mLastDataSpn
+                            + " voiceClass=" + dataClass
+                            + " dataClass=" + dataClass
+                            + " mLastShowPlmn=" + mLastShowPlmn
+                            + " mLastShowSpn=" + mLastShowSpn
+                            );
+            }
+
             updateNetworkName(mLastShowSpn, mLastSpn, mLastDataSpn, mLastShowPlmn, mLastPlmn);
             updateTelephony();
         }

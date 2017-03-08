@@ -16,6 +16,7 @@
 
 package com.android.systemui.statusbar.phone;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -26,9 +27,10 @@ import android.widget.FrameLayout;
 import java.util.ArrayList;
 
 public abstract class PanelBar extends FrameLayout {
-    public static final boolean DEBUG = false;
+    public static final boolean DEBUG = true;
     public static final String TAG = PanelBar.class.getSimpleName();
     private static final boolean SPEW = false;
+    private ActivityManager activityManager = null;
 
     public static final void LOG(String fmt, Object... args) {
         if (!DEBUG) return;
@@ -105,6 +107,13 @@ public abstract class PanelBar extends FrameLayout {
     public boolean panelsEnabled() {
         return true;
     }
+    
+    /***
+     * 判断 top Activity 是否是来电界面  by yangfan 
+     */
+    protected boolean isInCallUIActivity(){
+    	return false;
+    }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -116,6 +125,9 @@ public abstract class PanelBar extends FrameLayout {
             }
             return false;
         }
+        if (isInCallUIActivity()) {
+			return false;
+		}// added by yangfan
 
         // figure out which panel needs to be talked to here
         if (event.getAction() == MotionEvent.ACTION_DOWN) {

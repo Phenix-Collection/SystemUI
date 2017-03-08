@@ -44,6 +44,7 @@ import com.android.systemui.R;
 import com.android.systemui.statusbar.NotificationData;
 import com.android.systemui.statusbar.SignalClusterView;
 import com.android.systemui.statusbar.StatusBarIconView;
+import com.android.systemui.statusbar.phone.PhoneStatusBar.SignalStateChangeListener;
 import com.android.systemui.tuner.TunerService;
 import com.android.systemui.tuner.TunerService.Tunable;
 import com.qucii.systemui.statusbar.phone.ClockController;
@@ -56,7 +57,7 @@ import java.util.Arrays;
  * limited to: notification icons, signal cluster, additional status icons, and clock in the status
  * bar.
  */
-public class StatusBarIconController implements Tunable {
+public class StatusBarIconController implements Tunable  {
 
     public static final long DEFAULT_TINT_ANIMATION_DURATION = 120;
 
@@ -120,6 +121,7 @@ public class StatusBarIconController implements Tunable {
         mNotificationIconArea = statusBar.findViewById(R.id.notification_icon_area_inner);
         mNotificationIcons = (IconMerger) statusBar.findViewById(R.id.notificationIcons);
         mMoreIcon = (ImageView) statusBar.findViewById(R.id.moreIcon);
+        mSignalCluster.setSignalStateChangeListener(mNotificationIcons);// added by yangfan 
         mNotificationIcons.setOverflowIndicator(mMoreIcon);
         mStatusIconsKeyguard = (LinearLayout) keyguardStatusBar.findViewById(R.id.statusIcons);
         mBatteryMeterView = (BatteryMeterView) statusBar.findViewById(R.id.battery);
@@ -223,7 +225,7 @@ public class StatusBarIconController implements Tunable {
             }
             toShow.add(ent.icon);
         }
-        mNotificationIcons.setMoreVisibility(noUSBCount > 0 ? View.VISIBLE : View.GONE);
+        mNotificationIcons.setMoreVisibility(noUSBCount > 0 );
 		//modified  by yangfan end
         
         ArrayList<View> toRemove = new ArrayList<>();

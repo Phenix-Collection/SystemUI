@@ -40,6 +40,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.systemui.R;
+import com.android.systemui.statusbar.phone.PhoneStatusBar.SignalStateChangeListener;
 import com.android.systemui.statusbar.phone.StatusBarIconController;
 import com.android.systemui.statusbar.policy.NetworkController.IconState;
 import com.android.systemui.statusbar.policy.NetworkControllerImpl;
@@ -108,6 +109,7 @@ public class SignalClusterView
     private boolean mBlockEthernet;
     private boolean mBlockNetworkLabel;// added by yangfan
     private Handler mDelaySignaHandler = new  Handler();
+    private SignalStateChangeListener mSignalStateChangeListener;
 
     public SignalClusterView(Context context) {
         this(context, null);
@@ -412,7 +414,9 @@ public class SignalClusterView
         mIsAirplaneMode = icon.visible && !mBlockAirplane;
         mAirplaneIconId = icon.icon;
         mAirplaneContentDescription = icon.contentDescription;
-
+        if(null != mSignalStateChangeListener){
+        	//mSignalStateChangeListener.onSignalStateChanged(/*mNoSimsVisible || */mIsAirplaneMode );
+        }//当前是否是无SIM卡或者飞行模式状态
         apply();
     }
 
@@ -577,9 +581,10 @@ public class SignalClusterView
             }
         }
         if (null != mNoSimsCombo) {
-            mNoSimsCombo.setVisibility(mNoSimsVisible ? View.VISIBLE : View.GONE);
+        	Log.i(TAG, "mNoSimsVisible : " + mNoSimsVisible +" , mNoSimsIcon : " + mNoSimsIcon);
+            mNoSimsCombo.setVisibility(mNoSimsVisible && !mIsAirplaneMode ? View.VISIBLE : View.GONE);
         }// modified by yangfan
-
+        
         boolean anythingVisible = mNoSimsVisible || mWifiVisible || mIsAirplaneMode
                 || anyMobileVisible || mVpnVisible || mEthernetVisible;
         //setPaddingRelative(0, 0, anythingVisible ? mEndPadding : mEndPaddingNothingVisible, 0);// remove padding by yangfan
@@ -889,4 +894,8 @@ public class SignalClusterView
         }
     }
 //added by yangfan end 
+
+	public void setSignalStateChangeListener(SignalStateChangeListener listener) {
+		this.mSignalStateChangeListener = listener;
+	}
 }

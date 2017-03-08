@@ -508,6 +508,7 @@ public class NetworkControllerImpl extends BroadcastReceiver
                         this, subscriptions.get(i), mSubDefaults, mReceiverHandler.getLooper());
                 mMobileSignalControllers.put(subId, controller);
 
+/*
                 String iccId = subscriptions.get(i).getIccId();
                 Log.d(TAG, "machao---BROCAST_SPN_FORCE---IccId:"+iccId);
 
@@ -527,6 +528,7 @@ public class NetworkControllerImpl extends BroadcastReceiver
                 } else {
                     Log.e(TAG, "@@@ERROR: iccId is NULL !!!");
                 }
+*/
 
                 if (subscriptions.get(i).getSimSlotIndex() == 0) {
                     mDefaultSignalController = controller;

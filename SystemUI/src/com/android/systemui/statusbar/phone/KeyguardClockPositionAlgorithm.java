@@ -98,8 +98,13 @@ public class KeyguardClockPositionAlgorithm {
     }
 
     public void run(Result result) {
-        int y = (int) (getClockY() - /*mKeyguardStatusHeight / 2*/mKeyguardStatusHeight);// modified by yangfan 
-        y = y <= 120 ? 120 : y;// added  by yangfan 
+    	//modify by zqs 2017/3/4 begin
+        //========================>
+        //固定锁屏界面时间高度为120
+//        int y = (int) (getClockY() - /*mKeyguardStatusHeight / 2*/mKeyguardStatusHeight);
+//        y = y <= 120 ? 120 : y;
+        int y = 160;
+        //modify by zqs 2017/3/4 end
         Log.i(this.getClass().getSimpleName(), "getClockY() : " + getClockY() + " , mKeyguardStatusHeight : " + mKeyguardStatusHeight );
         float clockAdjustment = getClockYExpansionAdjustment();
         float topPaddingAdjMultiplier = getTopPaddingAdjMultiplier();

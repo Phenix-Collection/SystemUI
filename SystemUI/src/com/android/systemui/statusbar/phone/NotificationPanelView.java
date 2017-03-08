@@ -443,9 +443,14 @@ public class NotificationPanelView extends PanelView implements
         int stackScrollerPadding;
         if (mStatusBarState != StatusBarState.KEYGUARD) {
             int bottom = mHeader.getCollapsedHeight();
-            stackScrollerPadding = mStatusBarState == StatusBarState.SHADE
-                    ? bottom + mQsPeekHeight + mNotificationTopPadding
-                    : mKeyguardStatusBar.getHeight() + mNotificationTopPadding;
+            //modify by zqs 2017/03/03
+            //=======================>
+            //这里StatusBarState.SHADE_LOCK状态顶部位置和平常下拉不一样导致顶部上移闪屏bug
+            stackScrollerPadding = /*mStatusBarState == StatusBarState.SHADE
+                    ?*/ bottom + mQsPeekHeight + mNotificationTopPadding
+                    /*: mKeyguardStatusBar.getHeight() + mNotificationTopPadding*/;
+            //<=======================
+            //modify by zqs 2017/03/03
             mTopPaddingAdjustment = 0;
         } else {
             mClockPositionAlgorithm.setup(

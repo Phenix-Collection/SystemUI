@@ -46,7 +46,7 @@
     <uses-permission android:name="android.permission.CONFIGURE_WIFI_DISPLAY" />
     <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
     <uses-permission android:name="android.permission.GET_APP_OPS_STATS" />
-
+    <uses-permission android:name="android.permission.SET_TIME" />
     <!-- Networking and telephony -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -221,7 +221,7 @@
                   android:stateNotNeeded="true"
                   android:resumeWhilePausing="true"
                   android:screenOrientation="behind"
-                  android:theme="@style/FragmentTheme">
+                  android:theme="@style/config_recents_activity_theme">
             <intent-filter>
                 <action android:name="com.android.systemui.recents.TOGGLE_RECENTS" />
             </intent-filter>

@@ -21,6 +21,7 @@ import com.android.keyguard.PasswordTextView.OnFinishedListener;
 import android.content.Context;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 
@@ -255,12 +256,7 @@ public abstract class KeyguardPinBasedInputView extends KeyguardAbsKeyInputView
     }
     
     @Override
-    public void OnUnFinished() {
-    	//提示不足6位
+    protected boolean isPinView() {
+    	return super.isPinView();
     }
-    
- // added by yangfan 
-    public boolean isPinView(){
-    	return false;
-    }// added by yangfan 
 }

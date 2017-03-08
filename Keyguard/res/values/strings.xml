@@ -383,4 +383,6 @@
     </plurals>
 
     <string name="pattern_cancel">Cancle</string>
+    
+    <string name="kg_pin_bits_limit" >must be 6 bits</string>
 </resources>

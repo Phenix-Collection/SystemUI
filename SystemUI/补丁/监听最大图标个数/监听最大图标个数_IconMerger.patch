@@ -1,0 +1,58 @@
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/IconMerger.java b/SystemUI/src/com/android/systemui/statusbar/phone/IconMerger.java
+index e17e30c..e441932 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/IconMerger.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/IconMerger.java
+@@ -23,16 +23,18 @@ import android.view.View;
+ import android.widget.LinearLayout;
+ 
+ import com.android.systemui.R;
++import com.android.systemui.statusbar.phone.StatusBarIconController.MaxChildCountChangListener;
+ import com.android.systemui.statusbar.policy.Clock;
+ import com.qucii.systemui.statusbar.phone.ClockController;
+ 
+-public class IconMerger extends LinearLayout {
++public class IconMerger extends LinearLayout implements MaxChildCountChangListener {
+     private static final String TAG = "IconMerger";
+     private static final boolean DEBUG = false;
+ 
+     private int mIconSize;
+     private View mMoreView;
+     private int mClockLocation;
++    private boolean mSignalCountExceed = false;
+ 
+     public IconMerger(Context context, AttributeSet attrs) {
+         super(context, attrs);
+@@ -61,7 +63,9 @@ public class IconMerger extends LinearLayout {
+         }
+         int iconMegerSize = width - (width % mIconSize);
+         Log.d(TAG, "iconMegerSize : " + iconMegerSize + "mIconSize : " + mIconSize);
+-        setMeasuredDimension(iconMegerSize, getMeasuredHeight());
++        View firstChild = getChildAt(0) ;
++        int minWidth = firstChild== null ? 50 : firstChild.getMeasuredWidth();
++        setMeasuredDimension(mSignalCountExceed ?  minWidth : iconMegerSize, getMeasuredHeight());
+ 		//modified  by yangfan
+     }
+ 
+@@ -76,6 +80,9 @@ public class IconMerger extends LinearLayout {
+ 
+         final int N = getChildCount();
+         int visibleChildren = 0;
++        View usb = getChildAt(0);
++        int usbRight = null == usb ? 0 : usb.getRight();
++        Log.e("mare", "usbRight >>> " + usbRight);
+         for (int i=0; i<N; i++) {
+             if (getChildAt(i).getVisibility() != GONE) visibleChildren++;
+         }
+@@ -106,5 +113,12 @@ public class IconMerger extends LinearLayout {
+             mMoreView.setVisibility(vis);
+         }
+     }
++
++	@Override
++	public void onMaxChildCountChanged(boolean exceed) {
++		if (mClockLocation == ClockController.STYLE_CLOCK_CENTER) {
++			mSignalCountExceed = exceed;
++		}
++	}
+ 	//added by yangfan 
+ }

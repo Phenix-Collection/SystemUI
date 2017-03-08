@@ -87,21 +87,25 @@
         <com.android.systemui.statusbar.AlphaOptimizedFrameLayout
             android:id="@+id/notification_icon_area"
             android:layout_width="0dip"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/notification_container_paddingtop"
+            android:paddingBottom="@dimen/notification_container_paddingtop"
             android:layout_weight="1"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
             >
             <!-- The alpha of this area is both controlled from PhoneStatusBarTransitions and
                  PhoneStatusBar (DISABLE_NOTIFICATION_ICONS), so we need two views here. -->
             <com.android.keyguard.AlphaOptimizedLinearLayout
                 android:id="@+id/notification_icon_area_inner"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
                 >
                 <com.android.keyguard.CarrierText
                     android:id="@+id/status_carrier_text"
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/keyguard_carrier_text_margin"
                     android:gravity="center_vertical"
                     android:ellipsize="marquee"
@@ -111,16 +115,15 @@
                     android:visibility="gone"/>
 
                 <com.android.systemui.statusbar.StatusBarIconView android:id="@+id/moreIcon"
-                    android:layout_width="@dimen/status_bar_icon_size"
-                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:src="@drawable/stat_notify_more"
                     android:visibility="gone"
                     />
                 <com.android.systemui.statusbar.phone.IconMerger android:id="@+id/notificationIcons"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
-                    android:gravity="center_vertical"
                     android:orientation="horizontal"/>
             </com.android.keyguard.AlphaOptimizedLinearLayout>
 
@@ -130,6 +133,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="horizontal"
+            android:gravity="center_vertical"
             >
 
             <include layout="@layout/system_icons" />
