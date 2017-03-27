@@ -16,8 +16,6 @@
 
 package com.android.systemui.qs.tiles;
 
-import android.content.Intent;
-import android.provider.Settings;
 import com.android.internal.logging.MetricsLogger;
 import com.android.systemui.R;
 import com.android.systemui.qs.QSTile;
@@ -28,16 +26,11 @@ import com.android.systemui.statusbar.policy.LocationController.LocationSettings
 /** Quick settings tile: Location **/
 public class LocationTile extends QSTile<QSTile.BooleanState> {
 
-    private static final Intent LOCATION_SETTINGS_INTENT
-    = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
     private final AnimationIcon mEnable =
             new AnimationIcon(R.drawable.ic_signal_location_enable_animation);
     private final AnimationIcon mDisable =
             new AnimationIcon(R.drawable.ic_signal_location_disable_animation);
-    
-    private final int ON = R.drawable.ic_qs_location_enable;
-    private final int OFF = R.drawable.ic_qs_location_disable;
-    
+
     private final LocationController mController;
     private final KeyguardMonitor mKeyguard;
     private final Callback mCallback = new Callback();
@@ -74,26 +67,21 @@ public class LocationTile extends QSTile<QSTile.BooleanState> {
     }
 
     @Override
-    protected void handleLongClick() {
-        mHost.startActivityDismissingKeyguard(LOCATION_SETTINGS_INTENT);
-    }// added by yangfan
-
-    @Override
     protected void handleUpdateState(BooleanState state, Object arg) {
         final boolean locationEnabled =  mController.isLocationEnabled();
 
         // Work around for bug 15916487: don't show location tile on top of lock screen. After the
         // bug is fixed, this should be reverted to only hiding it on secure lock screens:
         // state.visible = !(mKeyguard.isSecure() && mKeyguard.isShowing());
-        state.visible = /*!mKeyguard.isShowing()*/true;// yangfan modify
+        state.visible = !mKeyguard.isShowing();
         state.value = locationEnabled;
         if (locationEnabled) {
-            state.icon = /*mEnable*/ResourceIcon.get(ON);
+            state.icon = mEnable;
             state.label = mContext.getString(R.string.quick_settings_location_label);
             state.contentDescription = mContext.getString(
                     R.string.accessibility_quick_settings_location_on);
         } else {
-            state.icon = /*mDisable*/ResourceIcon.get(OFF);
+            state.icon = mDisable;
             state.label = mContext.getString(R.string.quick_settings_location_label);
             state.contentDescription = mContext.getString(
                     R.string.accessibility_quick_settings_location_off);

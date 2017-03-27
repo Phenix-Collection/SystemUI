@@ -35,8 +35,7 @@
     <color name="batterymeter_bolt_color">#FFFFFFFF</color>
     <color name="qs_batterymeter_frame_color">#FF404040</color>
     <color name="system_primary_color">#ff263238</color><!-- blue grey 900 -->
-     <color name="qs_primary_color">#00ffffff</color>
-    <color name="system_secondary_color"><!-- #00ffffff -->#ff384248</color><!-- "notification gust bg" modified by yangfan -->
+    <color name="system_secondary_color">#ff384248</color>
     <color name="system_accent_color">#ff80CBC4</color><!-- deep teal 200 -->
     <color name="system_warning_color">#fff4511e</color><!-- deep orange 600 -->
     <color name="qs_text">#FFFFFFFF</color>
@@ -144,10 +143,4 @@
     <color name="volume_icon_color">#ffffffff</color>
     <color name="volume_settings_icon_color">#7fffffff</color>
     <color name="volume_slider_inactive">#FFB0BEC5</color><!-- blue grey 200 -->
-    <!-- StatusBar -->
-    <!-- Expanded Status Bar Alarm Status Text Color -->
-    <color name="status_bar_alarm_status_text_color">#64ffffff</color>
-
-    <!-- Expanded Status Bar Battery Level Text Color -->
-    <color name="status_bar_battery_level_text_color">#ffffff</color>
 </resources>

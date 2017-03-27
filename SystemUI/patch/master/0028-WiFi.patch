@@ -1,0 +1,1241 @@
+From 76a3d2611c55876f9172e4d5b3313f1f00233d00 Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Mon, 13 Feb 2017 16:13:44 +0800
+Subject: [PATCH 028/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E4=BF=AE=E6=94=B9=E4=BA=AE=E5=BA=A6=E6=9D=A1=20=E6=A8=AA?=
+ =?UTF-8?q?=E7=AB=96=E5=B1=8F=E5=88=87=E6=8D=A2=20WiFi=E5=9B=BE=E6=A0=87?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../res/drawable/ic_landscape_from_auto_rotate.xml | 142 ++++++++++++---------
+ .../res/drawable/ic_landscape_to_auto_rotate.xml   | 126 +++++++++---------
+ SystemUI/res/drawable/ic_qs_wifi_disabled.xml      |  79 ++++++++----
+ .../res/drawable/ic_signal_airplane_disable.xml    |  99 +++++++-------
+ .../res/drawable/ic_signal_airplane_enable.xml     |  94 ++++++--------
+ .../res/drawable/ic_signal_flashlight_disable.xml  | 113 ++++++++--------
+ .../res/drawable/ic_signal_flashlight_enable.xml   |  96 ++++++--------
+ .../res/drawable/ic_signal_location_disable.xml    | 106 ++++++++-------
+ .../res/drawable/ic_signal_location_enable.xml     |  90 +++++--------
+ .../layout/quick_settings_brightness_dialog.xml    |   4 +-
+ SystemUI/res/layout/status_bar_toggle_slider.xml   |  65 +++++++---
+ SystemUI/res/values/dimens.xml                     |  13 +-
+ .../systemui/qs/tiles/RotationLockTile.java        |   2 +-
+ .../com/android/systemui/qs/tiles/WifiTile.java    |   2 +-
+ .../statusbar/phone/NotificationPanelView.java     |   6 +
+ .../statusbar/phone/ObservableScrollView.java      |   2 +-
+ 16 files changed, 530 insertions(+), 509 deletions(-)
+
+diff --git a/SystemUI/res/drawable/ic_landscape_from_auto_rotate.xml b/SystemUI/res/drawable/ic_landscape_from_auto_rotate.xml
+index bc545ba..242326f 100644
+--- a/SystemUI/res/drawable/ic_landscape_from_auto_rotate.xml
++++ b/SystemUI/res/drawable/ic_landscape_from_auto_rotate.xml
+@@ -1,62 +1,84 @@
+ <?xml version="1.0" encoding="utf-8"?>
+-<!--
+-     Copyright (C) 2014 The Android Open Source Project
+-
+-     Licensed under the Apache License, Version 2.0 (the "License");
+-     you may not use this file except in compliance with the License.
+-     You may obtain a copy of the License at
+-
+-          http://www.apache.org/licenses/LICENSE-2.0
+-
+-     Unless required by applicable law or agreed to in writing, software
+-     distributed under the License is distributed on an "AS IS" BASIS,
+-     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-     See the License for the specific language governing permissions and
+-     limitations under the License.
+--->
+ <vector xmlns:android="http://schemas.android.com/apk/res/android"
+-    android:height="48dp"
+-    android:width="48dp"
+-    android:viewportHeight="48"
+-    android:viewportWidth="48" >
+-    <group
+-        android:name="ic_screen_rotation_48px_outlines"
+-        android:translateX="24"
+-        android:translateY="24" >
+-        <group
+-            android:name="ic_screen_rotation_48px_outlines_pivot"
+-            android:translateX="-24.15"
+-            android:translateY="-24.25" >
+-            <group
+-                android:name="arrows"
+-                android:translateX="24.1"
+-                android:translateY="24.1" >
+-                <group
+-                    android:name="arrows_pivot"
+-                    android:translateX="-24.1"
+-                    android:translateY="-24.1" >
+-                    <path
+-                        android:name="arrow_top"
+-                        android:pathData="M 33.1499938965,5.25 c 6.5,3.10000610352 11.1999969482,9.40000915527 11.8999938965,17.0 c 0.0,0.0 3.00001525879,0.0 3.00001525879,0.0 c -1.00001525879,-12.3000030518 -11.3000030518,-22.0 -23.9000091553,-22.0 c -0.399993896484,0.0 -0.899993896484,0.0 -1.30000305176,0.100006103516 c 0.0,0.0 7.60000610352,7.59999084473 7.60000610352,7.59999084473 c 0.0,0.0 2.69999694824,-2.69999694824 2.69999694824,-2.69999694824 Z"
+-                        android:fillColor="#FFFFFFFF"
+-                        android:fillAlpha="1" />
+-                    <path
+-                        android:name="arrow_bottom"
+-                        android:pathData="M 15.1499938965,43.25 c -6.5,-3.09999084473 -11.1999969482,-9.5 -11.8999938965,-17.0 c 0.0,0.0 -3.0,0.0 -3.0,0.0 c 1.0,12.3000030518 11.299987793,22.0 23.8999938965,22.0 c 0.399993896484,0.0 0.899993896484,0.0 1.30000305176,-0.0999908447266 c 0.0,0.0 -7.60000610352,-7.60000610352 -7.60000610352,-7.60000610352 c 0.0,0.0 -2.69999694824,2.69999694824 -2.69999694824,2.69999694824 Z"
+-                        android:fillColor="#FFFFFFFF"
+-                        android:fillAlpha="1" />
+-                </group>
+-            </group>
+-            <group
+-                android:name="device"
+-                android:translateX="24.14999"
+-                android:translateY="24.25" >
+-                <path
+-                    android:name="body"
+-                    android:pathData="M -3.5,-20.5 c -1.19999694824,-1.19999694824 -3.10000610352,-1.19999694824 -4.19999694824,0.0 c 0.0,0.0 -12.8000030518,12.6999969482 -12.8000030518,12.6999969482 c -1.19999694824,1.19999694824 -1.19999694824,3.10000610352 0.0,4.19999694824 c 0.0,0.0 24.0,24.0000152588 24.0,24.0000152588 c 1.19999694824,1.19999694824 3.10000610352,1.19999694824 4.19999694824,0.0 c 0.0,0.0 12.6999969482,-12.700012207 12.6999969482,-12.700012207 c 1.20001220703,-1.19999694824 1.20001220703,-3.09999084473 0.0,-4.19999694824 c 0.0,0.0 -23.8999938965,-24.0 -23.8999938965,-24.0 Z M 2.84999084473,15.5500183105 c 0.0,0.0 -18.6000061035,-18.5000457764 -18.6000061035,-18.5000457764 c 0.0,0.0 12.5999908447,-12.8000030518 12.5999908447,-12.8000030518 c 0.0,0.0 18.6000213623,18.5000457764 18.6000213623,18.5000457764 c 0.0,0.0 -12.6000061035,12.8000030518 -12.6000061035,12.8000030518 Z"
+-                    android:fillColor="#FFFFFFFF"
+-                    android:fillAlpha="1" />
+-            </group>
+-        </group>
+-    </group>
+-</vector>
++    android:width="124dp"
++    android:height="124dp"
++    android:viewportWidth="124"
++    android:viewportHeight="124">
++
++    <path
++        android:fillColor="#4e5158"
++        android:fillAlpha="0.50"
++        android:strokeAlpha="0.50"
++        android:strokeWidth="1"
++        android:pathData="M 56.98 36.99 C 57.01 33.51 56.14 27.51 61.10 27.18 C 70.07 26.69 79.07 27.17
++88.05 26.96 C 90.62 27.09 94.23 26.66 95.52 29.51 C 96.38 31.90 95.95 34.51
++96.05 37.00 C 95.36 37.00 93.96 37.00 93.27 37.00 C 93.06 34.76 92.86 32.51
++92.61 30.27 C 81.90 29.82 71.13 29.79 60.42 30.29 C 60.18 32.52 59.97 34.76
++59.77 37.01 C 59.08 37.00 57.68 37.00 56.98 36.99 Z" />
++    <path
++        android:fillColor="#4e5158"
++        android:fillAlpha="0.50"
++        android:strokeAlpha="0.50"
++        android:strokeWidth="1"
++        android:pathData="M 57.03 40.02 C 57.77 40.02 59.26 40.01 60.01 40.01 C 60.01 40.76 60.01 42.25
++60.01 42.99 C 59.27 42.99 57.77 42.98 57.03 42.98 C 57.03 42.24 57.03 40.76
++57.03 40.02 Z" />
++    <path
++        android:fillColor="#4e5158"
++        android:fillAlpha="0.50"
++        android:strokeAlpha="0.50"
++        android:strokeWidth="1"
++        android:pathData="M 93.03 40.02 C 93.77 40.02 95.27 40.01 96.01 40.01 C 96.01 40.76 96.01 42.25
++96.01 42.99 C 95.26 42.99 93.77 42.98 93.03 42.98 C 93.03 42.24 93.03 40.76
++93.03 40.02 Z" />
++    <path
++        android:fillColor="#4e5158"
++        android:fillAlpha="0.50"
++        android:strokeAlpha="0.50"
++        android:strokeWidth="1"
++        android:pathData="M 57.03 46.02 C 57.77 46.02 59.26 46.01 60.01 46.01 C 60.01 46.76 60.01 48.25
++60.01 49.00 C 59.27 48.99 57.77 48.98 57.03 48.98 C 57.03 48.24 57.03 46.76
++57.03 46.02 Z" />
++    <path
++        android:fillColor="#4e5158"
++        android:fillAlpha="0.50"
++        android:strokeAlpha="0.50"
++        android:strokeWidth="1"
++        android:pathData="M 93.03 46.02 C 93.77 46.02 95.27 46.01 96.01 46.00 C 96.01 46.75 96.01 48.24
++96.01 48.99 C 95.27 48.99 93.77 48.98 93.03 48.98 C 93.03 48.24 93.03 46.76
++93.03 46.02 Z" />
++    <path
++        android:fillColor="#4e5158"
++        android:fillAlpha="0.50"
++        android:strokeAlpha="0.50"
++        android:strokeWidth="1"
++        android:pathData="M 57.03 52.02 C 57.77 52.02 59.27 52.01 60.01 52.01 C 60.01 52.75 60.01 54.25
++60.01 54.99 C 59.26 54.99 57.77 54.98 57.03 54.98 C 57.03 54.24 57.03 52.76
++57.03 52.02 Z" />
++    <path
++        android:fillColor="#4e5158"
++        android:fillAlpha="0.50"
++        android:strokeAlpha="0.50"
++        android:strokeWidth="1"
++        android:pathData="M 93.03 52.02 C 93.77 52.02 95.26 52.01 96.01 52.01 C 96.01 52.76 96.02 54.25
++96.02 54.99 C 95.27 54.99 93.78 54.98 93.03 54.98 C 93.03 54.24 93.03 52.76
++93.03 52.02 Z" />
++    <path
++        android:fillColor="#4e5158"
++        android:fillAlpha="0.50"
++        android:strokeAlpha="0.50"
++        android:strokeWidth="1"
++        android:pathData="M 31.29 57.33 C 32.82 57.00 34.39 56.99 35.94 56.96 C 53.65 57.04 71.37 56.99
++89.08 56.98 C 91.53 56.99 95.15 57.14 95.75 60.16 C 96.43 65.41 95.90 70.72
++96.03 76.00 C 95.88 81.60 96.44 87.24 95.76 92.82 C 95.37 95.50 92.34 96.09
++90.09 96.00 C 71.70 96.03 53.31 95.96 34.92 96.03 C 32.67 95.94 29.47 96.13
++28.51 93.56 C 27.57 89.79 28.10 85.84 28.02 82.00 C 28.22 75.00 27.72 68.00
++28.15 61.01 C 28.14 59.21 29.53 57.62 31.29 57.33 M 39.07 60.05 C 38.99 71.02
++38.99 81.98 39.07 92.95 C 55.04 93.04 71.01 93.03 86.97 92.95 C 87.09 81.99
++87.09 71.02 86.98 60.05 C 71.01 59.97 55.04 59.96 39.07 60.05 M 32.21 68.17 C
++31.88 73.72 31.87 79.28 32.22 84.83 C 32.87 84.84 34.17 84.85 34.82 84.86 C
++35.18 79.29 35.17 73.71 34.83 68.15 C 34.17 68.15 32.86 68.16 32.21 68.17 M
++90.22 75.23 C 90.22 75.87 90.22 77.14 90.22 77.78 C 90.87 77.79 92.17 77.81
++92.82 77.81 C 92.81 77.16 92.78 75.85 92.77 75.20 C 92.14 75.21 90.86 75.22
++90.22 75.23 Z" />
++</vector>
+\ No newline at end of file
+diff --git a/SystemUI/res/drawable/ic_landscape_to_auto_rotate.xml b/SystemUI/res/drawable/ic_landscape_to_auto_rotate.xml
+index 0bd75d1..4306f22 100644
+--- a/SystemUI/res/drawable/ic_landscape_to_auto_rotate.xml
++++ b/SystemUI/res/drawable/ic_landscape_to_auto_rotate.xml
+@@ -1,66 +1,64 @@
+ <?xml version="1.0" encoding="utf-8"?>
+-<!--
+-     Copyright (C) 2014 The Android Open Source Project
+-
+-     Licensed under the Apache License, Version 2.0 (the "License");
+-     you may not use this file except in compliance with the License.
+-     You may obtain a copy of the License at
+-
+-          http://www.apache.org/licenses/LICENSE-2.0
+-
+-     Unless required by applicable law or agreed to in writing, software
+-     distributed under the License is distributed on an "AS IS" BASIS,
+-     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-     See the License for the specific language governing permissions and
+-     limitations under the License.
+--->
+ <vector xmlns:android="http://schemas.android.com/apk/res/android"
+-    android:height="48dp"
+-    android:width="48dp"
+-    android:viewportHeight="48"
+-    android:viewportWidth="48" >
+-    <group
+-        android:name="ic_screen_rotation_48px_outlines"
+-        android:translateX="24"
+-        android:translateY="24" >
+-        <group
+-            android:name="ic_screen_rotation_48px_outlines_pivot"
+-            android:translateX="-24.15"
+-            android:translateY="-24.25" >
+-            <group
+-                android:name="arrows"
+-                android:translateX="24.1"
+-                android:translateY="24.1"
+-                android:scaleX="0.9"
+-                android:scaleY="0.9"
+-                android:rotation="-135" >
+-                <group
+-                    android:name="arrows_pivot"
+-                    android:translateX="-24.1"
+-                    android:translateY="-24.1" >
+-                    <path
+-                        android:name="arrow_top"
+-                        android:pathData="M 33.1499938965,5.25 c 6.5,3.10000610352 11.1999969482,9.40000915527 11.8999938965,17.0 c 0.0,0.0 3.00001525879,0.0 3.00001525879,0.0 c -1.00001525879,-12.3000030518 -11.3000030518,-22.0 -23.9000091553,-22.0 c -0.399993896484,0.0 -0.899993896484,0.0 -1.30000305176,0.100006103516 c 0.0,0.0 7.60000610352,7.59999084473 7.60000610352,7.59999084473 c 0.0,0.0 2.69999694824,-2.69999694824 2.69999694824,-2.69999694824 Z"
+-                        android:fillColor="#FFFFFFFF"
+-                        android:fillAlpha="0" />
+-                    <path
+-                        android:name="arrow_bottom"
+-                        android:pathData="M 15.1499938965,43.25 c -6.5,-3.09999084473 -11.1999969482,-9.5 -11.8999938965,-17.0 c 0.0,0.0 -3.0,0.0 -3.0,0.0 c 1.0,12.3000030518 11.299987793,22.0 23.8999938965,22.0 c 0.399993896484,0.0 0.899993896484,0.0 1.30000305176,-0.0999908447266 c 0.0,0.0 -7.60000610352,-7.60000610352 -7.60000610352,-7.60000610352 c 0.0,0.0 -2.69999694824,2.69999694824 -2.69999694824,2.69999694824 Z"
+-                        android:fillColor="#FFFFFFFF"
+-                        android:fillAlpha="0" />
+-                </group>
+-            </group>
+-            <group
+-                android:name="device"
+-                android:translateX="24.14999"
+-                android:translateY="24.25"
+-                android:rotation="-45" >
+-                <path
+-                    android:name="body"
+-                    android:pathData="M -3.34053039551,-22.9980926514 c -1.3207244873,-1.3207244873 -3.46876525879,-1.26383972168 -4.74829101563,0.125762939453 c 0.0,0.0 -14.8512420654,14.7411804199 -14.8512420654,14.7411804199 c -1.39259338379,1.392578125 -1.44947814941,3.54061889648 -0.125762939453,4.74827575684 c 0.0,0.0 26.4143981934,26.4144134521 26.4143981934,26.4144134521 c 1.3207244873,1.3207244873 3.46876525879,1.26382446289 4.74829101562,-0.125762939453 c 0.0,0.0 14.7381896973,-14.7381896973 14.7381896973,-14.7381896973 c 1.392578125,-1.39259338379 1.44947814941,-3.54061889648 0.125762939453,-4.74829101562 c 0.0,0.0 -26.3013458252,-26.417388916 -26.3013458252,-26.417388916 Z M 2.87156677246,16.9857940674 c 0.0,0.0 -19.7573547363,-19.7573699951 -19.7573547363,-19.7573699951 c 0.0,0.0 14.0142059326,-14.2142181396 14.0142059326,-14.2142181396 c 0.0,0.0 19.7573699951,19.7573699951 19.7573699951,19.7573699951 c 0.0,0.0 -14.0142211914,14.2142181396 -14.0142211914,14.2142181396 Z"
+-                    android:fillColor="#FFFFFFFF"
+-                    android:fillAlpha="1" />
+-            </group>
+-        </group>
+-    </group>
+-</vector>
++    android:width="124dp"
++    android:height="124dp"
++    android:viewportWidth="124"
++    android:viewportHeight="124">
++
++    <path
++        android:fillColor="#d9d9d9"
++        android:fillAlpha="0.85"
++        android:strokeAlpha="0.85"
++        android:strokeWidth="1"
++        android:pathData="M 52.63 1.77 C 66.56 -0.42 81.23 2.40 93.30 9.71 C 106.41 17.52 116.35 30.44
++120.59 45.10 C 124.58 59.01 123.54 74.39 117.34 87.50 C 110.66 102.20 97.81
++113.96 82.60 119.37 C 69.42 124.16 54.56 124.16 41.38 119.38 C 26.11 113.97
++13.24 102.17 6.55 87.42 C -0.50 72.41 -0.85 54.45 5.43 39.12 C 13.25 19.58 31.76
++4.77 52.63 1.77 M 57.06 37.00 C 57.81 37.00 59.30 37.00 60.05 37.00 C 60.06
++35.03 59.97 33.05 60.18 31.09 C 61.00 29.77 62.68 30.07 63.99 29.98 C 72.33
++30.01 80.67 30.01 89.01 29.98 C 90.29 30.11 92.09 29.72 92.83 31.10 C 93.21
++33.04 93.04 35.04 93.07 37.00 C 93.82 37.00 95.31 37.00 96.06 37.00 C 95.83
++34.13 96.87 30.67 94.70 28.33 C 92.91 26.60 90.21 27.08 87.96 26.98 C 78.93
++27.12 69.88 26.80 60.85 27.13 C 56.07 27.81 57.06 33.53 57.06 37.00 M 57.06
++40.00 C 57.06 40.75 57.06 42.25 57.06 43.00 C 57.81 43.00 59.31 43.00 60.06
++43.00 C 60.06 42.25 60.06 40.75 60.06 40.00 C 59.31 40.00 57.81 40.00 57.06
++40.00 M 93.06 40.00 C 93.06 40.75 93.06 42.25 93.06 43.00 C 93.81 43.00 95.31
++43.00 96.06 43.00 C 96.06 42.25 96.06 40.75 96.06 40.00 C 95.31 40.00 93.81
++40.00 93.06 40.00 M 57.06 46.00 C 57.06 46.75 57.06 48.25 57.06 49.00 C 57.81
++49.00 59.31 49.00 60.06 49.00 C 60.06 48.25 60.06 46.75 60.06 46.00 C 59.31
++46.00 57.81 46.00 57.06 46.00 M 93.06 46.00 C 93.06 46.75 93.06 48.25 93.06
++49.00 C 93.81 49.00 95.31 49.00 96.06 49.00 C 96.06 48.25 96.06 46.75 96.06
++46.00 C 95.31 46.00 93.81 46.00 93.06 46.00 M 57.06 52.00 C 57.06 52.75 57.06
++54.25 57.06 55.00 C 57.81 55.00 59.31 55.00 60.06 55.00 C 60.06 54.25 60.06
++52.75 60.06 52.00 C 59.31 52.00 57.81 52.00 57.06 52.00 M 93.07 52.00 C 93.06
++52.74 93.05 54.22 93.04 54.96 C 93.79 54.99 95.30 55.03 96.06 55.06 C 96.06
++54.29 96.06 52.77 96.06 52.00 C 95.31 52.00 93.82 52.00 93.07 52.00 M 30.41
++57.58 C 28.76 58.33 27.89 60.16 28.07 61.92 C 28.09 71.97 27.98 82.02 28.12
++92.07 C 28.14 94.52 30.65 96.19 32.95 95.99 C 52.35 96.01 71.75 96.02 91.15
++95.98 C 93.90 96.27 96.37 93.83 96.04 91.07 C 96.08 81.36 96.08 71.64 96.04
++61.93 C 96.39 59.17 93.86 56.89 91.19 57.04 C 72.46 56.94 53.73 57.05 35.00
++56.98 C 33.46 57.04 31.83 56.89 30.41 57.58 Z" />
++    <path
++        android:fillColor="#d9d9d9"
++        android:fillAlpha="0.85"
++        android:strokeAlpha="0.85"
++        android:strokeWidth="1"
++        android:pathData="M 39.06 60.00 C 55.06 60.00 71.06 60.00 87.06 60.00 C 87.06 71.00 87.06 82.00
++87.06 93.00 C 71.06 93.00 55.06 93.00 39.06 93.00 C 39.06 82.00 39.06 71.00
++39.06 60.00 Z" />
++    <path
++        android:fillColor="#d9d9d9"
++        android:fillAlpha="0.85"
++        android:strokeAlpha="0.85"
++        android:strokeWidth="1"
++        android:pathData="M 32.41 68.28 C 33.01 68.23 34.22 68.13 34.83 68.08 C 35.27 73.10 35.01 78.16
++35.05 83.20 C 35.48 84.95 32.79 85.78 32.13 84.12 C 32.18 78.86 31.64 73.47
++32.41 68.28 Z" />
++    <path
++        android:fillColor="#d9d9d9"
++        android:fillAlpha="0.85"
++        android:strokeAlpha="0.85"
++        android:strokeWidth="1"
++        android:pathData="M 90.45 75.35 C 91.86 74.04 93.92 76.24 92.63 77.58 C 91.17 79.06 89.06 76.79
++90.45 75.35 Z" />
++</vector>
+\ No newline at end of file
+diff --git a/SystemUI/res/drawable/ic_qs_wifi_disabled.xml b/SystemUI/res/drawable/ic_qs_wifi_disabled.xml
+index c505783..5998eb5 100644
+--- a/SystemUI/res/drawable/ic_qs_wifi_disabled.xml
++++ b/SystemUI/res/drawable/ic_qs_wifi_disabled.xml
+@@ -1,27 +1,58 @@
+-<!--
+-Copyright (C) 2014 The Android Open Source Project
+-
+-   Licensed under the Apache License, Version 2.0 (the "License");
+-    you may not use this file except in compliance with the License.
+-    You may obtain a copy of the License at
+-
+-         http://www.apache.org/licenses/LICENSE-2.0
+-
+-    Unless required by applicable law or agreed to in writing, software
+-    distributed under the License is distributed on an "AS IS" BASIS,
+-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-    See the License for the specific language governing permissions and
+-    limitations under the License.
+--->
++<?xml version="1.0" encoding="utf-8"?>
+ <vector xmlns:android="http://schemas.android.com/apk/res/android"
+-        android:width="32.0dp"
+-        android:height="29.5dp"
+-        android:viewportWidth="26.0"
+-        android:viewportHeight="24.0">
++    android:width="128dp"
++    android:height="128dp"
++    android:viewportWidth="128"
++    android:viewportHeight="128">
++
++    <path
++        android:fillColor="#8d939e"
++        android:fillAlpha="0.90"
++        android:strokeAlpha="0.90"
++        android:strokeWidth="1"
++        android:pathData="M 59.48 0.00 L 67.68 0.00 C 81.50 0.91 95.03 6.19 105.55 15.26 C 118.75 26.39
++126.96 43.05 128.00 60.26 L 128.00 67.82 C 126.88 86.15 117.58 103.82 102.89
++114.88 C 93.05 122.56 80.90 126.86 68.53 128.00 L 59.46 128.00 C 42.58 126.62
++26.28 118.63 15.33 105.64 C 6.39 95.32 1.16 82.08 0.00 68.52 L 0.00 60.20 C 1.02
++43.98 8.34 28.25 20.28 17.19 C 30.89 7.17 44.98 1.24 59.48 0.00 M 54.59 2.79 C
++40.99 4.81 28.18 11.63 18.82 21.70 C 8.07 33.00 2.03 48.52 2.01 64.09 C 2.09
++76.95 6.18 89.78 13.76 100.19 C 23.21 113.33 37.94 122.59 53.95 125.11 C 67.36
++127.44 81.51 124.96 93.45 118.48 C 108.23 110.51 119.52 96.33 123.82 80.08 C
++127.26 67.57 126.52 54.02 121.87 41.92 C 116.66 28.21 106.38 16.53 93.49 9.55 C
++81.73 3.16 67.83 0.63 54.59 2.79 Z" />
++    <path
++        android:fillColor="#8d939e"
++        android:fillAlpha="0.90"
++        android:strokeAlpha="0.90"
++        android:strokeWidth="1"
++        android:pathData="M 55.46 40.85 C 69.28 37.93 83.94 42.64 94.53 51.71 C 96.17 52.47 96.16 54.67
++94.10 54.83 C 84.61 45.77 70.98 41.17 57.95 43.16 C 48.96 44.30 40.66 48.68
++33.98 54.70 L 33.02 54.57 C 32.81 54.16 32.38 53.35 32.17 52.94 C 38.61 46.85
++46.79 42.70 55.46 40.85 Z" />
++    <path
++        android:fillColor="#8d939e"
++        android:fillAlpha="0.90"
++        android:strokeAlpha="0.90"
++        android:strokeWidth="1"
++        android:pathData="M 40.38 61.95 C 46.62 56.44 54.60 52.73 63.01 52.58 C 72.09 52.16 80.89 56.00
++87.62 61.95 C 87.19 62.42 86.34 63.36 85.92 63.83 C 79.85 58.60 72.11 55.01
++63.99 55.16 C 55.88 55.02 48.14 58.61 42.08 63.83 C 41.66 63.36 40.81 62.42
++40.38 61.95 Z" />
+     <path
+-        android:fillColor="#4DFFFFFF"
+-        android:pathData="M17.500000,16.500000L5.800000,3.400000c0.000000,0.000000 0.000000,0.000000 0.000000,0.000000l-2.700000,-3.000000L1.600000,1.800000l2.200000,2.500000c-2.000000,1.000000 -3.200000,2.000000 -3.400000,2.200000L13.000000,22.000000l0.000000,0.000000l0.000000,0.000000l0.000000,0.000000l0.000000,0.000000l3.200000,-3.900000l2.400000,2.700000l1.500000,-1.400000L17.500000,16.500000L17.500000,16.500000z"/>
++        android:fillColor="#8d939e"
++        android:fillAlpha="0.90"
++        android:strokeAlpha="0.90"
++        android:strokeWidth="1"
++        android:pathData="M 48.98 70.84 C 57.13 63.23 70.84 63.24 79.01 70.81 C 78.55 71.26 77.62 72.17
++77.15 72.62 C 69.95 66.01 58.04 66.01 50.84 72.63 C 50.38 72.18 49.44 71.29
++48.98 70.84 Z" />
+     <path
+-        android:fillColor="#4DFFFFFF"
+-        android:pathData="M25.600000,6.500000C25.100000,6.100000 20.299999,2.100000 13.000000,2.100000c-1.900000,0.000000 -3.600000,0.300000 -5.200000,0.700000L18.700001,15.000000L25.600000,6.500000z"/>
+-</vector>
++        android:fillColor="#8d939e"
++        android:fillAlpha="0.90"
++        android:strokeAlpha="0.90"
++        android:strokeWidth="1"
++        android:pathData="M 62.38 75.54 C 67.15 74.00 71.98 79.86 69.52 84.22 C 68.02 87.96 62.60 89.47
++59.89 86.16 C 56.21 83.10 57.94 76.81 62.38 75.54 M 62.26 78.31 C 60.25 79.67
++59.64 82.76 61.68 84.39 C 63.95 86.70 68.10 84.24 67.57 81.20 C 67.30 78.66
++64.54 77.33 62.26 78.31 Z" />
++</vector>
+\ No newline at end of file
+diff --git a/SystemUI/res/drawable/ic_signal_airplane_disable.xml b/SystemUI/res/drawable/ic_signal_airplane_disable.xml
+index 09a67e1..c641b5c 100644
+--- a/SystemUI/res/drawable/ic_signal_airplane_disable.xml
++++ b/SystemUI/res/drawable/ic_signal_airplane_disable.xml
+@@ -1,57 +1,46 @@
+ <?xml version="1.0" encoding="utf-8"?>
+-<!--
+-     Copyright (C) 2014 The Android Open Source Project
+-
+-     Licensed under the Apache License, Version 2.0 (the "License");
+-     you may not use this file except in compliance with the License.
+-     You may obtain a copy of the License at
+-
+-          http://www.apache.org/licenses/LICENSE-2.0
+-
+-     Unless required by applicable law or agreed to in writing, software
+-     distributed under the License is distributed on an "AS IS" BASIS,
+-     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-     See the License for the specific language governing permissions and
+-     limitations under the License.
+--->
+ <vector xmlns:android="http://schemas.android.com/apk/res/android"
+-    android:name="root"
+-    android:alpha="1.0"
+-    android:height="48dp"
+-    android:width="48dp"
+-    android:viewportHeight="48"
+-    android:viewportWidth="48" >
+-    <group
+-        android:name="ic_signal_airplane"
+-        android:translateX="21.9995"
+-        android:translateY="25.73401" >
+-        <group
+-            android:name="ic_signal_airplane_pivot"
+-            android:translateX="-23.21545"
+-            android:translateY="-18.86649" >
+-            <clip-path
+-                android:name="mask"
+-                android:pathData="M 37.8337860107,-40.4599914551 c 0.0,0.0 -35.8077850342,31.5523681641 -35.8077850342,31.5523681641 c 0.0,0.0 9.55097961426,9.55285644531 9.55097961426,9.55285644531 c 0.0,0.0 -2.61698913574,2.09387207031 -2.61698913574,2.09387207031 c 0.0,0.0 -9.75096130371,-9.56428527832 -9.75096130371,-9.56428527832 c 0.0,0.0 -34.6200408936,25.4699249268 -34.6200408936,25.4699249268 c 0.0,0.0 55.9664764404,69.742401123 55.9664764404,69.742401123 c 0.0,0.0 73.2448120117,-59.1047973633 73.2448120117,-59.1047973633 c 0.0,0.0 -55.9664916992,-69.7423400879 -55.9664916992,-69.7423400879 Z" />
+-            <group
+-                android:name="cross" >
+-                <path
+-                    android:name="cross_1"
+-                    android:pathData="M 7.54049682617,3.9430847168 c 0.0,0.0 0.324981689453,0.399978637695 0.324981689453,0.399978637695 "
+-                    android:strokeColor="#FFFFFFFF"
+-                    android:strokeAlpha="0"
+-                    android:strokeWidth="3.5"
+-                    android:fillColor="#00000000" />
+-            </group>
+-            <group
+-                android:name="plane"
+-                android:translateX="23.481"
+-                android:translateY="18.71151" >
+-                <path
+-                    android:name="plane_1"
+-                    android:pathData="M 18.9439849854,7.98849487305 c 0.0,0.0 0.0,-4.0 0.0,-4.0 c 0.0,0.0 -16.0,-10.0 -16.0,-10.0 c 0.0,0.0 0.0,-11.0 0.0,-11.0 c 0.0,-1.70001220703 -1.30000305176,-3.0 -3.0,-3.0 c -1.69999694824,0.0 -3.0,1.29998779297 -3.0,3.0 c 0.0,0.0 0.0,11.0 0.0,11.0 c 0.0,0.0 -16.0,10.0 -16.0,10.0 c 0.0,0.0 0.0,4.0 0.0,4.0 c 0.0,0.0 16.0,-5.0 16.0,-5.0 c 0.0,0.0 0.0,11.0 0.0,11.0 c 0.0,0.0 -4.0,3.0 -4.0,3.0 c 0.0,0.0 0.0,3.0 0.0,3.0 c 0.0,0.0 7.0,-2.0 7.0,-2.0 c 0.0,0.0 7.0,2.0 7.0,2.0 c 0.0,0.0 0.0,-3.0 0.0,-3.0 c 0.0,0.0 -4.0,-3.0 -4.0,-3.0 c 0.0,0.0 0.0,-11.0 0.0,-11.0 c 0.0,0.0 16.0,5.0 16.0,5.0 Z"
+-                    android:fillColor="#FFFFFFFF"
+-                    android:fillAlpha="1" />
+-            </group>
+-        </group>
+-    </group>
+-</vector>
++    android:width="128dp"
++    android:height="128dp"
++    android:viewportWidth="128"
++    android:viewportHeight="128">
++
++    <path
++        android:fillColor="#8e939f"
++        android:fillAlpha="0.90"
++        android:strokeAlpha="0.90"
++        android:strokeWidth="1"
++        android:pathData="M 59.50 0.00 L 67.73 0.00 C 81.54 0.93 95.05 6.20 105.55 15.27 C 118.76 26.40
++126.96 43.07 128.00 60.29 L 128.00 67.75 C 126.91 85.88 117.84 103.36 103.44
++114.46 C 93.49 122.38 81.11 126.86 68.50 128.00 L 59.61 128.00 C 42.43 126.66
++25.86 118.43 14.87 105.08 C 6.19 94.84 1.13 81.81 0.00 68.48 L 0.00 60.24 C 1.01
++44.02 8.32 28.29 20.25 17.22 C 30.86 7.17 44.98 1.24 59.50 0.00 M 54.63 2.78 C
++30.10 6.21 8.96 25.87 3.65 50.04 C -0.46 67.19 3.40 85.99 13.78 100.21 C 23.04
++113.08 37.36 122.22 53.00 124.95 C 66.67 127.54 81.18 125.13 93.40 118.51 C
++105.03 112.22 114.58 102.13 120.15 90.13 C 126.13 77.39 127.59 62.58 124.08
++48.93 C 120.67 35.13 112.26 22.69 100.84 14.24 C 87.79 4.48 70.73 0.17 54.63
++2.78 Z" />
++    <path
++        android:fillColor="#8e939f"
++        android:fillAlpha="0.90"
++        android:strokeAlpha="0.90"
++        android:strokeWidth="1"
++        android:pathData="M 82.58 37.53 C 87.42 34.89 93.72 42.47 89.76 46.61 C 86.84 49.86 83.60 52.80
++80.53 55.89 C 82.15 64.61 83.38 73.40 85.17 82.09 C 83.13 84.26 80.99 86.34
++78.84 88.40 C 75.50 81.56 72.05 74.77 68.76 67.89 C 64.88 71.00 61.68 74.85
++58.02 78.21 C 58.17 80.91 58.40 83.60 58.69 86.29 C 57.25 87.72 55.79 89.18
++54.87 91.02 C 52.78 87.65 50.48 84.34 49.16 80.58 C 48.42 78.69 46.17 78.41
++44.59 77.54 C 41.99 76.18 39.41 74.75 36.94 73.15 C 38.59 72.05 40.10 70.75
++41.41 69.26 C 44.28 69.30 47.15 69.47 50.03 69.59 C 53.31 66.16 56.85 62.99
++60.07 59.50 C 53.20 56.05 46.28 52.70 39.43 49.20 C 41.43 47.20 43.44 45.21
++45.46 43.23 C 54.29 44.72 63.07 46.43 71.90 47.92 C 75.41 44.41 78.81 40.77
++82.58 37.53 M 82.63 40.67 C 79.04 43.82 75.95 47.51 72.33 50.63 C 63.81 48.73
++55.13 47.62 46.63 45.67 C 45.54 46.60 44.48 47.55 43.45 48.54 C 50.36 52.05
++57.35 55.40 64.25 58.93 C 59.72 63.23 55.33 67.69 50.91 72.11 C 47.75 72.55
++43.61 70.32 41.21 73.00 C 43.18 74.14 45.17 75.40 47.52 75.52 C 49.40 76.96
++50.88 78.85 52.69 80.39 C 52.62 80.90 52.48 81.93 52.41 82.44 C 53.28 83.84
++54.13 85.24 54.98 86.65 C 57.24 84.38 55.21 80.52 55.37 77.63 C 59.81 72.86
++64.68 68.52 69.08 63.72 C 72.96 70.38 76.01 77.50 79.54 84.36 C 80.58 83.35
++81.60 82.33 82.59 81.27 C 80.87 72.55 79.38 63.79 77.97 55.02 C 81.27 51.65
++84.82 48.51 87.92 44.96 C 89.84 41.88 85.24 38.10 82.63 40.67 Z" />
++</vector>
+\ No newline at end of file
+diff --git a/SystemUI/res/drawable/ic_signal_airplane_enable.xml b/SystemUI/res/drawable/ic_signal_airplane_enable.xml
+index e30b21f..78f4955 100644
+--- a/SystemUI/res/drawable/ic_signal_airplane_enable.xml
++++ b/SystemUI/res/drawable/ic_signal_airplane_enable.xml
+@@ -1,57 +1,41 @@
+ <?xml version="1.0" encoding="utf-8"?>
+-<!--
+-     Copyright (C) 2014 The Android Open Source Project
+-
+-     Licensed under the Apache License, Version 2.0 (the "License");
+-     you may not use this file except in compliance with the License.
+-     You may obtain a copy of the License at
+-
+-          http://www.apache.org/licenses/LICENSE-2.0
+-
+-     Unless required by applicable law or agreed to in writing, software
+-     distributed under the License is distributed on an "AS IS" BASIS,
+-     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-     See the License for the specific language governing permissions and
+-     limitations under the License.
+--->
+ <vector xmlns:android="http://schemas.android.com/apk/res/android"
+-    android:name="root"
+-    android:alpha="0.3"
+-    android:height="48dp"
+-    android:width="48dp"
+-    android:viewportHeight="48"
+-    android:viewportWidth="48" >
+-    <group
+-        android:name="ic_signal_airplane"
+-        android:translateX="21.9995"
+-        android:translateY="25.73401" >
+-        <group
+-            android:name="ic_signal_airplane_pivot"
+-            android:translateX="-23.21545"
+-            android:translateY="-18.86649" >
+-            <clip-path
+-                android:name="mask"
+-                android:pathData="M 37.8337860107,-40.3974914551 c 0.0,0.0 -35.8077850342,31.5523681641 -35.8077850342,31.5523681641 c 0.0,0.0 40.9884796143,40.9278411865 40.9884796143,40.9278411865 c 0.0,0.0 -2.61700439453,2.0938873291 -2.61700439453,2.0938873291 c 0.0,0.0 -41.1884460449,-40.9392852783 -41.1884460449,-40.9392852783 c 0.0,0.0 -34.6200408936,25.4699249268 -34.6200408936,25.4699249268 c 0.0,0.0 55.9664764404,69.742401123 55.9664764404,69.742401123 c 0.0,0.0 73.2448120117,-59.1047973633 73.2448120117,-59.1047973633 c 0.0,0.0 -55.9664916992,-69.7423400879 -55.9664916992,-69.7423400879 Z" />
+-            <group
+-                android:name="cross" >
+-                <path
+-                    android:name="cross_1"
+-                    android:pathData="M 7.54049682617,3.9430847168 c 0.0,0.0 31.5749816895,31.4499664307 31.5749816895,31.4499664307 "
+-                    android:strokeColor="#FFFFFFFF"
+-                    android:strokeAlpha="1"
+-                    android:strokeWidth="3.5"
+-                    android:fillColor="#00000000" />
+-            </group>
+-            <group
+-                android:name="plane"
+-                android:translateX="23.481"
+-                android:translateY="18.71151" >
+-                <path
+-                    android:name="plane_1"
+-                    android:pathData="M 18.9439849854,7.98849487305 c 0.0,0.0 0.0,-4.0 0.0,-4.0 c 0.0,0.0 -16.0,-10.0 -16.0,-10.0 c 0.0,0.0 0.0,-11.0 0.0,-11.0 c 0.0,-1.70001220703 -1.30000305176,-3.0 -3.0,-3.0 c -1.69999694824,0.0 -3.0,1.29998779297 -3.0,3.0 c 0.0,0.0 0.0,11.0 0.0,11.0 c 0.0,0.0 -16.0,10.0 -16.0,10.0 c 0.0,0.0 0.0,4.0 0.0,4.0 c 0.0,0.0 16.0,-5.0 16.0,-5.0 c 0.0,0.0 0.0,11.0 0.0,11.0 c 0.0,0.0 -4.0,3.0 -4.0,3.0 c 0.0,0.0 0.0,3.0 0.0,3.0 c 0.0,0.0 7.0,-2.0 7.0,-2.0 c 0.0,0.0 7.0,2.0 7.0,2.0 c 0.0,0.0 0.0,-3.0 0.0,-3.0 c 0.0,0.0 -4.0,-3.0 -4.0,-3.0 c 0.0,0.0 0.0,-11.0 0.0,-11.0 c 0.0,0.0 16.0,5.0 16.0,5.0 Z"
+-                    android:fillColor="#FFFFFFFF"
+-                    android:fillAlpha="1" />
+-            </group>
+-        </group>
+-    </group>
+-</vector>
++    android:width="124dp"
++    android:height="124dp"
++    android:viewportWidth="124"
++    android:viewportHeight="124">
++
++    <path
++        android:fillColor="#d9d9d9"
++        android:fillAlpha="0.85"
++        android:strokeAlpha="0.85"
++        android:strokeWidth="1"
++        android:pathData="M 52.62 1.77 C 66.57 -0.43 81.26 2.41 93.34 9.74 C 106.45 17.55 116.37 30.48
++120.60 45.13 C 124.56 59.00 123.54 74.33 117.39 87.41 C 110.71 102.15 97.84
++113.96 82.59 119.37 C 69.42 124.16 54.58 124.16 41.41 119.39 C 26.14 113.99
++13.26 102.19 6.56 87.44 C -0.12 73.24 -0.79 56.38 4.47 41.62 C 11.71 20.90 30.85
++4.89 52.62 1.77 M 80.87 33.87 C 77.42 37.10 74.18 40.55 70.82 43.88 C 60.92
++42.16 51.06 40.24 41.16 38.50 C 38.92 40.75 36.68 43.00 34.44 45.25 C 42.21
++49.14 49.98 53.03 57.75 56.90 C 53.92 60.76 50.06 64.58 46.24 68.46 C 43.12
++68.36 40.01 68.01 36.88 68.04 C 35.05 69.37 33.59 71.12 31.99 72.70 C 35.57
++74.64 38.97 76.92 42.76 78.45 C 43.96 78.92 45.09 79.80 45.46 81.08 C 46.83
++85.02 49.35 88.38 51.35 91.99 C 52.85 90.50 54.34 89.01 55.85 87.54 C 55.64
++84.44 55.38 81.34 55.12 78.24 C 59.14 74.20 63.17 70.17 67.21 66.15 C 71.08
++73.95 74.90 81.78 78.75 89.59 C 81.04 87.30 83.32 85.00 85.63 82.72 C 83.94
++72.75 82.23 62.79 80.53 52.82 C 83.71 49.55 87.05 46.43 90.16 43.10 C 92.64
++40.67 92.54 36.34 90.06 33.96 C 87.68 31.40 83.31 31.41 80.87 33.87 Z" />
++    <path
++        android:fillColor="#d9d9d9"
++        android:fillAlpha="0.85"
++        android:strokeAlpha="0.85"
++        android:strokeWidth="1"
++        android:pathData="M 82.75 35.70 C 84.89 33.48 88.95 34.99 89.37 37.95 C 89.75 39.76 88.48 41.21
++87.30 42.38 C 84.12 45.57 80.93 48.74 77.75 51.94 C 79.44 61.90 81.15 71.86
++82.84 81.83 C 81.72 82.95 80.59 84.07 79.47 85.18 C 75.59 77.38 71.82 69.53
++67.94 61.74 C 62.75 66.89 57.62 72.09 52.43 77.24 C 52.28 80.77 54.21 84.83
++52.05 87.97 C 51.07 85.72 48.12 83.55 49.41 80.93 C 47.35 78.79 45.25 76.69
++43.09 74.65 C 40.43 75.53 38.31 73.00 36.07 71.99 C 39.18 69.41 43.55 71.45
++47.23 71.12 C 52.20 66.15 57.16 61.19 62.13 56.22 C 54.36 52.33 46.59 48.43
++38.82 44.55 C 39.90 43.46 40.97 42.37 42.05 41.29 C 51.93 43.05 61.79 44.95
++71.68 46.67 C 75.39 43.03 78.92 39.20 82.75 35.70 Z" />
++</vector>
+\ No newline at end of file
+diff --git a/SystemUI/res/drawable/ic_signal_flashlight_disable.xml b/SystemUI/res/drawable/ic_signal_flashlight_disable.xml
+index 35844b7..d70f70d 100644
+--- a/SystemUI/res/drawable/ic_signal_flashlight_disable.xml
++++ b/SystemUI/res/drawable/ic_signal_flashlight_disable.xml
+@@ -1,57 +1,60 @@
+ <?xml version="1.0" encoding="utf-8"?>
+-<!--
+-     Copyright (C) 2014 The Android Open Source Project
+-
+-     Licensed under the Apache License, Version 2.0 (the "License");
+-     you may not use this file except in compliance with the License.
+-     You may obtain a copy of the License at
+-
+-          http://www.apache.org/licenses/LICENSE-2.0
+-
+-     Unless required by applicable law or agreed to in writing, software
+-     distributed under the License is distributed on an "AS IS" BASIS,
+-     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-     See the License for the specific language governing permissions and
+-     limitations under the License.
+--->
+ <vector xmlns:android="http://schemas.android.com/apk/res/android"
+-    android:name="root"
+-    android:alpha="1.0"
+-    android:height="48dp"
+-    android:width="48dp"
+-    android:viewportHeight="48"
+-    android:viewportWidth="48" >
+-    <group
+-        android:name="ic_signal_flashlight"
+-        android:translateX="21.9995"
+-        android:translateY="25.73401" >
+-        <group
+-            android:name="ic_signal_flashlight_pivot"
+-            android:translateX="-23.21545"
+-            android:translateY="-18.86649" >
+-            <clip-path
+-                android:name="mask"
+-                android:pathData="M 37.8337860107,-39.2849731445 c 0.0,0.0 -35.8077850342,31.5523681641 -35.8077850342,31.5523681641 c 0.0,0.0 9.55097961426,9.55285644531 9.55097961426,9.55285644531 c 0.0,0.0 -2.61698913574,2.09387207031 -2.61698913574,2.09387207031 c 0.0,0.0 -9.75096130371,-9.56428527832 -9.75096130371,-9.56428527832 c 0.0,0.0 -34.6200408936,25.4699249268 -34.6200408936,25.4699249268 c 0.0,0.0 55.9664764404,69.742401123 55.9664764404,69.742401123 c 0.0,0.0 73.2448120117,-59.1047973633 73.2448120117,-59.1047973633 c 0.0,0.0 -55.9664916992,-69.7423400879 -55.9664916992,-69.7423400879 Z" />
+-            <group
+-                android:name="cross" >
+-                <path
+-                    android:name="cross_1"
+-                    android:pathData="M 8.34049987793,5.6930847168 c 0.0,0.0 0.274993896484,0.29997253418 0.274993896484,0.29997253418 "
+-                    android:strokeColor="#FFFFFFFF"
+-                    android:strokeAlpha="0"
+-                    android:strokeWidth="3.5"
+-                    android:fillColor="#00000000" />
+-            </group>
+-            <group
+-                android:name="flashlight"
+-                android:translateX="25.06235"
+-                android:translateY="22.48294" >
+-                <path
+-                    android:name="light"
+-                    android:pathData="M -9.40809631348,-23.6970062256 c 0.0,0.0 18.8699951172,0.0 18.8699951172,0.0 c 0.0,0.0 0.0,3.91700744629 0.0,3.91700744629 c 0.0,0.0 -18.8699951172,0.0 -18.8699951172,0.0 c 0.0,0.0 0.0,-3.91700744629 0.0,-3.91700744629 Z M 9.4615020752,-15.6629943848 c 0.0,0.0 0.0,-0.639999389648 0.0,-0.639999389649 c 0.0,0.0 -18.8699951172,0.0 -18.8699951172,0.0 c 0.0,0.0 0.0,0.639999389648 0.0,0.639999389649 c 0.0,0.0 -0.581008911133,5.18899536133 3.82598876953,7.52299499512 c 0.0,0.0 0.0,24.4429931641 0.0,24.4429931641 c 0.0,0.0 11.2129974365,0.0 11.2129974365,0.0 c 0.0,0.0 0.0,-24.4769897461 0.0,-24.4769897461 c 4.35900878906,-2.35301208496 3.83100891113,-7.48899841309 3.83100891113,-7.48899841309 Z M 0.0234985351562,0 c -1.52299499512,0 -2.75700378418,-1.23399353027 -2.75700378418,-2.75700378418 c 0.0,-1.52299499512 1.23400878906,-2.75700378418 2.75700378418,-2.75700378418 c 1.52299499512,0.0 2.75700378418,1.23400878906 2.75700378418,2.75700378418 c 0.0,1.52200317383 -1.23400878906,2.75700378418 -2.75700378418,2.75700378418 Z"
+-                    android:fillColor="#FFFFFFFF"
+-                    android:fillAlpha="1" />
+-            </group>
+-        </group>
+-    </group>
+-</vector>
++    android:width="128dp"
++    android:height="128dp"
++    android:viewportWidth="128"
++    android:viewportHeight="128">
++
++    <path
++        android:fillColor="#9da3b0"
++        android:fillAlpha="1.00"
++        android:strokeAlpha="1.00"
++        android:strokeWidth="1"
++        android:pathData="M 60.32 0.00 L 66.96 0.00 C 81.78 0.83 96.30 6.67 107.19 16.80 C 119.58 27.98
++127.06 44.16 128.00 60.79 L 128.00 67.00 C 127.13 84.19 119.17 100.90 106.12
++112.17 C 95.58 121.57 81.83 126.91 67.80 128.00 L 60.62 128.00 C 46.18 127.04
++32.03 121.44 21.30 111.66 C 8.74 100.55 1.10 84.35 0.00 67.66 L 0.00 60.96 C
++0.88 44.26 8.39 28.00 20.83 16.78 C 31.55 6.81 45.78 1.06 60.32 0.00 M 54.57
++2.73 C 40.69 4.81 27.66 11.86 18.23 22.24 C 8.79 32.51 2.99 46.05 2.14 59.97 C
++1.16 74.19 5.33 88.69 13.72 100.21 C 22.56 112.54 36.06 121.45 50.91 124.60 C
++64.26 127.50 78.57 125.85 90.86 119.86 C 105.02 113.08 116.39 100.72 121.94
++86.04 C 127.33 72.03 127.34 56.04 121.96 42.02 C 116.42 27.31 105.04 14.93 90.86
++8.14 C 79.69 2.70 66.85 0.84 54.57 2.73 Z" />
++    <path
++        android:fillColor="#9da3b0"
++        android:fillAlpha="1.00"
++        android:strokeAlpha="1.00"
++        android:strokeWidth="1"
++        android:pathData="M 61.70 53.72 C 64.55 48.06 64.60 41.07 68.72 36.00 C 69.60 36.07 71.38 36.22
++72.26 36.29 C 78.71 43.42 85.88 49.91 92.49 56.89 C 94.42 60.82 89.93 62.82
++86.88 63.69 C 82.16 65.59 76.47 65.98 72.96 70.07 C 65.52 77.41 57.36 84.09
++50.19 91.65 C 48.65 91.61 46.73 92.44 45.50 91.16 C 42.60 88.31 39.62 85.55
++36.95 82.48 C 35.66 81.17 36.29 79.21 36.30 77.59 C 44.66 69.52 53.43 61.87
++61.70 53.72 M 70.85 44.90 C 69.92 47.28 69.27 49.75 68.61 52.22 C 69.02 52.42
++69.85 52.83 70.26 53.03 C 70.86 51.00 71.34 48.93 71.81 46.86 C 72.44 47.38
++73.71 48.43 74.34 48.95 C 75.75 46.60 72.76 45.14 70.85 44.90 M 57.76 71.16 C
++59.40 70.66 60.98 69.77 61.67 68.11 C 59.94 65.68 56.14 68.80 57.76 71.16 M
++54.51 71.54 C 52.98 72.33 51.36 74.51 53.97 75.23 C 55.37 74.38 57.91 72.94
++55.98 71.15 C 55.61 71.25 54.88 71.44 54.51 71.54 Z" />
++    <path
++        android:fillColor="#9da3b0"
++        android:fillAlpha="1.00"
++        android:strokeAlpha="1.00"
++        android:strokeWidth="1"
++        android:pathData="M 81.03 36.05 C 82.97 35.79 83.49 37.22 83.77 38.82 C 82.66 39.70 81.69 41.12
++80.07 40.88 C 78.06 39.48 80.45 37.56 81.03 36.05 Z" />
++    <path
++        android:fillColor="#9da3b0"
++        android:fillAlpha="1.00"
++        android:strokeAlpha="1.00"
++        android:strokeWidth="1"
++        android:pathData="M 86.07 40.86 C 86.67 41.17 87.85 41.77 88.44 42.07 C 87.64 44.27 85.05 47.10
++83.24 43.97 C 84.17 42.93 85.12 41.89 86.07 40.86 Z" />
++    <path
++        android:fillColor="#9da3b0"
++        android:fillAlpha="1.00"
++        android:strokeAlpha="1.00"
++        android:strokeWidth="1"
++        android:pathData="M 89.43 46.45 C 90.67 44.58 93.27 45.86 93.07 47.94 C 91.95 48.64 90.86 49.38
++89.80 50.16 C 88.06 49.54 87.75 47.38 89.43 46.45 Z" />
++</vector>
+\ No newline at end of file
+diff --git a/SystemUI/res/drawable/ic_signal_flashlight_enable.xml b/SystemUI/res/drawable/ic_signal_flashlight_enable.xml
+index d53608f..971f38c 100644
+--- a/SystemUI/res/drawable/ic_signal_flashlight_enable.xml
++++ b/SystemUI/res/drawable/ic_signal_flashlight_enable.xml
+@@ -1,57 +1,43 @@
+ <?xml version="1.0" encoding="utf-8"?>
+-<!--
+-     Copyright (C) 2014 The Android Open Source Project
+-
+-     Licensed under the Apache License, Version 2.0 (the "License");
+-     you may not use this file except in compliance with the License.
+-     You may obtain a copy of the License at
+-
+-          http://www.apache.org/licenses/LICENSE-2.0
+-
+-     Unless required by applicable law or agreed to in writing, software
+-     distributed under the License is distributed on an "AS IS" BASIS,
+-     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-     See the License for the specific language governing permissions and
+-     limitations under the License.
+--->
+ <vector xmlns:android="http://schemas.android.com/apk/res/android"
+-    android:name="root"
+-    android:alpha="0.3"
+-    android:height="48dp"
+-    android:width="48dp"
+-    android:viewportHeight="48"
+-    android:viewportWidth="48" >
+-    <group
+-        android:name="ic_signal_flashlight"
+-        android:translateX="21.9995"
+-        android:translateY="25.73401" >
+-        <group
+-            android:name="ic_signal_flashlight_pivot"
+-            android:translateX="-23.21545"
+-            android:translateY="-18.86649" >
+-            <clip-path
+-                android:name="mask"
+-                android:pathData="M 37.8337860107,-39.2975769043 c 0.0,0.0 -35.8077850342,31.5523681641 -35.8077850342,31.5523681641 c 0.0,0.0 40.9884796143,40.9278411865 40.9884796143,40.9278411865 c 0.0,0.0 -2.61700439453,2.0938873291 -2.61700439453,2.0938873291 c 0.0,0.0 -41.1884460449,-40.9392852783 -41.1884460449,-40.9392852783 c 0.0,0.0 -34.6200408936,25.4699249268 -34.6200408936,25.4699249268 c 0.0,0.0 55.9664764404,69.742401123 55.9664764404,69.742401123 c 0.0,0.0 73.2448120117,-59.1047973633 73.2448120117,-59.1047973633 c 0.0,0.0 -55.9664916992,-69.7423400879 -55.9664916992,-69.7423400879 Z" />
+-            <group
+-                android:name="cross" >
+-                <path
+-                    android:name="cross_1"
+-                    android:pathData="M 8.34049987793,5.6930847168 c 0.0,0.0 29.7749786377,29.7999725342 29.7749786377,29.7999725342 "
+-                    android:strokeColor="#FFFFFFFF"
+-                    android:strokeAlpha="1"
+-                    android:strokeWidth="3.5"
+-                    android:fillColor="#00000000" />
+-            </group>
+-            <group
+-                android:name="flashlight"
+-                android:translateX="25.06235"
+-                android:translateY="22.48294" >
+-                <path
+-                    android:name="light"
+-                    android:pathData="M -9.40809631348,-23.6970062256 c 0.0,0.0 18.8699951172,0.0 18.8699951172,0.0 c 0.0,0.0 0.0,3.91700744629 0.0,3.91700744629 c 0.0,0.0 -18.8699951172,0.0 -18.8699951172,0.0 c 0.0,0.0 0.0,-3.91700744629 0.0,-3.91700744629 Z M 9.4615020752,-15.6629943848 c 0.0,0.0 0.0,-0.639999389648 0.0,-0.639999389649 c 0.0,0.0 -18.8699951172,0.0 -18.8699951172,0.0 c 0.0,0.0 0.0,0.639999389648 0.0,0.639999389649 c 0.0,0.0 -0.581008911133,5.18899536133 3.82598876953,7.52299499512 c 0.0,0.0 0.0,24.4429931641 0.0,24.4429931641 c 0.0,0.0 11.2129974365,0.0 11.2129974365,0.0 c 0.0,0.0 0.0,-24.4769897461 0.0,-24.4769897461 c 4.35900878906,-2.35301208496 3.83100891113,-7.48899841309 3.83100891113,-7.48899841309 Z M 0.0234985351562,0 c -1.52299499512,0 -2.75700378418,-1.23399353027 -2.75700378418,-2.75700378418 c 0.0,-1.52299499512 1.23400878906,-2.75700378418 2.75700378418,-2.75700378418 c 1.52299499512,0.0 2.75700378418,1.23400878906 2.75700378418,2.75700378418 c 0.0,1.52200317383 -1.23400878906,2.75700378418 -2.75700378418,2.75700378418 Z"
+-                    android:fillColor="#FFFFFFFF"
+-                    android:fillAlpha="1" />
+-            </group>
+-        </group>
+-    </group>
+-</vector>
++    android:width="124dp"
++    android:height="124dp"
++    android:viewportWidth="124"
++    android:viewportHeight="124">
++
++    <path
++        android:fillColor="#d9d9d9"
++        android:fillAlpha="0.85"
++        android:strokeAlpha="0.85"
++        android:strokeWidth="1"
++        android:pathData="M 52.62 1.77 C 66.56 -0.43 81.25 2.40 93.33 9.73 C 107.76 18.33 118.35 33.14
++121.70 49.61 C 124.33 62.47 122.83 76.23 117.08 88.06 C 109.67 103.96 95.00
++116.26 78.07 120.80 C 64.66 124.51 50.00 123.42 37.30 117.75 C 23.81 111.81
++12.61 100.79 6.52 87.36 C -0.78 71.75 -0.87 52.96 6.24 37.27 C 14.40 18.62 32.44
++4.70 52.62 1.77 M 67.16 31.27 C 65.52 31.86 64.83 33.61 64.30 35.12 C 62.76
++39.72 61.54 44.42 60.00 49.03 C 59.73 50.27 58.72 51.08 57.87 51.93 C 49.60
++59.63 41.34 67.34 33.12 75.09 C 31.16 76.76 30.50 79.60 31.35 82.01 C 32.84
++85.47 36.16 87.67 38.62 90.41 C 40.72 93.04 44.84 93.98 47.53 91.71 C 56.93
++83.34 65.81 74.38 75.25 66.06 C 79.05 64.30 83.15 63.30 87.08 61.87 C 89.53
++61.00 92.48 60.22 93.77 57.73 C 94.52 55.41 93.12 53.01 91.48 51.44 C 85.87
++45.75 80.21 40.11 74.62 34.40 C 72.82 32.24 70.12 30.18 67.16 31.27 M 81.33
++31.17 C 79.66 32.08 77.96 34.34 80.00 35.84 C 83.24 36.76 85.70 30.27 81.33
++31.17 M 83.57 39.16 C 85.37 42.56 89.01 39.67 89.27 36.84 C 86.85 35.36 84.92
++37.24 83.57 39.16 M 91.45 41.33 C 89.88 42.16 88.02 44.53 90.11 45.89 C 91.76
++46.46 92.93 44.89 93.78 43.74 C 94.64 42.36 92.89 40.49 91.45 41.33 Z" />
++    <path
++        android:fillColor="#d9d9d9"
++        android:fillAlpha="0.85"
++        android:strokeAlpha="0.85"
++        android:strokeWidth="1"
++        android:pathData="M 68.25 35.14 C 69.83 34.67 70.93 35.99 71.95 36.94 C 77.48 42.47 83.08 47.94
++88.61 53.47 C 89.67 54.32 90.02 55.65 90.24 56.93 C 85.14 58.44 80.17 60.37
++75.16 62.17 C 73.74 62.61 72.63 63.61 71.56 64.58 C 62.36 73.06 53.13 81.52
++43.89 89.96 C 40.55 86.44 37.19 82.93 33.85 79.40 C 42.89 70.91 51.89 62.39
++60.95 53.93 C 61.81 53.11 62.68 52.24 62.97 51.05 C 64.86 45.79 66.04 40.28
++68.25 35.14 M 67.62 49.43 C 70.76 49.53 69.60 44.78 70.62 42.70 C 71.84 43.40
++73.00 44.36 74.52 44.28 C 73.51 42.59 72.43 40.18 70.04 40.37 C 67.96 42.71
++67.56 46.44 67.62 49.43 M 56.25 65.84 C 55.45 66.73 54.01 67.51 54.09 68.88 C
++55.62 72.58 61.67 65.43 57.11 65.11 L 56.25 65.84 M 48.75 73.26 C 49.81 76.93
++54.26 73.43 53.72 71.00 C 51.89 68.79 50.19 72.28 48.75 73.26 Z" />
++</vector>
+\ No newline at end of file
+diff --git a/SystemUI/res/drawable/ic_signal_location_disable.xml b/SystemUI/res/drawable/ic_signal_location_disable.xml
+index 439851d..14fd4b8 100644
+--- a/SystemUI/res/drawable/ic_signal_location_disable.xml
++++ b/SystemUI/res/drawable/ic_signal_location_disable.xml
+@@ -1,57 +1,53 @@
+ <?xml version="1.0" encoding="utf-8"?>
+-<!--
+-     Copyright (C) 2014 The Android Open Source Project
+-
+-     Licensed under the Apache License, Version 2.0 (the "License");
+-     you may not use this file except in compliance with the License.
+-     You may obtain a copy of the License at
+-
+-          http://www.apache.org/licenses/LICENSE-2.0
+-
+-     Unless required by applicable law or agreed to in writing, software
+-     distributed under the License is distributed on an "AS IS" BASIS,
+-     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-     See the License for the specific language governing permissions and
+-     limitations under the License.
+--->
+ <vector xmlns:android="http://schemas.android.com/apk/res/android"
+-    android:name="root"
+-    android:alpha="1.0"
+-    android:height="48dp"
+-    android:width="48dp"
+-    android:viewportHeight="48"
+-    android:viewportWidth="48" >
+-    <group
+-        android:name="ic_signal_location"
+-        android:translateX="21.9995"
+-        android:translateY="25.73401" >
+-        <group
+-            android:name="ic_signal_location_pivot"
+-            android:translateX="-23.21545"
+-            android:translateY="-18.86649" >
+-            <clip-path
+-                android:name="mask"
+-                android:pathData="M 38.8337860107,-40.4599914551 c 0.0,0.0 -35.8077850342,31.5523681641 -35.8077850342,31.5523681641 c 0.0,0.0 7.3759765625,7.55284118652 7.3759765625,7.55284118652 c 0.0,0.0 -2.61698913574,2.0938873291 -2.61698913574,2.0938873291 c 0.0,0.0 -7.57595825195,-7.56428527832 -7.57595825195,-7.56428527832 c 0.0,0.0 -34.6200408936,25.4699249268 -34.6200408936,25.4699249268 c 0.0,0.0 55.9664764404,69.742401123 55.9664764404,69.742401123 c 0.0,0.0 73.2448120117,-59.1047973633 73.2448120117,-59.1047973633 c 0.0,0.0 -55.9664916992,-69.7423400879 -55.9664916992,-69.7423400879 Z" />
+-            <group
+-                android:name="cross" >
+-                <path
+-                    android:name="cross_1"
+-                    android:pathData="M 6.44050598145,1.9430847168 c 0.0,0.0 0.374984741211,0.399978637695 0.374984741211,0.399978637695 "
+-                    android:strokeColor="#FFFFFFFF"
+-                    android:strokeAlpha="0"
+-                    android:strokeWidth="3.5"
+-                    android:fillColor="#00000000" />
+-            </group>
+-            <group
+-                android:name="location"
+-                android:translateX="23.481"
+-                android:translateY="18.71151" >
+-                <path
+-                    android:name="pin"
+-                    android:pathData="M 1.76899719238,-20.011505127 c -7.69999694824,0.0 -14.0,6.30000305176 -14.0,14.0 c 0.0,10.5 14.0,26.0 14.0,26.0 c 0.0,0.0 14.0,-15.5 14.0,-26.0 c 0.0,-7.69999694824 -6.30000305176,-14.0 -14.0,-14.0 Z M 1.76899719238,-1.01150512695 c -2.80000305176,0.0 -5.0,-2.19999694824 -5.0,-5.0 c 0.0,-2.80000305176 2.19999694824,-5.0 5.0,-5.0 c 2.80000305176,0.0 5.0,2.19999694824 5.0,5.0 c 0.0,2.80000305176 -2.19999694824,5.0 -5.0,5.0 Z"
+-                    android:fillColor="#FFFFFFFF"
+-                    android:fillAlpha="1" />
+-            </group>
+-        </group>
+-    </group>
+-</vector>
++    android:width="128dp"
++    android:height="128dp"
++    android:viewportWidth="128"
++    android:viewportHeight="128">
++
++    <path
++        android:fillColor="#9da3b0"
++        android:fillAlpha="1.00"
++        android:strokeAlpha="1.00"
++        android:strokeWidth="1"
++        android:pathData="M 60.60 0.00 L 66.72 0.00 C 81.39 0.75 95.80 6.43 106.69 16.34 C 119.41 27.58
++127.13 44.06 128.00 60.98 L 128.00 66.78 C 127.20 84.28 119.00 101.30 105.59
++112.63 C 95.03 121.82 81.36 127.04 67.44 128.00 L 60.96 128.00 C 46.18 127.15
++31.68 121.32 20.80 111.20 C 8.47 100.06 1.00 83.97 0.00 67.41 L 0.00 61.22 C
++0.79 44.20 8.55 27.62 21.34 16.32 C 32.06 6.56 46.18 0.96 60.60 0.00 M 54.51
++2.73 C 40.65 4.83 27.63 11.88 18.22 22.26 C 8.79 32.51 3.00 46.04 2.14 59.95 C
++1.16 74.17 5.32 88.68 13.72 100.21 C 22.57 112.54 36.07 121.46 50.93 124.60 C
++64.27 127.49 78.56 125.85 90.84 119.87 C 105.00 113.10 116.38 100.74 121.93
++86.06 C 127.34 72.02 127.34 56.00 121.94 41.96 C 116.48 27.53 105.41 15.34 91.59
++8.50 C 80.22 2.78 67.07 0.79 54.51 2.73 Z" />
++    <path
++        android:fillColor="#9da3b0"
++        android:fillAlpha="1.00"
++        android:strokeAlpha="1.00"
++        android:strokeWidth="1"
++        android:pathData="M 60.40 37.37 C 63.14 37.14 65.89 37.13 68.64 37.33 L 68.58 38.13 C 76.41 40.28
++81.48 49.07 79.11 56.91 C 76.23 66.47 70.94 75.16 65.03 83.14 C 63.35 82.10
++62.07 80.60 61.04 78.95 C 56.43 71.77 51.99 64.30 49.79 55.98 C 48.04 48.41
++52.99 40.25 60.46 38.18 L 60.40 37.37 M 60.55 41.70 C 56.68 43.17 53.67 46.70
++52.97 50.79 C 51.48 57.80 57.84 65.01 64.99 64.50 C 72.53 64.49 78.49 56.07
++75.70 49.00 C 73.75 42.91 66.54 39.44 60.55 41.70 Z" />
++    <path
++        android:fillColor="#9da3b0"
++        android:fillAlpha="1.00"
++        android:strokeAlpha="1.00"
++        android:strokeWidth="1"
++        android:pathData="M 62.53 52.89 C 62.99 51.67 64.28 50.41 65.58 51.44 C 67.13 52.00 65.64 53.85
++65.53 54.85 C 64.41 54.41 63.25 53.92 62.53 52.89 Z" />
++    <path
++        android:fillColor="#9da3b0"
++        android:fillAlpha="1.00"
++        android:strokeAlpha="1.00"
++        android:strokeWidth="1"
++        android:pathData="M 34.21 77.93 C 38.35 73.73 43.96 70.15 50.09 70.66 C 46.13 71.12 42.11 72.42
++39.38 75.48 C 37.75 77.03 37.56 80.10 39.47 81.52 C 44.52 85.98 51.55 86.91
++57.98 87.83 C 64.70 88.94 71.53 87.99 78.15 86.67 C 83.22 85.54 88.76 83.72
++91.58 78.99 C 89.90 73.63 84.24 71.14 79.06 70.67 C 85.11 70.15 90.70 73.65
++94.77 77.85 C 94.78 78.92 94.79 79.99 94.79 81.07 C 92.34 83.53 89.80 86.01
++86.52 87.32 C 77.49 91.06 67.57 92.79 57.82 91.58 C 49.34 89.94 40.16 87.97
++34.24 81.10 C 34.22 80.04 34.22 78.99 34.21 77.93 Z" />
++</vector>
+\ No newline at end of file
+diff --git a/SystemUI/res/drawable/ic_signal_location_enable.xml b/SystemUI/res/drawable/ic_signal_location_enable.xml
+index 8614458..e75c699 100644
+--- a/SystemUI/res/drawable/ic_signal_location_enable.xml
++++ b/SystemUI/res/drawable/ic_signal_location_enable.xml
+@@ -1,57 +1,37 @@
+ <?xml version="1.0" encoding="utf-8"?>
+-<!--
+-     Copyright (C) 2014 The Android Open Source Project
+-
+-     Licensed under the Apache License, Version 2.0 (the "License");
+-     you may not use this file except in compliance with the License.
+-     You may obtain a copy of the License at
+-
+-          http://www.apache.org/licenses/LICENSE-2.0
+-
+-     Unless required by applicable law or agreed to in writing, software
+-     distributed under the License is distributed on an "AS IS" BASIS,
+-     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-     See the License for the specific language governing permissions and
+-     limitations under the License.
+--->
+ <vector xmlns:android="http://schemas.android.com/apk/res/android"
+-    android:name="root"
+-    android:alpha="0.3"
+-    android:height="48dp"
+-    android:width="48dp"
+-    android:viewportHeight="48"
+-    android:viewportWidth="48" >
+-    <group
+-        android:name="ic_signal_location"
+-        android:translateX="21.9995"
+-        android:translateY="25.73401" >
+-        <group
+-            android:name="ic_signal_location_pivot"
+-            android:translateX="-23.21545"
+-            android:translateY="-18.86649" >
+-            <clip-path
+-                android:name="mask"
+-                android:pathData="M 38.8337860107,-40.3974914551 c 0.0,0.0 -35.8077850342,31.5523681641 -35.8077850342,31.5523681641 c 0.0,0.0 40.9884796143,41.1153411865 40.9884796143,41.1153411865 c 0.0,0.0 -2.61700439453,2.0938873291 -2.61700439453,2.0938873291 c 0.0,0.0 -41.1884460449,-41.1267852783 -41.1884460449,-41.1267852783 c 0.0,0.0 -34.6200408936,25.4699249268 -34.6200408936,25.4699249268 c 0.0,0.0 55.9664764404,69.742401123 55.9664764404,69.742401123 c 0.0,0.0 73.2448120117,-59.1047973633 73.2448120117,-59.1047973633 c 0.0,0.0 -55.9664916992,-69.7423400879 -55.9664916992,-69.7423400879 Z" />
+-            <group
+-                android:name="cross" >
+-                <path
+-                    android:name="cross_1"
+-                    android:pathData="M 6.44050598145,1.9430847168 c 0.0,0.0 33.5749816895,33.4499664307 33.5749816895,33.4499664307 "
+-                    android:strokeColor="#FFFFFFFF"
+-                    android:strokeAlpha="1"
+-                    android:strokeWidth="3.5"
+-                    android:fillColor="#00000000" />
+-            </group>
+-            <group
+-                android:name="location"
+-                android:translateX="23.481"
+-                android:translateY="18.71151" >
+-                <path
+-                    android:name="pin"
+-                    android:pathData="M 1.76899719238,-20.011505127 c -7.69999694824,0.0 -14.0,6.30000305176 -14.0,14.0 c 0.0,10.5 14.0,26.0 14.0,26.0 c 0.0,0.0 14.0,-15.5 14.0,-26.0 c 0.0,-7.69999694824 -6.30000305176,-14.0 -14.0,-14.0 Z M 1.76899719238,-1.01150512695 c -2.80000305176,0.0 -5.0,-2.19999694824 -5.0,-5.0 c 0.0,-2.80000305176 2.19999694824,-5.0 5.0,-5.0 c 2.80000305176,0.0 5.0,2.19999694824 5.0,5.0 c 0.0,2.80000305176 -2.19999694824,5.0 -5.0,5.0 Z"
+-                    android:fillColor="#FFFFFFFF"
+-                    android:fillAlpha="1" />
+-            </group>
+-        </group>
+-    </group>
+-</vector>
++    android:width="124dp"
++    android:height="124dp"
++    android:viewportWidth="124"
++    android:viewportHeight="124">
++
++    <path
++        android:fillColor="#d9d9d9"
++        android:fillAlpha="0.85"
++        android:strokeAlpha="0.85"
++        android:strokeWidth="1"
++        android:pathData="M 52.57 1.78 C 66.54 -0.44 81.25 2.40 93.35 9.74 C 106.46 17.57 116.40 30.51
++120.61 45.19 C 124.56 59.03 123.54 74.31 117.41 87.37 C 110.73 102.16 97.81
++113.99 82.51 119.40 C 69.15 124.23 54.09 124.14 40.78 119.16 C 25.77 113.66
++13.14 101.96 6.54 87.39 C -0.12 73.19 -0.78 56.35 4.48 41.60 C 11.72 20.90 30.82
++4.91 52.57 1.78 M 45.67 47.05 C 44.82 52.79 47.62 58.13 49.72 63.27 C 53.08
++70.18 56.90 76.91 61.62 82.99 C 62.06 82.98 62.94 82.98 63.38 82.98 C 68.29
++76.71 72.27 69.72 75.65 62.52 C 77.63 57.58 80.23 52.46 79.35 46.98 C 78.41
++38.22 69.85 31.10 61.02 32.12 C 53.23 32.68 46.53 39.32 45.67 47.05 M 31.65
++74.64 C 29.72 76.23 28.22 78.94 29.46 81.41 C 32.31 86.49 38.16 88.70 43.44
++90.35 C 55.55 93.80 68.63 93.84 80.79 90.57 C 86.14 88.97 92.00 86.90 95.21
++82.01 C 96.81 79.78 95.75 76.77 93.83 75.10 C 89.72 71.28 84.08 69.63 78.67
++68.74 C 83.88 70.77 91.85 72.17 92.41 78.99 C 91.08 82.69 87.01 84.44 83.62
++85.83 C 70.77 90.25 56.56 90.39 43.55 86.56 C 39.76 85.37 35.85 83.75 33.30
++80.57 C 31.78 78.65 33.02 76.02 34.49 74.47 C 37.65 71.20 42.30 70.34 46.36
++68.72 C 41.13 69.58 35.77 71.17 31.65 74.64 Z" />
++    <path
++        android:fillColor="#d9d9d9"
++        android:fillAlpha="0.85"
++        android:strokeAlpha="0.85"
++        android:strokeWidth="1"
++        android:pathData="M 58.39 36.53 C 65.48 33.91 73.91 38.82 75.38 46.16 C 77.17 53.11 72.24 60.92
++65.15 62.12 C 58.76 63.62 51.80 59.45 49.99 53.18 C 47.58 46.54 51.70 38.61
++58.39 36.53 M 60.85 50.05 C 61.77 52.05 64.30 50.71 64.71 49.03 C 64.13 48.32
++63.56 47.61 62.99 46.89 C 61.66 47.26 59.80 48.47 60.85 50.05 Z" />
++</vector>
+\ No newline at end of file
+diff --git a/SystemUI/res/layout/quick_settings_brightness_dialog.xml b/SystemUI/res/layout/quick_settings_brightness_dialog.xml
+index 19a1ce5..126048f 100644
+--- a/SystemUI/res/layout/quick_settings_brightness_dialog.xml
++++ b/SystemUI/res/layout/quick_settings_brightness_dialog.xml
+@@ -15,8 +15,8 @@
+ -->
+ <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:systemui="http://schemas.android.com/apk/res-auto"
+-    android:paddingStart="16dp"
+-    android:paddingEnd="16dp"
++    android:paddingStart="@dimen/qs_brightness_padding_start"
++    android:paddingEnd="@dimen/qs_brightness_padding_start"
+     style="@style/BrightnessDialogContainer">
+ 
+     <ImageView
+diff --git a/SystemUI/res/layout/status_bar_toggle_slider.xml b/SystemUI/res/layout/status_bar_toggle_slider.xml
+index 13db29a..1165a1f 100644
+--- a/SystemUI/res/layout/status_bar_toggle_slider.xml
++++ b/SystemUI/res/layout/status_bar_toggle_slider.xml
+@@ -24,39 +24,64 @@
+         android:id="@+id/toggle"
+         android:layout_width="48dp"
+         android:layout_height="0dp"
++        android:layout_alignParentBottom="true"
+         android:layout_alignParentStart="true"
+         android:layout_alignParentTop="true"
+-        android:layout_alignParentBottom="true"
+-        android:button="@null"
+         android:background="@*android:drawable/switch_track_material"
+-        android:visibility="gone"
+-        />
+-    <com.android.systemui.settings.ToggleSeekBar
+-        android:id="@+id/slider"
+-        android:layout_width="0dp"
++        android:button="@null"
++        android:visibility="gone" />
++
++    <LinearLayout
++        android:id="@+id/slider_container"
++        android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+-        android:layout_toEndOf="@id/toggle"
+-        android:layout_centerVertical="true"
+-        android:layout_alignParentStart="true"
+         android:layout_alignParentEnd="true"
+-        android:paddingStart="20dp"
+-        android:paddingEnd="20dp"
+-        android:paddingTop="16dp"
+-        android:paddingBottom="16dp"
+-        android:thumb="@drawable/qucii_ic_brightness_thumb"
+-        android:splitTrack="false"
+-        />
++        android:layout_alignParentStart="true"
++        android:layout_centerVertical="true"
++        android:layout_toEndOf="@id/toggle"
++        android:padding="5dp"
++        android:layout_marginBottom="@dimen/qs_brightness_padding_top"
++        android:orientation="horizontal" >
++
++        <ImageView
++            android:id="@+id/qucii_icon_lightness_dark"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:layout_gravity="center_vertical"
++            android:layout_marginStart="8dp"
++            android:contentDescription="@null"
++            android:src="@drawable/qucii_ic_brightness_dark" />
++
++        <com.android.systemui.settings.ToggleSeekBar
++            android:id="@+id/slider"
++            style="@style/BrightnessSeekBar"
++            android:layout_width="0dp"
++            android:layout_height="wrap_content"
++            android:layout_weight="1"
++            android:layout_gravity="center_vertical"
++            android:paddingBottom="@dimen/qs_brightness_padding_top"
++            android:paddingTop="@dimen/qs_brightness_padding_top" />
++
++        <ImageView
++            android:id="@+id/icon_lightness_light"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:layout_gravity="center_vertical"
++            android:layout_marginEnd="8dp"
++            android:contentDescription="@null"
++            android:src="@drawable/qucii_ic_brightness_light" />
++    </LinearLayout>
++
+     <TextView
+         android:id="@+id/label"
+         android:layout_width="0dp"
+         android:layout_height="wrap_content"
+-        android:layout_alignStart="@id/toggle"
+         android:layout_alignEnd="@id/toggle"
++        android:layout_alignStart="@id/toggle"
+         android:layout_centerVertical="true"
+         android:gravity="center"
+         android:paddingTop="26dp"
+         android:textColor="#666666"
+         android:textSize="12sp"
+-        android:visibility="gone"
+-        />
++        android:visibility="gone" />
+ </merge>
+diff --git a/SystemUI/res/values/dimens.xml b/SystemUI/res/values/dimens.xml
+index f8463e9..376c0d5 100644
+--- a/SystemUI/res/values/dimens.xml
++++ b/SystemUI/res/values/dimens.xml
+@@ -166,9 +166,9 @@
+     <!-- The size of the gesture span needed to activate the "pull" notification expansion -->
+     <dimen name="pull_span_min">25dp</dimen>
+ 
+-    <dimen name="qs_tile_height">88dp</dimen>
+-    <dimen name="qs_tile_icon_size">24dp</dimen>
+-    <dimen name="qs_tile_text_size">12sp</dimen>
++    <dimen name="qs_tile_height">105dp</dimen><!-- modified by yangfan -->
++    <dimen name="qs_tile_icon_size">45dp</dimen>
++    <dimen name="qs_tile_text_size">13dp</dimen>
+     <dimen name="qs_tile_divider_height">1dp</dimen>
+     <dimen name="qs_panel_padding">16dp</dimen>
+     <dimen name="qs_dual_tile_height">112dp</dimen>
+@@ -178,10 +178,11 @@
+     <dimen name="qs_tile_padding_top_large_text">4dp</dimen>
+     <dimen name="qs_tile_padding_below_icon">12dp</dimen>
+     <dimen name="qs_tile_padding_bottom">16dp</dimen>
+-    <dimen name="qs_tile_spacing">4dp</dimen>
+-    <dimen name="qs_panel_padding_bottom">8dp</dimen>
++    <dimen name="qs_tile_spacing">0dp</dimen><!-- modified by yangfan -->
++    <dimen name="qs_panel_padding_bottom">0dp</dimen><!-- modified by yangfan -->
+     <dimen name="qs_detail_item_height">48dp</dimen>
+-    <dimen name="qs_brightness_padding_top">6dp</dimen>
++    <dimen name="qs_brightness_padding_top">10dp</dimen><!-- modified by yangfan -->
++    <dimen name="qs_brightness_padding_start">20dp</dimen><!-- modified by yangfan -->
+     <dimen name="qs_detail_header_text_size">20sp</dimen>
+     <dimen name="qs_detail_button_text_size">14sp</dimen>
+     <dimen name="qs_detail_item_primary_text_size">16sp</dimen>
+diff --git a/SystemUI/src/com/android/systemui/qs/tiles/RotationLockTile.java b/SystemUI/src/com/android/systemui/qs/tiles/RotationLockTile.java
+index 9e2ce6c..f8d2276 100644
+--- a/SystemUI/src/com/android/systemui/qs/tiles/RotationLockTile.java
++++ b/SystemUI/src/com/android/systemui/qs/tiles/RotationLockTile.java
+@@ -37,7 +37,7 @@ public class RotationLockTile extends QSTile<QSTile.BooleanState> {
+     private final AnimationIcon mLandscapeToAuto
+             = new AnimationIcon(R.drawable.ic_landscape_to_auto_rotate_animation);
+     private final AnimationIcon mAutoToLandscape
+-            = new AnimationIcon(R.drawable.ic_landscape_from_auto_rotate_animation);
++            = new AnimationIcon(R.drawable.ic_portrait_from_auto_rotate_animation);// modified by yangfan
+ 
+     private final RotationLockController mController;
+ 
+diff --git a/SystemUI/src/com/android/systemui/qs/tiles/WifiTile.java b/SystemUI/src/com/android/systemui/qs/tiles/WifiTile.java
+index 2ebe64a..2405f18 100644
+--- a/SystemUI/src/com/android/systemui/qs/tiles/WifiTile.java
++++ b/SystemUI/src/com/android/systemui/qs/tiles/WifiTile.java
+@@ -149,7 +149,7 @@ public class WifiTile extends QSTile<QSTile.SignalState> {
+         final String signalContentDescription;
+         final Resources r = mContext.getResources();
+         if (!state.enabled) {
+-            state.icon = ResourceIcon.get(R.drawable.qucii_ic_qs_wifi_off);// modified by yangfan
++            state.icon = ResourceIcon.get(R.drawable.ic_qs_wifi_disabled);
+             state.label = r.getString(R.string.quick_settings_wifi_label);
+             signalContentDescription = r.getString(R.string.accessibility_wifi_off);
+         } else if (wifiConnected) {
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+index 0ca7d7c..d775530 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+@@ -2564,5 +2564,11 @@ public class NotificationPanelView extends PanelView implements
+ 	public void dismissKeyguard(float vel) {
+ 		fling(vel, false);
+ 	}
++
++//added by yangfan begin
++	public boolean isQsExpansionEnabled(){
++		return mQsExpansionEnabled;
++	}
++//added by yangfan end
+ }
+ 
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/ObservableScrollView.java b/SystemUI/src/com/android/systemui/statusbar/phone/ObservableScrollView.java
+index 099e822..d331d67 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/ObservableScrollView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/ObservableScrollView.java
+@@ -148,7 +148,7 @@ public class ObservableScrollView extends ScrollView {
+             int scrollRangeX, int scrollRangeY, int maxOverScrollX, int maxOverScrollY,
+             boolean isTouchEvent) {
+         mLastOverscrollAmount = Math.max(0, scrollY + deltaY - getMaxScrollY());
+-        if (!panelView.getQsExpansionEnabled()) {
++        if (!panelView.isQsExpansionEnabled()) {
+ 			return false;
+ 		}
+         return super.overScrollBy(deltaX, deltaY, scrollX, scrollY, scrollRangeX, scrollRangeY,
+-- 
+2.8.3.windows.1
+

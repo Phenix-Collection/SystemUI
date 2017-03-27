@@ -1,0 +1,87 @@
+From 2520fba6a8cf3e4f7fe09103dd604766ac536ffb Mon Sep 17 00:00:00 2001
+From: LRH <lironghui@qucci.com>
+Date: Tue, 7 Mar 2017 16:47:50 +0800
+Subject: [PATCH 112/185] =?UTF-8?q?=E3=80=90=E6=95=85=E9=9A=9C=E3=80=91?=
+ =?UTF-8?q?=E4=B8=8B=E6=BB=91=E7=8A=B6=E6=80=81=E6=A0=8F=E5=BC=80=E5=90=AF?=
+ =?UTF-8?q?=E9=A3=9E=E8=A1=8C=E6=A8=A1=E5=BC=8F=EF=BC=8C=E6=A6=82=E7=8E=87?=
+ =?UTF-8?q?=E6=80=A7=E8=93=9D=E7=89=99=E4=B9=9F=E5=BC=80=E4=BA=86?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../systemui/qs/tiles/AirplaneModeTile.java        | 35 ++++++++++++++++++++--
+ 1 file changed, 33 insertions(+), 2 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/qs/tiles/AirplaneModeTile.java b/SystemUI/src/com/android/systemui/qs/tiles/AirplaneModeTile.java
+index fe3a613..755490e 100644
+--- a/SystemUI/src/com/android/systemui/qs/tiles/AirplaneModeTile.java
++++ b/SystemUI/src/com/android/systemui/qs/tiles/AirplaneModeTile.java
+@@ -16,6 +16,7 @@
+ 
+ package com.android.systemui.qs.tiles;
+ 
++import android.bluetooth.BluetoothAdapter;
+ import android.content.BroadcastReceiver;
+ import android.content.Context;
+ import android.content.Intent;
+@@ -39,10 +40,11 @@ public class AirplaneModeTile extends QSTile<QSTile.BooleanState> {
+     private final GlobalSetting mSetting;
+ 
+     private boolean mListening;
+-
++    private BluetoothAdapter bluetoothAdapter;
++    private boolean needOPen = false;
+     public AirplaneModeTile(Host host) {
+         super(host);
+-
++        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+         mSetting = new GlobalSetting(mContext, mHandler, Global.AIRPLANE_MODE_ON) {
+             @Override
+             protected void handleValueChanged(int value) {
+@@ -86,13 +88,42 @@ public class AirplaneModeTile extends QSTile<QSTile.BooleanState> {
+             state.icon = mEnable;
+             state.contentDescription =  mContext.getString(
+                     R.string.accessibility_quick_settings_airplane_on);
++            if(isBluetoothEnabled()){
++            	 turnOffBluetooth();
++            	 needOPen = true;
++            }
+         } else {
+             state.icon = mDisable;
+             state.contentDescription =  mContext.getString(
+                     R.string.accessibility_quick_settings_airplane_off);
++            if(needOPen&&!isBluetoothEnabled()){
++            	turnOnBluetooth();
++            	needOPen = false;
++            }
+         }
+     }
+ 
++	public boolean turnOffBluetooth() {
++		if (bluetoothAdapter != null) {
++			return bluetoothAdapter.disable();
++		}
++		return false;
++	}
++
++	public boolean turnOnBluetooth() {
++		if (bluetoothAdapter != null) {
++			return bluetoothAdapter.enable();
++		}
++		return false;
++	}
++
++	public boolean isBluetoothEnabled() {
++		if (bluetoothAdapter != null) {
++			return bluetoothAdapter.isEnabled();
++		}
++		return false;
++	}
++
+     @Override
+     public int getMetricsCategory() {
+         return MetricsLogger.QS_AIRPLANEMODE;
+-- 
+2.8.3.windows.1
+

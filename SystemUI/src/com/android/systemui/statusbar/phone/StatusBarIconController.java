@@ -15,8 +15,7 @@
  */
 
 package com.android.systemui.statusbar.phone;
-import android.animation.Animator;
-import android.animation.Animator.AnimatorListener;
+
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -37,27 +36,24 @@ import android.widget.TextView;
 
 import com.android.internal.statusbar.StatusBarIcon;
 import com.android.internal.util.NotificationColorUtil;
-import com.android.systemui.BatteryLevelTextView;
 import com.android.systemui.BatteryMeterView;
 import com.android.systemui.FontSizeUtils;
 import com.android.systemui.R;
 import com.android.systemui.statusbar.NotificationData;
 import com.android.systemui.statusbar.SignalClusterView;
 import com.android.systemui.statusbar.StatusBarIconView;
-import com.android.systemui.statusbar.phone.PhoneStatusBar.SignalStateChangeListener;
 import com.android.systemui.tuner.TunerService;
 import com.android.systemui.tuner.TunerService.Tunable;
-import com.qucii.systemui.statusbar.phone.ClockController;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
+
 /**
  * Controls everything regarding the icons in the status bar and on Keyguard, including, but not
  * limited to: notification icons, signal cluster, additional status icons, and clock in the status
  * bar.
  */
-public class StatusBarIconController implements Tunable  {
+public class StatusBarIconController implements Tunable {
 
     public static final long DEFAULT_TINT_ANIMATION_DURATION = 120;
 
@@ -78,9 +74,7 @@ public class StatusBarIconController implements Tunable  {
     private View mNotificationIconArea;
     private ImageView mMoreIcon;
     private BatteryMeterView mBatteryMeterView;
-    private BatteryLevelTextView mBatteryLevelTextView;
-    private ClockController mClockController;
-    private View mCenterClockLayout,mLeftClockLayout;
+    private TextView mClock;
 
     private int mIconSize;
     private int mIconHPadding;
@@ -121,11 +115,10 @@ public class StatusBarIconController implements Tunable  {
         mNotificationIconArea = statusBar.findViewById(R.id.notification_icon_area_inner);
         mNotificationIcons = (IconMerger) statusBar.findViewById(R.id.notificationIcons);
         mMoreIcon = (ImageView) statusBar.findViewById(R.id.moreIcon);
-        mSignalCluster.setSignalStateChangeListener(mNotificationIcons);// added by yangfan 
         mNotificationIcons.setOverflowIndicator(mMoreIcon);
         mStatusIconsKeyguard = (LinearLayout) keyguardStatusBar.findViewById(R.id.statusIcons);
         mBatteryMeterView = (BatteryMeterView) statusBar.findViewById(R.id.battery);
-        mBatteryLevelTextView = (BatteryLevelTextView)statusBar.findViewById(R.id.battery_level_text);//added  by yangfan
+        mClock = (TextView) statusBar.findViewById(R.id.clock);
         mLinearOutSlowIn = AnimationUtils.loadInterpolator(mContext,
                 android.R.interpolator.linear_out_slow_in);
         mFastOutSlowIn = AnimationUtils.loadInterpolator(mContext,
@@ -133,11 +126,6 @@ public class StatusBarIconController implements Tunable  {
         mDarkModeIconColorSingleTone = context.getColor(R.color.dark_mode_icon_color_single_tone);
         mLightModeIconColorSingleTone = context.getColor(R.color.light_mode_icon_color_single_tone);
         mHandler = new Handler();
-		//added  by yangfan
-        mCenterClockLayout = statusBar.findViewById(R.id.center_clock_layout);
-        mLeftClockLayout = statusBar.findViewById(R.id.left_clock_layout);
-        mClockController = new ClockController(statusBar, mNotificationIcons, mHandler);
-		//added  by yangfan
         updateResources();
 
         TunerService.get(mContext).addTunable(this, ICON_BLACKLIST);
@@ -170,7 +158,7 @@ public class StatusBarIconController implements Tunable  {
                 com.android.internal.R.dimen.status_bar_icon_size);
         mIconHPadding = mContext.getResources().getDimensionPixelSize(
                 R.dimen.status_bar_icon_padding);
-        mClockController.updateFontSize();//modified  by yangfan
+        FontSizeUtils.updateFontSize(mClock, R.dimen.status_bar_clock_size);
     }
 
     public void addSystemIcon(String slot, int index, int viewIndex, StatusBarIcon icon) {
@@ -201,14 +189,15 @@ public class StatusBarIconController implements Tunable  {
     }
 
     public void updateNotificationIcons(NotificationData notificationData) {
+        final LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                mIconSize + 2*mIconHPadding, mPhoneStatusBar.getStatusBarHeight());
+
         ArrayList<NotificationData.Entry> activeNotifications =
                 notificationData.getActiveNotifications();
         final int N = activeNotifications.size();
         ArrayList<StatusBarIconView> toShow = new ArrayList<>(N);
 
         // Filter out ambient notifications and notification children.
-		//modified  by yangfan begin
-        int noUSBCount = 0;
         for (int i = 0; i < N; i++) {
             NotificationData.Entry ent = activeNotifications.get(i);
             if (notificationData.isAmbient(ent.key)
@@ -218,16 +207,9 @@ public class StatusBarIconController implements Tunable  {
             if (!PhoneStatusBar.isTopLevelChild(ent)) {
                 continue;
             }
-            boolean configOnlyShowUSB = mContext.getResources().getBoolean(R.bool.config_only_show_usb_adb);
-            if (configOnlyShowUSB && !containsUsbNotifications(ent)) {
-                noUSBCount ++;
-                continue;
-            }
             toShow.add(ent.icon);
         }
-        mNotificationIcons.setMoreVisibility(noUSBCount > 0 );
-		//modified  by yangfan end
-        
+
         ArrayList<View> toRemove = new ArrayList<>();
         for (int i=0; i<mNotificationIcons.getChildCount(); i++) {
             View child = mNotificationIcons.getChildAt(i);
@@ -244,7 +226,7 @@ public class StatusBarIconController implements Tunable  {
         for (int i=0; i<toShow.size(); i++) {
             View v = toShow.get(i);
             if (v.getParent() == null) {
-                mNotificationIcons.addView(v, i /*, params*/);//modified  by yangfan
+                mNotificationIcons.addView(v, i, params);
             }
         }
 
@@ -262,70 +244,25 @@ public class StatusBarIconController implements Tunable  {
 
         applyNotificationIconsTint();
     }
-	
-	//added  by yangfan
-    private boolean containsUsbNotifications(NotificationData.Entry ent) {
-        String key = ent.key;
-        int id  = ent.notification.getId();
-        int[] usbIds = getUSBIds();
-        int[] adbIds = getADBIds();
-        int result = Arrays.binarySearch(usbIds, id);
-        if (Arrays.binarySearch(usbIds, id) >= 0 || Arrays.binarySearch(adbIds, id) >= 0 ) {
-            return true;
-        }
-        return false;
-    }
-    
-    private int[] getUSBIds() {
-        return new int[]{
-                    com.android.internal.R.string.usb_charging_notification_title,
-                    com.android.internal.R.string.usb_charging_notification_title,
-                    com.android.internal.R.string.usb_mtp_notification_title,
-                    com.android.internal.R.string.usb_ptp_notification_title,
-                    com.android.internal.R.string.usb_midi_notification_title,
-                    com.android.internal.R.string.usb_accessory_notification_title
-            };
-        }
-    
-    public int[] getADBIds(){
-        return new int[]{com.android.internal.R.string.adb_active_notification_title};
-    }
-	//added  by yangfan
-	
+
     public void hideSystemIconArea(boolean animate) {
         animateHide(mSystemIconArea, animate);
-		//added  by yangfan
-        animateHide(mSignalCluster, animate);
-        animateHide(mCenterClockLayout, animate);
-		//added  by yangfan
     }
 
     public void showSystemIconArea(boolean animate) {
         animateShow(mSystemIconArea, animate);
-		//added  by yangfan
-        animateShow(mSignalCluster, animate);
-        animateShow(mCenterClockLayout, animate);
-		//added  by yangfan
     }
 
     public void hideNotificationIconArea(boolean animate) {
         animateHide(mNotificationIconArea, animate);
-		//added  by yangfan
-        animateHide(mCenterClockLayout, animate);
-        animateHide(mLeftClockLayout, animate);
-		//added  by yangfan
     }
 
     public void showNotificationIconArea(boolean animate) {
         animateShow(mNotificationIconArea, animate);
-		//added  by yangfan
-        animateShow(mCenterClockLayout, animate);
-        animateShow(mLeftClockLayout, animate);
-		//added  by yangfan
     }
 
     public void setClockVisibility(boolean visible) {
-        mClockController.setVisibility(visible);//modified  by yangfan
+        mClock.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
     public void dump(PrintWriter pw) {
@@ -421,39 +358,12 @@ public class StatusBarIconController implements Tunable  {
             return;
         }
         mTintAnimator = ValueAnimator.ofFloat(mDarkIntensity, targetDarkIntensity);
-        //#SM-2174,2986,2567,2145 add by lrh for bettery charging animation begin 20170113 
-        mTintAnimator.addListener(new AnimatorListener() {
-            
-            @Override
-            public void onAnimationStart(Animator animation) {
-                // TODO Auto-generated method stub
-                
-            }
-            
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-                // TODO Auto-generated method stub
-                
-            }
-            
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                 setIconTintInternal((Float) ((ValueAnimator)animation).getAnimatedValue());
-            }
-            
-            @Override
-            public void onAnimationCancel(Animator animation) {
-                // TODO Auto-generated method stub
-                
-            }
-        });
-        /*mTintAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+        mTintAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 setIconTintInternal((Float) animation.getAnimatedValue());
             }
-        });*/
-        //#SM-2174,2986,2567,2145 add by lrh for bettery charging animation end 20170113 
+        });
         mTintAnimator.setDuration(duration);
         mTintAnimator.setStartDelay(delay);
         mTintAnimator.setInterpolator(mFastOutSlowIn);
@@ -483,10 +393,7 @@ public class StatusBarIconController implements Tunable  {
         mSignalCluster.setIconTint(mIconTint, mDarkIntensity);
         mMoreIcon.setImageTintList(ColorStateList.valueOf(mIconTint));
         mBatteryMeterView.setDarkIntensity(mDarkIntensity);
-		//added  by yangfan
-        mBatteryLevelTextView.setDarkIntensity(mDarkIntensity);
-        mClockController.setTextColor(mIconTint);
-		//added  by yangfan end
+        mClock.setTextColor(mIconTint);
         applyNotificationIconsTint();
     }
 
@@ -555,18 +462,4 @@ public class StatusBarIconController implements Tunable  {
         }
         return ret;
     }
-	
-	//added  by yangfan
-    public void cleanup() {
-        TunerService.get(mContext).removeTunable(this);
-        mClockController.cleanup();
-        if (mSignalCluster != null) {
-            mSignalCluster.setSecurityController(null);
-        }
-    }
-    
-    public void setNotificationAreaVisibilty(int vis){
-        mLeftClockLayout.setVisibility(vis);
-    }
-	//added  by yangfan
 }

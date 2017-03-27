@@ -1,0 +1,76 @@
+From f766f33f8a7362fe24f2ac0f1b6fbb1e10191557 Mon Sep 17 00:00:00 2001
+From: zengqingshuai <zengqingshuai@qucii.com>
+Date: Thu, 2 Mar 2017 14:07:08 +0800
+Subject: [PATCH 089/185] =?UTF-8?q?=E3=80=90=E6=95=85=E9=9A=9C=E3=80=91?=
+ =?UTF-8?q?=E9=94=81=E5=B1=8F=E8=A7=A3=E9=94=81=E7=A7=BB=E5=88=B0=E9=A1=B6?=
+ =?UTF-8?q?=E9=83=A8=E5=AF=BC=E8=87=B4=E5=8A=A8=E7=94=BB=E5=8D=A1=E4=BD=8F?=
+ =?UTF-8?q?=E9=97=AE=E9=A2=98?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/src/com/android/systemui/qs/QSTile.java              |  2 +-
+ .../systemui/statusbar/phone/NotificationPanelView.java       | 11 ++++++++---
+ 2 files changed, 9 insertions(+), 4 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/qs/QSTile.java b/SystemUI/src/com/android/systemui/qs/QSTile.java
+index e185cb5..3997c9b 100644
+--- a/SystemUI/src/com/android/systemui/qs/QSTile.java
++++ b/SystemUI/src/com/android/systemui/qs/QSTile.java
+@@ -387,7 +387,7 @@ public abstract class QSTile<TState extends State> implements Listenable {
+         //<================
+         //add by zqs 2017/2/28 end
+             Icon icon = ICONS.get(resId);
+-            Log.e("====ResourceIcon.get==zqs==", "icon!=null:"+String.valueOf(icon!=null)+",resId:"+resId);
++//            Log.e("====ResourceIcon.get==zqs==", "icon!=null:"+String.valueOf(icon!=null)+",resId:"+resId);
+             if (icon == null) {
+                 icon = new ResourceIcon(resId);
+                 ICONS.put(resId, icon);
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+index 2af667f..e4cdcb2 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+@@ -779,6 +779,7 @@ public class NotificationPanelView extends PanelView implements
+             return true;
+         }
+         mHeadsUpTouchHelper.onTouchEvent(event);
++        //锁屏解锁卡住使这里截取了event
+         if (!mHeadsUpTouchHelper.isTrackingHeadsUp() && handleQsTouch(event)) {
+             return true;
+         }
+@@ -795,7 +796,12 @@ public class NotificationPanelView extends PanelView implements
+         // screen statusBar animator by yangfan 
+         if(mStatusBarState==StatusBarState.KEYGUARD){
+         	  if(event.getY()<getResources().getDimensionPixelOffset(R.dimen.status_bar_height))
+-        	       return true;
++        		  //modify by zqs 2017/3/2
++        		  //=====================>
++        		  //这里之前返回为true会导致上面截取action的传递使锁屏卡住
++        	       return false;
++        	  	  //<=====================
++        	  	  //modify by zqs 2017/3/2
+         }
+         // screen statusBar animator by yangfan 
+         if (action == MotionEvent.ACTION_DOWN && getExpandedFraction() == 1f
+@@ -1799,8 +1805,8 @@ public class NotificationPanelView extends PanelView implements
+         float stackTranslation = mNotificationStackScroller.getStackTranslation();
+         float translation = stackTranslation / HEADER_RUBBERBAND_FACTOR;
+         //modify by zqs 2017/3/1 begin
+-    	//弹出悬浮框时选择page 0
+     	//===================>
++        //通知栏上滑时动画不一致问题
+         if(mStatusBarState!=StatusBarState.KEYGUARD){
+         	translation = mNotificationStackScroller.getTopPadding() + stackTranslation
+                     - mNotificationTopPadding - mQsMinExpansionHeight;
+@@ -1811,7 +1817,6 @@ public class NotificationPanelView extends PanelView implements
+ //        }
+         //===================>
+         //modify by zqs 2017/3/1 end
+-    	//弹出悬浮框时选择page 0
+         return Math.min(0, translation);
+     }
+ 
+-- 
+2.8.3.windows.1
+

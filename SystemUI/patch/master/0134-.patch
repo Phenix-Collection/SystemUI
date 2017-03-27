@@ -1,0 +1,65 @@
+From 2b82c4b26fee1b0105fb32d499dd9ee83166309c Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Fri, 10 Mar 2017 09:59:13 +0800
+Subject: [PATCH 134/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E4=BF=AE=E6=94=B9=E5=AE=9A=E4=BD=8D=E5=92=8C=E6=9B=B4=E5=A4=9A?=
+ =?UTF-8?q?=E5=9B=BE=E6=A0=87?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/res/drawable/stat_notify_more.xml  |  4 ++--
+ SystemUI/res/drawable/stat_sys_location.xml | 10 +++++-----
+ 2 files changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/SystemUI/res/drawable/stat_notify_more.xml b/SystemUI/res/drawable/stat_notify_more.xml
+index 18e7bdc..a794846 100644
+--- a/SystemUI/res/drawable/stat_notify_more.xml
++++ b/SystemUI/res/drawable/stat_notify_more.xml
+@@ -1,7 +1,7 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <vector xmlns:android="http://schemas.android.com/apk/res/android"
+-    android:width="16dp"
+-    android:height="16dp"
++    android:width="18dp"
++    android:height="18dp"
+     android:viewportHeight="54"
+     android:viewportWidth="54">
+ 
+diff --git a/SystemUI/res/drawable/stat_sys_location.xml b/SystemUI/res/drawable/stat_sys_location.xml
+index ad27027..00942f3 100644
+--- a/SystemUI/res/drawable/stat_sys_location.xml
++++ b/SystemUI/res/drawable/stat_sys_location.xml
+@@ -1,14 +1,14 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <vector xmlns:android="http://schemas.android.com/apk/res/android"
+     android:width="13dp"
+-    android:height="17dp"
++    android:height="18dp"
+     android:viewportWidth="38"
+     android:viewportHeight="54">
+ 
+     <path
+         android:fillColor="#cccccc"
+-        android:fillAlpha="0.80"
+-        android:strokeAlpha="0.80"
++        android:fillAlpha="1.0"
++        android:strokeAlpha="1.0"
+         android:strokeWidth="1"
+         android:pathData="M 7.10 27.02 C 5.50 19.53 12.53 12.00 20.10 12.97 C 26.88 13.43 32.27 20.40
+ 30.85 27.09 C 29.42 33.82 24.21 38.91 19.00 43.03 C 13.65 39.03 8.57 33.75 7.10
+@@ -17,8 +17,8 @@
+ 9.05 26.07 Z" />
+     <path
+         android:fillColor="#cccccc"
+-        android:fillAlpha="0.80"
+-        android:strokeAlpha="0.80"
++        android:fillAlpha="1.0"
++        android:strokeAlpha="1.0"
+         android:strokeWidth="1"
+         android:pathData="M 17.34 22.48 C 20.50 20.18 23.92 25.57 20.61 27.50 C 17.44 29.84 13.98 24.40
+ 17.34 22.48 Z" />
+-- 
+2.8.3.windows.1
+

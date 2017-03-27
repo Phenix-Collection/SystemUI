@@ -20,7 +20,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
-import android.app.PendingIntent.OnFinished;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -31,20 +30,15 @@ import android.os.PowerManager;
 import android.os.SystemClock;
 import android.os.UserHandle;
 import android.provider.Settings;
-import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Stack;
@@ -53,7 +47,7 @@ import java.util.Stack;
  * A View similar to a textView which contains password text and can animate when the text is
  * changed
  */
-public class PasswordTextView extends TextView  {
+public class PasswordTextView extends View {
 
     private static final float DOT_OVERSHOOT_FACTOR = 1.5f;
     private static final long DOT_APPEAR_DURATION_OVERSHOOT = 320;
@@ -99,7 +93,6 @@ public class PasswordTextView extends TextView  {
     private Interpolator mFastOutSlowInInterpolator;
     private boolean mShowPassword;
     private UserActivityListener mUserActivityListener;
-    private final static int MAXLENGTH = 6;
 
     public interface UserActivityListener {
         void onUserActivity();
@@ -216,14 +209,6 @@ public class PasswordTextView extends TextView  {
         }
         userActivity();
         sendAccessibilityEventTypeViewTextChanged(textbefore, textbefore.length(), 0, 1);
-        
-    	//added by yangfan 
-        if (null != mFinishedListener) {
-			if (mText.length() >= MAXLENGTH) {
-				mFinishedListener.OnFinished();
-			}
-		}
-      //added by yangfan end
     }
 
     public void setUserActivityListener(UserActivityListener userActivitiListener) {
@@ -695,15 +680,4 @@ public class PasswordTextView extends TextView  {
             return charWidth + mCharPadding * currentWidthFactor;
         }
     }
-    //added by yangfan begin
-	public void setOnFinishedListener(OnFinishedListener listener){
-		mFinishedListener = listener;
-	}
-	
-	private OnFinishedListener mFinishedListener;
-	
-	public static interface OnFinishedListener{
-		public void OnFinished();
-	}
-    //added by yangfan end
 }

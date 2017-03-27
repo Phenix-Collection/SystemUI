@@ -1,37 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="124dp"
-    android:height="124dp"
-    android:viewportWidth="124"
-    android:viewportHeight="124">
+<!--
+     Copyright (C) 2014 The Android Open Source Project
 
-    <path
-        android:fillColor="#d9d9d9"
-        android:fillAlpha="0.85"
-        android:strokeAlpha="0.85"
-        android:strokeWidth="1"
-        android:pathData="M 52.57 1.78 C 66.54 -0.44 81.25 2.40 93.35 9.74 C 106.46 17.57 116.40 30.51
-120.61 45.19 C 124.56 59.03 123.54 74.31 117.41 87.37 C 110.73 102.16 97.81
-113.99 82.51 119.40 C 69.15 124.23 54.09 124.14 40.78 119.16 C 25.77 113.66
-13.14 101.96 6.54 87.39 C -0.12 73.19 -0.78 56.35 4.48 41.60 C 11.72 20.90 30.82
-4.91 52.57 1.78 M 45.67 47.05 C 44.82 52.79 47.62 58.13 49.72 63.27 C 53.08
-70.18 56.90 76.91 61.62 82.99 C 62.06 82.98 62.94 82.98 63.38 82.98 C 68.29
-76.71 72.27 69.72 75.65 62.52 C 77.63 57.58 80.23 52.46 79.35 46.98 C 78.41
-38.22 69.85 31.10 61.02 32.12 C 53.23 32.68 46.53 39.32 45.67 47.05 M 31.65
-74.64 C 29.72 76.23 28.22 78.94 29.46 81.41 C 32.31 86.49 38.16 88.70 43.44
-90.35 C 55.55 93.80 68.63 93.84 80.79 90.57 C 86.14 88.97 92.00 86.90 95.21
-82.01 C 96.81 79.78 95.75 76.77 93.83 75.10 C 89.72 71.28 84.08 69.63 78.67
-68.74 C 83.88 70.77 91.85 72.17 92.41 78.99 C 91.08 82.69 87.01 84.44 83.62
-85.83 C 70.77 90.25 56.56 90.39 43.55 86.56 C 39.76 85.37 35.85 83.75 33.30
-80.57 C 31.78 78.65 33.02 76.02 34.49 74.47 C 37.65 71.20 42.30 70.34 46.36
-68.72 C 41.13 69.58 35.77 71.17 31.65 74.64 Z" />
-    <path
-        android:fillColor="#d9d9d9"
-        android:fillAlpha="0.85"
-        android:strokeAlpha="0.85"
-        android:strokeWidth="1"
-        android:pathData="M 58.39 36.53 C 65.48 33.91 73.91 38.82 75.38 46.16 C 77.17 53.11 72.24 60.92
-65.15 62.12 C 58.76 63.62 51.80 59.45 49.99 53.18 C 47.58 46.54 51.70 38.61
-58.39 36.53 M 60.85 50.05 C 61.77 52.05 64.30 50.71 64.71 49.03 C 64.13 48.32
-63.56 47.61 62.99 46.89 C 61.66 47.26 59.80 48.47 60.85 50.05 Z" />
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:name="root"
+    android:alpha="0.3"
+    android:height="48dp"
+    android:width="48dp"
+    android:viewportHeight="48"
+    android:viewportWidth="48" >
+    <group
+        android:name="ic_signal_location"
+        android:translateX="21.9995"
+        android:translateY="25.73401" >
+        <group
+            android:name="ic_signal_location_pivot"
+            android:translateX="-23.21545"
+            android:translateY="-18.86649" >
+            <clip-path
+                android:name="mask"
+                android:pathData="M 38.8337860107,-40.3974914551 c 0.0,0.0 -35.8077850342,31.5523681641 -35.8077850342,31.5523681641 c 0.0,0.0 40.9884796143,41.1153411865 40.9884796143,41.1153411865 c 0.0,0.0 -2.61700439453,2.0938873291 -2.61700439453,2.0938873291 c 0.0,0.0 -41.1884460449,-41.1267852783 -41.1884460449,-41.1267852783 c 0.0,0.0 -34.6200408936,25.4699249268 -34.6200408936,25.4699249268 c 0.0,0.0 55.9664764404,69.742401123 55.9664764404,69.742401123 c 0.0,0.0 73.2448120117,-59.1047973633 73.2448120117,-59.1047973633 c 0.0,0.0 -55.9664916992,-69.7423400879 -55.9664916992,-69.7423400879 Z" />
+            <group
+                android:name="cross" >
+                <path
+                    android:name="cross_1"
+                    android:pathData="M 6.44050598145,1.9430847168 c 0.0,0.0 33.5749816895,33.4499664307 33.5749816895,33.4499664307 "
+                    android:strokeColor="#FFFFFFFF"
+                    android:strokeAlpha="1"
+                    android:strokeWidth="3.5"
+                    android:fillColor="#00000000" />
+            </group>
+            <group
+                android:name="location"
+                android:translateX="23.481"
+                android:translateY="18.71151" >
+                <path
+                    android:name="pin"
+                    android:pathData="M 1.76899719238,-20.011505127 c -7.69999694824,0.0 -14.0,6.30000305176 -14.0,14.0 c 0.0,10.5 14.0,26.0 14.0,26.0 c 0.0,0.0 14.0,-15.5 14.0,-26.0 c 0.0,-7.69999694824 -6.30000305176,-14.0 -14.0,-14.0 Z M 1.76899719238,-1.01150512695 c -2.80000305176,0.0 -5.0,-2.19999694824 -5.0,-5.0 c 0.0,-2.80000305176 2.19999694824,-5.0 5.0,-5.0 c 2.80000305176,0.0 5.0,2.19999694824 5.0,5.0 c 0.0,2.80000305176 -2.19999694824,5.0 -5.0,5.0 Z"
+                    android:fillColor="#FFFFFFFF"
+                    android:fillAlpha="1" />
+            </group>
+        </group>
+    </group>
 </vector>

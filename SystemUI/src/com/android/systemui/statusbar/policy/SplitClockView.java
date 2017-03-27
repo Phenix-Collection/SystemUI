@@ -24,7 +24,6 @@ import android.content.IntentFilter;
 import android.os.UserHandle;
 import android.text.format.DateFormat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.TextClock;
 
@@ -90,11 +89,6 @@ public class SplitClockView extends LinearLayout {
     private void updatePatterns() {
         String formatString = DateFormat.getTimeFormatString(getContext(),
                 ActivityManager.getCurrentUser());
-        //hsp : Do not need am/pm
-        Log.i("SplitClockView","formatTimeString : " + formatString);
-        if (formatString.contains("a")) {
-            formatString = formatString.replaceAll("a", "").trim();
-        }
         int index = getAmPmPartEndIndex(formatString);
         String timeString;
         String amPmString;

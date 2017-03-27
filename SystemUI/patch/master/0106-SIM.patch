@@ -1,0 +1,213 @@
+From 14f15a5f59275fa3eca23a60a991e340ef78f7f0 Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Mon, 6 Mar 2017 17:56:45 +0800
+Subject: [PATCH 106/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E6=A0=B9=E6=8D=AE=E6=97=A0SIM=E5=92=8C=E9=A3=9E=E8=A1=8C?=
+ =?UTF-8?q?=E6=A8=A1=E5=BC=8F=E7=8A=B6=E6=80=81=E6=94=B9=E5=8F=98=E9=80=9A?=
+ =?UTF-8?q?=E7=9F=A5=E5=8C=BA=E5=9F=9F=E5=9B=BE=E6=A0=87=E6=98=BE=E7=A4=BA?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../systemui/statusbar/SignalClusterView.java      | 15 ++++++++---
+ .../systemui/statusbar/phone/IconMerger.java       | 29 +++++++++++++++-------
+ .../systemui/statusbar/phone/PhoneStatusBar.java   | 13 ++++++++++
+ .../statusbar/phone/StatusBarIconController.java   |  6 +++--
+ 4 files changed, 49 insertions(+), 14 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/SignalClusterView.java b/SystemUI/src/com/android/systemui/statusbar/SignalClusterView.java
+index 822303c..7fb5109 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/SignalClusterView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/SignalClusterView.java
+@@ -40,6 +40,7 @@ import android.widget.LinearLayout;
+ import android.widget.TextView;
+ 
+ import com.android.systemui.R;
++import com.android.systemui.statusbar.phone.PhoneStatusBar.SignalStateChangeListener;
+ import com.android.systemui.statusbar.phone.StatusBarIconController;
+ import com.android.systemui.statusbar.policy.NetworkController.IconState;
+ import com.android.systemui.statusbar.policy.NetworkControllerImpl;
+@@ -108,6 +109,7 @@ public class SignalClusterView
+     private boolean mBlockEthernet;
+     private boolean mBlockNetworkLabel;// added by yangfan
+     private Handler mDelaySignaHandler = new  Handler();
++    private SignalStateChangeListener mSignalStateChangeListener;
+ 
+     public SignalClusterView(Context context) {
+         this(context, null);
+@@ -412,7 +414,9 @@ public class SignalClusterView
+         mIsAirplaneMode = icon.visible && !mBlockAirplane;
+         mAirplaneIconId = icon.icon;
+         mAirplaneContentDescription = icon.contentDescription;
+-
++        if(null != mSignalStateChangeListener){
++        	//mSignalStateChangeListener.onSignalStateChanged(/*mNoSimsVisible || */mIsAirplaneMode );
++        }//当前是否是无SIM卡或者飞行模式状态
+         apply();
+     }
+ 
+@@ -577,9 +581,10 @@ public class SignalClusterView
+             }
+         }
+         if (null != mNoSimsCombo) {
+-            mNoSimsCombo.setVisibility(mNoSimsVisible ? View.VISIBLE : View.GONE);
++        	Log.i(TAG, "mNoSimsVisible : " + mNoSimsVisible +" , mNoSimsIcon : " + mNoSimsIcon);
++            mNoSimsCombo.setVisibility(mNoSimsVisible && !mIsAirplaneMode ? View.VISIBLE : View.GONE);
+         }// modified by yangfan
+-
++        
+         boolean anythingVisible = mNoSimsVisible || mWifiVisible || mIsAirplaneMode
+                 || anyMobileVisible || mVpnVisible || mEthernetVisible;
+         //setPaddingRelative(0, 0, anythingVisible ? mEndPadding : mEndPaddingNothingVisible, 0);// remove padding by yangfan
+@@ -889,4 +894,8 @@ public class SignalClusterView
+         }
+     }
+ //added by yangfan end 
++
++	public void setSignalStateChangeListener(SignalStateChangeListener listener) {
++		this.mSignalStateChangeListener = listener;
++	}
+ }
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/IconMerger.java b/SystemUI/src/com/android/systemui/statusbar/phone/IconMerger.java
+index 61994d0..c56c31c 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/IconMerger.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/IconMerger.java
+@@ -23,16 +23,19 @@ import android.view.View;
+ import android.widget.LinearLayout;
+ 
+ import com.android.systemui.R;
++import com.android.systemui.statusbar.phone.PhoneStatusBar.SignalStateChangeListener;
+ import com.android.systemui.statusbar.policy.Clock;
+ import com.qucii.systemui.statusbar.phone.ClockController;
+ 
+-public class IconMerger extends LinearLayout {
++public class IconMerger extends LinearLayout implements SignalStateChangeListener {
+     private static final String TAG = "IconMerger";
+     private static final boolean DEBUG = false;
+ 
+     private int mIconSize;
+     private View mMoreView;
+     private int mClockLocation;
++    private boolean isNoSimOrAirPlaneMode = false;
++    private boolean mHasNotifications;
+ 
+     public IconMerger(Context context, AttributeSet attrs) {
+         super(context, attrs);
+@@ -78,8 +81,9 @@ public class IconMerger extends LinearLayout {
+     }
+ 
+     private void checkOverflow(int width) {
++    	// 根据飞行模式和无SIM状态隐藏usb 和 adb 以及 more图标  begin===================
++    	setVisibility(isNoSimOrAirPlaneMode ? GONE : VISIBLE);
+         if (mMoreView == null) return;
+-
+         final int N = getChildCount();
+         int visibleChildren = 0;
+         for (int i=0; i<N; i++) {
+@@ -87,8 +91,6 @@ public class IconMerger extends LinearLayout {
+         }
+         final boolean overflowShown = (mMoreView.getVisibility() == View.VISIBLE);
+         // let's assume we have one more slot if the more icon is already showing
+-		//modified  by yangfan
+-        final boolean configOnlyShowUSB = getContext().getResources().getBoolean(R.bool.config_only_show_usb_adb);
+         if (overflowShown) {
+             int totalWidth = getResources().getDisplayMetrics().widthPixels;
+             if ((mClockLocation != ClockController.STYLE_CLOCK_CENTER &&
+@@ -98,8 +100,9 @@ public class IconMerger extends LinearLayout {
+             }
+         }
+         final boolean moreRequired = visibleChildren * mIconSize > width;
+-        setMoreVisibility(moreRequired || overflowShown ? VISIBLE : GONE);
+-		//modified  by yangfan
++        Log.i(TAG, "mHasNotifications : " +mHasNotifications +" , moreRequired : " + moreRequired +" ,overflowShown : " +  overflowShown);
++        mMoreView.setVisibility(mHasNotifications/* && (moreRequired || overflowShown) */? VISIBLE : GONE);// modified by yangfan
++        // 根据飞行模式和无SIM状态隐藏usb 和 adb 以及 more图标  end===================
+     }
+ 	
+ 	//added by yangfan 
+@@ -107,10 +110,18 @@ public class IconMerger extends LinearLayout {
+         mClockLocation = mode;
+     }
+ 
+-    public void setMoreVisibility(int vis) {
+-        if (mMoreView.getVisibility() != vis) {
+-            mMoreView.setVisibility(vis);
++    public void setMoreVisibility(boolean vis) {
++    	boolean oldStat = mMoreView.getVisibility() == VISIBLE;
++    	mHasNotifications = vis;
++    	if (oldStat != vis) {
++    		requestLayout();
+         }
+     }
+ 	//added by yangfan 
++
++	@Override
++	public void onSignalStateChanged(boolean isAir) {
++		isNoSimOrAirPlaneMode = isAir;
++		requestLayout();
++	}
+ }
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
+index a828c3d..7d9d353 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
+@@ -4816,4 +4816,17 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
+             super.onCallStateChanged(state, incomingNumber);
+         }
+     }
++    
++    /**
++     * 是否是无卡或者飞行模式  true = 隐藏通知
++     * FALSE= 显示通知
++     * @author mare
++     */
++    public static interface SignalStateChangeListener{
++    	/**
++    	 * 是否是无卡或者飞行模式 by yangfan
++    	 * @param isNoSimOrAirPlaneMode
++    	 */
++    	public void onSignalStateChanged(boolean isNoSimOrAirPlaneMode);
++    }
+ }
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/StatusBarIconController.java b/SystemUI/src/com/android/systemui/statusbar/phone/StatusBarIconController.java
+index c28fdb4..8a21ee5 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/StatusBarIconController.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/StatusBarIconController.java
+@@ -44,6 +44,7 @@ import com.android.systemui.R;
+ import com.android.systemui.statusbar.NotificationData;
+ import com.android.systemui.statusbar.SignalClusterView;
+ import com.android.systemui.statusbar.StatusBarIconView;
++import com.android.systemui.statusbar.phone.PhoneStatusBar.SignalStateChangeListener;
+ import com.android.systemui.tuner.TunerService;
+ import com.android.systemui.tuner.TunerService.Tunable;
+ import com.qucii.systemui.statusbar.phone.ClockController;
+@@ -56,7 +57,7 @@ import java.util.Arrays;
+  * limited to: notification icons, signal cluster, additional status icons, and clock in the status
+  * bar.
+  */
+-public class StatusBarIconController implements Tunable {
++public class StatusBarIconController implements Tunable  {
+ 
+     public static final long DEFAULT_TINT_ANIMATION_DURATION = 120;
+ 
+@@ -120,6 +121,7 @@ public class StatusBarIconController implements Tunable {
+         mNotificationIconArea = statusBar.findViewById(R.id.notification_icon_area_inner);
+         mNotificationIcons = (IconMerger) statusBar.findViewById(R.id.notificationIcons);
+         mMoreIcon = (ImageView) statusBar.findViewById(R.id.moreIcon);
++        mSignalCluster.setSignalStateChangeListener(mNotificationIcons);// added by yangfan 
+         mNotificationIcons.setOverflowIndicator(mMoreIcon);
+         mStatusIconsKeyguard = (LinearLayout) keyguardStatusBar.findViewById(R.id.statusIcons);
+         mBatteryMeterView = (BatteryMeterView) statusBar.findViewById(R.id.battery);
+@@ -223,7 +225,7 @@ public class StatusBarIconController implements Tunable {
+             }
+             toShow.add(ent.icon);
+         }
+-        mNotificationIcons.setMoreVisibility(noUSBCount > 0 ? View.VISIBLE : View.GONE);
++        mNotificationIcons.setMoreVisibility(noUSBCount > 0 );
+ 		//modified  by yangfan end
+         
+         ArrayList<View> toRemove = new ArrayList<>();
+-- 
+2.8.3.windows.1
+

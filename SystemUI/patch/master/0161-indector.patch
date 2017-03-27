@@ -1,0 +1,35 @@
+From 2deeea7c16add9ca9addc5c6453a06d742a0ff4b Mon Sep 17 00:00:00 2001
+From: LRH <lironghui@qucci.com>
+Date: Wed, 22 Mar 2017 16:15:12 +0800
+Subject: [PATCH 161/185] =?UTF-8?q?=E3=80=90=E6=95=85=E9=9A=9C=E3=80=91?=
+ =?UTF-8?q?=E4=BF=AE=E5=A4=8D=E4=B8=8B=E6=8B=89=E7=8A=B6=E6=80=81=E6=A0=8F?=
+ =?UTF-8?q?=E6=B5=AE=E5=8A=A8=E9=80=9A=E7=9F=A5=E5=87=BA=E7=8E=B0=E5=90=8E?=
+ =?UTF-8?q?=E7=8A=B6=E6=80=81=E6=A0=8F=E7=9A=84indector=E6=B6=88=E5=A4=B1?=
+ =?UTF-8?q?=E9=97=AE=E9=A2=98?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../src/com/android/systemui/statusbar/phone/NotificationPanelView.java | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+index 22c4c68..9b21262 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+@@ -2443,10 +2443,10 @@ public class NotificationPanelView extends PanelView implements
+     		if (mStatusBarState != StatusBarState.KEYGUARD) {
+     			 if(!mPanelExpanded){
+     				 setBackground(null); 
++    				 updateIndicatorVisibility(GONE);// gone indicator by yangfan
+     			 }else{
+     				 mHeadsUpManager.unpinAll();
+     			 }
+-    			 updateIndicatorVisibility(GONE);// gone indicator by yangfan
+     		}
+     		//add by lrh 在锁屏状态下，不需要截图虚化背景 end
+ //        	setBackgroundResource(0); // clear bg by yangfan
+-- 
+2.8.3.windows.1
+

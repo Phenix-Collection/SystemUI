@@ -1,0 +1,33 @@
+From 507ae68451ea1e2f2e4fdeaef79f54f162d4c66c Mon Sep 17 00:00:00 2001
+From: zengqingshuai <zengqingshuai@qucii.com>
+Date: Thu, 16 Mar 2017 10:57:17 +0800
+Subject: [PATCH 167/185] =?UTF-8?q?=E3=80=90bug=E3=80=91=E8=A1=A5=E5=85=85?=
+ =?UTF-8?q?=E9=97=AA=E5=B1=8F=E9=97=AE=E9=A2=98?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/src/com/android/systemui/statusbar/phone/PanelView.java | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/PanelView.java b/SystemUI/src/com/android/systemui/statusbar/phone/PanelView.java
+index ddc120a..5d926dd 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/PanelView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/PanelView.java
+@@ -127,7 +127,11 @@ public abstract class PanelView extends FrameLayout {
+         @Override
+         public void run() {
+             mPeekPending = false;
+-            runPeekAnimation();
++        	//delete by zqs 2017/3/15 begin
++            //========================>
++            //有时闪屏的问题
++//            runPeekAnimation();
++            //delete by zqs 2017/3/15 end
+         }
+     };
+ 
+-- 
+2.8.3.windows.1
+

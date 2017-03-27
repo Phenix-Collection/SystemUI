@@ -1,0 +1,75 @@
+From 4fe52532d870757586bbd1b6b6680ceb21f84fdb Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Thu, 9 Mar 2017 13:56:37 +0800
+Subject: [PATCH 125/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E9=80=9A=E7=9F=A5=E5=8C=BA=E5=9F=9F=E6=8F=90=E7=A4=BA=E6=9B=B4?=
+ =?UTF-8?q?=E5=A4=9A=E9=80=9A=E7=9F=A5=E7=9A=84=E5=9B=BE=E6=A0=87=E6=9C=AA?=
+ =?UTF-8?q?=E8=83=BD=E5=8F=8A=E6=97=B6=E6=B6=88=E5=A4=B1?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../com/android/systemui/statusbar/phone/IconMerger.java   | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/IconMerger.java b/SystemUI/src/com/android/systemui/statusbar/phone/IconMerger.java
+index c56c31c..6a245a2 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/IconMerger.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/IconMerger.java
+@@ -18,13 +18,11 @@ package com.android.systemui.statusbar.phone;
+ 
+ import android.content.Context;
+ import android.util.AttributeSet;
+-import android.util.Log;
+ import android.view.View;
+ import android.widget.LinearLayout;
+ 
+ import com.android.systemui.R;
+ import com.android.systemui.statusbar.phone.PhoneStatusBar.SignalStateChangeListener;
+-import com.android.systemui.statusbar.policy.Clock;
+ import com.qucii.systemui.statusbar.phone.ClockController;
+ 
+ public class IconMerger extends LinearLayout implements SignalStateChangeListener {
+@@ -82,7 +80,6 @@ public class IconMerger extends LinearLayout implements SignalStateChangeListene
+ 
+     private void checkOverflow(int width) {
+     	// 根据飞行模式和无SIM状态隐藏usb 和 adb 以及 more图标  begin===================
+-    	setVisibility(isNoSimOrAirPlaneMode ? GONE : VISIBLE);
+         if (mMoreView == null) return;
+         final int N = getChildCount();
+         int visibleChildren = 0;
+@@ -100,8 +97,6 @@ public class IconMerger extends LinearLayout implements SignalStateChangeListene
+             }
+         }
+         final boolean moreRequired = visibleChildren * mIconSize > width;
+-        Log.i(TAG, "mHasNotifications : " +mHasNotifications +" , moreRequired : " + moreRequired +" ,overflowShown : " +  overflowShown);
+-        mMoreView.setVisibility(mHasNotifications/* && (moreRequired || overflowShown) */? VISIBLE : GONE);// modified by yangfan
+         // 根据飞行模式和无SIM状态隐藏usb 和 adb 以及 more图标  end===================
+     }
+ 	
+@@ -111,9 +106,10 @@ public class IconMerger extends LinearLayout implements SignalStateChangeListene
+     }
+ 
+     public void setMoreVisibility(boolean vis) {
+-    	boolean oldStat = mMoreView.getVisibility() == VISIBLE;
+-    	mHasNotifications = vis;
+-    	if (oldStat != vis) {
++    	boolean change = mHasNotifications != vis;
++    	if (change) {
++    		mHasNotifications = vis;
++    		mMoreView.setVisibility(mHasNotifications ? VISIBLE : GONE);
+     		requestLayout();
+         }
+     }
+@@ -122,6 +118,6 @@ public class IconMerger extends LinearLayout implements SignalStateChangeListene
+ 	@Override
+ 	public void onSignalStateChanged(boolean isAir) {
+ 		isNoSimOrAirPlaneMode = isAir;
+-		requestLayout();
++		setVisibility(isNoSimOrAirPlaneMode ? GONE : VISIBLE);
+ 	}
+ }
+-- 
+2.8.3.windows.1
+

@@ -39,10 +39,6 @@ public class BootReceiver extends BroadcastReceiver {
                 Intent loadavg = new Intent(context, com.android.systemui.LoadAverageService.class);
                 context.startService(loadavg);
             }
-            
-            Intent flipService = new Intent(context, SmartGestureService.class);
-            context.startService(flipService);
-            
         } catch (Exception e) {
             Log.e(TAG, "Can't start load average service", e);
         }

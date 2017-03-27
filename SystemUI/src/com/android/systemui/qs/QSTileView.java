@@ -27,7 +27,6 @@ import android.graphics.drawable.RippleDrawable;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.util.Log;
 import android.util.MathUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -62,7 +61,7 @@ public class QSTileView extends ViewGroup {
 
     private TextView mLabel;
     private QSDualTileLabel mDualLabel;
-    private boolean mDual = false;//modified by yangfan 
+    private boolean mDual;
     private OnClickListener mClickPrimary;
     private OnClickListener mClickSecondary;
     private OnLongClickListener mLongClick;
@@ -176,7 +175,6 @@ public class QSTileView extends ViewGroup {
     }
 
     public boolean setDual(boolean dual) {
-        mDual = false;//added by yangfan 
         final boolean changed = dual != mDual;
         mDual = dual;
         if (changed) {
@@ -288,7 +286,7 @@ public class QSTileView extends ViewGroup {
         // center the touch feedback on the center of the icon, and dial it down a bit
         final int cx = width / 2;
         final int cy = mDual ? mIcon.getTop() + mIcon.getHeight() / 2 : height / 2;
-        final int rad =  (int) ( height  *  0.38f);// modified by yangfan 
+        final int rad = (int)(mIcon.getHeight() * 1.25f);
         mRipple.setHotspotBounds(cx - rad, cy - rad, cx + rad, cy + rad);
     }
 
@@ -311,7 +309,6 @@ public class QSTileView extends ViewGroup {
     }
 
     protected void setIcon(ImageView iv, QSTile.State state) {
-    	Log.w("======setIcon=======", "state:"+state.label+",state:state.icon"+state.icon.toString(),new Throwable());
         if (!Objects.equals(state.icon, iv.getTag(R.id.qs_icon_tag))) {
             Drawable d = state.icon != null ? state.icon.getDrawable(mContext) : null;
             if (d != null && state.autoMirrorDrawable) {

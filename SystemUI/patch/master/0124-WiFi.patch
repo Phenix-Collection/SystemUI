@@ -1,0 +1,44 @@
+From 357a214768130a3773de089be3091417d08ac310 Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Thu, 9 Mar 2017 13:49:38 +0800
+Subject: [PATCH 124/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91WiF?=
+ =?UTF-8?q?i=E6=BB=91=E5=9D=97=E5=9B=BE=E6=A0=87=E6=9B=BF=E6=8D=A2?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/src/com/android/systemui/qs/tiles/WifiTile.java | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/qs/tiles/WifiTile.java b/SystemUI/src/com/android/systemui/qs/tiles/WifiTile.java
+index 2405f18..3fcf069 100644
+--- a/SystemUI/src/com/android/systemui/qs/tiles/WifiTile.java
++++ b/SystemUI/src/com/android/systemui/qs/tiles/WifiTile.java
+@@ -149,19 +149,19 @@ public class WifiTile extends QSTile<QSTile.SignalState> {
+         final String signalContentDescription;
+         final Resources r = mContext.getResources();
+         if (!state.enabled) {
+-            state.icon = ResourceIcon.get(R.drawable.ic_qs_wifi_disabled);
++            state.icon = ResourceIcon.get(R.drawable.ic_qs_wifi_off);
+             state.label = r.getString(R.string.quick_settings_wifi_label);
+             signalContentDescription = r.getString(R.string.accessibility_wifi_off);
+         } else if (wifiConnected) {
+-            state.icon = ResourceIcon.get(/*cb.wifiSignalIconId*/R.drawable.qucii_ic_qs_wifi_on);// modified by yangfan
++            state.icon = ResourceIcon.get(/*cb.wifiSignalIconId*/R.drawable.ic_qs_wifi_on);// modified by yangfan
+             state.label = removeDoubleQuotes(cb.enabledDesc);
+             signalContentDescription = cb.wifiSignalContentDescription;
+         } else if (wifiNotConnected) {
+-            state.icon = ResourceIcon.get(/*R.drawable.ic_qs_wifi_full_0*/R.drawable.qucii_ic_qs_wifi_on);// modified by yangfan
++            state.icon = ResourceIcon.get(/*R.drawable.ic_qs_wifi_full_0*/R.drawable.ic_qs_wifi_on);// modified by yangfan
+             state.label = r.getString(R.string.quick_settings_wifi_label);
+             signalContentDescription = r.getString(R.string.accessibility_no_wifi);
+         } else {
+-            state.icon = ResourceIcon.get(/**R.drawable.ic_qs_wifi_no_network**/R.drawable.qucii_ic_qs_wifi_on);// modified by yangfan
++            state.icon = ResourceIcon.get(/**R.drawable.ic_qs_wifi_no_network**/R.drawable.ic_qs_wifi_on);// modified by yangfan
+             state.label = r.getString(R.string.quick_settings_wifi_label);
+             signalContentDescription = r.getString(R.string.accessibility_wifi_off);
+         }
+-- 
+2.8.3.windows.1
+

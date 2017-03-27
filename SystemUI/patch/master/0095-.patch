@@ -1,0 +1,49 @@
+From b128e09465eb895d276233e72df451dd359f07a7 Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Thu, 2 Mar 2017 20:20:02 +0800
+Subject: [PATCH 095/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E4=BF=AE=E6=94=B9=E5=8B=BF=E6=89=B0=E6=A8=A1=E5=BC=8F=E4=B8=BA?=
+ =?UTF-8?q?=E4=BC=98=E5=85=88=E6=97=B6=E5=80=99=E7=9A=84=E5=9B=BE=E7=89=87?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/res/drawable/stat_sys_zen_important.xml                    | 6 ++++--
+ .../com/android/systemui/statusbar/phone/PhoneStatusBarPolicy.java  | 2 +-
+ 2 files changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/SystemUI/res/drawable/stat_sys_zen_important.xml b/SystemUI/res/drawable/stat_sys_zen_important.xml
+index 1262617..cf99d70 100644
+--- a/SystemUI/res/drawable/stat_sys_zen_important.xml
++++ b/SystemUI/res/drawable/stat_sys_zen_important.xml
+@@ -15,9 +15,11 @@ Copyright (C) 2014 The Android Open Source Project
+ -->
+ <inset xmlns:android="http://schemas.android.com/apk/res/android"
+     android:insetLeft="2.5dp"
++    android:insetTop="2.5dp"
++    android:insetBottom="2.5dp"
+     android:insetRight="2.5dp">
+-    <vector android:width="18dp"
+-            android:height="18dp"
++    <vector android:width="16dp"
++            android:height="16dp"
+             android:viewportWidth="24.0"
+             android:viewportHeight="24.0">
+ 
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarPolicy.java b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarPolicy.java
+index aa68d84..df3c66a 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarPolicy.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarPolicy.java
+@@ -172,7 +172,7 @@ public class PhoneStatusBarPolicy implements Callback {
+         mService.setIconVisibility(SLOT_ALARM_CLOCK, false);
+ 
+         // zen
+-        mService.setIcon(SLOT_ZEN, R.drawable.stat_sys_zen_important, 0, null);
++        mService.setIcon(SLOT_ZEN,/* R.drawable.stat_sys_zen_important*/R.drawable.stat_sys_dnd, 0, null);
+         mService.setIconVisibility(SLOT_ZEN, false);
+ 
+         // volume
+-- 
+2.8.3.windows.1
+

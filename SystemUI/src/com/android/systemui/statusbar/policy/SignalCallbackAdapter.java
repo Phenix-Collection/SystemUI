@@ -35,11 +35,11 @@ public class SignalCallbackAdapter implements SignalCallback {
     }
 
     @Override
-    public void setMobileDataIndicators(IconState statusIcon, IconState qsIcon, int statusType,boolean showDataIcon,
+    public void setMobileDataIndicators(IconState statusIcon, IconState qsIcon, int statusType,
             int qsType, boolean activityIn, boolean activityOut, int dataActivity,
             int mobileActivity, int stackedDataIcon, int stackedVoiceIcon,
-            String typeContentDescription, String description, boolean isWide, int subId,String networkName,boolean showNetworkClass,boolean isDelaySignal) {
-    }// modified by yangfan 
+            String typeContentDescription, String description, boolean isWide, int subId) {
+    }
 
     @Override
     public void setSubs(List<SubscriptionInfo> subs) {
@@ -61,8 +61,4 @@ public class SignalCallbackAdapter implements SignalCallback {
     public void setMobileDataEnabled(boolean enabled) {
     }
 
-    @Override
-    public void setNetworkLabelEnable(boolean enable,boolean noServiceEnable) {
-        
-    }// added by yangfan 
 }

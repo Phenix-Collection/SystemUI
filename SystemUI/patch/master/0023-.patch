@@ -1,0 +1,40 @@
+From ae93d2d3b482cac11d14436382c1eda973bb1707 Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Mon, 13 Feb 2017 14:08:54 +0800
+Subject: [PATCH 023/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E8=B0=83=E6=95=B4=E9=94=81=E5=B1=8F=E6=97=B6=E9=92=9F=E4=BD=8D?=
+ =?UTF-8?q?=E7=BD=AE?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../systemui/statusbar/phone/KeyguardClockPositionAlgorithm.java     | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/KeyguardClockPositionAlgorithm.java b/SystemUI/src/com/android/systemui/statusbar/phone/KeyguardClockPositionAlgorithm.java
+index 8ecc93c..7f2786e 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/KeyguardClockPositionAlgorithm.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/KeyguardClockPositionAlgorithm.java
+@@ -18,6 +18,7 @@ package com.android.systemui.statusbar.phone;
+ 
+ import android.content.res.Resources;
+ import android.graphics.Path;
++import android.util.Log;
+ import android.view.animation.AccelerateInterpolator;
+ import android.view.animation.PathInterpolator;
+ 
+@@ -97,7 +98,9 @@ public class KeyguardClockPositionAlgorithm {
+     }
+ 
+     public void run(Result result) {
+-        int y = (int) (getClockY() - mKeyguardStatusHeight );// modified by yangfan 
++        int y = (int) (getClockY() - /*mKeyguardStatusHeight / 2*/mKeyguardStatusHeight);// modified by yangfan 
++        y = y <= 120 ? 120 : y;// added  by yangfan 
++        Log.i(this.getClass().getSimpleName(), "getClockY() : " + getClockY() + " , mKeyguardStatusHeight : " + mKeyguardStatusHeight );
+         float clockAdjustment = getClockYExpansionAdjustment();
+         float topPaddingAdjMultiplier = getTopPaddingAdjMultiplier();
+         result.stackScrollerPaddingAdjustment = (int) (clockAdjustment*topPaddingAdjMultiplier);
+-- 
+2.8.3.windows.1
+

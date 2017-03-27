@@ -1,0 +1,60 @@
+From 8ad8b2461e1bf35a79dd80d6bf72833cecd3e187 Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Thu, 23 Mar 2017 10:44:43 +0800
+Subject: [PATCH 165/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E4=BF=AE=E6=94=B9VolumeUI=E5=8B=BF=E6=89=B0=E5=9B=BE=E6=A0=87?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/res/drawable/qucii_ic_dnd.xml             | 22 ++++++++++++++++++++++
+ .../src/com/android/systemui/volume/ZenFooter.java |  2 +-
+ 2 files changed, 23 insertions(+), 1 deletion(-)
+ create mode 100644 SystemUI/res/drawable/qucii_ic_dnd.xml
+
+diff --git a/SystemUI/res/drawable/qucii_ic_dnd.xml b/SystemUI/res/drawable/qucii_ic_dnd.xml
+new file mode 100644
+index 0000000..97d7ab8
+--- /dev/null
++++ b/SystemUI/res/drawable/qucii_ic_dnd.xml
+@@ -0,0 +1,22 @@
++<?xml version="1.0" encoding="utf-8"?>
++<vector xmlns:android="http://schemas.android.com/apk/res/android"
++    android:height="36dp"
++    android:viewportHeight="54"
++    android:viewportWidth="40"
++    android:width="27dp" >
++
++    <group>
++        <path
++            android:fillAlpha="1.0"
++            android:fillColor="#ffffff"
++            android:pathData="M 22.13 12.89 C 29.03 14.30 34.81 20.86 33.96 28.11 C 33.25 36.51 24.15 42.78
++16.02 40.65 C 10.91 39.48 7.23 35.03 5.85 30.13 C 10.27 29.95 15.40 30.18 18.75
++26.76 C 22.34 23.10 21.93 17.61 22.13 12.89 M 24.19 15.87 C 24.16 20.45 23.55
++25.68 19.77 28.80 C 16.83 31.48 12.73 31.96 8.93 32.14 C 10.52 34.56 12.33 37.06
++15.14 38.13 C 23.44 41.94 33.86 32.87 31.58 24.13 C 30.61 20.35 27.46 17.71
++24.19 15.87 Z"
++            android:strokeAlpha="1.0"
++            android:strokeWidth="1" />
++    </group>
++
++</vector>
+\ No newline at end of file
+diff --git a/SystemUI/src/com/android/systemui/volume/ZenFooter.java b/SystemUI/src/com/android/systemui/volume/ZenFooter.java
+index af7ee08..aafb338 100644
+--- a/SystemUI/src/com/android/systemui/volume/ZenFooter.java
++++ b/SystemUI/src/com/android/systemui/volume/ZenFooter.java
+@@ -121,7 +121,7 @@ public class ZenFooter extends LinearLayout {
+     }
+ 
+     public void update() {
+-        mIcon.setImageResource(isZenNone() ? R.drawable.ic_dnd_total_silence : R.drawable.ic_dnd);
++        mIcon.setImageResource(/**isZenNone() ? R.drawable.ic_dnd_total_silence : R.drawable.ic_dnd*/R.drawable.qucii_ic_dnd);//modified by yangfan
+         final String line1 =
+                 isZenPriority() ? mContext.getString(R.string.interruption_level_priority)
+                 : isZenAlarms() ? mContext.getString(R.string.interruption_level_alarms)
+-- 
+2.8.3.windows.1
+

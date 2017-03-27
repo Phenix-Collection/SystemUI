@@ -1,0 +1,130 @@
+From 5cada256b3509ebd2382d2ad129c4ff14ec29ca6 Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Tue, 28 Feb 2017 15:09:15 +0800
+Subject: [PATCH 078/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E4=BF=AE=E6=94=B9=E8=93=9D=E7=89=99=E5=B7=B2=E8=BF=9E=E6=8E=A5?=
+ =?UTF-8?q?=E5=9B=BE=E6=A0=87=E5=92=8C=E7=83=AD=E7=82=B9=E8=BF=9E=E6=8E=A5?=
+ =?UTF-8?q?=E7=9A=84=E5=9B=BE=E6=A0=87?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/res/drawable/stat_sys_hotspot.xml         | 76 +++++++++++-----------
+ .../android/systemui/qs/tiles/BluetoothTile.java   |  2 +-
+ 2 files changed, 38 insertions(+), 40 deletions(-)
+
+diff --git a/SystemUI/res/drawable/stat_sys_hotspot.xml b/SystemUI/res/drawable/stat_sys_hotspot.xml
+index 5cb7c9f..ff71a65 100644
+--- a/SystemUI/res/drawable/stat_sys_hotspot.xml
++++ b/SystemUI/res/drawable/stat_sys_hotspot.xml
+@@ -1,55 +1,53 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <inset xmlns:android="http://schemas.android.com/apk/res/android"
+     android:insetBottom="2.5dp"
+-    android:insetTop="2.5dp">
++    android:insetTop="2.5dp" >
++
+     <vector
+-        android:width="17dp"
+-        android:height="17dp"
++        android:height="16dp"
+         android:viewportHeight="54"
+-        android:viewportWidth="45">
+-
++        android:viewportWidth="46"
++        android:width="15dp" >
+         <path
+-            android:fillAlpha="0.76"
+-            android:fillColor="#c2c2c2"
+-            android:pathData="M 5.89 17.92 C 5.84 16.03 6.34 14.25 7.76 12.95 C 16.89 13.08 26.01 12.92 35.14
+-13.02 C 36.65 12.92 38.13 14.45 38.02 15.95 C 38.13 22.99 38.04 30.03 38.06
+-37.07 C 38.27 38.63 37.59 40.29 36.05 40.88 C 33.65 41.15 31.23 40.99 28.83
+-41.00 C 28.88 40.49 28.97 39.46 29.02 38.95 C 31.30 38.90 33.58 38.93 35.86
+-38.86 C 36.10 30.92 36.01 22.97 35.91 15.03 C 26.65 14.81 17.38 14.89 8.11 14.99
+-C 8.07 15.75 7.98 17.26 7.94 18.02 C 7.43 18.00 6.40 17.94 5.89 17.92 Z"
+-            android:strokeAlpha="0.76"
++            android:fillAlpha="1.00"
++            android:fillColor="#ffffff"
++            android:pathData="M 7.48 9.07 C 7.86 9.36 8.63 9.95 9.01 10.24 C 2.35 17.11 2.30 28.85 8.99 35.72
++C 8.50 36.13 8.02 36.54 7.53 36.95 C 0.22 29.47 0.25 16.59 7.48 9.07 Z"
++            android:strokeAlpha="1.00"
+             android:strokeWidth="1" />
+         <path
+-            android:fillAlpha="0.72"
+-            android:fillColor="#b8b8b8"
+-            android:pathData="M 6.00 19.94 C 11.41 19.58 17.00 21.25 20.95 25.06 C 25.38 29.05 27.38 35.13
+-27.10 41.00 C 26.57 41.00 25.52 41.00 24.99 41.00 C 25.30 35.48 23.34 29.72
+-19.00 26.13 C 15.47 22.97 10.65 21.81 6.00 21.95 C 6.00 21.45 6.00 20.44 6.00
+-19.94 Z"
+-            android:strokeAlpha="0.72"
++            android:fillAlpha="1.00"
++            android:fillColor="#ffffff"
++            android:pathData="M 38.00 10.26 C 38.50 9.86 39.00 9.46 39.51 9.06 C 46.71 16.60 46.73 29.44 39.49
++36.95 C 38.99 36.55 38.50 36.14 38.01 35.73 C 44.66 28.84 44.64 17.14 38.00
++10.26 Z"
++            android:strokeAlpha="1.00"
+             android:strokeWidth="1" />
+         <path
+-            android:fillAlpha="0.69"
+-            android:fillColor="#b1b1b1"
+-            android:pathData="M 6.01 25.93 C 11.23 25.45 16.77 27.86 19.29 32.59 C 20.87 35.10 21.05 38.11
+-21.08 40.99 C 20.54 41.00 19.46 41.01 18.92 41.01 C 20.00 33.69 13.33 26.96 5.99
+-28.00 C 6.00 27.48 6.00 26.45 6.01 25.93 Z"
+-            android:strokeAlpha="0.69"
++            android:fillAlpha="1.00"
++            android:fillColor="#ffffff"
++            android:pathData="M 31.04 15.26 C 31.55 14.85 32.06 14.43 32.57 14.02 C 37.01 18.93 37.23 27.15
++32.45 31.90 C 32.09 31.61 31.37 31.04 31.01 30.75 C 34.93 26.44 34.93 19.59
++31.04 15.26 Z"
++            android:strokeAlpha="1.00"
+             android:strokeWidth="1" />
+         <path
+-            android:fillAlpha="0.69"
+-            android:fillColor="#b1b1b1"
+-            android:pathData="M 5.78 34.10 C 5.70 32.41 6.43 31.71 7.99 31.97 C 11.71 31.90 15.01 35.28 15.00
+-38.96 C 15.28 40.58 14.55 41.34 12.78 41.23 C 14.06 36.93 10.08 32.96 5.78 34.10
+-Z"
+-            android:strokeAlpha="0.69"
++            android:fillAlpha="1.00"
++            android:fillColor="#ffffff"
++            android:pathData="M 14.40 31.97 C 9.97 26.97 9.93 19.00 14.41 14.02 C 14.80 14.33 15.58 14.94
++15.97 15.25 C 12.04 19.56 12.11 26.46 15.98 30.78 C 15.59 31.07 14.79 31.67
++14.40 31.97 Z"
++            android:strokeAlpha="1.00"
+             android:strokeWidth="1" />
+         <path
+-            android:fillAlpha="0.74"
+-            android:fillColor="#bcbcbc"
+-            android:pathData="M 7.13 37.12 C 9.61 36.01 11.28 39.86 8.84 40.96 C 6.43 41.94 4.79 38.26 7.13
+-37.12 Z"
+-            android:strokeAlpha="0.74"
++            android:fillAlpha="1.00"
++            android:fillColor="#ffffff"
++            android:pathData="M 19.88 20.83 C 21.84 17.91 26.83 18.71 27.78 22.09 C 28.70 24.49 27.04 26.77
++25.03 27.91 C 26.02 33.61 27.01 39.30 28.00 45.00 C 25.00 45.00 22.00 45.00
++19.00 45.00 C 19.99 39.31 20.98 33.61 21.97 27.92 C 19.40 26.66 17.95 23.26
++19.88 20.83 Z"
++            android:strokeAlpha="1.00"
+             android:strokeWidth="1" />
+     </vector>
+-</inset>
++
++</inset>
+\ No newline at end of file
+diff --git a/SystemUI/src/com/android/systemui/qs/tiles/BluetoothTile.java b/SystemUI/src/com/android/systemui/qs/tiles/BluetoothTile.java
+index 957625e..65385b8 100644
+--- a/SystemUI/src/com/android/systemui/qs/tiles/BluetoothTile.java
++++ b/SystemUI/src/com/android/systemui/qs/tiles/BluetoothTile.java
+@@ -107,7 +107,7 @@ public class BluetoothTile extends QSTile<QSTile.BooleanState>  {
+         if (enabled) {
+             state.label = null;
+             if (connected) {
+-                state.icon = ResourceIcon.get(R.drawable.ic_qs_bluetooth_connected);
++                state.icon = ResourceIcon.get(/*R.drawable.ic_qs_bluetooth_connected*/R.drawable.ic_qs_bluetooth_on);
+                 state.contentDescription = mContext.getString(
+                         R.string.accessibility_quick_settings_bluetooth_connected);
+                 state.label = mController.getLastDeviceName();
+-- 
+2.8.3.windows.1
+

@@ -55,7 +55,7 @@ class KeyguardMessageArea extends TextView implements SecurityMessageDisplay {
     private final Runnable mClearMessageRunnable = new Runnable() {
         @Override
         public void run() {
-            //mMessage = null;
+            mMessage = null;
             update();
         }
     };

@@ -1,0 +1,121 @@
+From 74853f685dd67b06cb59f7a02726e9576f4fa1e9 Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Wed, 8 Feb 2017 14:33:23 +0800
+Subject: [PATCH 016/185] =?UTF-8?q?[=E9=9C=80=E6=B1=82]=20=E4=BF=AE?=
+ =?UTF-8?q?=E6=94=B9=E9=94=81=E5=B1=8F=E9=9D=A2=E6=9D=BF(=E4=B8=8D?=
+ =?UTF-8?q?=E5=8C=85=E6=8B=AC=E9=94=81=E5=B1=8F=E7=8A=B6=E6=80=81=E6=A0=8F?=
+ =?UTF-8?q?)=E9=83=A8=E5=88=86?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ Keyguard/res/layout/keyguard_emergency_carrier_area.xml            | 1 +
+ SystemUI/res/layout/keyguard_bottom_area.xml                       | 1 +
+ SystemUI/res/layout/keyguard_status_bar.xml                        | 7 +++++--
+ .../android/systemui/statusbar/phone/KeyguardBottomAreaView.java   | 2 +-
+ .../systemui/statusbar/phone/KeyguardClockPositionAlgorithm.java   | 2 +-
+ .../android/systemui/statusbar/phone/KeyguardStatusBarView.java    | 2 +-
+ 6 files changed, 10 insertions(+), 5 deletions(-)
+
+diff --git a/Keyguard/res/layout/keyguard_emergency_carrier_area.xml b/Keyguard/res/layout/keyguard_emergency_carrier_area.xml
+index 12d8786..881d66b 100644
+--- a/Keyguard/res/layout/keyguard_emergency_carrier_area.xml
++++ b/Keyguard/res/layout/keyguard_emergency_carrier_area.xml
+@@ -70,6 +70,7 @@
+             android:textSize="@dimen/kg_status_line_font_size"
+             android:textColor="?android:attr/textColorSecondary"
+             android:textAllCaps="@bool/kg_use_all_caps"
++            android:visibility="gone"
+             android:text="@string/pattern_cancel" />
+     </LinearLayout>
+ 
+diff --git a/SystemUI/res/layout/keyguard_bottom_area.xml b/SystemUI/res/layout/keyguard_bottom_area.xml
+index de73538..c58ec22 100644
+--- a/SystemUI/res/layout/keyguard_bottom_area.xml
++++ b/SystemUI/res/layout/keyguard_bottom_area.xml
+@@ -69,6 +69,7 @@
+         android:tint="#ffffffff"
+         android:src="@drawable/ic_phone_24dp"
+         android:scaleType="center"
++        android:visibility="gone"
+         android:contentDescription="@string/accessibility_phone_button" />
+ 
+     <com.android.systemui.statusbar.phone.LockIcon
+diff --git a/SystemUI/res/layout/keyguard_status_bar.xml b/SystemUI/res/layout/keyguard_status_bar.xml
+index b5f917a..a749e23 100644
+--- a/SystemUI/res/layout/keyguard_status_bar.xml
++++ b/SystemUI/res/layout/keyguard_status_bar.xml
+@@ -21,7 +21,8 @@
+     xmlns:systemui="http://schemas.android.com/apk/res/com.android.systemui"
+     android:id="@+id/keyguard_header"
+     android:layout_width="match_parent"
+-    android:layout_height="@dimen/status_bar_header_height_keyguard"
++    android:layout_height="@dimen/status_bar_height"
++    android:gravity="center_vertical"
+     android:baselineAligned="false"
+     >
+ 
+@@ -30,17 +31,19 @@
+         android:layout_height="@dimen/status_bar_header_height_keyguard"
+         android:layout_alignParentEnd="true"
+         android:background="@drawable/ripple_drawable"
++        android:visibility="gone"
+         android:layout_marginEnd="@dimen/multi_user_switch_keyguard_margin">
+         <ImageView android:id="@+id/multi_user_avatar"
+             android:layout_width="@dimen/multi_user_avatar_keyguard_size"
+             android:layout_height="@dimen/multi_user_avatar_keyguard_size"
+             android:layout_gravity="center"
++            android:visibility="gone"
+             android:scaleType="centerInside"/>
+     </com.android.systemui.statusbar.phone.MultiUserSwitch>
+ 
+     <LinearLayout android:id="@+id/system_icons_super_container"
+         android:layout_width="wrap_content"
+-        android:layout_height="@dimen/status_bar_header_height"
++        android:layout_height="@dimen/status_bar_height"
+         android:layout_toStartOf="@id/multi_user_switch"
+         android:layout_alignWithParentIfMissing="true"
+         android:layout_marginStart="16dp"
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/KeyguardBottomAreaView.java b/SystemUI/src/com/android/systemui/statusbar/phone/KeyguardBottomAreaView.java
+index deea6a7..bdd3664 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/KeyguardBottomAreaView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/KeyguardBottomAreaView.java
+@@ -309,7 +309,7 @@ public class KeyguardBottomAreaView extends FrameLayout implements View.OnClickL
+             drawableId = R.drawable.ic_phone_24dp;
+             contentDescription = R.string.accessibility_phone_button;
+         }
+-        mLeftAffordanceView.setVisibility(visible ? View.VISIBLE : View.GONE);
++        mLeftAffordanceView.setVisibility(visible ? View.GONE : View.GONE);// hide left Call Button by yangfan
+         mLeftAffordanceView.setImageDrawable(mContext.getDrawable(drawableId));
+         mLeftAffordanceView.setContentDescription(mContext.getString(contentDescription));
+     }
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/KeyguardClockPositionAlgorithm.java b/SystemUI/src/com/android/systemui/statusbar/phone/KeyguardClockPositionAlgorithm.java
+index a15d35e..8ecc93c 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/KeyguardClockPositionAlgorithm.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/KeyguardClockPositionAlgorithm.java
+@@ -97,7 +97,7 @@ public class KeyguardClockPositionAlgorithm {
+     }
+ 
+     public void run(Result result) {
+-        int y = getClockY() - mKeyguardStatusHeight / 2;
++        int y = (int) (getClockY() - mKeyguardStatusHeight );// modified by yangfan 
+         float clockAdjustment = getClockYExpansionAdjustment();
+         float topPaddingAdjMultiplier = getTopPaddingAdjMultiplier();
+         result.stackScrollerPaddingAdjustment = (int) (clockAdjustment*topPaddingAdjMultiplier);
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/KeyguardStatusBarView.java b/SystemUI/src/com/android/systemui/statusbar/phone/KeyguardStatusBarView.java
+index ede0957..c8ffc8d 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/KeyguardStatusBarView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/KeyguardStatusBarView.java
+@@ -108,7 +108,7 @@ public class KeyguardStatusBarView extends RelativeLayout
+         mBatteryLevel.setVisibility(
+                 mBatteryCharging || showBatteryLevel ? View.VISIBLE : View.GONE);
+         boolean showCarrierText = getResources().getBoolean(R.bool.config_showOperatorInKeyguard);
+-        mCarrierLabel.setVisibility(showCarrierText ? View.VISIBLE : View.GONE);
++        mCarrierLabel.setVisibility(showCarrierText ? View.GONE : View.GONE);//modifed by yangfan
+     }
+ 
+     private void updateSystemIconsLayoutParams() {
+-- 
+2.8.3.windows.1
+

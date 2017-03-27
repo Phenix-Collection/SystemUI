@@ -1,0 +1,30 @@
+From 96df51aa41462ef3a956ca87fcc9e679c6546782 Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Fri, 3 Mar 2017 16:45:09 +0800
+Subject: [PATCH 098/185] =?UTF-8?q?=E3=80=90bug=E3=80=91=E4=BF=AE=E5=A4=8D?=
+ =?UTF-8?q?=E4=BF=A1=E5=8F=B7=E5=9B=BE=E6=A0=87=E6=B2=A1=E6=9C=89=E5=8F=8A?=
+ =?UTF-8?q?=E6=97=B6=E6=9B=B4=E6=96=B0=E9=97=AE=E9=A2=98?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../com/android/systemui/statusbar/policy/MobileSignalController.java   | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/policy/MobileSignalController.java b/SystemUI/src/com/android/systemui/statusbar/policy/MobileSignalController.java
+index 5d8fcb4..5e53ad5 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/policy/MobileSignalController.java
++++ b/SystemUI/src/com/android/systemui/statusbar/policy/MobileSignalController.java
+@@ -656,7 +656,7 @@ public class MobileSignalController extends SignalController<
+                 }
+             }
+         }
+-        if (hasService && tmpLevel <= mCurrentState.level) {
++        if (hasService && tmpLevel < mCurrentState.level) {
+         	isDelaySignal = true;
+         }else {
+         	isDelaySignal = false;
+-- 
+2.8.3.windows.1
+

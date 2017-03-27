@@ -1,0 +1,30 @@
+From c6e43ec91dfffc1065809d73c850cc9e51f895a9 Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Tue, 28 Feb 2017 19:58:25 +0800
+Subject: [PATCH 079/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E5=8E=BB=E6=8E=89=E4=BF=A1=E5=8F=B7=E5=BB=B6=E8=BF=9F=E6=95=88?=
+ =?UTF-8?q?=E6=9E=9C?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../com/android/systemui/statusbar/policy/MobileSignalController.java   | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/policy/MobileSignalController.java b/SystemUI/src/com/android/systemui/statusbar/policy/MobileSignalController.java
+index 1d2ff08..64f2a95 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/policy/MobileSignalController.java
++++ b/SystemUI/src/com/android/systemui/statusbar/policy/MobileSignalController.java
+@@ -693,7 +693,7 @@ public class MobileSignalController extends SignalController<
+             mCurrentState.imsRadioTechnology = mServiceState.getRilImsRadioTechnology();
+         }
+         Log.e(mTag, "tmpLevel : " + tmpLevel);
+-        mCallbackHandler.postDelayed(mSignalChanged, isDelay ? 20 * 1000 : 0);
++        mCallbackHandler.postDelayed(mSignalChanged, 0);
+     }
+ 
+     Runnable mSignalChanged = new Runnable() {
+-- 
+2.8.3.windows.1
+

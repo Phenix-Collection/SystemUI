@@ -1,0 +1,40 @@
+From aa648d1ce1e31dfaf333567b347ca52806b026c0 Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Mon, 13 Feb 2017 16:30:21 +0800
+Subject: [PATCH 031/185] =?UTF-8?q?=E3=80=90=E6=95=85=E9=9A=9C=E3=80=91?=
+ =?UTF-8?q?=E4=BF=AE=E5=A4=8D=E4=B8=8A=E6=AC=A1=E6=8F=90=E4=BA=A4=E7=9A=84?=
+ =?UTF-8?q?=E6=96=B9=E6=B3=95=E5=90=8D=E5=AD=97=E9=94=99=E8=AF=AF=E2=80=98?=
+ =?UTF-8?q?isQsExpansionEnabled=E2=80=99?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../com/android/systemui/statusbar/phone/ObservableScrollView.java    | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/ObservableScrollView.java b/SystemUI/src/com/android/systemui/statusbar/phone/ObservableScrollView.java
+index d331d67..761fb4c 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/ObservableScrollView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/ObservableScrollView.java
+@@ -135,7 +135,7 @@ public class ObservableScrollView extends ScrollView {
+     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
+         super.onScrollChanged(l, t, oldl, oldt);
+         Log.i(this.getClass().getSimpleName(), "onScrollChanged");
+-        if (!panelView.getQsExpansionEnabled()) {
++        if (!panelView.isQsExpansionEnabled()) {
+ 			return ;
+ 		}
+         if (mListener != null  ) {
+@@ -170,7 +170,7 @@ public class ObservableScrollView extends ScrollView {
+     protected void onOverScrolled(int scrollX, int scrollY, boolean clampedX, boolean clampedY) {
+         super.onOverScrolled(scrollX, scrollY, clampedX, clampedY);
+         Log.i(this.getClass().getSimpleName(), "onOverScrolled");
+-        if (!panelView.getQsExpansionEnabled()) {
++        if (!panelView.isQsExpansionEnabled()) {
+ 			return ;
+ 		}
+         if (mListener != null && mLastOverscrollAmount > 0) {
+-- 
+2.8.3.windows.1
+

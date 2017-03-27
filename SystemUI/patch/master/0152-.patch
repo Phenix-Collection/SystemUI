@@ -1,0 +1,28 @@
+From 170090ed01d4e2231c214638faf73bc6bac5133c Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Thu, 16 Mar 2017 19:46:46 +0800
+Subject: [PATCH 152/185] =?UTF-8?q?=E3=80=90=E4=BC=98=E5=8C=96=E3=80=91?=
+ =?UTF-8?q?=E5=8E=BB=E6=8E=89=E8=80=80=E7=9C=BC=E7=9A=84=E6=97=A5=E5=BF=97?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/src/com/android/systemui/qs/QSTileView.java | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/SystemUI/src/com/android/systemui/qs/QSTileView.java b/SystemUI/src/com/android/systemui/qs/QSTileView.java
+index 32b0606..089056f 100644
+--- a/SystemUI/src/com/android/systemui/qs/QSTileView.java
++++ b/SystemUI/src/com/android/systemui/qs/QSTileView.java
+@@ -311,7 +311,6 @@ public class QSTileView extends ViewGroup {
+     }
+ 
+     protected void setIcon(ImageView iv, QSTile.State state) {
+-    	Log.w("======setIcon=======", "state:"+state.label+",state:state.icon"+state.icon.toString(),new Throwable());
+         if (!Objects.equals(state.icon, iv.getTag(R.id.qs_icon_tag))) {
+             Drawable d = state.icon != null ? state.icon.getDrawable(mContext) : null;
+             if (d != null && state.autoMirrorDrawable) {
+-- 
+2.8.3.windows.1
+

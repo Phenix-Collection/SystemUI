@@ -1,0 +1,47 @@
+From da52614bd082276165c2ba3237965dd0d161ef9f Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Thu, 23 Feb 2017 16:54:07 +0800
+Subject: [PATCH 060/185] =?UTF-8?q?=E3=80=90bug=E3=80=91=E6=9A=82=E6=97=B6?=
+ =?UTF-8?q?=E4=BF=AE=E5=A4=8D=E8=BF=9E=E7=BB=AD=E5=8F=91=E9=80=81=E9=80=9A?=
+ =?UTF-8?q?=E7=9F=A5=E6=97=A0=E6=B3=95=E5=BC=B9=E5=87=BA=E7=9A=84bug?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../src/com/android/systemui/statusbar/BaseStatusBar.java    | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/BaseStatusBar.java b/SystemUI/src/com/android/systemui/statusbar/BaseStatusBar.java
+index ab522f9..172f96c 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/BaseStatusBar.java
++++ b/SystemUI/src/com/android/systemui/statusbar/BaseStatusBar.java
+@@ -98,6 +98,7 @@ import com.android.systemui.SystemUI;
+ import com.android.systemui.assist.AssistManager;
+ import com.android.systemui.recents.Recents;
+ import com.android.systemui.statusbar.NotificationData.Entry;
++import com.android.systemui.statusbar.phone.LogUtil;
+ import com.android.systemui.statusbar.phone.NavigationBarView;
+ import com.android.systemui.statusbar.phone.NotificationGroupManager;
+ import com.android.systemui.statusbar.phone.ObservableScrollView;
+@@ -2128,11 +2129,12 @@ public abstract class BaseStatusBar extends SystemUI implements
+             }
+             return false;
+         }
+-
+-        if (isSnoozedPackage(sbn)) {
+-            return false;
+-        }
+-
++// (暂时屏蔽"连续通知无法弹出的bug") 2017年02月23日 16:48:47
++//        if (isSnoozedPackage(sbn)) {
++//            return false;
++//        }
++// (暂时屏蔽"连续通知无法弹出的bug") end 2017年02月23日 16:48:47
++        
+         Notification notification = sbn.getNotification();
+         // some predicates to make the boolean logic legible
+         boolean isNoisy = (notification.defaults & Notification.DEFAULT_SOUND) != 0
+-- 
+2.8.3.windows.1
+

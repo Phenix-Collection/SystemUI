@@ -1,0 +1,100 @@
+From 229776c6f85281a7b6becf67bd40c7ebe13bad4d Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Thu, 16 Feb 2017 18:39:45 +0800
+Subject: [PATCH 042/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E6=9B=B4=E6=94=B9=E7=8A=B6=E6=80=81=E6=A0=8Factivity=E7=9A=84?=
+ =?UTF-8?q?=E4=B8=BB=E9=A2=98=E6=A0=B7=E5=BC=8F?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/AndroidManifest.xml                   |   6 +++---
+ SystemUI/res/mipmap-xhdpi/ic_settings_back.png | Bin 0 -> 1416 bytes
+ SystemUI/res/values/styles.xml                 |  10 ++++++++++
+ 3 files changed, 13 insertions(+), 3 deletions(-)
+ create mode 100644 SystemUI/res/mipmap-xhdpi/ic_settings_back.png
+
+diff --git a/SystemUI/AndroidManifest.xml b/SystemUI/AndroidManifest.xml
+index 5f8bd52..e81860f 100644
+--- a/SystemUI/AndroidManifest.xml
++++ b/SystemUI/AndroidManifest.xml
+@@ -200,7 +200,7 @@
+         <activity android:name=".tuner.TunerActivity"
+                   android:enabled="false"
+                   android:icon="@drawable/tuner"
+-                  android:theme="@android:style/Theme.Material.Settings"
++                  android:theme="@style/FragmentTheme"
+                   android:label="@string/system_ui_tuner"
+                   android:process=":tuner"
+                   android:exported="true">
+@@ -432,7 +432,7 @@
+             android:label="@string/demo_mode"
+             android:permission="android.permission.STATUS_BAR"
+             android:process=":tuner"
+-            android:theme="@android:style/Theme.Material.Settings" />
++            android:theme="@style/FragmentTheme" />
+         <activity
+             android:name=".tuner.TunerActivity$StatusBarIconActivity"
+             android:exported="true"
+@@ -440,6 +440,6 @@
+             android:label="@string/status_bar"
+             android:permission="android.permission.STATUS_BAR"
+             android:process=":tuner"
+-            android:theme="@android:style/Theme.Material.Settings" />
++            android:theme="@style/FragmentTheme" />
+     </application>
+ </manifest>
+diff --git a/SystemUI/res/mipmap-xhdpi/ic_settings_back.png b/SystemUI/res/mipmap-xhdpi/ic_settings_back.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..a604d5a986dfec45dfc523c594924071cc22313e
+GIT binary patch
+literal 1416
+zcmaJ>ZA=q)96n&h2{_r-MG%~~k`++f>-7cfjq=hf)e>4sX`nHv9K9<&@Ls$gYayaY
+zHXWI4M8H@;2PA-WvMdXm5R&1-B=Z9b2wTz*I%Bdhbubn%8_aE2q__`bm)!kd@;uM)
+z?a4J1SPpE9+8G4^z&6uCgH>47!T04z;d|4Y@K{*l`CL0+$T)cq#t}dc&Xf_LiNeYW
+zD}mwFCvFiL01)vOX|wZob3Wo=C^;6y$h{ORumK<=%gbVpN`eQ=h;owFNft&%B_N6G
+zB*hxD!px$Ci#%Av5rs7to1>=Ep~WRxnP7$&5d<iL$3QQ2oOUB#on%cH5%$4rNCK`w
+z_)4ARc~W+B0f;gj0czwLnL`1q!E~)0*1+oh@IFwffK`w}1;HvAtV9%A1lEA-k3@*Z
+z;ZDSAFs{cEPCAK;=UD`TJRXnSqmnaRIRtC9T1cUUluDU^kh!aA9`nj*cTz~fK)4+o
+z$?_yagF!{CjH%*v5+T#)B~a{!EbU%zlh828i?I+aR|HE60nO(Bhf>rA+Ra;u7y16D
+zu-jJ65|EW}GgX{J7@RXH7>Y$uj=*?^voXx^P!|ha49~b-3=5(tm{LsAIOB1ruEEV_
+z#6-J!jCK$vgH9p{$Vn1M)Jj+ZD;1iYG@}}ZbJO%%O}f@-Ky%?VSgF_KhPVdCQAH6n
+zAL8OKxM`bmgHE7WA+mws$ae|c$T1YSRxv_uo{MTzy>%|Wc`oWrxsZ?y6rAh7<{Y{b
+z%oE&hxK=o9_@1BzvvY#0#Z3v#01)=fWXQ3315erx<&9;F#|zu_Ba6V%8?Sq}zUm(g
+zeBa|?k9;w!8fqz`J{2v-J`#P44lQk;SrOg85hqP3zt{ftg)O_$aP#kr6RXPR!LLf>
+z%~k$Je8L}ocsZ{YY9f3;ESwwbsvV#bN3Xq))@jFo{a`Vs;%a1g_Kq>p;MU9fk*VGi
+z;8Jaj<Eo|a&CcY3>|Jxy^*%IWX==pS88H`Vd#cUfqKIznn(QH+^QWViYq2sd-qAm`
+zsN>_prDxG$RZ_In^HYlW{2+Q$-F}WY2D(0qZ~`*@{ggMJ__E0Hu%rh~s)?b}p<P^W
+zd~!@5dRzVQ>;vvQpYt_E;wue3zW2~>a{QMjZ`%n({Pu)BvHP;KMIAjKTUw)@$Zt#q
+zx{H>N-WC_#DxTSUjNh~UO#F=XacrkFuBPbDr8<}E3g;2OG~Tb9i>#=a?}|4MGYGw-
+zC}t1(jp1pZNYgssKbe{?yA~T*>hM>Jl)BmLHGZ>hb~>u1cyQ_A$<K|Ztohb@?}}+(
+zt>NyW3R&{SQx`rgEMLK9?@dS9+D>JD0v2PdKjvp;YrYI`?cLq^=<u1myLYbll`Yth
+z{G1*(b1@*>pVlCKmN{qp%XIp{@;joyA6K%O$?D%$$-j@aO7~jpc4B^=<K*(NWng8r
+gL}UxAp8Xhz0M1(md;{r!b_D;8rd*5RGkt0OKSnqNjQ{`u
+
+literal 0
+HcmV?d00001
+
+diff --git a/SystemUI/res/values/styles.xml b/SystemUI/res/values/styles.xml
+index a6738ac..e8fc1c5 100644
+--- a/SystemUI/res/values/styles.xml
++++ b/SystemUI/res/values/styles.xml
+@@ -331,4 +331,14 @@
+         <item name="android:textSize">@dimen/dialpad_font_size</item>
+         <item name="android:fontFamily">sans-serif-light</item>
+     </style>
++    
++    <style name="FragmentTheme" parent="@android:style/Theme.Material.Light.LightStatusBar" >
++        <item name="android:colorPrimaryDark">#F7F7F7</item>
++        <item name="android:actionBarStyle">@style/Theme.ActionBar</item>
++        <item name="android:colorPrimary">#F7F7F7</item>
++    </style>
++
++    <style name="Theme.ActionBar" parent="@android:style/Widget.Material.Light.ActionBar.Solid">
++        <item name="android:homeAsUpIndicator">@mipmap/ic_settings_back</item>
++    </style>
+ </resources>
+-- 
+2.8.3.windows.1
+

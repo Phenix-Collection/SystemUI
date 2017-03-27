@@ -1,0 +1,55 @@
+From 298f62c5f137ee8017e5d056459cd32e71e92138 Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Mon, 13 Feb 2017 16:06:58 +0800
+Subject: [PATCH 027/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E7=A6=81=E6=AD=A2=E5=BF=AB=E6=8D=B7=E6=BB=91=E5=9D=97=E5=AE=B9?=
+ =?UTF-8?q?=E5=99=A8=E4=B8=8A=E4=B8=8B=E6=BB=9A=E5=8A=A8?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../systemui/statusbar/phone/ObservableScrollView.java      | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/ObservableScrollView.java b/SystemUI/src/com/android/systemui/statusbar/phone/ObservableScrollView.java
+index c75ac4c..099e822 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/ObservableScrollView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/ObservableScrollView.java
+@@ -134,7 +134,11 @@ public class ObservableScrollView extends ScrollView {
+     @Override
+     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
+         super.onScrollChanged(l, t, oldl, oldt);
+-        if (mListener != null) {
++        Log.i(this.getClass().getSimpleName(), "onScrollChanged");
++        if (!panelView.getQsExpansionEnabled()) {
++			return ;
++		}
++        if (mListener != null  ) {
+             mListener.onScrollChanged();
+         }
+     }
+@@ -144,6 +148,9 @@ public class ObservableScrollView extends ScrollView {
+             int scrollRangeX, int scrollRangeY, int maxOverScrollX, int maxOverScrollY,
+             boolean isTouchEvent) {
+         mLastOverscrollAmount = Math.max(0, scrollY + deltaY - getMaxScrollY());
++        if (!panelView.getQsExpansionEnabled()) {
++			return false;
++		}
+         return super.overScrollBy(deltaX, deltaY, scrollX, scrollY, scrollRangeX, scrollRangeY,
+                         maxOverScrollX, maxOverScrollY, isTouchEvent);
+     }
+@@ -162,6 +169,10 @@ public class ObservableScrollView extends ScrollView {
+     @Override
+     protected void onOverScrolled(int scrollX, int scrollY, boolean clampedX, boolean clampedY) {
+         super.onOverScrolled(scrollX, scrollY, clampedX, clampedY);
++        Log.i(this.getClass().getSimpleName(), "onOverScrolled");
++        if (!panelView.getQsExpansionEnabled()) {
++			return ;
++		}
+         if (mListener != null && mLastOverscrollAmount > 0) {
+             mListener.onOverscrolled(mLastX, mLastY, mLastOverscrollAmount);
+         }
+-- 
+2.8.3.windows.1
+

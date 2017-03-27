@@ -1,0 +1,98 @@
+From 7f1f8a8542123a83065b637967ba05c8a66d4292 Mon Sep 17 00:00:00 2001
+From: zengqingshuai <zengqingshuai@qucii.com>
+Date: Fri, 24 Feb 2017 16:35:40 +0800
+Subject: [PATCH 065/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E5=88=9D=E6=AD=A5=E5=88=A4=E6=96=AD=E5=9B=BE=E6=A0=87=E9=94=99?=
+ =?UTF-8?q?=E4=B9=B1=E6=98=AF=E7=BC=93=E5=AD=98=E6=95=B0=E6=8D=AE=E6=B7=B7?=
+ =?UTF-8?q?=E4=B9=B1=EF=BC=8C=E6=B8=85=E7=A9=BATile=E6=97=B6=E5=90=8C?=
+ =?UTF-8?q?=E6=97=B6=E6=B8=85=E7=A9=BA=E5=9B=BE=E6=A0=87=E7=BC=93=E5=AD=98?=
+ =?UTF-8?q?=EF=BC=8C=E9=83=A8=E5=88=86=E7=9B=B8=E5=85=B3=E6=96=B9=E6=B3=95?=
+ =?UTF-8?q?=E5=8A=A0=E5=85=A5LOG?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/src/com/android/systemui/qs/QSTile.java        | 16 ++++++++++++++++
+ SystemUI/src/com/android/systemui/qs/QSTileView.java    |  2 ++
+ SystemUI/src/com/android/systemui/qs/tiles/DndTile.java |  8 ++++----
+ 3 files changed, 22 insertions(+), 4 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/qs/QSTile.java b/SystemUI/src/com/android/systemui/qs/QSTile.java
+index d6e09e7..63ba918 100644
+--- a/SystemUI/src/com/android/systemui/qs/QSTile.java
++++ b/SystemUI/src/com/android/systemui/qs/QSTile.java
+@@ -187,6 +187,12 @@ public abstract class QSTile<TState extends State> implements Listenable {
+     protected void handleClearState() {
+         mTmpState = newTileState();
+         mState = newTileState();
++        //add by zqs 2017/2/24 start
++        //================>
++        //新建tile时清空ResourceIcon里数据
++        ResourceIcon.clearICONS();
++        //add by zqs 2017/2/24 end
++        //<================
+     }
+ 
+     protected void handleRefreshState(Object arg) {
+@@ -363,8 +369,18 @@ public abstract class QSTile<TState extends State> implements Listenable {
+             mResId = resId;
+         }
+ 
++        //add by zqs 2017/2/24 start
++        //================>
++        //清空缓存（数据混乱）
++        public static void clearICONS(){
++        	if(ICONS!=null&&ICONS.size()>0)
++        		ICONS.clear();
++        }
++        //add by zqs 2017/2/24 end
++        //<================
+         public static Icon get(int resId) {
+             Icon icon = ICONS.get(resId);
++            Log.e("====ResourceIcon.get==zqs==", "icon!=null:"+String.valueOf(icon!=null)+",resId:"+resId);
+             if (icon == null) {
+                 icon = new ResourceIcon(resId);
+                 ICONS.put(resId, icon);
+diff --git a/SystemUI/src/com/android/systemui/qs/QSTileView.java b/SystemUI/src/com/android/systemui/qs/QSTileView.java
+index 7b20f2d..32b0606 100644
+--- a/SystemUI/src/com/android/systemui/qs/QSTileView.java
++++ b/SystemUI/src/com/android/systemui/qs/QSTileView.java
+@@ -27,6 +27,7 @@ import android.graphics.drawable.RippleDrawable;
+ import android.os.Handler;
+ import android.os.Looper;
+ import android.os.Message;
++import android.util.Log;
+ import android.util.MathUtils;
+ import android.util.TypedValue;
+ import android.view.Gravity;
+@@ -310,6 +311,7 @@ public class QSTileView extends ViewGroup {
+     }
+ 
+     protected void setIcon(ImageView iv, QSTile.State state) {
++    	Log.w("======setIcon=======", "state:"+state.label+",state:state.icon"+state.icon.toString(),new Throwable());
+         if (!Objects.equals(state.icon, iv.getTag(R.id.qs_icon_tag))) {
+             Drawable d = state.icon != null ? state.icon.getDrawable(mContext) : null;
+             if (d != null && state.autoMirrorDrawable) {
+diff --git a/SystemUI/src/com/android/systemui/qs/tiles/DndTile.java b/SystemUI/src/com/android/systemui/qs/tiles/DndTile.java
+index 8580d63..bb6c952 100644
+--- a/SystemUI/src/com/android/systemui/qs/tiles/DndTile.java
++++ b/SystemUI/src/com/android/systemui/qs/tiles/DndTile.java
+@@ -53,10 +53,10 @@ public class DndTile extends QSTile<QSTile.BooleanState> {
+ 
+     private static final String ACTION_SET_VISIBLE = "com.android.systemui.dndtile.SET_VISIBLE";
+     private static final String EXTRA_VISIBLE = "visible";
+-
+-    private static final QSTile.Icon TOTAL_SILENCE =
+-            ResourceIcon.get(R.drawable.ic_qs_dnd_on_total_silence);
+-
++    //delete by zqs 2017/2/24 begin
++//    private static final QSTile.Icon TOTAL_SILENCE =
++//            ResourceIcon.get(R.drawable.ic_qs_dnd_on_total_silence);
++    //delete by zqs 2017/2/24 end
+     private final AnimationIcon mDisable =
+             new AnimationIcon(R.drawable.ic_dnd_disable_animation);
+     private final AnimationIcon mDisableTotalSilence =
+-- 
+2.8.3.windows.1
+

@@ -1,0 +1,278 @@
+From 6de5682758ef2c244c48398156a930504adef661 Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Thu, 9 Mar 2017 13:48:26 +0800
+Subject: [PATCH 123/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E4=BF=AE=E5=A4=8D=E9=94=81=E5=B1=8F=E7=94=B5=E6=B1=A0=E6=97=A0?=
+ =?UTF-8?q?=E8=BE=B9=E6=A1=86=E9=97=AE=E9=A2=98=20=E5=8F=8A=20=E7=BA=B5?=
+ =?UTF-8?q?=E5=90=91=E6=97=B6=E5=80=99=E4=B8=80=E7=9B=B4=E6=98=BE=E7=A4=BA?=
+ =?UTF-8?q?=E6=BB=A1=E6=A0=BC=E9=97=AE=E9=A2=98?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../res/drawable/qucii_ic_battery_landscape.xml    | 10 ++++---
+ .../drawable/qucii_ic_battery_landscape_fill.xml   |  4 +--
+ .../drawable/qucii_ic_battery_landscape_frame.xml  | 21 +++++----------
+ SystemUI/res/values/dimens.xml                     |  3 +++
+ SystemUI/res/values/strings.xml                    | 31 ++++++++++++++++------
+ .../src/com/android/systemui/BatteryMeterView.java | 15 +++++------
+ .../statusbar/phone/KeyguardStatusBarView.java     |  4 +--
+ .../statusbar/phone/StatusBarIconController.java   |  8 ++++--
+ 8 files changed, 55 insertions(+), 41 deletions(-)
+
+diff --git a/SystemUI/res/drawable/qucii_ic_battery_landscape.xml b/SystemUI/res/drawable/qucii_ic_battery_landscape.xml
+index e9c4082..a2d3671 100644
+--- a/SystemUI/res/drawable/qucii_ic_battery_landscape.xml
++++ b/SystemUI/res/drawable/qucii_ic_battery_landscape.xml
+@@ -3,13 +3,15 @@
+ 
+     <item
+         android:id="@+id/battery_frame"
+-        android:drawable="@drawable/qucii_ic_battery_landscape_frame"/>
++        android:drawable="@drawable/qucii_ic_battery_landscape_frame"
++        android:gravity="center"/>
+     <item
+         android:id="@+id/battery_fill"
+-        android:drawable="@drawable/qucii_ic_battery_landscape_avd"/>
++        android:drawable="@drawable/qucii_ic_battery_landscape_avd"
++        android:gravity="center"/>
+     <item
+         android:id="@+id/battery_charge_indicator"
+-        android:gravity="center"
+-        android:drawable="@drawable/qucii_ic_battery_bolt_land_bmp"/>
++        android:drawable="@drawable/qucii_ic_battery_bolt_land_bmp"
++        android:gravity="center"/>
+ 
+ </layer-list>
+\ No newline at end of file
+diff --git a/SystemUI/res/drawable/qucii_ic_battery_landscape_fill.xml b/SystemUI/res/drawable/qucii_ic_battery_landscape_fill.xml
+index a6beaa7..cfb44ba 100644
+--- a/SystemUI/res/drawable/qucii_ic_battery_landscape_fill.xml
++++ b/SystemUI/res/drawable/qucii_ic_battery_landscape_fill.xml
+@@ -1,7 +1,7 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <vector xmlns:android="http://schemas.android.com/apk/res/android"
+-    android:width="21.2dp"
+-    android:height="14dp"
++    android:width="@dimen/battery_land_width"
++    android:height="@dimen/battery_land_height"
+     android:viewportHeight="54"
+     android:viewportWidth="82">
+ 
+diff --git a/SystemUI/res/drawable/qucii_ic_battery_landscape_frame.xml b/SystemUI/res/drawable/qucii_ic_battery_landscape_frame.xml
+index f795632..1761a4c 100644
+--- a/SystemUI/res/drawable/qucii_ic_battery_landscape_frame.xml
++++ b/SystemUI/res/drawable/qucii_ic_battery_landscape_frame.xml
+@@ -1,28 +1,21 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <vector xmlns:android="http://schemas.android.com/apk/res/android"
+-    android:width="21.2dp"
+-    android:height="14dp"
++    android:width="@dimen/battery_land_width"
++    android:height="@dimen/battery_land_height"
+     android:viewportHeight="54"
+     android:viewportWidth="82">
+ 
+     <path
+         android:fillAlpha="1.00"
+         android:fillColor="#000000"
+-        android:pathData="M 3.34 10.35 C 4.81 9.81 6.42 10.06 7.96 9.98 C 29.31 10.05 50.66 9.94 72.02
+-10.03 C 74.14 9.93 76.08 11.86 75.97 13.98 C 76.03 22.66 76.03 31.34 75.97 40.02
+-C 76.12 42.61 73.47 44.38 71.07 44.00 C 49.04 43.97 27.01 44.05 4.98 43.97 C
+-2.86 44.07 0.92 42.14 1.03 40.02 C 0.94 31.66 1.02 23.29 1.00 14.93 C 0.82 13.11
+-1.55 11.10 3.34 10.35 M 4.24 12.15 C 2.65 12.73 3.10 14.65 2.98 15.94 C 3.06
+-23.93 2.91 31.93 3.05 39.92 C 2.82 41.60 4.66 42.19 5.98 42.00 C 27.66 42.00
+-49.34 42.01 71.01 41.99 C 72.34 42.14 74.20 41.64 73.95 39.92 C 74.04 31.31
+-74.04 22.69 73.95 14.08 C 74.15 11.88 71.56 11.92 70.05 11.98 C 48.12 12.12
+-26.17 11.79 4.24 12.15 Z"
++        android:pathData="@string/battery_landscape_frame"
+         android:strokeAlpha="1.00"
+-        android:strokeWidth="2" />
++        android:strokeWidth="1" />
++
+     <path
+         android:fillAlpha="1.00"
+         android:fillColor="#000000"
+-        android:pathData="M78 21.8 L 82 22.60 V31.4 L 78 32.2 V21.8 Z"
++        android:pathData="@string/battery_landscape_header"
+         android:strokeAlpha="1.00"
+-        android:strokeWidth="2" />
++        android:strokeWidth="1" />
+ </vector>
+\ No newline at end of file
+diff --git a/SystemUI/res/values/dimens.xml b/SystemUI/res/values/dimens.xml
+index 0384c97..5e24d55 100644
+--- a/SystemUI/res/values/dimens.xml
++++ b/SystemUI/res/values/dimens.xml
+@@ -607,4 +607,7 @@
+      <dimen name="signal_container_paddingtop">2.5dp</dimen><!-- added by yangfan -->
+      <dimen name="notification_container_paddingtop">2.5dp</dimen><!-- added by yangfan -->
+      <dimen name="statusbar_nosim_text_size">12sp</dimen><!-- added by yangfan -->
++     
++     <dimen name="battery_land_width">22dp</dimen>
++     <dimen name="battery_land_height">14dp</dimen>
+ </resources>
+diff --git a/SystemUI/res/values/strings.xml b/SystemUI/res/values/strings.xml
+index e01e3f5..16127f3 100644
+--- a/SystemUI/res/values/strings.xml
++++ b/SystemUI/res/values/strings.xml
+@@ -1166,14 +1166,29 @@
+     <string name="battery_portrait_clip_path" translatable="false">M6,21V4h3V2h6v2h3v17H6z</string>
+ 
+     <!-- Path data for landscape battery -->
+-    <string name="battery_landscape_path_full" translatable="false">M 1 4 H 25 V 20 H 1 V 4 Z</string>
+-    <string name="battery_landscape_path_empty" translatable="false">M 1 4 H 1 V 20 H 1 V 4 Z</string>
+-    <string name="battery_landscape_battery_level" translatable="false">M3.5,12 H73.4 V42 H3.5 V12 Z</string>
+-    <string name="battery_landscape_clip_path" translatable="false">M25,16h-2v4H1V4h22v4h2V16z</string>
+-    <string name="battery_landscape_path_full_new" translatable="false"> M 3.5 12 H 82 V 42 H 3.5 V 12 Z</string>
+-    <string name="battery_landscape_path_empty_new" translatable="false">M 3.5 12 H 3.5 V 42 H 3.5 V 12 Z</string>
+-    <string name="battery_landscape_clip_path_new" translatable="false">M3.5,12.5 H73.4 V41.5 H3.5 V12.5 Z M76 21.8 L 80 22.60 V31.4 L 76 32.2 V21.8 Z</string>
+-    <string name="battery_landscape_header" translatable="false">M76 21.8 L 80 22.60 V31.4 L 76 32.2 V21.8 Z</string>
++    <string name="battery_landscape_path_full_new" translatable="false"> M 3.5 12.5 H 82 V 41.5 H 3.5 V 12.5 Z</string>
++    <!--  inner_header +  frame_inner-->
++    <string name="battery_landscape_clip_path_new" translatable="false">M3.5,12.5 H73.5 V41.5 H3.5 V12.5 Z M 78.01 21.79 C 79.34 22.08 80.67 22.38 82.00 22.69 L 82.00 31.21 C 80.69 31.62
++79.35 31.94 78.02 32.27 C 77.99 28.77 78.00 25.28 78.01 21.79 Z</string>
++    <string name="battery_landscape_path_empty_new" translatable="false">M 3.5 12.5 H 3.5 V 42 H 3.5 V 12.5 Z</string>
++    <!-- inner_header -->
++    <string name="battery_landscape_header_inner" translatable="false"> M78 22.5 L 81.5 23.2 V31.0 L 78 32.2 V22 Z</string>
++    <!-- frame_inner-->
++    <string name="battery_landscape_frame_inner" translatable="false"> M3.5,12.5 H73.5 V41.5 H3.5 V12.5 Z</string>
++
++    <!--  M 3.3  10.40  H 76  V 42.7  H 3.3 V 10.40 Z -->
++    <string name="battery_landscape_frame" translatable="false">M 3.28 10.40 C 4.76 9.81 6.42 10.06 7.97 9.97 C 29.01 10.04 50.04 9.98 71.08
++10.00 C 73.41 9.66 76.03 11.33 75.95 13.86 C 76.04 22.61 76.04 31.37 75.95 40.11
++C 76.06 42.69 73.38 44.36 71.01 44.00 C 49.33 44.00 27.65 44.00 5.96 44.00 C
++3.59 44.36 0.93 42.66 1.05 40.09 C 0.92 31.72 1.03 23.34 1.00 14.98 C 0.86 13.18
++1.49 11.15 3.28 10.40 M 4.13 12.16 C 3.89 12.40 3.41 12.89 3.16 13.13 C 2.83
++22.09 3.01 31.09 3.07 40.05 C 2.88 41.61 4.68 42.17 5.91 41.99 C 27.62 42.00
++49.34 42.01 71.05 41.99 C 72.23 42.11 74.12 41.68 73.92 40.11 C 74.06 31.39
++74.05 22.66 73.93 13.94 C 74.02 11.82 71.48 11.96 70.02 11.98 C 48.06 12.13
++26.08 11.77 4.13 12.16 Z</string>
++    <!-- frame_header M 78 22 L 82 22.7 V 31.2 L 78 32.2 Z-->
++    <string name="battery_landscape_header" translatable="false">M 78.01 21.79 C 79.34 22.08 80.67 22.38 82.00 22.69 L 82.00 31.21 C 80.69 31.62
++79.35 31.94 78.02 32.27 C 77.99 28.77 78.00 25.28 78.01 21.79 Z</string>
+ 
+     <!-- Path data for circle battery -->
+     <string name="battery_circle_path" translatable="false">M 12 3.5 C 16.6944203736 3.5 20.5 7.30557962644 20.5 12 C 20.5 16.6944203736 16.6944203736 20.5 12 20.5 C 7.30557962644 20.5 3.5 16.6944203736 3.5 12 C 3.5 7.30557962644 7.30557962644 3.5 12 3.5 Z</string>
+diff --git a/SystemUI/src/com/android/systemui/BatteryMeterView.java b/SystemUI/src/com/android/systemui/BatteryMeterView.java
+index a71d80f..d0d0ea9 100644
+--- a/SystemUI/src/com/android/systemui/BatteryMeterView.java
++++ b/SystemUI/src/com/android/systemui/BatteryMeterView.java
+@@ -221,15 +221,12 @@ public class BatteryMeterView extends View implements DemoMode, BatteryStateChan
+                 com.android.internal.R.integer.config_criticalBatteryWarningLevel);
+ 
+         mDarkModeBackgroundColor =
+-                context.getColor(R.color.dark_mode_icon_color_dual_tone_background);
++        	 context.getColor(R.color.dark_mode_icon_color_dual_tone_background);
+         mDarkModeFillColor = context.getColor(R.color.dark_mode_icon_color_dual_tone_fill);
+         mLightModeBackgroundColor =
+                 context.getColor(R.color.light_mode_icon_color_dual_tone_background);
+         mLightModeFillColor = context.getColor(R.color.light_mode_icon_color_dual_tone_fill);
+ 
+-       // mLightModeBackgroundColor = context.getColor(R.color.dark_mode_icon_color_dual_tone_background);
+-       // mLightModeFillColor = Color.parseColor("#4cc79a");
+-
+         setAnimationsEnabled(true);
+     }
+ 
+@@ -260,7 +257,6 @@ public class BatteryMeterView extends View implements DemoMode, BatteryStateChan
+             }
+         }
+         mHeight = height;
+-
+         setMeasuredDimension(width, height);
+     }
+ 
+@@ -390,9 +386,9 @@ public class BatteryMeterView extends View implements DemoMode, BatteryStateChan
+ 
+     public void setDarkIntensity(float darkIntensity) {
+         if (mBatteryMeterDrawable != null) {
+-            mCurrentBackgroundColor = getBackgroundColor(darkIntensity);
++            int backgroundColor = getBackgroundColor(darkIntensity);
+             mCurrentFillColor = getFillColor(darkIntensity);
+-            mBatteryMeterDrawable.setDarkIntensity(mCurrentBackgroundColor, mCurrentFillColor);
++            mBatteryMeterDrawable.setDarkIntensity(backgroundColor, mCurrentFillColor);
+         }
+     }
+ 
+@@ -543,7 +539,8 @@ public class BatteryMeterView extends View implements DemoMode, BatteryStateChan
+             mIconTint = fillColor;
+             // Make bolt fully opaque for increased visibility
+             mBoltDrawable.setTint(0xff000000 | mIconTint);
+-            mFrameDrawable.setTint(0xff000000 | backgroundColor);
++            mCurrentBackgroundColor = 0xff000000 | backgroundColor;
++            mFrameDrawable.setTint(mCurrentBackgroundColor);//透明度设为255
+             updateBoltDrawableLayer(mBatteryDrawable, mBoltDrawable);
+             invalidate();
+         }
+@@ -611,7 +608,7 @@ public class BatteryMeterView extends View implements DemoMode, BatteryStateChan
+             int drawableResId = getBatteryDrawableResourceForMode(mode);
+             mBatteryDrawable = (LayerDrawable) getContext().getDrawable(drawableResId);
+             mFrameDrawable = mBatteryDrawable.findDrawableByLayerId(R.id.battery_frame);
+-            mFrameDrawable.setTint(mCurrentBackgroundColor);
++            mFrameDrawable.setTint(0xffffffff);//初始化一个背景色
+             // set the animated vector drawable we will be stop animating
+             Drawable levelDrawable = mBatteryDrawable.findDrawableByLayerId(R.id.battery_fill);
+             mLevelDrawable = new StopMotionVectorDrawable(levelDrawable);
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/KeyguardStatusBarView.java b/SystemUI/src/com/android/systemui/statusbar/phone/KeyguardStatusBarView.java
+index 8665724..850ce38 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/KeyguardStatusBarView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/KeyguardStatusBarView.java
+@@ -65,7 +65,7 @@ public class KeyguardStatusBarView extends RelativeLayout {// modified by yangfa
+     @Override
+     protected void onFinishInflate() {
+         super.onFinishInflate();
+-        mSystemIconsSuperContainer = findViewById(R.id.system_icons_super_container);
++        //mSystemIconsSuperContainer = findViewById(R.id.system_icons_super_container);
+         mMultiUserSwitch = (MultiUserSwitch) findViewById(R.id.multi_user_switch);
+         mMultiUserAvatar = (ImageView) findViewById(R.id.multi_user_avatar);
+ 		// modified by yangfan 
+@@ -202,7 +202,7 @@ public class KeyguardStatusBarView extends RelativeLayout {// modified by yangfa
+     public void setVisibility(int visibility) {
+         super.setVisibility(visibility);
+         if (visibility != View.VISIBLE) {
+-            mSystemIconsSuperContainer.animate().cancel();
++            //mSystemIconsSuperContainer.animate().cancel();
+             mMultiUserSwitch.animate().cancel();
+             mMultiUserSwitch.setAlpha(1f);
+         }
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/StatusBarIconController.java b/SystemUI/src/com/android/systemui/statusbar/phone/StatusBarIconController.java
+index 8a21ee5..11ca8e1 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/StatusBarIconController.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/StatusBarIconController.java
+@@ -77,8 +77,8 @@ public class StatusBarIconController implements Tunable  {
+     private IconMerger mNotificationIcons;
+     private View mNotificationIconArea;
+     private ImageView mMoreIcon;
+-    private BatteryMeterView mBatteryMeterView;
+-    private BatteryLevelTextView mBatteryLevelTextView;
++    private BatteryMeterView mBatteryMeterView,mBatteryMeterViewKeyguard;
++    private BatteryLevelTextView mBatteryLevelTextView,mBatteryLevelTextViewKeyguard;
+     private ClockController mClockController;
+     private View mCenterClockLayout,mLeftClockLayout;
+ 
+@@ -125,7 +125,9 @@ public class StatusBarIconController implements Tunable  {
+         mNotificationIcons.setOverflowIndicator(mMoreIcon);
+         mStatusIconsKeyguard = (LinearLayout) keyguardStatusBar.findViewById(R.id.statusIcons);
+         mBatteryMeterView = (BatteryMeterView) statusBar.findViewById(R.id.battery);
++        mBatteryMeterViewKeyguard = (BatteryMeterView) keyguardStatusBar.findViewById(R.id.battery);
+         mBatteryLevelTextView = (BatteryLevelTextView)statusBar.findViewById(R.id.battery_level_text);//added  by yangfan
++        mBatteryLevelTextViewKeyguard = (BatteryLevelTextView)keyguardStatusBar.findViewById(R.id.battery_level_text);//added  by yangfan
+         mLinearOutSlowIn = AnimationUtils.loadInterpolator(mContext,
+                 android.R.interpolator.linear_out_slow_in);
+         mFastOutSlowIn = AnimationUtils.loadInterpolator(mContext,
+@@ -483,8 +485,10 @@ public class StatusBarIconController implements Tunable  {
+         mSignalCluster.setIconTint(mIconTint, mDarkIntensity);
+         mMoreIcon.setImageTintList(ColorStateList.valueOf(mIconTint));
+         mBatteryMeterView.setDarkIntensity(mDarkIntensity);
++        mBatteryMeterViewKeyguard.setDarkIntensity(mDarkIntensity);
+ 		//added  by yangfan
+         mBatteryLevelTextView.setDarkIntensity(mDarkIntensity);
++        mBatteryLevelTextViewKeyguard.setDarkIntensity(mDarkIntensity);
+         mClockController.setTextColor(mIconTint);
+ 		//added  by yangfan end
+         applyNotificationIconsTint();
+-- 
+2.8.3.windows.1
+

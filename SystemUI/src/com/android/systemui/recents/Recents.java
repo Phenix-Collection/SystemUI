@@ -755,16 +755,9 @@ public class Recents extends SystemUI
             for (int i = taskCount - 1; i >= 0; i--) {
                 Task t = tasks.get(i);
                 if (t.key.id == runningTaskId) {
-					// modified by wumin
-					if (t.key.mComponentNameKey.component.getPackageName()
-							.toString().equals("com.android.systemui")) {
-						break;
-					} else {
-						task = t;
-						runningTaskOut.copyFrom(t);
-						break;
-					}
-					// modified end
+                    task = t;
+                    runningTaskOut.copyFrom(t);
+                    break;
                 }
             }
         }

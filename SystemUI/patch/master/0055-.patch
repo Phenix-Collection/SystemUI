@@ -1,0 +1,30 @@
+From a5b90313eff5fdf911743172bf4404309a321967 Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Wed, 22 Feb 2017 20:18:58 +0800
+Subject: [PATCH 055/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E4=BF=AE=E5=A4=8D=E5=81=B6=E5=B0=94=E7=9A=84=E6=95=B0=E7=BB=84?=
+ =?UTF-8?q?=E8=B6=8A=E7=95=8C=E5=BC=82=E5=B8=B8?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/src/com/android/systemui/statusbar/policy/TelephonyIcons.java | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/policy/TelephonyIcons.java b/SystemUI/src/com/android/systemui/statusbar/policy/TelephonyIcons.java
+index 7aa0e55..f4eeaa3 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/policy/TelephonyIcons.java
++++ b/SystemUI/src/com/android/systemui/statusbar/policy/TelephonyIcons.java
+@@ -33,7 +33,7 @@ import com.android.systemui.statusbar.policy.MobileSignalController.MobileIconGr
+ class TelephonyIcons {
+     //***** Signal strength icons
+ 
+-    static final int TELEPHONY_NUM_LEVELS = /**5**/4;// modified by yangfan 
++    static final int TELEPHONY_NUM_LEVELS = 5;// modified by yangfan 
+ 
+     //GSM/UMTS
+     static final int TELEPHONY_NO_NETWORK = /*R.drawable.stat_sys_signal_null*/ R.drawable.qucii_stat_sys_no_service;// modified by yangfan 
+-- 
+2.8.3.windows.1
+

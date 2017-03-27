@@ -43,7 +43,6 @@ public class CallbackHandler extends Handler implements EmergencyListener, Signa
     private static final int MSG_MOBILE_DATA_ENABLED_CHANGED = 5;
     private static final int MSG_ADD_REMOVE_EMERGENCY        = 6;
     private static final int MSG_ADD_REMOVE_SIGNAL           = 7;
-    private static final int MSG_NETWORK_LABER_VISIBILITY_CHANGED = 8;// added by yangfan 
 
     // All the callbacks.
     private final ArrayList<EmergencyListener> mEmergencyListeners = new ArrayList<>();
@@ -106,13 +105,6 @@ public class CallbackHandler extends Handler implements EmergencyListener, Signa
                     mSignalCallbacks.remove((SignalCallback) msg.obj);
                 }
                 break;
-				// added by yangfan begin
-            case MSG_NETWORK_LABER_VISIBILITY_CHANGED:
-                for (SignalCallback signalCluster : mSignalCallbacks) {
-                    signalCluster.setNetworkLabelEnable(msg.arg1 != 0,msg.arg2 != 0);
-                }
-                break;
-				// added by yangfan end
         }
     }
 
@@ -133,19 +125,19 @@ public class CallbackHandler extends Handler implements EmergencyListener, Signa
 
     @Override
     public void setMobileDataIndicators(final IconState statusIcon, final IconState qsIcon,
-            final int statusType,final boolean showDataIcon, final int qsType, final boolean activityIn,
+            final int statusType, final int qsType, final boolean activityIn,
             final boolean activityOut, final int dataActivityId, final int mobileActivityId,
             final int stackedDataIcon, final int stackedVoiceIcon,
             final String typeContentDescription, final String description, final boolean isWide,
-            final int subId,final String networkName,final boolean showNetworkClass,final boolean isDelaySignal) {// added by yangfan 
+            final int subId) {
         post(new Runnable() {
             @Override
             public void run() {
                 for (SignalCallback signalCluster : mSignalCallbacks) {
-                    signalCluster.setMobileDataIndicators(statusIcon, qsIcon, statusType, showDataIcon,qsType,
+                    signalCluster.setMobileDataIndicators(statusIcon, qsIcon, statusType, qsType,
                             activityIn, activityOut, dataActivityId, mobileActivityId,
                             stackedDataIcon, stackedVoiceIcon,
-                            typeContentDescription, description, isWide, subId,networkName,  showNetworkClass,isDelaySignal);// added by yangfan 
+                            typeContentDescription, description, isWide, subId);
                 }
             }
         });
@@ -153,28 +145,28 @@ public class CallbackHandler extends Handler implements EmergencyListener, Signa
 
     @Override
     public void setMobileDataIndicators(final IconState statusIcon, final IconState qsIcon,
-            final int statusType,final boolean showDataIcon, final int qsType, final boolean activityIn,
+            final int statusType, final int qsType, final boolean activityIn,
             final boolean activityOut, final int dataActivityId, final int mobileActivityId,
             final int stackedDataIcon, final int stackedVoiceIcon,
             final String typeContentDescription, final String description, final boolean isWide,
             final int subId, final int imsIconId, final boolean isImsOverWifi,
-            final int dataNetworkTypeInRoamingId, final int embmsIconId,final String networkName,final boolean showNetworkClass,final boolean isDelaySignal) {// added by yangfan 
+            final int dataNetworkTypeInRoamingId, final int embmsIconId) {
         post(new Runnable() {
             @Override
             public void run() {
                 for (SignalCallback signalCluster : mSignalCallbacks) {
                     if (signalCluster instanceof SignalCallbackExtended) {
                         ((SignalCallbackExtended)signalCluster).setMobileDataIndicators(
-                                statusIcon, qsIcon, statusType,showDataIcon, qsType, activityIn,
+                                statusIcon, qsIcon, statusType, qsType, activityIn,
                                 activityOut, dataActivityId, mobileActivityId,
                                 stackedDataIcon, stackedVoiceIcon, typeContentDescription,
                                 description, isWide, subId, imsIconId, isImsOverWifi,
-                                dataNetworkTypeInRoamingId, embmsIconId,networkName,showNetworkClass,isDelaySignal);// added by yangfan 
+                                dataNetworkTypeInRoamingId, embmsIconId);
                     } else {
-                        signalCluster.setMobileDataIndicators(statusIcon, qsIcon, statusType,showDataIcon,
+                        signalCluster.setMobileDataIndicators(statusIcon, qsIcon, statusType,
                                 qsType, activityIn, activityOut, dataActivityId,
                                 mobileActivityId, stackedDataIcon, stackedVoiceIcon,
-                                typeContentDescription, description, isWide, subId,networkName,showNetworkClass,isDelaySignal);// added by yangfan 
+                                typeContentDescription, description, isWide, subId);
                     }
                 }
             }
@@ -219,10 +211,4 @@ public class CallbackHandler extends Handler implements EmergencyListener, Signa
         obtainMessage(MSG_ADD_REMOVE_SIGNAL, listening ? 1 : 0, 0, listener).sendToTarget();
     }
 
-// added by yangfan 
-    @Override
-    public void setNetworkLabelEnable(boolean enable,boolean noServiceEnable) {
-        obtainMessage(MSG_NETWORK_LABER_VISIBILITY_CHANGED, enable ? 1 : 0,noServiceEnable ? 1 : 0).sendToTarget();
-    }
-// added by yangfan 
 }

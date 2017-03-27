@@ -1,0 +1,86 @@
+From 8d0fff626a9058ef6e2030059820350a5a17a70d Mon Sep 17 00:00:00 2001
+From: LRH <lironghui@qucci.com>
+Date: Tue, 7 Mar 2017 20:56:44 +0800
+Subject: [PATCH 117/185] =?UTF-8?q?=E3=80=90=E6=95=85=E9=9A=9C=E3=80=91?=
+ =?UTF-8?q?=E5=9B=BE=E6=A1=88=E6=88=96PIN=E7=A0=81=E9=94=81=E7=95=8C?=
+ =?UTF-8?q?=E9=9D=A2=E4=B8=8A=E6=96=B9=E9=9C=80=E6=9C=89=E7=9B=B8=E5=85=B3?=
+ =?UTF-8?q?=E6=96=87=E5=AD=97=E6=8F=90=E7=A4=BA=EF=BC=8C=E5=A6=82=EF=BC=9A?=
+ =?UTF-8?q?=E8=AF=B7=E7=BB=98=E5=88=B6=E5=9B=BE=E6=A1=88=E3=80=81=E8=AF=B7?=
+ =?UTF-8?q?=E8=BE=93=E5=85=A5=E5=AF=86=E7=A0=81=E3=80=81=E8=AF=B7=E8=BE=93?=
+ =?UTF-8?q?=E5=85=A5=E6=8C=87=E7=BA=B9=E6=88=96=E7=BB=98=E5=88=B6=E5=9B=BE?=
+ =?UTF-8?q?=E6=A1=88=E3=80=81=E8=AF=B7=E8=BE=93=E5=85=A5=E6=8C=87=E7=BA=B9?=
+ =?UTF-8?q?=E6=88=96=E5=AF=86=E7=A0=81?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/src/com/android/keyguard/KeyguardMessageArea.java  | 2 +-
+ SystemUI/src/com/android/keyguard/KeyguardPINView.java      | 2 +-
+ SystemUI/src/com/android/keyguard/KeyguardPasswordView.java | 2 +-
+ SystemUI/src/com/android/keyguard/KeyguardPatternView.java  | 3 ++-
+ 4 files changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/SystemUI/src/com/android/keyguard/KeyguardMessageArea.java b/SystemUI/src/com/android/keyguard/KeyguardMessageArea.java
+index c8adf64..842c175 100644
+--- a/SystemUI/src/com/android/keyguard/KeyguardMessageArea.java
++++ b/SystemUI/src/com/android/keyguard/KeyguardMessageArea.java
+@@ -55,7 +55,7 @@ class KeyguardMessageArea extends TextView implements SecurityMessageDisplay {
+     private final Runnable mClearMessageRunnable = new Runnable() {
+         @Override
+         public void run() {
+-            mMessage = null;
++            //mMessage = null;
+             update();
+         }
+     };
+diff --git a/SystemUI/src/com/android/keyguard/KeyguardPINView.java b/SystemUI/src/com/android/keyguard/KeyguardPINView.java
+index c20e50a..6689219 100644
+--- a/SystemUI/src/com/android/keyguard/KeyguardPINView.java
++++ b/SystemUI/src/com/android/keyguard/KeyguardPINView.java
+@@ -76,7 +76,7 @@ public class KeyguardPINView extends KeyguardPinBasedInputView {
+ 
+     protected void resetState() {
+         super.resetState();
+-        mSecurityMessageDisplay.setMessage(getMsgWithCnt(R.string.kg_pin_instructions), false);
++        mSecurityMessageDisplay.setMessage(getMsgWithCnt(R.string.kg_pin_instructions), true);
+     }
+ 
+     @Override
+diff --git a/SystemUI/src/com/android/keyguard/KeyguardPasswordView.java b/SystemUI/src/com/android/keyguard/KeyguardPasswordView.java
+index 58db2c6..ac21ff7 100644
+--- a/SystemUI/src/com/android/keyguard/KeyguardPasswordView.java
++++ b/SystemUI/src/com/android/keyguard/KeyguardPasswordView.java
+@@ -85,7 +85,7 @@ public class KeyguardPasswordView extends KeyguardAbsKeyInputView
+     }
+ 
+     protected void resetState() {
+-        mSecurityMessageDisplay.setMessage(getMsgWithCnt(R.string.kg_password_instructions), false);
++        mSecurityMessageDisplay.setMessage(getMsgWithCnt(R.string.kg_password_instructions), true);
+         final boolean wasDisabled = mPasswordEntry.isEnabled();
+         setPasswordEntryEnabled(true);
+         setPasswordEntryInputEnabled(true);
+diff --git a/SystemUI/src/com/android/keyguard/KeyguardPatternView.java b/SystemUI/src/com/android/keyguard/KeyguardPatternView.java
+index 1fe04d8..1fa69af 100644
+--- a/SystemUI/src/com/android/keyguard/KeyguardPatternView.java
++++ b/SystemUI/src/com/android/keyguard/KeyguardPatternView.java
+@@ -156,6 +156,7 @@ public class KeyguardPatternView extends LinearLayout implements KeyguardSecurit
+         mSecurityMessageDisplay =
+                 (KeyguardMessageArea) KeyguardMessageArea.findSecurityMessageDisplay(this);
+         mEcaView = findViewById(R.id.keyguard_selector_fade_container);
++        displayDefaultSecurityMessage();
+         mContainer = (ViewGroup) findViewById(R.id.container);
+ 
+         EmergencyButton button = (EmergencyButton) findViewById(R.id.emergency_call_button);
+@@ -241,7 +242,7 @@ public class KeyguardPatternView extends LinearLayout implements KeyguardSecurit
+     }
+ 
+     private void displayDefaultSecurityMessage() {
+-        mSecurityMessageDisplay.setMessage(getMsgWithCnt(R.string.kg_pattern_instructions), false);
++        mSecurityMessageDisplay.setMessage(getMsgWithCnt(R.string.kg_pattern_instructions), true);
+     }
+ 
+     @Override
+-- 
+2.8.3.windows.1
+

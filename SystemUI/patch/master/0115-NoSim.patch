@@ -1,0 +1,30 @@
+From 58590fd3a015b01441156d6fae0913fc61de2625 Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Tue, 7 Mar 2017 18:26:34 +0800
+Subject: [PATCH 115/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E6=89=93=E5=BC=80=E6=98=BE=E7=A4=BANoSim=E7=9A=84=E5=BC=80?=
+ =?UTF-8?q?=E5=85=B3?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/res/values/config.xml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/SystemUI/res/values/config.xml b/SystemUI/res/values/config.xml
+index 86a9ef5..02c796b 100644
+--- a/SystemUI/res/values/config.xml
++++ b/SystemUI/res/values/config.xml
+@@ -173,7 +173,7 @@
+     <integer name="status_bar_style_extended">4</integer>
+ 
+     <!-- Control whether status bar should fetch mobile signal icons from xml file dynamically -->
+-    <bool name="config_read_icons_from_xml">false</bool>
++    <bool name="config_read_icons_from_xml">true</bool>
+ 
+     <!-- milliseconds before the heads up notification auto-dismisses. -->
+     <integer name="heads_up_notification_decay">5000</integer>
+-- 
+2.8.3.windows.1
+

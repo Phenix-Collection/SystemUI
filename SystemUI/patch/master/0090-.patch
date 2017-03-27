@@ -1,0 +1,40 @@
+From 9b321994bbfe59a75e3570a969fc5cdf45e7d834 Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Thu, 2 Mar 2017 14:15:12 +0800
+Subject: [PATCH 090/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E9=94=81=E5=B1=8F=E4=B8=8B=E6=8B=89=E9=A1=B5=E8=AE=BE=E4=B8=BA?=
+ =?UTF-8?q?=E9=80=9A=E7=9F=A5=E9=A1=B5?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../src/com/android/systemui/statusbar/phone/PhoneStatusBar.java   | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
+index 3c6b347..6500158 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
+@@ -4187,15 +4187,14 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
+ 
+     @Override
+     public boolean onDraggedDown(View startingChild, int dragLengthY) {
+-    	// 下拉显示快捷块 by yangfan begin
+-    	mNotificationPanel.showPage(NotificationPanelView.QUICKSETTINGS_PAGE_INDEX);
+-    	// 下拉显示快捷块 by yangfan end
++    	// 下拉显示通知by yangfan begin
++    	mNotificationPanel.showPage(NotificationPanelView.NOTIFICATION_PAGE_INDEX);
++    	// 下拉显示通知 by yangfan end
+         if (hasActiveNotifications()) {
+             EventLogTags.writeSysuiLockscreenGesture(
+                     EventLogConstants.SYSUI_LOCKSCREEN_GESTURE_SWIPE_DOWN_FULL_SHADE,
+                     (int) (dragLengthY / mDisplayMetrics.density),
+                     0 /* velocityDp - N/A */);
+-
+             // We have notifications, go to locked shade.
+             goToLockedShade(startingChild);
+             return true;
+-- 
+2.8.3.windows.1
+

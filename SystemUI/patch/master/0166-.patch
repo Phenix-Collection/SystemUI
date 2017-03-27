@@ -1,0 +1,569 @@
+From edae4432e2eb1805bf6f06d6036dce5865185ff7 Mon Sep 17 00:00:00 2001
+From: zengqingshuai <zengqingshuai@qucii.com>
+Date: Thu, 16 Mar 2017 10:37:01 +0800
+Subject: [PATCH 166/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E5=8A=A0=E5=85=A5=E7=8A=B6=E6=80=81=E6=A0=8F=E5=8A=A8=E6=80=81?=
+ =?UTF-8?q?=E6=8B=96=E5=8A=A8=E5=8A=9F=E8=83=BD=EF=BC=8C=E5=9C=A8=E6=B5=AE?=
+ =?UTF-8?q?=E5=8A=A8=E9=80=9A=E7=9F=A5=E8=BF=99=E5=9D=97=E4=BB=8D=E6=9C=89?=
+ =?UTF-8?q?=E7=BC=BA=E9=99=B7=EF=BC=8C=E6=95=B4=E4=BD=93=E5=8A=A8=E7=94=BB?=
+ =?UTF-8?q?=E6=9C=AA=E8=B0=83=E6=95=B4?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/res/drawable-xhdpi/arrow_qucii_0.png      | Bin 0 -> 995 bytes
+ SystemUI/res/drawable-xhdpi/arrow_qucii_1.png      | Bin 0 -> 1460 bytes
+ SystemUI/res/drawable-xhdpi/arrow_qucii_2.png      | Bin 0 -> 1494 bytes
+ SystemUI/res/drawable-xhdpi/arrow_qucii_3.png      | Bin 0 -> 1654 bytes
+ SystemUI/res/layout/status_bar_expanded.xml        |  22 ++++++++-
+ SystemUI/res/layout/super_status_bar.xml           |   2 +-
+ SystemUI/res/values/dimens.xml                     |   2 +-
+ .../android/systemui/statusbar/CommandQueue.java   |   6 ++-
+ .../statusbar/phone/NotificationPanelView.java     |  55 +++++++++++++++++++--
+ .../systemui/statusbar/phone/PanelHolder.java      |  16 ++++++
+ .../systemui/statusbar/phone/PanelView.java        |  49 ++++++++++++++++--
+ .../systemui/statusbar/phone/ScrimController.java  |   8 ++-
+ 12 files changed, 147 insertions(+), 13 deletions(-)
+ create mode 100644 SystemUI/res/drawable-xhdpi/arrow_qucii_0.png
+ create mode 100644 SystemUI/res/drawable-xhdpi/arrow_qucii_1.png
+ create mode 100644 SystemUI/res/drawable-xhdpi/arrow_qucii_2.png
+ create mode 100644 SystemUI/res/drawable-xhdpi/arrow_qucii_3.png
+
+diff --git a/SystemUI/res/drawable-xhdpi/arrow_qucii_0.png b/SystemUI/res/drawable-xhdpi/arrow_qucii_0.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..47e93d5e3d0211d98470e17c3282c0b5de1a0158
+GIT binary patch
+literal 995
+zcmaJ=y>HV%6t`4Bw4#3i4Cv%aP^89RNt)P-NgX?(k?J(05zPjUeMzj;zQev?Ckp~0
+z5Gxx4I}<zVfRI=i*q9J22q6R`E9WFm7zoz+?%mV-{odz2Z8mOfZd}@67-qA+Z?x#S
+zNB=A5&(WQ{d-0qe7fH24j!=(8Rsb2zL0t&yp4EpfXgTA%?_r5y*0$Ythjh#X#YP@y
+zB{p2_VTxv$QaQ$!J%j{wVc+#t_Sfkf7PyYe9_LNL#5x?f`;!13O&V=`GPGrfEnf$v
+zSfK<SBo>Ih6F*d9m7Ve`R8G`93#KMysIs%5I%X5-D1ac(?PhE-D}jQ{iFsKn=5~N2
+zh`YRy<3%|mW)-?}0+@d+^%giirDfFSzUWP52ZUgS=c6d%qAZ7kKE=v1FG##3WvE3a
+z9Q(wIGk&<0G8izl0~Zq)`5<Amx@bgHmPR^D!NUt$Kb)6|7L1QA%!{0mq?8((=KoDS
+zZ($vh7F@>rPvWpW#*lBp5RC$xHm<joxWbAaK#QQDjnGM2#pVDJ6b=vux}H=m&*j1P
+zvFkf13a?F3rm58ZkXXJA>xRlw9?o?grK*XwN}(tTQZ^@w)q<uOdQqqrwPGPx$r(b5
+zHIO~>pife)v&3dsVv~XJF!gM}z`X~ZT7Wz-O<ZwT$0Drcn`52Tv4|_NJPn3V+WS|#
+zQx%<|L|hCny)4Eb`gG<4I^1Wor-$@m+^ic~JO1?J<AZeuTv&U1>+}6D-!8v?!r@2$
+xGxz7gc=~*n+n)9N_D*vBaELQY^-OyCeO+L#em!G0neyXARj)RTSCu;t{{RHNDIEX+
+
+literal 0
+HcmV?d00001
+
+diff --git a/SystemUI/res/drawable-xhdpi/arrow_qucii_1.png b/SystemUI/res/drawable-xhdpi/arrow_qucii_1.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..635d5b990d683c9228e7a215be6f5398ad8e66c4
+GIT binary patch
+literal 1460
+zcmeAS@N?(olHy`uVBq!ia0vp^4nVBN!3HEtj?A42q$EpRBT9nv(@M${i&7aJQ}UBi
+z6+Ckj(^G>|6H_V+Po~;1FfeOmhD4M^`1)8S=jZArg4F0$<Q4#RGcefLR}>^BXQ!4Z
+zB&DWj=GiK}-@RW+Av48RDcsc8z_-9TH6zobswg$M$}c3jDm&RSMakYy!KT6rXh3di
+zNuokUZcbjYRfVk**jy_h8zii+qySb@l5ML5aa4qFfP!;=QL2Keo|$g4p|O#Ixuu?=
+zsil#HiH?GifuWhcfr-AMrLLi|6%d&iC_sS{(6*wKG^-#NH>h1eo~=?wNlAf~zJ7Um
+zxn8-kUVc$JP_Lz>zJZaxk&!M?g>G?WUP)qwZeFo6%mkOz;^d;tf|AVqJOz-6iAnjT
+zCALaHmqNUdTL3pUuNWFkzyQ;)NG#Ad)H48i38v837r)ZnT)67ulAu(Cd$Af^98y`3
+zsvneEoL^d$42-xmWsp?`R?bDKi6!|(A^G_^uuu%h$S=t+&d4uNaCQcTnyH?tf<|~|
+zUP^v>u_joTudkJ7UU5lcUUI6Zi>(sS9KFoU6e~kVCr4LvBU1w-V^c#zS92#<0~056
+z19J-tGgmi9BS)BCm;B_?+|;}hnBEkGUNf9}K?x$a0BEyIYEfocYKmJ?ey#%8<5rot
+z-C~T>JgD9j+-@<!saGH97=2LmB1Jb$2$+UIOnBl2a^T57H4m8Pi-3vy*Ss~roW`W&
+z>EaktaqG<udynWqk>iEJx{e~uRvr!o0<23HcVBg#%N0~0AQHRf-%-z!iF&0aBGwvB
+z5mS_22<^J!8Z)OvphSRsQFBM@BG-@mm)z%8S2#GKIzD;Ui=7`BD=WY6DX#16fAUjl
+zqQ|xDxPNQH_n9#8Ixt^gfKowwKV9hMP5gK6zkKhHpg*BMbbnoJOgNKWzo9|%&7LI;
+zOc{>yuXMhz@fPsjaq<eosf*oyB9&`CN*B*KcHW2M0k2&G1MjlBNv~$9g+C1zJQll)
+zHK0qbL@{OObEf+#JIdN;KQK%)Y(8AyKaIiWl$-Fr$975kw;41vxo_oqa$}nF-0GcW
+zlfOL5<kO$+^rMBjJx%|k=zE=4*H7%6&i9pn$?^-utO@@@r8c%iw;wArY;odu6hCz@
+zw*B?Yd()PN#~U$e95VPOGdsd%Z?3S|!|UF@(?9s0S2k)cX4pF8_}0U$-wnGSsqo19
+zZ;VO4zi@r_%%ysP430cWw?Ddx9IO5@zwkpu-OjWdAKCWk8nel>2lPtLu@<p9B;gfg
+zQDU>K{rsiLZ+A_Yx!Sjp_p~p6grjlMrGyU=mX~hxzr323JF8b-c+MB@#~R*;7e3aU
+zJkMX~%(Yy<bBA9F>#tkL+sGqj6XuW>QJu8U_=&s!oGHy}9h@PlA1-_hIhAwK{CBsd
+z++W>*#weXfuUhR{PPwlB^W>iQS7yOlm1T?>3{nkj3n0`4z1Qm*m>FuhQ?wa07bSzr
+NQBPMtmvv4FO#qmR5ugA7
+
+literal 0
+HcmV?d00001
+
+diff --git a/SystemUI/res/drawable-xhdpi/arrow_qucii_2.png b/SystemUI/res/drawable-xhdpi/arrow_qucii_2.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..78f95a0fd775b55aa049b989bcb91c7ef2ac843e
+GIT binary patch
+literal 1494
+zcmeAS@N?(olHy`uVBq!ia0vp^4nVBN!3HEtj?A42q$EpRBT9nv(@M${i&7aJQ}UBi
+z6+Ckj(^G>|6H_V+Po~;1FfeOmhD4M^`1)8S=jZArg4F0$<Q4#RGcefLR}>^BXQ!4Z
+zB&DWj=GiK}-@RW+Av48RDcsc8z_-9TH6zobswg$M$}c3jDm&RSMakYy!KT6rXh3di
+zNuokUZcbjYRfVk**jy_h8zii+qySb@l5ML5aa4qFfP!;=QL2Keo|$g4p|O#Ixuu?=
+zsil#HiH?GifuWhcfr-AMrLLi|6%d&iC_sS{(6*wKG^-#NH>h1eo~=?wNlAf~zJ7Um
+zxn8-kUVc$JP_Lz>zJZaxk&!M?g>G?WUP)qwZeFo6%mkOz;^d;tf|AVqJOz-6iAnjT
+zCALaHmqNUdTL3pUuNWFkzyQ;)NG#Ad)H48i38v837r)ZnT)67ulAu(Cd$Af^98y`3
+zsvneEoL^d$42-xmWsp?`R?bDKi6!|(A^G_^uuu%h$S=t+&d4uNaCQcTnyH?tf<|~|
+zUP^v>u_joTudkJ7UU5lcUUI6Zi>(sS9KFoU6e|Na7b6#QCu0L6V^c#zS92$GBV$Vg
+zM`sH|OH(69OJkT`m;B_?+|;}hnBEkGUK5;pK?x$a0BEyIYEfocYKmJ?ey#%8<5rot
+z-C~H-JgD9j+-@<#saGH97=2LmB1Jb$2$+UIOnBl2a^T57H4m8Pi-3vSp`mUH0|S$b
+zr;B4q#jQ89Y&{MK2ppG=UL~Mm!BJNDB1nM!;!?fRq8ATB)K^cQZDrLFE6U=2^rYvN
+zrMpT>f)Dz2U2v2YDG4YL5OG{`^@qKs>ak}_uicowzFGds<9pTR|M%=!GF@xdverL2
+zx{C9o6&!%D!KAy9S4~Zu!}U_I0;`#0(|7%Y5*n4YY%Pv*GA}0afBa@QpS!x0t)#Kk
+zAmgFCQ%`fY{@Df{i<Qcin@oQ9RX8$;u4&A@@UOe<N%VtltD^H8?KZGZQhOeMP$~aB
+z*So*P23&prRlS4`q<LJC{IF=|ZBdCUTRlG;8dpEG6W#rItMyO64XZnIrMFzq@IKBZ
+zmb>!(j$l>^w(_P2^AEVl{`J|ge&*ee5q*LScy*f19WS^m{Oq=yeCODij5VTi(W@A2
+z7vu=O5X#71@LprPC};FDiCKCKx^BS_A_eZ~N^DAO3zRo+D%5Cu=_Y={jp-GGYxmJr
+zC+f=9>i;)ews>7zPvr9zzb`&3RnMBv;2S+L)uvMBtIxEL?-I+LPDMvHANl{`TVyap
+z=KH6<|Nee-Zs3@~9_px`zTm!Nr}WFm5@*+(vUKZVQaP~js7Vy_s^-c6U7kj`hCP~N
+z&vK%Xz45cHM4{s&w@os;X9k|LT*Z;flA5{d{MRDa<GI@oZ+y>r>XT%U7MmW=s}Kjd
+zme`7?y)Bm0yA+RmpZa@Qb7`@HA)C#F9TTU#a|*BcAMIPfSJLeH;l)M$M3cAS2Q?!M
+z#9T$S1b;o5{2+YYuT4AV|I=K^8sE;$$OMEZ?y*WR9PT+0l#t@K2~^U0y85}Sb4q9e
+E0KT>&9smFU
+
+literal 0
+HcmV?d00001
+
+diff --git a/SystemUI/res/drawable-xhdpi/arrow_qucii_3.png b/SystemUI/res/drawable-xhdpi/arrow_qucii_3.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..64ebd94822a42624e92e70c60eca22c78e38676f
+GIT binary patch
+literal 1654
+zcmeAS@N?(olHy`uVBq!ia0vp^4nVBN!3HEtj?A42q$EpRBT9nv(@M${i&7aJQ}UBi
+z6+Ckj(^G>|6H_V+Po~;1FfeOmhD4M^`1)8S=jZArg4F0$<Q4#RGcefLR}>^BXQ!4Z
+zB&DWj=GiK}-@RW+Av48RDcsc8z_-9TH6zobswg$M$}c3jDm&RSMakYy!KT6rXh3di
+zNuokUZcbjYRfVk**jy_h8zii+qySb@l5ML5aa4qFfP!;=QL2Keo|$g4p|O#Ixuu?=
+zsil#HiH?GifuWhcfr-AMrLLi|6%d&iC_sS{(6*wKG^-#NH>h1eo~=?wNlAf~zJ7Um
+zxn8-kUVc$JP_Lz>zJZaxk&!M?g>G?WUP)qwZeFo6%mkOz;^d;tf|AVqJOz-6iAnjT
+zCALaHmqNUdTL3pUuNWFkzyQ;)NG#Ad)H48i38v837r)ZnT)67ulAu(Cd$Af^98y`3
+zsvneEoL^d$42-xmWsp?`R?bDKi6!|(A^G_^uuu%h$S=t+&d4uNaCQcTnyH?tf<|~|
+zUP^v>u_joTudkJ7UU5lcUUI6Zi>(sS9KFoU6e|NWBSTXIHx~mVV^c#zS91#!Lqlh0
+zGh<5^17}wYM@yJqm;B_?+|;}hnBEkGURRuYK?x$a0BEyIYEfocYKmJ?ey#%8<5rot
+z-QtAPJgD9j+-`BksaGH97=2LmB1Jb$2$+UIOnBl2a^T57H4m8Pi-3vyX=45X1_q`l
+zo-U3d6}O(u^7jY{6geh6Ra57L*efUP6&qR`b#o><?cCV9R%e52fTM1)^4WE*UfP0=
+z1yj54uxyhsmwK|S>0f}JP|?H-iw?Oesa%pTa;dHrKiB%Q^xRzQ%V+k!-^=$$;>+IZ
+zcR%;dEWf|^{k{+ZmfioJulRK5zwDvtD;2NIS=|ok{;K9b!SLPQy_C~Jja98_e{xfw
+z<=W%zjLnTQ&7S5Dv~CzmeBh2LjtoBaF!q7a4*pf#bG9?<HM9G%DZ8`9C^&9werG0W
+zHkpO_+~f%+#X8>e#b+i*r`$Pgai8^EqwmA2`K*~qVHW9=i;fft*l^cz9Fm(@P@6aF
+z-|^N{7e&pPtqzzwUPul&y=CRn<d_=vxrK%gL~aPQ*a#oV{?_!|={D~v*-U1?rc%cP
+z+8gdGwOc*kIw5)PuZ|^*>IY^8{E!X^cUfnZb@-^%S5ZyozUI({54JDZ*D~kpm1*6f
+zuZ)G*WSF&`7QS~lZ2u&0flSPrfctU07A$sLtozt~Qw?@>78QQvl=+tGuzBGI{s#$?
+z$EQ2FneR4RAgCi<H_KhCpxQQT$CYU-)zsNm9L)68cw(Hf^1+);t-l^5t(<aj+YKhZ
+z2G_%HS6)3RweM=d?${+#+DQ$w7U*!u)-&ev$){`yoFAhT;kTp9Xu$=Mt#=PE-dc8e
+z%5T;i;d;zh?)>e%a522#R&&K{*Xx&=Uh`=)mo--&Hu~D*{?Y98yUI%elNhsl?bKEN
+zaqd!9h`a1-T4*R<^(`UQf%gO#XYm4cr$?r?A=2WJmr_z4OlOD*<u=~q=(_$Ts5i!E
+zve{zBSBfuf6%U%d=-yD_D}VLWQIQpscmf{1mpT&P*;p}~cgD#-x;y^3J#M=@>$RcK
+z`kjtjiw)(>60Ruhvu}H3`j<`EZ7bv9w!OO=CAzQkNPOX4Ev`~@Xx_<OgJ})Z9gcZ$
+zi(9@8QhRbHfN9@P182qFnI9BZte-xSrR%)>>nX=(U;0+TUNQ5-_eK9M{D^K~WH^6-
+V;~D!IL4Qz9;OXk;vd$@?2>>P1Z|492
+
+literal 0
+HcmV?d00001
+
+diff --git a/SystemUI/res/layout/status_bar_expanded.xml b/SystemUI/res/layout/status_bar_expanded.xml
+index c86e80e..ce6cbd5 100644
+--- a/SystemUI/res/layout/status_bar_expanded.xml
++++ b/SystemUI/res/layout/status_bar_expanded.xml
+@@ -77,7 +77,27 @@
+             android:layout_gravity="bottom|center_horizontal"
+             android:layout_marginBottom="@dimen/pager_indicator_bottom" />
+     </com.android.systemui.statusbar.phone.NotificationsQuickSettingsContainer>
+-
++	
++    
++    
++    <LinearLayout
++            android:id="@+id/qucii_arrow_layout"
++            android:layout_width="match_parent"
++            android:orientation="vertical"
++            android:layout_gravity="bottom|center_horizontal"
++            android:layout_height="wrap_content"
++            android:padding="4dp">
++        <ImageView
++            android:id="@+id/qucii_arrow"
++            android:layout_width="20dp"
++            android:layout_height="12dp"
++            android:layout_gravity="center_horizontal"
++            android:src="@drawable/arrow_qucii_2"
++            />
++    </LinearLayout>
++    
++    
++    
+     <include
+             layout="@layout/keyguard_bottom_area"
+             android:visibility="gone" />
+diff --git a/SystemUI/res/layout/super_status_bar.xml b/SystemUI/res/layout/super_status_bar.xml
+index 50e561c..94d4007 100644
+--- a/SystemUI/res/layout/super_status_bar.xml
++++ b/SystemUI/res/layout/super_status_bar.xml
+@@ -53,7 +53,7 @@
+     <com.android.systemui.statusbar.AlphaOptimizedView
+         android:id="@+id/heads_up_scrim"
+         android:layout_width="match_parent"
+-        android:layout_height="@dimen/heads_up_scrim_height"
++        android:layout_height="0dp"
+         android:background="@drawable/heads_up_scrim"
+         android:importantForAccessibility="no"/>
+ 
+diff --git a/SystemUI/res/values/dimens.xml b/SystemUI/res/values/dimens.xml
+index 5e24d55..6b1365f 100644
+--- a/SystemUI/res/values/dimens.xml
++++ b/SystemUI/res/values/dimens.xml
+@@ -598,7 +598,7 @@
+     <!-- Thickness of the shadows of the assist disclosure beams -->
+     <dimen name="assist_disclosure_shadow_thickness">1.5dp</dimen>
+     <!-- added by mare  -->
+-    <dimen name="pager_indicator_bottom">15dp</dimen> <!-- close_handle_height + qsPaddingBottom -->
++    <dimen name="pager_indicator_bottom">27dp</dimen> <!-- close_handle_height + qsPaddingBottom -->
+     
+      <dimen name="clear_all_ring_size">1dp</dimen>
+          <!-- add by wumin -->
+diff --git a/SystemUI/src/com/android/systemui/statusbar/CommandQueue.java b/SystemUI/src/com/android/systemui/statusbar/CommandQueue.java
+index 5954a8e..bd1caeb 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/CommandQueue.java
++++ b/SystemUI/src/com/android/systemui/statusbar/CommandQueue.java
+@@ -349,7 +349,11 @@ public class CommandQueue extends IStatusBar.Stub {
+                     mCallbacks.disable(msg.arg1, msg.arg2, true /* animate */);
+                     break;
+                 case MSG_EXPAND_NOTIFICATIONS:
+-                    mCallbacks.animateExpandNotificationsPanel();
++                	//delete by zqs 2017/3/15 begin
++                    //========================>
++                    //桌面滑动这里状态栏不再响应
++                    //mCallbacks.animateExpandNotificationsPanel();
++                	//delete by zqs 2017/3/15 end
+                     break;
+                 case MSG_COLLAPSE_PANELS:
+                     mCallbacks.animateCollapsePanels(0);
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+index 9b21262..6ae8326 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+@@ -47,6 +47,7 @@ import android.view.animation.AnimationUtils;
+ import android.view.animation.Interpolator;
+ import android.view.animation.PathInterpolator;
+ import android.widget.FrameLayout;
++import android.widget.ImageView;
+ import android.widget.TextView;
+ 
+ import com.android.internal.logging.MetricsLogger;
+@@ -227,7 +228,8 @@ public class NotificationPanelView extends PanelView implements
+     private long mFirstClickTime = 0;
+     private long mSecondClickTime = 0;
+     //added by dongwei end}
+-    
++    private ImageView mArrow; 
++    private View mArrowLayout; 
+     private Runnable mHeadsUpExistenceChangedRunnable = new Runnable() {
+         @Override
+         public void run() {
+@@ -271,6 +273,8 @@ public class NotificationPanelView extends PanelView implements
+         mNotificationsViewPager=(NotificationsViewPager)mNotificationContainerParent.findViewById(R.id.notification_viewpager);
+         NotificationPagerAdapter mAdapter = (NotificationPagerAdapter) mNotificationsViewPager.getAdapter();
+ 		mIndicator = (CirclePageIndicator) mNotificationContainerParent.findViewById(R.id.qucii_indicator);
++		mArrow = (ImageView)findViewById(R.id.qucii_arrow);
++		mArrowLayout =  findViewById(R.id.qucii_arrow_layout);
+ 		mIndicator.setViewPager(mNotificationsViewPager);
+ 		mIndicator.setOnPageChangeListener(this);
+         mNotificationsViewPager.setPanelView(this);
+@@ -366,7 +370,15 @@ public class NotificationPanelView extends PanelView implements
+     @Override
+     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+         super.onLayout(changed, left, top, right, bottom);
+-
++//        Log.e("=======onLayout======", "onLayout:mChangedBottom"+mChangedBottom);
++        //add by zqs 2017/3/15 begin
++        //========================>
++        //这两个界面在layout时不重新刷新位置
++        if(getIsTouchOrAnimation()){
++        	mNotificationContainerParent.layout(left, top, right, noBottom);
++        	mArrowLayout.layout(left, noBottom, right, mChangedBottom);
++        }
++ 	   	//add by zqs 2017/3/15 end
+         // Update Clock Pivot
+         mKeyguardStatusView.setPivotX(getWidth() / 2);
+         mKeyguardStatusView.setPivotY((FONT_HEIGHT - CAP_HEIGHT) / 2048f * mClockView.getTextSize());
+@@ -769,6 +781,9 @@ public class NotificationPanelView extends PanelView implements
+         if (mBlockTouches) {
+             return false;
+         }
++        if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
++        	isTouch=true;
++        }
+         initDownStates(event);
+         if (mListenForHeadsUp && !mHeadsUpTouchHelper.isTrackingHeadsUp()
+                 && mHeadsUpTouchHelper.onInterceptTouchEvent(event)) {
+@@ -1613,6 +1628,11 @@ public class NotificationPanelView extends PanelView implements
+             maxHeight = calculatePanelHeightShade();
+         }
+         maxHeight = Math.max(maxHeight, min);
++        //add by zqs 2017/3/15 begin
++        //========================>
++        //这里重新定义最高的高度
++		maxHeight = Math.max(maxHeight, mNotificationStackScroller.getHeight());
++		//add by zqs 2017/3/15 end
+         return maxHeight;
+     }
+ 
+@@ -2650,9 +2670,38 @@ public class NotificationPanelView extends PanelView implements
+             return;
+         }
+         mIndicator.setVisibility(vis);
++        //add by zqs 2017/3/15 begin
++        //=========================>
++        //显示箭头
++        mArrowLayout.setVisibility(vis);
++        //add by zqs 2017/3/15 end
+     }
+ // added by yangfan 	end
+-
++    
++    
++    //add by zqs 2017/3/15 begin
++    //=========================>
++    //改变后的高度缓存，这里是修改状态栏layout的方法即是移动状态栏
++    int mChangedBottom;
++    int noBottom;
++    public int getChangedBottom(){
++    	return mChangedBottom;
++    }
++
++    protected void qucii_TouchMove_resetLayout(float newHeight) {
++//    	Log.e("========qucii_TouchMove_resetLayout=========", "qucii_TouchMove_resetLayout"+newHeight);
++    	int mPanelHeight=Math.max(0, (int) newHeight);
++    	mPanelHeight=Math.min(mPanelHeight, getMaxPanelHeight());
++    	setBottom(mPanelHeight);
++    	mChangedBottom=mPanelHeight;
++ 	   	int arrowHeight=mArrowLayout.getMeasuredHeight();
++ 	   	noBottom=Math.max(0, mPanelHeight-arrowHeight);
++ 	   	mNotificationContainerParent.setBottom(noBottom);
++ 	   	mArrowLayout.layout(mArrowLayout.getLeft(), noBottom, mArrowLayout.getRight(), mPanelHeight);
++    }
++    //add by zqs 2017/3/15 end
++    
++    
+ 	public void collapseAllPanels() {
+ 		mStatusBar.animateCollapsePanels();
+ 	}
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/PanelHolder.java b/SystemUI/src/com/android/systemui/statusbar/phone/PanelHolder.java
+index d7f34d5..4d0b47c 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/PanelHolder.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/PanelHolder.java
+@@ -29,6 +29,7 @@ public class PanelHolder extends FrameLayout {
+ 
+     private int mSelectedPanelIndex = -1;
+     private PanelBar mBar;
++    NotificationPanelView mNotificationPanel;
+ 
+     public PanelHolder(Context context, AttributeSet attrs) {
+         super(context, attrs);
+@@ -39,6 +40,11 @@ public class PanelHolder extends FrameLayout {
+     protected void onFinishInflate() {
+         super.onFinishInflate();
+         setChildrenDrawingOrderEnabled(true);
++        //add by zqs 2017/3/15 begin
++        //========================>
++        //获得mNotificationPanel
++        mNotificationPanel = (NotificationPanelView) getChildAt(0);
++        //add by zqs 2017/3/15 end
+     }
+ 
+     public int getPanelIndex(PanelView pv) {
+@@ -83,4 +89,14 @@ public class PanelHolder extends FrameLayout {
+     public void setBar(PanelBar panelBar) {
+         mBar = panelBar;
+     }
++    //add by zqs 2017/3/15 begin
++    //========================>
++    //这里刷新layout时不改变mNotificationPanel的位置
++    @Override
++    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
++    	super.onLayout(changed, left, top, right, bottom);
++    	if(mNotificationPanel!=null&&mNotificationPanel.getIsTouchOrAnimation())
++    		mNotificationPanel.layout(left, top, right, mNotificationPanel.getChangedBottom());
++    }
++    //add by zqs 2017/3/15 end
+ }
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/PanelView.java b/SystemUI/src/com/android/systemui/statusbar/phone/PanelView.java
+index 1b1f6bc..ddc120a 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/PanelView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/PanelView.java
+@@ -231,6 +231,12 @@ public abstract class PanelView extends FrameLayout {
+         mTouchDisabled = disabled;
+     }
+ 
++    
++    public boolean isTouch=false,isAnimation=false;
++    public boolean getIsTouchOrAnimation(){
++    	return isTouch||isAnimation;
++    }
++    
+     @Override
+     public boolean onTouchEvent(MotionEvent event) {
+         if (mInstantExpanding || mTouchDisabled
+@@ -262,6 +268,7 @@ public abstract class PanelView extends FrameLayout {
+ 
+         switch (event.getActionMasked()) {
+             case MotionEvent.ACTION_DOWN:
++            	isTouch=true;
+                 startExpandMotion(x, y, false /* startTracking */, mExpandedHeight);
+                 mJustPeeked = false;
+                 mPanelClosedOnDown = isFullyCollapsed();
+@@ -287,6 +294,7 @@ public abstract class PanelView extends FrameLayout {
+                 if (isFullyCollapsed() && !mHeadsUpManager.hasPinnedHeadsUp()) {
+                     //schedulePeek();
+                 }
++                
+                 break;
+ 
+             case MotionEvent.ACTION_POINTER_UP:
+@@ -347,6 +355,7 @@ public abstract class PanelView extends FrameLayout {
+ 
+             case MotionEvent.ACTION_UP:
+             case MotionEvent.ACTION_CANCEL:
++            	isTouch=false;
+                 trackMovement(event);
+                 endMotionEvent(event, x, y, false /* forceCancel */);
+                 break;
+@@ -662,18 +671,23 @@ public abstract class PanelView extends FrameLayout {
+ //            }
+             mFlingAnimationUtils.apply(animator, mExpandedHeight, target, vel, getHeight());
+ //            if (expandBecauseOfFalsing) {
+-                animator.setDuration(100);
++                animator.setDuration(250);
+ //            }
+         } else {
+             mFlingAnimationUtils.applyDismissing(animator, mExpandedHeight, target, vel,
+                     getHeight());
+-
++            //delete by zqs 2017/3/15 begin
++            //========================>
++            //这里回收时加入动画
+             // Make it shorter if we run a canned animation
+             if (vel == 0) {
+                 animator.setDuration((long)
+                         (animator.getDuration() * getCannedFlingDurationFactor()
+                                 / collapseSpeedUpFactor));
++            }else{
++            	animator.setDuration(250);
+             }
++             //delete by zqs 2017/3/15 end
+         }
+         if (mPerf != null) {
+             mPerf.perfLockAcquire(0, mBoostParamVal);
+@@ -682,18 +696,28 @@ public abstract class PanelView extends FrameLayout {
+             private boolean mCancelled;
+ 
+             @Override
++			public void onAnimationStart(Animator animation) {
++//            	Log.e("======onAnimationStart=======", "onAnimationStart");
++            	isAnimation=true;
++				super.onAnimationStart(animation);
++			}
++
++			@Override
+             public void onAnimationCancel(Animator animation) {
+                 if (mPerf != null) {
+                     mPerf.perfLockRelease();
+                 }
++                isAnimation=false;
+                 mCancelled = true;
+             }
+ 
+             @Override
+             public void onAnimationEnd(Animator animation) {
++//            	Log.e("======onAnimationEnd=======", "onAnimationEnd");
+                 if (mPerf != null) {
+                     mPerf.perfLockRelease();
+                 }
++                isAnimation=false;
+                 if (clearAllExpandHack && !mCancelled) {
+                     setExpandedHeightInternal(getMaxPanelHeight());
+                 }
+@@ -704,10 +728,17 @@ public abstract class PanelView extends FrameLayout {
+                 notifyBarPanelExpansionChanged();
+             }
+         });
++        if(mHeightAnimator!=null){
++        	mHeightAnimator.cancel();
++        	mHeightAnimator=null;
++        }
+         mHeightAnimator = animator;
+-        animator.start();
++        mHeightAnimator.start();
++//        animator.start();
+     }
+ 
++    
++    
+     @Override
+     protected void onAttachedToWindow() {
+         super.onAttachedToWindow();
+@@ -752,7 +783,11 @@ public abstract class PanelView extends FrameLayout {
+ 
+     public void setExpandedHeightInternal(float h) {
+         logf("setExpandedHeightInternal() h = " + h );
+-		
++        //add by zqs 2017/3/15 begin
++        //========================>
++        //状态栏滑动时显示部分界面（滑动移动状态栏）的方法
++        qucii_TouchMove_resetLayout(h);
++        //add by zqs 2017/3/15 end
+         float fhWithoutOverExpansion = getMaxPanelHeight() - getOverExpansionAmount();
+         if (mHeightAnimator == null) {
+             float overExpansionPixels = Math.max(0, h - fhWithoutOverExpansion);
+@@ -1119,6 +1154,12 @@ public abstract class PanelView extends FrameLayout {
+         mHeadsUpManager = headsUpManager;
+     }
+ 
++    //add by zqs 2017/3/15 begin
++    //========================>
++    //状态栏滑动时显示部分界面（滑动移动状态栏）的方法
++   protected abstract void qucii_TouchMove_resetLayout(float newHeight);
++   //add by zqs 2017/3/15 end
++ 
+ }
+ 
+ 
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/ScrimController.java b/SystemUI/src/com/android/systemui/statusbar/phone/ScrimController.java
+index 5488063..c6ef266 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/ScrimController.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/ScrimController.java
+@@ -22,6 +22,7 @@ import android.animation.PropertyValuesHolder;
+ import android.animation.ValueAnimator;
+ import android.content.Context;
+ import android.graphics.Color;
++import android.util.Log;
+ import android.view.View;
+ import android.view.ViewTreeObserver;
+ import android.view.animation.DecelerateInterpolator;
+@@ -115,9 +116,10 @@ public class ScrimController implements ViewTreeObserver.OnPreDrawListener,
+     }
+ 
+     public void setPanelExpansion(float fraction) {
++//    	Log.e("=======setPanelExpansion======", "fraction"+fraction);
+         if (mFraction != fraction) {
+             mFraction = fraction;
+-            scheduleUpdate();
++//            scheduleUpdate();
+             if (mPinnedHeadsUpCount != 0) {
+                 updateHeadsUpScrim(false);
+             }
+@@ -191,11 +193,12 @@ public class ScrimController implements ViewTreeObserver.OnPreDrawListener,
+ 
+     private void scheduleUpdate() {
+         if (mUpdatePending) return;
+-
++        
+         // Make sure that a frame gets scheduled.
+         mScrimBehind.invalidate();
+         mScrimBehind.getViewTreeObserver().addOnPreDrawListener(this);
+         mUpdatePending = true;
++        Log.e("======scheduleUpdate========", "scheduleUpdate");
+     }
+ 
+     private void updateScrims() {
+@@ -436,6 +439,7 @@ public class ScrimController implements ViewTreeObserver.OnPreDrawListener,
+     }
+ 
+     private void updateHeadsUpScrim(boolean animate) {
++    	Log.e("======updateHeadsUpScrim=======", "animate"+animate);
+         float alpha = calculateHeadsUpAlpha();
+         ValueAnimator previousAnimator = StackStateAnimator.getChildTag(mHeadsUpScrim,
+                 TAG_KEY_ANIM);
+-- 
+2.8.3.windows.1
+

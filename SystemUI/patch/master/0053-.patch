@@ -1,0 +1,59 @@
+From ee48acb35098aa70b69ec0d97eb5d18c457dd779 Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Tue, 21 Feb 2017 11:22:11 +0800
+Subject: [PATCH 053/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E4=BF=AE=E6=94=B9=E5=BF=AB=E6=8D=B7=E6=BB=91=E5=9D=97=E7=9A=84?=
+ =?UTF-8?q?=E7=82=B9=E5=87=BB=E6=B3=A2=E7=BA=B9=E8=8C=83=E5=9B=B4?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/src/com/android/systemui/qs/QSTileView.java               | 2 +-
+ .../android/systemui/statusbar/KeyguardIndicationController.java   | 7 +++----
+ 2 files changed, 4 insertions(+), 5 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/qs/QSTileView.java b/SystemUI/src/com/android/systemui/qs/QSTileView.java
+index 12e4bbd..7b20f2d 100644
+--- a/SystemUI/src/com/android/systemui/qs/QSTileView.java
++++ b/SystemUI/src/com/android/systemui/qs/QSTileView.java
+@@ -287,7 +287,7 @@ public class QSTileView extends ViewGroup {
+         // center the touch feedback on the center of the icon, and dial it down a bit
+         final int cx = width / 2;
+         final int cy = mDual ? mIcon.getTop() + mIcon.getHeight() / 2 : height / 2;
+-        final int rad = (int)(mIcon.getHeight() * 1.25f);
++        final int rad =  (int) ( height  *  0.38f);// modified by yangfan 
+         mRipple.setHotspotBounds(cx - rad, cy - rad, cx + rad, cy + rad);
+     }
+ 
+diff --git a/SystemUI/src/com/android/systemui/statusbar/KeyguardIndicationController.java b/SystemUI/src/com/android/systemui/statusbar/KeyguardIndicationController.java
+index 031571d..bd55173 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/KeyguardIndicationController.java
++++ b/SystemUI/src/com/android/systemui/statusbar/KeyguardIndicationController.java
+@@ -194,7 +194,7 @@ public class KeyguardIndicationController {
+         } catch (RemoteException e) {
+             Log.e(TAG, "Error calling IBatteryStats: ", e);
+         }
+-        final boolean hasChargingTime = /*chargingTimeRemaining > 0*/ false;// 去掉显示"还有xx时间充满"
++        final boolean hasChargingTime = /*chargingTimeRemaining > 0*/ false;// 去掉显示"还有xx时间充满" by yangfan 
+ 
+         int chargingId;
+         switch (mChargingSpeed) {
+@@ -215,12 +215,11 @@ public class KeyguardIndicationController {
+                 break;
+         }
+ 
+-        String chargingTimeFormatted = Formatter.formatShortElapsedTimeRoundingUpToMinutes(
+-        		mContext, chargingTimeRemaining);
+-        Log.i(TAG,"chargingTimeFormatted : " + chargingTimeFormatted);
+         // 只显示'正在充电' by yangfan 
+         chargingId = R.string.keyguard_plugged_in;
+         if (hasChargingTime) {
++        	String chargingTimeFormatted = Formatter.formatShortElapsedTimeRoundingUpToMinutes(
++        			mContext, chargingTimeRemaining);
+             return mContext.getResources().getString(chargingId, chargingTimeFormatted);
+         } else {
+             return mContext.getResources().getString(chargingId);
+-- 
+2.8.3.windows.1
+

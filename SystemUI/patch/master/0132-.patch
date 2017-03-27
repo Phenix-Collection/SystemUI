@@ -1,0 +1,31 @@
+From b5dd726ff8e4e9e767f756389cf01305d561c8da Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Fri, 10 Mar 2017 09:56:24 +0800
+Subject: [PATCH 132/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E8=BF=90=E8=90=A5=E5=95=86=E4=B8=8D=E7=94=A8=E5=8C=BA=E5=88=86?=
+ =?UTF-8?q?=E9=94=81=E5=B1=8F=E5=92=8C=E9=9D=9E=E9=94=81=E5=B1=8F=E7=8A=B6?=
+ =?UTF-8?q?=E6=80=81?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
+index 4b64d58..31e5354 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
+@@ -468,7 +468,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
+         public void onChange(boolean selfChange) {
+             boolean showOperatorName = (0 != Settings.System.getInt(
+                 mContext.getContentResolver(), SHOW_OPERATOR_NAME, 1));
+-            if (!showOperatorName || mState != StatusBarState.SHADE) {
++            if (!showOperatorName /*|| mState != StatusBarState.SHADE*/) {// modified by yangfan
+                 mNetworkController.setNetworkLabelViewVisibility(false, false);
+             } else {
+                 mNetworkController.setNetworkLabelViewVisibility(true, true);
+-- 
+2.8.3.windows.1
+

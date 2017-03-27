@@ -126,10 +126,9 @@ public class StatusBarWindowView extends FrameLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        //mStackScrollLayout = (NotificationStackScrollLayout) findViewById(
-        //        R.id.notification_stack_scroller);
+        mStackScrollLayout = (NotificationStackScrollLayout) findViewById(
+                R.id.notification_stack_scroller);
         mNotificationPanel = (NotificationPanelView) findViewById(R.id.notification_panel);
-		mStackScrollLayout = mNotificationPanel.getNotificationStackScrollLayout();
         mBrightnessMirror = findViewById(R.id.brightness_mirror);
     }
 

@@ -1,0 +1,160 @@
+From 7e42d28a4e5fb2be7b597c70953e4357374d2a3a Mon Sep 17 00:00:00 2001
+From: zengqingshuai <zengqingshuai@qucii.com>
+Date: Thu, 16 Mar 2017 17:43:31 +0800
+Subject: [PATCH 168/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E4=BF=AE=E6=94=B9=E8=A7=A6=E6=91=B8=E7=8A=B6=E6=80=81=E5=88=A4?=
+ =?UTF-8?q?=E6=96=AD=E6=9D=A1=E4=BB=B6=EF=BC=8C=E7=8A=B6=E6=80=81=E7=BB=84?=
+ =?UTF-8?q?=E7=9A=84=E4=B8=8A=E5=8D=87=E9=AB=98=E5=BA=A6=EF=BC=8Cfront?=
+ =?UTF-8?q?=E7=9A=84view=E4=B8=80=E7=9B=B4=E9=80=8F=E6=98=8E?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/res/layout/status_bar_expanded.xml                  |  4 ++--
+ SystemUI/res/values/dimens.xml                               |  5 +++++
+ .../systemui/statusbar/phone/NotificationPanelView.java      |  8 ++++++++
+ .../android/systemui/statusbar/phone/ScrimController.java    | 12 ++++++++++--
+ .../statusbar/stack/NotificationStackScrollLayout.java       | 10 +++++++++-
+ 5 files changed, 34 insertions(+), 5 deletions(-)
+
+diff --git a/SystemUI/res/layout/status_bar_expanded.xml b/SystemUI/res/layout/status_bar_expanded.xml
+index ce6cbd5..6fc5e28 100644
+--- a/SystemUI/res/layout/status_bar_expanded.xml
++++ b/SystemUI/res/layout/status_bar_expanded.xml
+@@ -85,11 +85,11 @@
+             android:layout_width="match_parent"
+             android:orientation="vertical"
+             android:layout_gravity="bottom|center_horizontal"
+-            android:layout_height="wrap_content"
++            android:layout_height="@dimen/qucii_arrow_height"
+             android:padding="4dp">
+         <ImageView
+             android:id="@+id/qucii_arrow"
+-            android:layout_width="20dp"
++            android:layout_width="@dimen/qucii_arrow_height"
+             android:layout_height="12dp"
+             android:layout_gravity="center_horizontal"
+             android:src="@drawable/arrow_qucii_2"
+diff --git a/SystemUI/res/values/dimens.xml b/SystemUI/res/values/dimens.xml
+index 6b1365f..77e1e0e 100644
+--- a/SystemUI/res/values/dimens.xml
++++ b/SystemUI/res/values/dimens.xml
+@@ -610,4 +610,9 @@
+      
+      <dimen name="battery_land_width">22dp</dimen>
+      <dimen name="battery_land_height">14dp</dimen>
++     
++     
++     <dimen name="qucii_arrow_height">20dp</dimen>
++     
++     
+ </resources>
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+index 6ae8326..c612c4e 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+@@ -615,6 +615,13 @@ public class NotificationPanelView extends PanelView implements
+         if (mBlockTouches) {
+             return false;
+         }
++    	//add by zqs 2017/3/16 begin
++        //========================>
++        //标记点击为down是触摸状态
++        if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
++        	isTouch=true;
++        }
++        //add by zqs 2017/3/16 end
+         initDownStates(event);
+         if (mHeadsUpTouchHelper.onInterceptTouchEvent(event)) {
+             mIsExpansionFromHeadsUp = true;
+@@ -778,6 +785,7 @@ public class NotificationPanelView extends PanelView implements
+ 
+     @Override
+     public boolean onTouchEvent(MotionEvent event) {
++    	Log.e("=====onTouchEvent======", "event:"+event.getActionMasked());
+         if (mBlockTouches) {
+             return false;
+         }
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/ScrimController.java b/SystemUI/src/com/android/systemui/statusbar/phone/ScrimController.java
+index c6ef266..079f328 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/ScrimController.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/ScrimController.java
+@@ -313,6 +313,14 @@ public class ScrimController implements ViewTreeObserver.OnPreDrawListener,
+     }
+ 
+     private void updateScrimColor(View scrim) {
++    	//add by zqs 2017/3/16 begin
++        //========================>
++        //mScrimInFront始终为透明
++    	if(scrim==mScrimInFront){
++    		scrim.setAlpha(1f);
++    		return;
++    	}
++    	//add by zqs 2017/3/16 end
+         float alpha1 = getCurrentScrimAlpha(scrim);
+         if (scrim instanceof ScrimView) {
+             float alpha2 = getDozeAlpha(scrim);
+@@ -421,7 +429,7 @@ public class ScrimController implements ViewTreeObserver.OnPreDrawListener,
+     @Override
+     public void onHeadsUpPinned(ExpandableNotificationRow headsUp) {
+         mPinnedHeadsUpCount++;
+-        updateHeadsUpScrim(true);
++//        updateHeadsUpScrim(true);
+     }
+ 
+     @Override
+@@ -431,7 +439,7 @@ public class ScrimController implements ViewTreeObserver.OnPreDrawListener,
+             mDraggedHeadsUpView = null;
+             mTopHeadsUpDragAmount = 0.0f;
+         }
+-        updateHeadsUpScrim(true);
++//        updateHeadsUpScrim(true);
+     }
+ 
+     @Override
+diff --git a/SystemUI/src/com/android/systemui/statusbar/stack/NotificationStackScrollLayout.java b/SystemUI/src/com/android/systemui/statusbar/stack/NotificationStackScrollLayout.java
+index 838311e..cc8a049 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/stack/NotificationStackScrollLayout.java
++++ b/SystemUI/src/com/android/systemui/statusbar/stack/NotificationStackScrollLayout.java
+@@ -183,6 +183,8 @@ public class NotificationStackScrollLayout extends ViewGroup
+     private float mMinTopOverScrollToEscape;
+     private int mIntrinsicPadding;
+     private int mNotificationTopPadding;
++    ///////////////////////////
++    private int mArrowHeight;
+     private float mStackTranslation;
+     private float mTopPaddingOverflow;
+     private boolean mDontReportNextOverScroll;
+@@ -317,6 +319,8 @@ public class NotificationStackScrollLayout extends ViewGroup
+                 R.dimen.notifications_top_padding);
+         mCollapseSecondCardPadding = getResources().getDimensionPixelSize(
+                 R.dimen.notification_collapse_second_card_padding);
++        mArrowHeight = getResources().getDimensionPixelSize(
++        		R.dimen.qucii_arrow_height);
+     }
+ 
+     private void updatePadding(boolean dimmed) {
+@@ -345,7 +349,6 @@ public class NotificationStackScrollLayout extends ViewGroup
+ 
+     @Override
+     protected void onLayout(boolean changed, int l, int t, int r, int b) {
+-
+         // we layout all our children centered on the top
+         float centerX = getWidth() / 2.0f;
+         for (int i = 0; i < getChildCount(); i++) {
+@@ -489,6 +492,11 @@ public class NotificationStackScrollLayout extends ViewGroup
+      * @param height the new height of the stack
+      */
+     public void setStackHeight(float height) {
++    	//add by zqs 2017/3/16 begin
++        //========================>
++        //通知组的滑动效果上升高度多一个底部箭头高度
++    	height=height-mArrowHeight;
++    	//add by zqs 2017/3/16 end
+         mLastSetStackHeight = height;
+         setIsExpanded(height > 0.0f);
+         int newStackHeight = (int) height;
+-- 
+2.8.3.windows.1
+

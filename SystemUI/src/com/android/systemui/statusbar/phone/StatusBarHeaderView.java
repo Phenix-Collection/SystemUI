@@ -16,27 +16,17 @@
 
 package com.android.systemui.statusbar.phone;
 
-import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.database.ContentObserver;
 import android.graphics.Outline;
 import android.graphics.Rect;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
-import android.net.Uri;
-import android.os.Handler;
-import android.os.UserHandle;
-import android.provider.AlarmClock;
-import android.provider.CalendarContract;
-import android.provider.Settings;
 import android.util.AttributeSet;
 import android.util.MathUtils;
 import android.util.TypedValue;
@@ -51,14 +41,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.keyguard.KeyguardStatusView;
-import com.android.systemui.BatteryLevelTextView;
 import com.android.systemui.BatteryMeterView;
 import com.android.systemui.FontSizeUtils;
 import com.android.systemui.R;
 import com.android.systemui.qs.QSPanel;
 import com.android.systemui.qs.QSTile;
 import com.android.systemui.statusbar.policy.BatteryController;
-import com.android.systemui.statusbar.policy.BatteryStateRegistar;
 import com.android.systemui.statusbar.policy.NetworkControllerImpl.EmergencyListener;
 import com.android.systemui.statusbar.policy.NextAlarmController;
 import com.android.systemui.statusbar.policy.UserInfoController;
@@ -70,7 +58,7 @@ import java.text.NumberFormat;
  * The view to manage the header area in the expanded status bar.
  */
 public class StatusBarHeaderView extends RelativeLayout implements View.OnClickListener,
-        NextAlarmController.NextAlarmChangeCallback,
+        BatteryController.BatteryStateChangeCallback, NextAlarmController.NextAlarmChangeCallback,
         EmergencyListener {
 
     private boolean mExpanded;
@@ -89,17 +77,13 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
     private LinearLayout mSystemIcons;
     private View mSignalCluster;
     private SettingsButton mSettingsButton;
-    //add by lrh begin add setting bt
-    private SettingsButton mQuciiSettingsButton;
-    //add by lrh end 
-    
     private View mSettingsContainer;
     private View mQsDetailHeader;
     private TextView mQsDetailHeaderTitle;
     private Switch mQsDetailHeaderSwitch;
     private ImageView mQsDetailHeaderProgress;
     private TextView mEmergencyCallsOnly;
-    private /**TextView**/BatteryLevelTextView mBatteryLevel;// modified by yangfan
+    private TextView mBatteryLevel;
     private TextView mAlarmStatus;
 
     private boolean mShowEmergencyCallsOnly;
@@ -143,9 +127,6 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
     private float mCurrentT;
     private boolean mShowingDetail;
     private boolean mDetailTransitioning;
-    private TextView mNotificationManager;
-    private boolean mShowBatteryTextExpanded;// added by yangfan
-    private SettingsObserver mSettingsObserver;// added by yangfan
 
     public StatusBarHeaderView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -166,34 +147,19 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
         mDateCollapsed = (TextView) findViewById(R.id.date_collapsed);
         mDateExpanded = (TextView) findViewById(R.id.date_expanded);
         mSettingsButton = (SettingsButton) findViewById(R.id.settings_button);
-        //add by lrh begin add qucii setting bt
-        mQuciiSettingsButton = (SettingsButton) findViewById(R.id.qucii_settings_button);
-        mQuciiSettingsButton.setOnClickListener(this);
-        //add by lrh end
         mSettingsContainer = findViewById(R.id.settings_button_container);
-        //add by lrh begin add qucii NotificationManager bt
-        mNotificationManager = (TextView) findViewById(R.id.qucii_notification_manage);
-        mNotificationManager.setOnClickListener(this);
-        //add by lrh begin add qucii NotificationManager bt
-        //mSettingsButton.setOnClickListener(this);
-        mClock.setOnClickListener(this);
-        mDateGroup.setOnClickListener(this);
+        mSettingsButton.setOnClickListener(this);
         mQsDetailHeader = findViewById(R.id.qs_detail_header);
         mQsDetailHeader.setAlpha(0);
         mQsDetailHeaderTitle = (TextView) mQsDetailHeader.findViewById(android.R.id.title);
         mQsDetailHeaderSwitch = (Switch) mQsDetailHeader.findViewById(android.R.id.toggle);
         mQsDetailHeaderProgress = (ImageView) findViewById(R.id.qs_detail_header_progress);
         mEmergencyCallsOnly = (TextView) findViewById(R.id.header_emergency_calls_only);
-        mBatteryLevel = (/*TextView*/BatteryLevelTextView) findViewById(R.id.battery_level_text);// modified by yangfan
+        mBatteryLevel = (TextView) findViewById(R.id.battery_level);
         mAlarmStatus = (TextView) findViewById(R.id.alarm_status);
         mAlarmStatus.setOnClickListener(this);
         mSignalCluster = findViewById(R.id.signal_cluster);
         mSystemIcons = (LinearLayout) findViewById(R.id.system_icons);
-
-//added by yangfan 
-        mSettingsObserver = new SettingsObserver(new Handler());
-        mSettingsObserver.observe();
-//added by yangfan end
         loadDimens();
         updateVisibilities();
         updateClockScale();
@@ -245,7 +211,7 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
     @Override
     protected void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        //FontSizeUtils.updateFontSize(mBatteryLevel, R.dimen.battery_level_text_size);//remove by yangfan
+        FontSizeUtils.updateFontSize(mBatteryLevel, R.dimen.battery_level_text_size);
         FontSizeUtils.updateFontSize(mEmergencyCallsOnly,
                 R.dimen.qs_emergency_calls_only_text_size);
         FontSizeUtils.updateFontSize(mDateCollapsed, R.dimen.qs_date_collapsed_size);
@@ -310,16 +276,10 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
         mActivityStarter = activityStarter;
     }
 
-// modified by yangfan 
     public void setBatteryController(BatteryController batteryController) {
-        //mBatteryController = batteryController;
-        //((BatteryMeterView) findViewById(R.id.battery)).setBatteryController(batteryController);
-        BatteryMeterView v = ((BatteryMeterView) findViewById(R.id.battery));
-        v.setBatteryStateRegistar(batteryController);
-        v.setBatteryController(batteryController);
-        mBatteryLevel.setBatteryStateRegistar(batteryController);		
+        mBatteryController = batteryController;
+        ((BatteryMeterView) findViewById(R.id.battery)).setBatteryController(batteryController);
     }
-// modified by yangfan 
 
     public void setNextAlarmController(NextAlarmController nextAlarmController) {
         mNextAlarmController = nextAlarmController;
@@ -376,16 +336,13 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
         mAlarmStatus.setVisibility(mExpanded && mAlarmShowing ? View.VISIBLE : View.INVISIBLE);
         mSettingsContainer.setVisibility(mExpanded ? View.VISIBLE : View.INVISIBLE);
         mQsDetailHeader.setVisibility(mExpanded && mShowingDetail? View.VISIBLE : View.INVISIBLE);
-// modified by yangfan 		
-        // if (mSignalCluster != null) {
-        //     updateSignalClusterDetachment();
-        // }
-        mSignalCluster.setVisibility(GONE);
-        //mEmergencyCallsOnly.setVisibility(mExpanded && mShowEmergencyCallsOnly ? VISIBLE : GONE);
+        if (mSignalCluster != null) {
+            updateSignalClusterDetachment();
+        }
+        mEmergencyCallsOnly.setVisibility(mExpanded && mShowEmergencyCallsOnly ? VISIBLE : GONE);
         mBatteryLevel.setVisibility(mExpanded ? View.VISIBLE : View.GONE);
         mSettingsContainer.findViewById(R.id.tuner_icon).setVisibility(
-                TunerService.isTunerEnabled(mContext) ? View.GONE : View.GONE);
-// modified by yangfan 
+                TunerService.isTunerEnabled(mContext) ? View.VISIBLE : View.INVISIBLE);
     }
 
     private void updateSignalClusterDetachment() {
@@ -418,10 +375,10 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
 
     private void updateListeners() {
         if (mListening) {
-            //mBatteryController.addStateChangedCallback(this);
+            mBatteryController.addStateChangedCallback(this);
             mNextAlarmController.addStateChangedCallback(this);
         } else {
-            //mBatteryController.removeStateChangedCallback(this);
+            mBatteryController.removeStateChangedCallback(this);
             mNextAlarmController.removeStateChangedCallback(this);
         }
     }
@@ -448,6 +405,17 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
     private void updateAmPmTranslation() {
         boolean rtl = getLayoutDirection() == LAYOUT_DIRECTION_RTL;
         mAmPm.setTranslationX((rtl ? 1 : -1) * mTime.getWidth() * (1 - mTime.getScaleX()));
+    }
+
+    @Override
+    public void onBatteryLevelChanged(int level, boolean pluggedIn, boolean charging) {
+        String percentage = NumberFormat.getPercentInstance().format((double) level / 100.0);
+        mBatteryLevel.setText(percentage);
+    }
+
+    @Override
+    public void onPowerSaveChanged() {
+        // could not care less
     }
 
     @Override
@@ -539,25 +507,21 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-// modified by yangfan 
-        //if (v == mSettingsButton||v == mQuciiSettingsButton) {
-		    if (v == /*mSettingsButton*/ mQuciiSettingsButton) {
-//            if (mSettingsButton.isTunerClick()) {
-//                if (TunerService.isTunerEnabled(mContext)) {
-//                    TunerService.showResetRequest(mContext, new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            // Relaunch settings so that the tuner disappears.
-//
-//                            startSettingsActivity();
-//                        }
-//                    });
-//                } else {
-//                    Toast.makeText(getContext(), R.string.tuner_toast, Toast.LENGTH_LONG).show();
-//                    TunerService.setTunerEnabled(mContext, true);
-//                }
-//            }
-// modified by yangfan 
+        if (v == mSettingsButton) {
+            if (mSettingsButton.isTunerClick()) {
+                if (TunerService.isTunerEnabled(mContext)) {
+                    TunerService.showResetRequest(mContext, new Runnable() {
+                        @Override
+                        public void run() {
+                            // Relaunch settings so that the tuner disappears.
+                            startSettingsActivity();
+                        }
+                    });
+                } else {
+                    Toast.makeText(getContext(), R.string.tuner_toast, Toast.LENGTH_LONG).show();
+                    TunerService.setTunerEnabled(mContext, true);
+                }
+            }
             startSettingsActivity();
         } else if (v == mSystemIconsSuperContainer) {
             startBatteryActivity();
@@ -566,19 +530,7 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
             if (showIntent != null) {
                 mActivityStarter.startPendingIntentDismissingKeyguard(showIntent);
             }
-        } else if (v == mNotificationManager) {
-        	 Intent intent = new Intent();
-             intent.setClassName("com.android.settings", "com.android.settings.Settings$NotificationAppListActivity");
-             mActivityStarter.startActivity(intent, true /* dismissShade */);
-        } else if (v == mClock) {
-            startClockActivity();
-        } else if (v == mDateGroup) {
-            startDateActivity();
         }
-    }
-    private void startClockActivity() {
-        mActivityStarter.startActivity(new Intent(AlarmClock.ACTION_SHOW_ALARMS),
-                true /* dismissShade */);
     }
 
     private void startSettingsActivity() {
@@ -699,7 +651,7 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
         }
         if (!mSettingsButton.isAnimating()) {
             mSettingsContainer.setTranslationY(mSystemIconsSuperContainer.getTranslationY());
-            //mSettingsContainer.setTranslationX(values.settingsTranslation);// modified by yangfan 
+            mSettingsContainer.setTranslationX(values.settingsTranslation);
             mSettingsButton.setRotation(values.settingsRotation);
         }
         applyAlpha(mEmergencyCallsOnly, values.emergencyCallsOnlyAlpha);
@@ -877,63 +829,4 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
                     .start();
         }
     };
-    private void startDateActivity() {
-        Uri.Builder builder = CalendarContract.CONTENT_URI.buildUpon();
-        builder.appendPath("time");
-        ContentUris.appendId(builder, System.currentTimeMillis());
-        Intent intent = new Intent(Intent.ACTION_VIEW).setData(builder.build());
-        mActivityStarter.startActivity(intent, true /* dismissShade */);
-    }
-	
-// added by yangfan 
-    class SettingsObserver extends ContentObserver {
-        SettingsObserver(Handler handler) {
-            super(handler);
-        }
-
-        protected void observe() {
-
-            ContentResolver resolver = mContext.getContentResolver();
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.STATUS_BAR_BATTERY_STYLE), false, this, UserHandle.USER_ALL);
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.STATUS_BAR_SHOW_BATTERY_PERCENT), false, this, UserHandle.USER_ALL);
-            update();
-        }
-
-        protected void unobserve() {
-            ContentResolver resolver = mContext.getContentResolver();
-            resolver.unregisterContentObserver(this);
-        }
-
-        @Override
-        public void onChange(boolean selfChange) {
-            super.onChange(selfChange);
-            update();
-        }
-    }
-
-    void update() {
-        ContentResolver resolver = mContext.getContentResolver();
-        int currentUserId = ActivityManager.getCurrentUser();
-        int batteryStyle = Settings.System.getIntForUser(resolver,
-                Settings.System.STATUS_BAR_BATTERY_STYLE, 5, currentUserId);
-        boolean showExpandedBatteryPercentage = Settings.System.getIntForUser(resolver,
-                Settings.System.STATUS_BAR_SHOW_BATTERY_PERCENT, 2, currentUserId) == 0;
-
-        switch (batteryStyle) {
-            case 4: //BATTERY_METER_GONE
-            case 6: //BATTERY_METER_TEXT
-                showExpandedBatteryPercentage = false;
-                break;
-            default:
-                break;
-        }
-
-        mShowBatteryTextExpanded = showExpandedBatteryPercentage;
-        updateVisibilities();
-        requestCaptureValues();
-    }
-// added by yangfan end
-
 }

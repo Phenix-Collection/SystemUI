@@ -19,7 +19,7 @@ package com.android.keyguard;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -37,12 +37,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.os.SystemProperties;
-
 import com.android.internal.telephony.IccCardConstants;
 import com.android.internal.telephony.IccCardConstants.State;
 import com.android.internal.telephony.TelephonyIntents;
 import com.android.settingslib.WirelessUtils;
 
+@SuppressLint("NewApi")
 public class CarrierText extends TextView {
     private static final boolean DEBUG = KeyguardConstants.DEBUG;
     private static final String TAG = "CarrierText";

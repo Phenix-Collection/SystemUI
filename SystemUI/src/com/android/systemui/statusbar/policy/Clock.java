@@ -52,13 +52,12 @@ public class Clock extends TextView implements DemoMode {
     private SimpleDateFormat mClockFormat;
     private Locale mLocale;
 
-	//modified by yangfan 
-    public static final int AM_PM_STYLE_NORMAL  = 0;
-    public static final int AM_PM_STYLE_SMALL   = 1;
-    public static final int AM_PM_STYLE_GONE    = 2;
+    private static final int AM_PM_STYLE_NORMAL  = 0;
+    private static final int AM_PM_STYLE_SMALL   = 1;
+    private static final int AM_PM_STYLE_GONE    = 2;
 
-    private  int mAmPmStyle = AM_PM_STYLE_GONE;
-	//modified by yangfan 
+    private final int mAmPmStyle;
+
     public Clock(Context context) {
         this(context, null);
     }
@@ -69,17 +68,15 @@ public class Clock extends TextView implements DemoMode {
 
     public Clock(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-		//modified by yangfan 
-        // TypedArray a = context.getTheme().obtainStyledAttributes(
-        //         attrs,
-        //         R.styleable.Clock,
-        //         0, 0);
-        // try {
-        //     mAmPmStyle = a.getInt(R.styleable.Clock_amPmStyle, AM_PM_STYLE_NORMAL);
-        // } finally {
-        //     a.recycle();
-        // }
-		//modified by yangfan 
+        TypedArray a = context.getTheme().obtainStyledAttributes(
+                attrs,
+                R.styleable.Clock,
+                0, 0);
+        try {
+            mAmPmStyle = a.getInt(R.styleable.Clock_amPmStyle, AM_PM_STYLE_NORMAL);
+        } finally {
+            a.recycle();
+        }
     }
 
     @Override
@@ -141,7 +138,7 @@ public class Clock extends TextView implements DemoMode {
     };
 
     final void updateClock() {
-        if (mDemoMode || mCalendar == null) return; //'mCalendar = null' by yangfan
+        if (mDemoMode) return;
         mCalendar.setTimeInMillis(System.currentTimeMillis());
         setText(getSmallTime());
     }
@@ -247,13 +244,5 @@ public class Clock extends TextView implements DemoMode {
             setText(getSmallTime());
         }
     }
-
-	//modified by yangfan 
-    public void setAmPmStyle(int style) {
-        mAmPmStyle = style;
-        mClockFormatString = "";// force update
-        updateClock();
-    }
-	//modified by yangfan 
 }
 

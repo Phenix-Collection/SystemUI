@@ -1,0 +1,187 @@
+From 9d76ae7d263e9e6016dceae30560aa4ea3702478 Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Wed, 1 Mar 2017 20:20:48 +0800
+Subject: [PATCH 086/185] =?UTF-8?q?=E3=80=90bug=E3=80=91=E5=8C=BA=E5=88=AB?=
+ =?UTF-8?q?=E5=AF=B9=E5=BE=85SIM=E8=A7=A3=E9=94=81=E5=92=8Cpin=E8=A7=A3?=
+ =?UTF-8?q?=E9=94=81?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ Keyguard/res/layout/keyguard_pin_view.xml          |  3 --
+ .../src/com/android/keyguard/KeyguardPINView.java  |  5 +++
+ .../keyguard/KeyguardPinBasedInputView.java        | 46 ++++++++++++++--------
+ .../src/com/android/keyguard/PasswordTextView.java | 31 +--------------
+ 4 files changed, 37 insertions(+), 48 deletions(-)
+
+diff --git a/Keyguard/res/layout/keyguard_pin_view.xml b/Keyguard/res/layout/keyguard_pin_view.xml
+index 516d5a2..0d79421 100644
+--- a/Keyguard/res/layout/keyguard_pin_view.xml
++++ b/Keyguard/res/layout/keyguard_pin_view.xml
+@@ -205,9 +205,6 @@
+                     android:paddingBottom="11sp"
+                     android:src="@drawable/ic_done_wht"
+                     android:background="@drawable/ripple_drawable"
+-                    android:visibility="invisible"
+-                    android:clickable="false"
+-                    android:focusable="false"
+                     android:contentDescription="@string/keyboardview_keycode_enter"
+                     />
+         </LinearLayout>
+diff --git a/SystemUI/src/com/android/keyguard/KeyguardPINView.java b/SystemUI/src/com/android/keyguard/KeyguardPINView.java
+index f4638b6..c07f375 100644
+--- a/SystemUI/src/com/android/keyguard/KeyguardPINView.java
++++ b/SystemUI/src/com/android/keyguard/KeyguardPINView.java
+@@ -207,4 +207,9 @@ public class KeyguardPINView extends KeyguardPinBasedInputView {
+     public boolean hasOverlappingRendering() {
+         return false;
+     }
++    
++    @Override
++    public boolean isPinView() {
++    	return true;
++    }// added by yangfan 
+ }
+diff --git a/SystemUI/src/com/android/keyguard/KeyguardPinBasedInputView.java b/SystemUI/src/com/android/keyguard/KeyguardPinBasedInputView.java
+index 5e0d010..0f5d0f6 100644
+--- a/SystemUI/src/com/android/keyguard/KeyguardPinBasedInputView.java
++++ b/SystemUI/src/com/android/keyguard/KeyguardPinBasedInputView.java
+@@ -163,7 +163,9 @@ public abstract class KeyguardPinBasedInputView extends KeyguardAbsKeyInputView
+     protected void onFinishInflate() {
+         mPasswordEntry = (PasswordTextView) findViewById(getPasswordTextViewId());
+         mPasswordEntry.setOnKeyListener(this);
+-        mPasswordEntry.setOnFinishedListener(this);
++        if (isPinView()) {
++        	mPasswordEntry.setOnFinishedListener(this);
++		}
+ 
+         // Set selected property on so the view can send accessibility events.
+         mPasswordEntry.setSelected(true);
+@@ -176,18 +178,25 @@ public abstract class KeyguardPinBasedInputView extends KeyguardAbsKeyInputView
+         });
+ 
+         mOkButton = findViewById(R.id.key_enter);
+-        if (mOkButton != null) {
+-            /*mOkButton.setOnClickListener(new View.OnClickListener() {
+-                @Override
+-                public void onClick(View v) {
+-                    doHapticKeyClick();
+-                    if (mPasswordEntry.isEnabled()) {
+-                        verifyPasswordAndUnlock();
+-                    }
+-                }
+-            });
+-            mOkButton.setOnHoverListener(new LiftToActivateListener(getContext()));*/
+-        }
++        if (!isPinView()) { // modified by yangfan 
++        	if (mOkButton != null) {
++        		mOkButton.setOnClickListener(new View.OnClickListener() {
++        			@Override
++        			public void onClick(View v) {
++        				doHapticKeyClick();
++        				if (mPasswordEntry.isEnabled()) {
++        					verifyPasswordAndUnlock();
++        				}
++        			}
++        		});
++        		mOkButton.setOnHoverListener(new LiftToActivateListener(getContext()));
++        	}
++		}else {
++			mOkButton.setEnabled(false);
++			mOkButton.setVisibility(INVISIBLE);
++			mOkButton.setFocusable(false);
++			mOkButton.setClickable(false);
++		}
+ 
+         mDeleteButton = findViewById(R.id.delete_button);
+         mDeleteButton.setVisibility(View.VISIBLE);
+@@ -240,13 +249,18 @@ public abstract class KeyguardPinBasedInputView extends KeyguardAbsKeyInputView
+     //added by yangfan
+     @Override
+     public void OnFinished() {
+-    	mPasswordEntry.setEnabled(true);
+-        doHapticKeyClick();
+-        verifyPasswordAndUnlock();
++		mPasswordEntry.setEnabled(true);
++		doHapticKeyClick();
++		verifyPasswordAndUnlock();
+     }
+     
+     @Override
+     public void OnUnFinished() {
+     	//提示不足6位
+     }
++    
++ // added by yangfan 
++    public boolean isPinView(){
++    	return false;
++    }// added by yangfan 
+ }
+diff --git a/SystemUI/src/com/android/keyguard/PasswordTextView.java b/SystemUI/src/com/android/keyguard/PasswordTextView.java
+index 5433d47..d7737f4 100644
+--- a/SystemUI/src/com/android/keyguard/PasswordTextView.java
++++ b/SystemUI/src/com/android/keyguard/PasswordTextView.java
+@@ -53,7 +53,7 @@ import java.util.Stack;
+  * A View similar to a textView which contains password text and can animate when the text is
+  * changed
+  */
+-public class PasswordTextView extends TextView implements TextWatcher {
++public class PasswordTextView extends TextView  {
+ 
+     private static final float DOT_OVERSHOOT_FACTOR = 1.5f;
+     private static final long DOT_APPEAR_DURATION_OVERSHOOT = 320;
+@@ -122,7 +122,6 @@ public class PasswordTextView extends TextView implements TextWatcher {
+         super(context, attrs, defStyleAttr, defStyleRes);
+         setFocusableInTouchMode(true);
+         setFocusable(true);
+-        addTextChangedListener(this);
+         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.PasswordTextView);
+         try {
+             mTextHeightRaw = a.getInt(R.styleable.PasswordTextView_scaledTextSize, 0);
+@@ -218,7 +217,7 @@ public class PasswordTextView extends TextView implements TextWatcher {
+         userActivity();
+         sendAccessibilityEventTypeViewTextChanged(textbefore, textbefore.length(), 0, 1);
+     	//added by yangfan
+-    	if (mText.length() >= MAXLENGTH) {
++    	if (mText.length() >= MAXLENGTH && null != mFinishedListener ) {
+     		mFinishedListener.OnFinished();
+ 		}//added by yangfan
+     }
+@@ -692,33 +691,7 @@ public class PasswordTextView extends TextView implements TextWatcher {
+             return charWidth + mCharPadding * currentWidthFactor;
+         }
+     }
+-
+     //added by yangfan begin
+-	@Override
+-	public void beforeTextChanged(CharSequence s, int start, int count,
+-			int after) {
+-		Log.e(this.getClass().getSimpleName(), "beforeTextChanged");
+-	}
+-	
+-	@Override
+-	public void onTextChanged(CharSequence s, int start, int before, int count) {
+-		Log.e(this.getClass().getSimpleName(), "onTextChanged");
+-	}
+-	
+-	@Override
+-	public void afterTextChanged(Editable s) {
+-		Log.e(this.getClass().getSimpleName(), "afterTextChanged");
+-		int curLength = s.length();
+-		if (curLength >= MAXLENGTH) {
+-			//执行ok内容
+-			Log.i(this.getClass().getSimpleName(), "curLength : "  + curLength );
+-			Toast.makeText(mContext, curLength + "", Toast.LENGTH_SHORT).show();
+-			mFinishedListener.OnFinished();
+-		}else {
+-			
+-		}
+-	}
+-	
+ 	public void setOnFinishedListener(OnFinishedListener listener){
+ 		mFinishedListener = listener;
+ 	}
+-- 
+2.8.3.windows.1
+

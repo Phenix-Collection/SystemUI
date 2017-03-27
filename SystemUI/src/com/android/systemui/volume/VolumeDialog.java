@@ -42,7 +42,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.os.SystemClock;
-import android.provider.Settings;
 import android.provider.Settings.Global;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -226,10 +225,8 @@ public class VolumeDialog {
         final DisplayMetrics dm = mContext.getResources().getDisplayMetrics();
         if (D.BUG) Log.d(TAG, "updateWindowWidth dm.w=" + dm.widthPixels);
         int w = dm.widthPixels;
-        //modify the volumedialog panel width as 416dp begin
         final int max = mContext.getResources()
-                .getDimensionPixelSize(R.dimen.volumedialog_panel_width);
-       //modify the volumedialog panel width as 416dp end
+                .getDimensionPixelSize(R.dimen.standard_notification_panel_width);
         if (w > max) {
             w = max;
         }
@@ -1028,11 +1025,6 @@ public class VolumeDialog {
                     mRow.requestedLevel = userLevel;
                     Events.writeEvent(mContext, Events.EVENT_TOUCH_LEVEL_CHANGED, mRow.stream,
                             userLevel);
-                    if(mRow.stream == AudioManager.STREAM_RING){// save the volume_ring by headset_on
-                        boolean headset_on = mAudioManager.isWiredHeadsetOn();
-                        Settings.Secure.putInt(mContext.getContentResolver(),
-                            headset_on ? Settings.Global.RINGTONE_VOLUME_HEADSET_ON : Settings.Global.RINGTONE_VOLUME_HEADSET_OFF, userLevel);
-                    }
                 }
             }
         }

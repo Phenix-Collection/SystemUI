@@ -1,0 +1,28 @@
+From 49a616ad8772805fa6b027c2e5dcb43c86d018e4 Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Tue, 21 Feb 2017 10:07:33 +0800
+Subject: [PATCH 052/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E4=BF=AE=E6=94=B9=E5=A4=B4=E9=83=A8=E8=83=8C=E6=99=AF?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/res/drawable/notification_header_bg.xml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/SystemUI/res/drawable/notification_header_bg.xml b/SystemUI/res/drawable/notification_header_bg.xml
+index 1f46502..785d519 100644
+--- a/SystemUI/res/drawable/notification_header_bg.xml
++++ b/SystemUI/res/drawable/notification_header_bg.xml
+@@ -17,5 +17,5 @@
+ 
+ <ripple xmlns:android="http://schemas.android.com/apk/res/android"
+     android:color="?android:attr/colorControlHighlight" >
+-    <item android:drawable="@color/system_secondary_color"/>
++    <item android:drawable="@color/transparent"/><!-- modified by yangfan  'system_secondary_color' -->
+ </ripple>
+\ No newline at end of file
+-- 
+2.8.3.windows.1
+

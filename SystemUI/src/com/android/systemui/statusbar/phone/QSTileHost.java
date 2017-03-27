@@ -37,7 +37,6 @@ import com.android.systemui.qs.tiles.FlashlightTile;
 import com.android.systemui.qs.tiles.HotspotTile;
 import com.android.systemui.qs.tiles.IntentTile;
 import com.android.systemui.qs.tiles.LocationTile;
-import com.android.systemui.qs.tiles.ProfileTile;
 import com.android.systemui.qs.tiles.RotationLockTile;
 import com.android.systemui.qs.tiles.WifiTile;
 import com.android.systemui.statusbar.policy.BluetoothController;
@@ -47,7 +46,6 @@ import com.android.systemui.statusbar.policy.HotspotController;
 import com.android.systemui.statusbar.policy.KeyguardMonitor;
 import com.android.systemui.statusbar.policy.LocationController;
 import com.android.systemui.statusbar.policy.NetworkController;
-import com.android.systemui.statusbar.policy.ProfilesController;
 import com.android.systemui.statusbar.policy.RotationLockController;
 import com.android.systemui.statusbar.policy.SecurityController;
 import com.android.systemui.statusbar.policy.UserSwitcherController;
@@ -85,8 +83,7 @@ public class QSTileHost implements QSTile.Host, Tunable {
     private final UserSwitcherController mUserSwitcherController;
     private final KeyguardMonitor mKeyguard;
     private final SecurityController mSecurity;
-    private final ProfilesController mProfiles;
-    
+
     private Callback mCallback;
 
     public QSTileHost(Context context, PhoneStatusBar statusBar,
@@ -95,7 +92,7 @@ public class QSTileHost implements QSTile.Host, Tunable {
             ZenModeController zen, HotspotController hotspot,
             CastController cast, FlashlightController flashlight,
             UserSwitcherController userSwitcher, KeyguardMonitor keyguard,
-            SecurityController security,ProfilesController profiles) {// add profiles by yangfan 
+            SecurityController security) {
         mContext = context;
         mStatusBar = statusBar;
         mBluetooth = bluetooth;
@@ -109,7 +106,6 @@ public class QSTileHost implements QSTile.Host, Tunable {
         mUserSwitcherController = userSwitcher;
         mKeyguard = keyguard;
         mSecurity = security;
-        mProfiles = profiles;// add profiles by yangfan 
 
         final HandlerThread ht = new HandlerThread(QSTileHost.class.getSimpleName(),
                 Process.THREAD_PRIORITY_BACKGROUND);
@@ -215,13 +211,7 @@ public class QSTileHost implements QSTile.Host, Tunable {
     public SecurityController getSecurityController() {
         return mSecurity;
     }
-
-// added by yangfan 
-    public ProfilesController getProfilesController(){
-        return mProfiles;
-    }
- // added by yangfan end 
-      
+    
     @Override
     public void onTuningChanged(String key, String newValue) {
         if (!TILES_SETTING.equals(key)) {
@@ -259,20 +249,18 @@ public class QSTileHost implements QSTile.Host, Tunable {
     }
 
     protected QSTile<?> createTile(String tileSpec) {
+        Log.d("weiliji", "createTile(String tileSpec)  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx " );
         if (tileSpec.equals("wifi")) return new WifiTile(this);
         else if (tileSpec.equals("bt")) return new BluetoothTile(this);
-        // else if (tileSpec.equals("inversion")) return new ColorInversionTile(this);// remove 'inversion' by yangfan 
+        else if (tileSpec.equals("inversion")) return new ColorInversionTile(this);
         else if (tileSpec.equals("cell")) return new CellularTile(this);
         else if (tileSpec.equals("airplane")) return new AirplaneModeTile(this);
         else if (tileSpec.equals("dnd")) return new DndTile(this);
         else if (tileSpec.equals("rotation")) return new RotationLockTile(this);
         else if (tileSpec.equals("flashlight")) return new FlashlightTile(this);
         else if (tileSpec.equals("location")) return new LocationTile(this);
-// remove 'cast,hotspot' add 'profile' by yangfan 
-        else if (tileSpec.equals("profile")) return new ProfileTile(this);
-//        else if (tileSpec.equals("cast")) return new CastTile(this);
-//        else if (tileSpec.equals("hotspot")) return new HotspotTile(this);
-// remove 'cast,hotspot' add 'profile' by yangfan 
+        else if (tileSpec.equals("cast")) return new CastTile(this);
+        else if (tileSpec.equals("hotspot")) return new HotspotTile(this);
         else if (tileSpec.startsWith(IntentTile.PREFIX)) return IntentTile.create(this,tileSpec);
         else throw new IllegalArgumentException("Bad tile spec: " + tileSpec);
     }

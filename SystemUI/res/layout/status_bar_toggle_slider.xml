@@ -24,64 +24,39 @@
         android:id="@+id/toggle"
         android:layout_width="48dp"
         android:layout_height="0dp"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:background="@*android:drawable/switch_track_material"
+        android:layout_alignParentBottom="true"
         android:button="@null"
-        android:visibility="gone" />
-
-    <LinearLayout
-        android:id="@+id/slider_container"
-        android:layout_width="match_parent"
+        android:background="@*android:drawable/switch_track_material"
+        android:visibility="gone"
+        />
+    <com.android.systemui.settings.ToggleSeekBar
+        android:id="@+id/slider"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
         android:layout_toEndOf="@id/toggle"
-        android:padding="5dp"
-        android:layout_marginBottom="@dimen/qs_brightness_padding_top"
-        android:orientation="horizontal" >
-
-        <ImageView
-            android:id="@+id/qucii_icon_lightness_dark"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="8dp"
-            android:contentDescription="@null"
-            android:src="@drawable/qucii_ic_brightness_dark" />
-
-        <com.android.systemui.settings.ToggleSeekBar
-            android:id="@+id/slider"
-            style="@style/BrightnessSeekBar"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical"
-            android:paddingBottom="@dimen/qs_brightness_padding_top"
-            android:paddingTop="@dimen/qs_brightness_padding_top" />
-
-        <ImageView
-            android:id="@+id/icon_lightness_light"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginEnd="8dp"
-            android:contentDescription="@null"
-            android:src="@drawable/qucii_ic_brightness_light" />
-    </LinearLayout>
-
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:thumb="@drawable/ic_brightness_thumb"
+        android:splitTrack="false"
+        />
     <TextView
         android:id="@+id/label"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@id/toggle"
         android:layout_alignStart="@id/toggle"
+        android:layout_alignEnd="@id/toggle"
         android:layout_centerVertical="true"
         android:gravity="center"
         android:paddingTop="26dp"
         android:textColor="#666666"
         android:textSize="12sp"
-        android:visibility="gone" />
+        android:visibility="gone"
+        />
 </merge>

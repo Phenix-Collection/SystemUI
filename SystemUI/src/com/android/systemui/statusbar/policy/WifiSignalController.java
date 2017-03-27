@@ -79,7 +79,7 @@ public class WifiSignalController extends
         boolean visibleWhenEnabled = mContext.getResources().getBoolean(
                 R.bool.config_showWifiIndicatorWhenEnabled);
         boolean wifiVisible = mCurrentState.enabled
-                && (mCurrentState.connected || !mHasMobileData /*|| visibleWhenEnabled*/);// modified by yangfan 
+                && (mCurrentState.connected || !mHasMobileData || visibleWhenEnabled);
         String wifiDesc = wifiVisible ? mCurrentState.ssid : null;
         boolean ssidPresent = wifiVisible && mCurrentState.ssid != null;
         String contentDescription = getStringIfExists(getContentDescription());

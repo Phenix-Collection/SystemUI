@@ -134,7 +134,6 @@ public abstract class SignalController<T extends SignalController.State,
      */
     public int getCurrentIconId() {
         if (mCurrentState.connected) {
-            Log.i(mTag,"getCurrentIconId level : " + mCurrentState.level );// added by yangfan 
             return getIcons().mSbIcons[mCurrentState.inetCondition][mCurrentState.level];
         } else if (mCurrentState.enabled) {
             return getIcons().mSbDiscState;

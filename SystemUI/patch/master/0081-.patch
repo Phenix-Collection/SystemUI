@@ -1,0 +1,51 @@
+From 05601ba8c47e7149194957b471e6d9fc2c7b4b30 Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Tue, 28 Feb 2017 22:14:56 +0800
+Subject: [PATCH 081/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E4=BF=AE=E5=A4=8D=E6=83=85=E6=99=AF=E6=A8=A1=E5=BC=8F=E6=BB=91?=
+ =?UTF-8?q?=E5=9D=97=E6=B2=A1=E7=9B=91=E5=90=AC=E5=93=8D=E9=93=83=E6=A8=A1?=
+ =?UTF-8?q?=E5=BC=8F=E6=94=B9=E5=8F=98?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/src/com/android/systemui/qs/tiles/ProfileTile.java | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/qs/tiles/ProfileTile.java b/SystemUI/src/com/android/systemui/qs/tiles/ProfileTile.java
+index 8244714..85d7857 100644
+--- a/SystemUI/src/com/android/systemui/qs/tiles/ProfileTile.java
++++ b/SystemUI/src/com/android/systemui/qs/tiles/ProfileTile.java
+@@ -40,20 +40,26 @@ public class ProfileTile extends QSTile<QSTile.BooleanState> {
+         mController = mHost.getProfilesController();
+         mAudioManager = (AudioManager) mContext
+                 .getSystemService(Context.AUDIO_SERVICE);
+-        IntentFilter filter = new IntentFilter("action_dnd_update");
++        IntentFilter filter = new IntentFilter();
++        // 添加监听震动 静音的改变 by yangfan 
++        filter.addAction(AudioManager.RINGER_MODE_CHANGED_ACTION);
++        filter.addAction(AudioManager.INTERNAL_RINGER_MODE_CHANGED_ACTION);
++        filter.addAction("action_dnd_update");
++     // 添加监听震动 静音的改变 by yangfan  end
+         mContext.registerReceiver(mReceiver, filter);
+     }
+ 
+     BroadcastReceiver mReceiver = new BroadcastReceiver() {
+         @Override
+         public void onReceive(Context context, Intent intent) {
++        	
+             new Handler().postDelayed(new Runnable() {
+                 @Override
+                 public void run() {
+                     refreshState();
+ 
+                 }
+-            }, 500);
++            }, 0);
+ 
+         }
+     };
+-- 
+2.8.3.windows.1
+

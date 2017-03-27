@@ -70,7 +70,6 @@
             android:textSize="@dimen/kg_status_line_font_size"
             android:textColor="?android:attr/textColorSecondary"
             android:textAllCaps="@bool/kg_use_all_caps"
-            android:visibility="gone"
             android:text="@string/pattern_cancel" />
     </LinearLayout>
 

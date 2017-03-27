@@ -90,7 +90,7 @@
 <!-- 应用名称 -->  
     <property name="appName" value="${ant.project.name}"/>  
     <!-- SDK目录(获取操作系统环境变量ANDROID_SDK_HOME的便 -->  
-    <property name="sdk-folder" value="D:\Android_eclispe\sdk" />  
+    <property name="sdk-folder" value="D:/Tools/Android/adt-bundle-windows-x86_64-20140702/sdk" />  
     <!--  <property name="sdk-folder" value="${env.Android_SDK_HOME}" />   -->    
     <!-- SDK指定平台目录 -->  
     <property name="sdk-platform-folder" value="${sdk-folder}/platforms/android-23"/>  
@@ -171,8 +171,19 @@
     
      <path id="lib_classpath">
          <!-- <fileset dir="${jar-path}" includes="*.jar" /> -->
-		<fileset dir="${ext-lib}">  	
-         	<include name="*.jar" />
+		<fileset dir="${ext-lib}">
+<!-- 
+		    <include name="core-libart.jar" />
+         	<include name="framework.jar" />
+         	<include name="services.jar" />
+         	<include name="telephony-common.jar" />
+ -->    	
+         	<include name="android-support-v4.jar" />
+         	<include name="core-libart.jar" />
+			<include name="frameworks.jar" />
+         	<include name="javalib.jar" />
+			<include name="service.jar" />
+         	<include name="telephony-common.jar" />
          </fileset>
         <path refid="libs_classpath"/>
          <pathelement location="${android-jar}" />
@@ -188,7 +199,6 @@
         <mkdir dir="${outdir-gen}" />
         <mkdir dir="${outdir-bin}" />  
         <mkdir dir="${outdir-classes}" />  
-        <mkdir dir="${external-lib}" />  <!-- if null == libs --> 
     </target>
     
     <!-- 根据工程中的资源文件生成R.java文件  -->  

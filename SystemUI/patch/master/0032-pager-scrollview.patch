@@ -1,0 +1,80 @@
+From aaa74e62fe9ac69a62a3f07a0f05d218900871e2 Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Mon, 13 Feb 2017 16:48:09 +0800
+Subject: [PATCH 032/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E5=9C=A8pager=E6=8B=A6=E6=88=AA=E4=B8=8A=E6=BB=91=E4=BA=8B?=
+ =?UTF-8?q?=E4=BB=B6=E8=80=8C=E4=B8=8D=E6=98=AFscrollview?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../statusbar/phone/ObservableScrollView.java      | 28 +++-------------------
+ 1 file changed, 3 insertions(+), 25 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/ObservableScrollView.java b/SystemUI/src/com/android/systemui/statusbar/phone/ObservableScrollView.java
+index 761fb4c..c98cff6 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/ObservableScrollView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/ObservableScrollView.java
+@@ -20,7 +20,6 @@ import com.android.systemui.statusbar.StatusBarState;
+ 
+ import android.content.Context;
+ import android.util.AttributeSet;
+-import android.util.Log;
+ import android.view.MotionEvent;
+ import android.view.View;
+ import android.view.ViewConfiguration;
+@@ -73,31 +72,12 @@ public class ObservableScrollView extends ScrollView {
+ 
+     @Override
+     public boolean onTouchEvent(MotionEvent ev) {
+-       /* mHandlingTouchEvent = true;
++        mHandlingTouchEvent = true;
+         mLastX = ev.getX();
+         mLastY = ev.getY();
+         boolean result = super.onTouchEvent(ev);
+-        mHandlingTouchEvent = false;*/
+-		switch (ev.getAction()) {
+-		case MotionEvent.ACTION_DOWN:
+-			mHandlingTouchEvent = true;
+-			mLastX = ev.getX();
+-			mLastY = ev.getY();
+-			mHandlingTouchEvent = false;
+-			break;
+-		case MotionEvent.ACTION_MOVE:
+-			float tmpY = ev.getY();
+-			int deltaY = (int) (tmpY - mLastY);
+-			if (deltaY < 0 && Math.abs(deltaY) >= ViewConfiguration.get(getContext()).getScaledTouchSlop()) {
+-				if(StatusBarState.SHADE_LOCKED == panelView.mStatusBarState){
+-					panelView.dismissKeyguard(0);
+-				}else{
+-					panelView.collapseAllPanels();
+-				}
+-				return true;
+-			}
+-		}
+-        return super.onTouchEvent(ev);
++        mHandlingTouchEvent = false;
++        return result;
+     }
+ 
+     @Override
+@@ -134,7 +114,6 @@ public class ObservableScrollView extends ScrollView {
+     @Override
+     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
+         super.onScrollChanged(l, t, oldl, oldt);
+-        Log.i(this.getClass().getSimpleName(), "onScrollChanged");
+         if (!panelView.isQsExpansionEnabled()) {
+ 			return ;
+ 		}
+@@ -169,7 +148,6 @@ public class ObservableScrollView extends ScrollView {
+     @Override
+     protected void onOverScrolled(int scrollX, int scrollY, boolean clampedX, boolean clampedY) {
+         super.onOverScrolled(scrollX, scrollY, clampedX, clampedY);
+-        Log.i(this.getClass().getSimpleName(), "onOverScrolled");
+         if (!panelView.isQsExpansionEnabled()) {
+ 			return ;
+ 		}
+-- 
+2.8.3.windows.1
+

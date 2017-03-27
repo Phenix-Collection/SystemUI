@@ -1,0 +1,47 @@
+From 3ecd710d2eab2eaef1e36a7ed211e61fef5b9701 Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Mon, 27 Mar 2017 10:35:42 +0800
+Subject: [PATCH 183/185] =?UTF-8?q?=E6=89=93=E5=8D=B0=E5=BD=93=E5=89=8D?=
+ =?UTF-8?q?=E7=BD=91=E7=BB=9C=E7=8A=B6=E6=80=81?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../android/systemui/statusbar/policy/MobileSignalController.java   | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/policy/MobileSignalController.java b/SystemUI/src/com/android/systemui/statusbar/policy/MobileSignalController.java
+index 6fcda7c..2d3dc3c 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/policy/MobileSignalController.java
++++ b/SystemUI/src/com/android/systemui/statusbar/policy/MobileSignalController.java
+@@ -654,7 +654,7 @@ public class MobileSignalController extends SignalController<
+         mCurrentState.connected = hasService() && mSignalStrength != null;
+         //modified by yangfan begin
+         //isDelaySignal = false;
+-	isDelayNoService = false;
++        isDelayNoService = false;
+         if (mCurrentState.connected) {
+             if (!mSignalStrength.isGsm() && mConfig.alwaysShowCdmaRssi) {
+                 tmpLevel = mSignalStrength.getCdmaLevel();
+@@ -680,7 +680,7 @@ public class MobileSignalController extends SignalController<
+ 			isDelayNoService = false;
+ 		}*/
+         	isDelaySignal = false;
+-	}else if(hasService && (tmpLevel > mCurrentState.level)) {
++        }else if(hasService && (tmpLevel > mCurrentState.level)) {
+         	isDelaySignal = false;
+         }
+         
+@@ -714,6 +714,8 @@ public class MobileSignalController extends SignalController<
+         if (mStyle == STATUS_BAR_STYLE_EXTENDED) {
+             mCurrentState.imsRadioTechnology = mServiceState.getRilImsRadioTechnology();
+         }
++        Log.e("mare", " mCurrentState.level : " + mCurrentState.level + " , tmpLevel : " + tmpLevel + 
++        		" , isDelayNoService : " + isDelayNoService + " , isDelaySignal : " +isDelaySignal + " , hasService: " +hasService );
+         mCurrentState.level = tmpLevel;
+         mCurrentState.isNoService = isDelayNoService;
+         notifyListenersIfNecessary();
+-- 
+2.8.3.windows.1
+

@@ -1,0 +1,233 @@
+From e765baa2244b74d3e1ce45d63e800d315655c3e5 Mon Sep 17 00:00:00 2001
+From: LRH <lironghui@qucci.com>
+Date: Wed, 15 Feb 2017 16:58:50 +0800
+Subject: [PATCH 040/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E6=B7=BB=E5=8A=A0=E9=80=9A=E8=AF=9D=E4=B8=AD=E7=8A=B6=E6=80=81?=
+ =?UTF-8?q?=E6=A0=8F=E8=BF=94=E5=9B=9E=E9=80=9A=E8=AF=9D=E7=95=8C=E9=9D=A2?=
+ =?UTF-8?q?=E5=8A=9F=E8=83=BD?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/res/layout/calling.xml                    |  14 ++
+ SystemUI/res/values/strings.xml                    |   1 +
+ .../systemui/statusbar/phone/PhoneStatusBar.java   | 144 ++++++++++++++++++++-
+ 3 files changed, 158 insertions(+), 1 deletion(-)
+ create mode 100644 SystemUI/res/layout/calling.xml
+
+diff --git a/SystemUI/res/layout/calling.xml b/SystemUI/res/layout/calling.xml
+new file mode 100644
+index 0000000..50fb38f
+--- /dev/null
++++ b/SystemUI/res/layout/calling.xml
+@@ -0,0 +1,14 @@
++<?xml version="1.0" encoding="utf-8"?>
++<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    android:orientation="vertical" android:layout_width="match_parent"
++    android:layout_height="match_parent">
++    <TextView
++        android:background="#4cc397"
++        android:gravity="center"
++
++        android:layout_width="match_parent"
++        android:layout_height="56dp"
++        android:paddingBottom="26dp"
++        android:text="@string/gotocalling"
++        android:id="@+id/calling"/>
++</LinearLayout>
+\ No newline at end of file
+diff --git a/SystemUI/res/values/strings.xml b/SystemUI/res/values/strings.xml
+index c1ccbcc..e01e3f5 100644
+--- a/SystemUI/res/values/strings.xml
++++ b/SystemUI/res/values/strings.xml
+@@ -1193,4 +1193,5 @@
+     <string name="confirm_password_header_errorstring4">Too many attempts，Please retry after <xliff:g id="NUMBER_S">%d</xliff:g> seconds</string>
+     <string name="confirm_password_cancel">Cancel</string>
+     <string name="confirm_password_noteheader_title">Need to enter a password to use fingerprint recognition</string>
++    <string name="gotocalling">Touch your return calls here</string>
+ </resources>
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
+index e180e19..be1cc4f 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
+@@ -195,6 +195,14 @@ import java.io.IOException;
+ 
+ import android.os.SystemProperties;
+ //add end
++//rw
++import android.view.animation.AlphaAnimation;
++import android.view.animation.Animation;
++import android.telephony.PhoneStateListener;
++import android.view.Gravity;
++import android.content.ComponentName;
++
++
+ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
+         DragDownHelper.DragDownCallback, ActivityStarter, OnUnlockMethodChangedListener,
+         HeadsUpManager.OnHeadsUpChangedListener {
+@@ -1085,6 +1093,9 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
+                 "GestureWakeLock");
+         mVibrator = mContext.getSystemService(Vibrator.class);
+ 
++        //rw
++        final TelephonyManager manager = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
++        manager.listen(new MyPhoneCallListener(), PhoneStateListener.LISTEN_CALL_STATE);
+         // receive broadcasts
+         IntentFilter filter = new IntentFilter();
+         filter.addAction(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
+@@ -3187,7 +3198,27 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
+ 
+             }
+          // hsp 2016-08-11 : Add button to show or hide navigatin bar @{
+-            else if (ACTION_NAVIGATION_BAR_VISIBLE.equals(action)) {                    //add by wumin
++            else if (ACTION_NAVIGATION_BAR_VISIBLE.equals(action)) {                    
++            	  ActivityManager activityManager = (ActivityManager) mContext.getSystemService(mContext.ACTIVITY_SERVICE);
++
++                  List<ActivityManager.RunningTaskInfo> tasks = activityManager.getRunningTasks(1);
++
++                  ActivityManager.RunningTaskInfo taskInfo = tasks.get(0);
++                  String className = taskInfo.topActivity.getClassName();
++
++                  final TelephonyManager tm = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
++                  //  System.out.println("=======sss============>" + className+"======getCallState============"+(tm.getCallState() == TelephonyManager.CALL_STATE_IDLE));
++
++                  if ("shows".equals(intent.getStringExtra("callbar"))) {
++                      if (tm.getCallState() != TelephonyManager.CALL_STATE_IDLE && !className.equals("com.android.incallui.InCallActivity")) {
++                          showCallBar();
++                      }
++                  } else if ("hides".equals(intent.getStringExtra("callbar"))) {
++
++                      hideCallBar();
++
++                  } else {
++            	//add by wumin
+                     boolean show = intent.getBooleanExtra("show", false);
+                     boolean settings = intent.getBooleanExtra("settings", false);
+                     showNavBar = show;
+@@ -3196,6 +3227,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
+                         mRemoveOrShowNavBar.run();
+                     }
+                 //add end
++                  }
+             }
+         }
+     };
+@@ -4640,4 +4672,114 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
+             }
+         }
+     }
++    //add rw
++    private WindowManager mWM;
++    private WindowManager.LayoutParams params;
++    private View view;
++    private boolean isCalling;
++    private boolean isadd;
++
++    public void showCallBar() {
++        if (mWM == null) {
++
++            mWM = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
++            params = new WindowManager.LayoutParams();
++
++            params.width = WindowManager.LayoutParams.MATCH_PARENT;
++            params.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN;
++
++            params.format = PixelFormat.TRANSLUCENT;
++            params.gravity = Gravity.TOP;
++            params.type = WindowManager.LayoutParams.TYPE_SYSTEM_ERROR;
++            params.height = 72;
++        }
++        if (view == null) {
++            view = View.inflate(mContext, R.layout.calling, null);
++        }
++        final TextView tv = (TextView) view.findViewById(R.id.calling);
++        tv.setTextColor(0xffffffff);
++        final AlphaAnimation animation2 = new AlphaAnimation(1, 0);
++        final AlphaAnimation animation1 = new AlphaAnimation(0, 1);
++        animation2.setDuration(1000);
++        animation1.setDuration(1000);
++        tv.startAnimation(animation2);
++        animation2.setAnimationListener(new Animation.AnimationListener() {
++            @Override
++            public void onAnimationStart(Animation animation) {
++            }
++
++            @Override
++            public void onAnimationEnd(Animation animation) {
++                tv.startAnimation(animation1);
++            }
++
++            @Override
++            public void onAnimationRepeat(Animation animation) {
++            }
++        });
++        animation1.setAnimationListener(new Animation.AnimationListener() {
++            @Override
++            public void onAnimationStart(Animation animation) {
++            }
++
++            @Override
++            public void onAnimationEnd(Animation animation) {
++                tv.startAnimation(animation2);
++            }
++
++            @Override
++            public void onAnimationRepeat(Animation animation) {
++
++            }
++        });
++        view.setOnClickListener(new View.OnClickListener() {
++            @Override
++            public void onClick(View v) {
++
++                    final Intent intent = new Intent(Intent.ACTION_MAIN);
++                    intent.addCategory(Intent.CATEGORY_LAUNCHER);
++                    ComponentName cn = new ComponentName("com.android.dialer", "com.android.incallui.InCallActivity");
++                    intent.setComponent(cn);
++                     intent.setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION | Intent.FLAG_ACTIVITY_NEW_TASK);
++                    mContext.startActivity(intent);
++
++
++            }
++        });
++        if (!isadd)
++            mWM.addView(view, params);
++        isadd = true;
++    }
++
++    public void hideCallBar() {
++        if (mWM != null) {
++            mWM.removeView(view);
++            isadd = false;
++            mWM = null;
++
++        }
++    }
++
++    public class MyPhoneCallListener extends PhoneStateListener {
++
++        @Override
++        public void onCallStateChanged(int state, String incomingNumber) {
++
++            switch (state) {
++                case TelephonyManager.CALL_STATE_OFFHOOK:
++                    isCalling = true;
++                    break;
++
++                case TelephonyManager.CALL_STATE_RINGING:
++                    isCalling = true;
++                    break;
++                case TelephonyManager.CALL_STATE_IDLE:
++                    isCalling = false;
++                    hideCallBar();
++                    break;
++            }
++
++            super.onCallStateChanged(state, incomingNumber);
++        }
++    }
+ }
+-- 
+2.8.3.windows.1
+

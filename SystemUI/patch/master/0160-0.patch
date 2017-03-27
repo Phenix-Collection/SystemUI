@@ -1,0 +1,314 @@
+From 69f1c828dff40fa7756a7bce2a86c657a4d45ad8 Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Wed, 22 Mar 2017 13:59:12 +0800
+Subject: [PATCH 160/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E4=BF=A1=E5=8F=B70=E6=A0=BC=E6=97=B6=E5=80=99=E5=9B=BE?=
+ =?UTF-8?q?=E6=A0=87=E4=B8=8D=E6=98=BE=E7=A4=BA=E6=97=A0=E6=9C=8D=E5=8A=A1?=
+ =?UTF-8?q?=E5=9B=BE=E6=A0=87?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/res/drawable/stat_sys_signal_0.xml       | 49 +++++++++++------
+ SystemUI/res/drawable/stat_sys_signal_0_fully.xml | 54 +++++++++++++-----
+ SystemUI/res/drawable/stat_sys_signal_1.xml       | 67 ++++++++++++-----------
+ SystemUI/res/drawable/stat_sys_signal_1_fully.xml | 67 ++++++++++++-----------
+ 4 files changed, 143 insertions(+), 94 deletions(-)
+
+diff --git a/SystemUI/res/drawable/stat_sys_signal_0.xml b/SystemUI/res/drawable/stat_sys_signal_0.xml
+index bdee02a..5f24235 100644
+--- a/SystemUI/res/drawable/stat_sys_signal_0.xml
++++ b/SystemUI/res/drawable/stat_sys_signal_0.xml
+@@ -1,22 +1,37 @@
+ <?xml version="1.0" encoding="utf-8"?>
+-<vector xmlns:android="http://schemas.android.com/apk/res/android"
+-    android:height="11dp"
+-    android:viewportHeight="24"
+-    android:viewportWidth="24"
+-    android:width="11dp" >
++<inset xmlns:android="http://schemas.android.com/apk/res/android"
++    android:insetBottom="2.5dp"
++    android:insetTop="2.5dp" >
+ 
+-    <group>
++    <vector
++        android:autoMirrored="true"
++        android:height="17dp"
++        android:viewportHeight="54"
++        android:viewportWidth="49"
++        android:width="15.4dp" >
+         <path
+-            android:fillAlpha="1.0"
+-            android:fillColor="?attr/fillColor"
+-            android:pathData="M 0.00 10.11 C 1.19 5.80 4.42 1.85 8.97 0.95 C 15.87 -0.93 23.47 4.81 23.33
+-12.00 C 23.77 17.69 19.37 22.57 14.07 24.00 L 9.33 24.00 C 4.78 22.79 1.25 19.20
+-0.00 14.68 L 0.00 10.11 M 5.43 4.56 C 1.14 7.86 0.68 14.48 3.97 18.65 C 8.68
+-13.94 13.42 9.26 18.08 4.50 C 14.33 1.89 9.05 1.48 5.43 4.56 M 5.31 20.00 C
+-10.08 23.81 18.07 22.30 20.53 16.54 C 22.44 13.11 21.45 9.02 19.43 5.89 C 14.70
+-10.58 10.01 15.29 5.31 20.00 Z"
+-            android:strokeAlpha="1.0"
++            android:fillAlpha="1.00"
++            android:fillColor="?attr/bgColor_signal"
++            android:pathData="M 30.26 19.13 C 31.42 19.04 32.58 19.04 33.74 19.13 C 34.21 27.69 34.21 36.32
++33.74 44.87 C 32.58 44.96 31.42 44.96 30.26 44.87 C 29.79 36.32 29.79 27.68
++30.26 19.13 Z"
++            android:strokeAlpha="1.00"
+             android:strokeWidth="1" />
+-    </group>
++        <path
++            android:fillAlpha="1.00"
++            android:fillColor="?attr/bgColor_signal"
++            android:pathData="M 16.27 29.13 C 17.42 29.04 18.58 29.04 19.73 29.13 C 20.25 34.35 20.24 39.65
++19.73 44.87 C 18.58 44.96 17.42 44.96 16.27 44.87 C 15.76 39.65 15.76 34.35
++16.27 29.13 Z"
++            android:strokeAlpha="1.00"
++            android:strokeWidth="1" />
++        <path
++            android:fillAlpha="1.00"
++            android:fillColor="?attr/bgColor_signal"
++            android:pathData="M 2.21 37.12 C 3.40 37.03 4.60 37.03 5.80 37.13 C 6.16 39.69 6.15 42.31 5.79
++44.88 C 4.60 44.97 3.40 44.97 2.21 44.88 C 1.85 42.31 1.85 39.69 2.21 37.12 Z"
++            android:strokeAlpha="1.00"
++            android:strokeWidth="1" />
++    </vector>
+ 
+-</vector>
+\ No newline at end of file
++</inset>
+\ No newline at end of file
+diff --git a/SystemUI/res/drawable/stat_sys_signal_0_fully.xml b/SystemUI/res/drawable/stat_sys_signal_0_fully.xml
+index a813544..54ec0d0 100644
+--- a/SystemUI/res/drawable/stat_sys_signal_0_fully.xml
++++ b/SystemUI/res/drawable/stat_sys_signal_0_fully.xml
+@@ -1,22 +1,46 @@
+ <?xml version="1.0" encoding="utf-8"?>
+-<vector xmlns:android="http://schemas.android.com/apk/res/android"
+-    android:height="11dp"
+-    android:viewportHeight="24"
+-    android:viewportWidth="24"
+-    android:width="11dp" >
++<inset xmlns:android="http://schemas.android.com/apk/res/android"
++    android:insetBottom="2.5dp"
++    android:insetTop="2.5dp" >
+ 
+-    <group>
++    <vector
++        android:autoMirrored="true"
++        android:height="17dp"
++        android:viewportHeight="54"
++        android:viewportWidth="49"
++        android:width="15.4dp" >
+         <path
+             android:fillAlpha="1.0"
+-            android:fillColor="?attr/fillColor"
+-            android:pathData="M 0.00 10.11 C 1.19 5.80 4.42 1.85 8.97 0.95 C 15.87 -0.93 23.47 4.81 23.33
+-12.00 C 23.77 17.69 19.37 22.57 14.07 24.00 L 9.33 24.00 C 4.78 22.79 1.25 19.20
+-0.00 14.68 L 0.00 10.11 M 5.43 4.56 C 1.14 7.86 0.68 14.48 3.97 18.65 C 8.68
+-13.94 13.42 9.26 18.08 4.50 C 14.33 1.89 9.05 1.48 5.43 4.56 M 5.31 20.00 C
+-10.08 23.81 18.07 22.30 20.53 16.54 C 22.44 13.11 21.45 9.02 19.43 5.89 C 14.70
+-10.58 10.01 15.29 5.31 20.00 Z"
++            android:fillColor="?attr/bgColor_signal"
++            android:pathData="M 44.26 9.13 C 45.42 9.04 46.58 9.04 47.74 9.13 C 48.36 15.06 47.87 21.04 47.99
++27.00 C 47.88 32.96 48.36 38.94 47.74 44.88 C 46.58 44.96 45.42 44.96 44.26
++44.87 C 43.64 38.93 44.12 32.95 44.01 27.00 C 44.12 21.04 43.64 15.06 44.26 9.13
++Z"
+             android:strokeAlpha="1.0"
+             android:strokeWidth="1" />
+-    </group>
++        <path
++            android:fillAlpha="1.0"
++            android:fillColor="?attr/bgColor_signal"
++            android:pathData="M 30.26 19.13 C 31.42 19.04 32.58 19.04 33.74 19.13 C 34.21 27.69 34.21 36.32
++33.74 44.87 C 32.58 44.96 31.42 44.96 30.26 44.87 C 29.79 36.32 29.79 27.68
++30.26 19.13 Z"
++            android:strokeAlpha="1.0"
++            android:strokeWidth="1" />
++        <path
++            android:fillAlpha="1.0"
++            android:fillColor="?attr/bgColor_signal"
++            android:pathData="M 16.27 29.13 C 17.42 29.04 18.58 29.04 19.73 29.13 C 20.25 34.35 20.24 39.65
++19.73 44.87 C 18.58 44.96 17.42 44.96 16.27 44.87 C 15.76 39.65 15.76 34.35
++16.27 29.13 Z"
++            android:strokeAlpha="1.0"
++            android:strokeWidth="1" />
++        <path
++            android:fillAlpha="1.0"
++            android:fillColor="?attr/bgColor_signal"
++            android:pathData="M 2.21 37.12 C 3.40 37.03 4.60 37.03 5.80 37.13 C 6.16 39.69 6.15 42.31 5.79
++44.88 C 4.60 44.97 3.40 44.97 2.21 44.88 C 1.85 42.31 1.85 39.69 2.21 37.12 Z"
++            android:strokeAlpha="1.0"
++            android:strokeWidth="1" />
++    </vector>
+ 
+-</vector>
++</inset>
+diff --git a/SystemUI/res/drawable/stat_sys_signal_1.xml b/SystemUI/res/drawable/stat_sys_signal_1.xml
+index 5aa496e..f759c9a 100644
+--- a/SystemUI/res/drawable/stat_sys_signal_1.xml
++++ b/SystemUI/res/drawable/stat_sys_signal_1.xml
+@@ -1,40 +1,45 @@
+ <?xml version="1.0" encoding="utf-8"?>
+-<vector xmlns:android="http://schemas.android.com/apk/res/android"
+-    android:width="15.4dp"
+-    android:height="17dp"
+-    android:autoMirrored="true"
+-    android:viewportHeight="54"
+-    android:viewportWidth="49">
++<inset xmlns:android="http://schemas.android.com/apk/res/android"
++    android:insetBottom="2.5dp"
++    android:insetTop="2.5dp" >
+ 
+-    <path
+-        android:fillAlpha="1.00"
+-        android:fillColor="?attr/bgColor_signal"
+-        android:pathData="M 44.14 9.07 C 45.38 9.08 46.62 9.08 47.86 9.07 C 48.10 21.02 48.11 32.98 47.85
++    <vector
++        android:autoMirrored="true"
++        android:height="17dp"
++        android:viewportHeight="54"
++        android:viewportWidth="49"
++        android:width="15.4dp" >
++        <path
++            android:fillAlpha="1.00"
++            android:fillColor="?attr/bgColor_signal"
++            android:pathData="M 44.14 9.07 C 45.38 9.08 46.62 9.08 47.86 9.07 C 48.10 21.02 48.11 32.98 47.85
+ 44.92 C 46.62 44.92 45.38 44.92 44.14 44.92 C 43.90 32.97 43.89 21.02 44.14 9.07
+ Z"
+-        android:strokeAlpha="1.00"
+-        android:strokeWidth="1" />
+-    <path
+-        android:fillAlpha="1.00"
+-        android:fillColor="?attr/bgColor_signal"
+-        android:pathData="M 30.14 19.07 C 31.38 19.08 32.62 19.08 33.86 19.07 C 34.11 27.69 34.11 36.31
++            android:strokeAlpha="1.00"
++            android:strokeWidth="1" />
++        <path
++            android:fillAlpha="1.00"
++            android:fillColor="?attr/bgColor_signal"
++            android:pathData="M 30.14 19.07 C 31.38 19.08 32.62 19.08 33.86 19.07 C 34.11 27.69 34.11 36.31
+ 33.86 44.92 C 32.62 44.92 31.38 44.92 30.14 44.93 C 29.89 36.31 29.89 27.69
+ 30.14 19.07 Z"
+-        android:strokeAlpha="1.00"
+-        android:strokeWidth="1" />
+-    <path
+-        android:fillAlpha="1.00"
+-        android:fillColor="?attr/bgColor_signal"
+-        android:pathData="M 16.15 29.07 C 17.38 29.07 18.62 29.07 19.85 29.07 C 20.12 34.35 20.12 39.64
++            android:strokeAlpha="1.00"
++            android:strokeWidth="1" />
++        <path
++            android:fillAlpha="1.00"
++            android:fillColor="?attr/bgColor_signal"
++            android:pathData="M 16.15 29.07 C 17.38 29.07 18.62 29.07 19.85 29.07 C 20.12 34.35 20.12 39.64
+ 19.84 44.93 C 18.61 44.92 17.38 44.92 16.15 44.93 C 15.88 39.64 15.88 34.35
+ 16.15 29.07 Z"
+-        android:strokeAlpha="1.00"
+-        android:strokeWidth="1" />
+-    <path
+-        android:fillAlpha="1.00"
+-        android:fillColor="?attr/fillColor_signal"
+-        android:pathData="M 2.07 37.06 C 3.36 37.08 4.64 37.08 5.93 37.06 C 5.97 39.69 5.97 42.31 5.93
++            android:strokeAlpha="1.00"
++            android:strokeWidth="1" />
++        <path
++            android:fillAlpha="1.00"
++            android:fillColor="?attr/fillColor_signal"
++            android:pathData="M 2.07 37.06 C 3.36 37.08 4.64 37.08 5.93 37.06 C 5.97 39.69 5.97 42.31 5.93
+ 44.94 C 4.64 44.92 3.36 44.92 2.07 44.94 C 2.03 42.31 2.03 39.69 2.07 37.06 Z"
+-        android:strokeAlpha="1.00"
+-        android:strokeWidth="1" />
+-</vector>
+\ No newline at end of file
++            android:strokeAlpha="1.00"
++            android:strokeWidth="1" />
++    </vector>
++
++</inset>
+\ No newline at end of file
+diff --git a/SystemUI/res/drawable/stat_sys_signal_1_fully.xml b/SystemUI/res/drawable/stat_sys_signal_1_fully.xml
+index 5aa496e..f759c9a 100644
+--- a/SystemUI/res/drawable/stat_sys_signal_1_fully.xml
++++ b/SystemUI/res/drawable/stat_sys_signal_1_fully.xml
+@@ -1,40 +1,45 @@
+ <?xml version="1.0" encoding="utf-8"?>
+-<vector xmlns:android="http://schemas.android.com/apk/res/android"
+-    android:width="15.4dp"
+-    android:height="17dp"
+-    android:autoMirrored="true"
+-    android:viewportHeight="54"
+-    android:viewportWidth="49">
++<inset xmlns:android="http://schemas.android.com/apk/res/android"
++    android:insetBottom="2.5dp"
++    android:insetTop="2.5dp" >
+ 
+-    <path
+-        android:fillAlpha="1.00"
+-        android:fillColor="?attr/bgColor_signal"
+-        android:pathData="M 44.14 9.07 C 45.38 9.08 46.62 9.08 47.86 9.07 C 48.10 21.02 48.11 32.98 47.85
++    <vector
++        android:autoMirrored="true"
++        android:height="17dp"
++        android:viewportHeight="54"
++        android:viewportWidth="49"
++        android:width="15.4dp" >
++        <path
++            android:fillAlpha="1.00"
++            android:fillColor="?attr/bgColor_signal"
++            android:pathData="M 44.14 9.07 C 45.38 9.08 46.62 9.08 47.86 9.07 C 48.10 21.02 48.11 32.98 47.85
+ 44.92 C 46.62 44.92 45.38 44.92 44.14 44.92 C 43.90 32.97 43.89 21.02 44.14 9.07
+ Z"
+-        android:strokeAlpha="1.00"
+-        android:strokeWidth="1" />
+-    <path
+-        android:fillAlpha="1.00"
+-        android:fillColor="?attr/bgColor_signal"
+-        android:pathData="M 30.14 19.07 C 31.38 19.08 32.62 19.08 33.86 19.07 C 34.11 27.69 34.11 36.31
++            android:strokeAlpha="1.00"
++            android:strokeWidth="1" />
++        <path
++            android:fillAlpha="1.00"
++            android:fillColor="?attr/bgColor_signal"
++            android:pathData="M 30.14 19.07 C 31.38 19.08 32.62 19.08 33.86 19.07 C 34.11 27.69 34.11 36.31
+ 33.86 44.92 C 32.62 44.92 31.38 44.92 30.14 44.93 C 29.89 36.31 29.89 27.69
+ 30.14 19.07 Z"
+-        android:strokeAlpha="1.00"
+-        android:strokeWidth="1" />
+-    <path
+-        android:fillAlpha="1.00"
+-        android:fillColor="?attr/bgColor_signal"
+-        android:pathData="M 16.15 29.07 C 17.38 29.07 18.62 29.07 19.85 29.07 C 20.12 34.35 20.12 39.64
++            android:strokeAlpha="1.00"
++            android:strokeWidth="1" />
++        <path
++            android:fillAlpha="1.00"
++            android:fillColor="?attr/bgColor_signal"
++            android:pathData="M 16.15 29.07 C 17.38 29.07 18.62 29.07 19.85 29.07 C 20.12 34.35 20.12 39.64
+ 19.84 44.93 C 18.61 44.92 17.38 44.92 16.15 44.93 C 15.88 39.64 15.88 34.35
+ 16.15 29.07 Z"
+-        android:strokeAlpha="1.00"
+-        android:strokeWidth="1" />
+-    <path
+-        android:fillAlpha="1.00"
+-        android:fillColor="?attr/fillColor_signal"
+-        android:pathData="M 2.07 37.06 C 3.36 37.08 4.64 37.08 5.93 37.06 C 5.97 39.69 5.97 42.31 5.93
++            android:strokeAlpha="1.00"
++            android:strokeWidth="1" />
++        <path
++            android:fillAlpha="1.00"
++            android:fillColor="?attr/fillColor_signal"
++            android:pathData="M 2.07 37.06 C 3.36 37.08 4.64 37.08 5.93 37.06 C 5.97 39.69 5.97 42.31 5.93
+ 44.94 C 4.64 44.92 3.36 44.92 2.07 44.94 C 2.03 42.31 2.03 39.69 2.07 37.06 Z"
+-        android:strokeAlpha="1.00"
+-        android:strokeWidth="1" />
+-</vector>
+\ No newline at end of file
++            android:strokeAlpha="1.00"
++            android:strokeWidth="1" />
++    </vector>
++
++</inset>
+\ No newline at end of file
+-- 
+2.8.3.windows.1
+

@@ -1,0 +1,51 @@
+From b5c4173ada57009698e52eaec2de6eff1e20df39 Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Sat, 25 Feb 2017 16:57:31 +0800
+Subject: [PATCH 069/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E4=BF=AE=E5=A4=8D=E7=94=B5=E8=AF=9D=E5=85=A8=E5=B1=8F=E9=80=9A?=
+ =?UTF-8?q?=E7=9F=A5=E4=B8=8D=E8=83=BD=E5=85=A8=E5=B1=8F=E9=97=AE=E9=A2=98?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/src/com/android/systemui/qs/QSPanel.java              | 2 +-
+ SystemUI/src/com/android/systemui/statusbar/BaseStatusBar.java | 9 ++++-----
+ 2 files changed, 5 insertions(+), 6 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/qs/QSPanel.java b/SystemUI/src/com/android/systemui/qs/QSPanel.java
+index ba3dada..ad4d0f9 100644
+--- a/SystemUI/src/com/android/systemui/qs/QSPanel.java
++++ b/SystemUI/src/com/android/systemui/qs/QSPanel.java
+@@ -509,7 +509,7 @@ public class QSPanel extends ViewGroup {
+             if (tileRecord.tile.getState().visible) {
+                 MetricsLogger.visible(mContext, tileRecord.tile.getMetricsCategory());
+             }
+-            //logf(tileRecord.tile.getState().label +" visible=%b",tileRecord.tile.getState().visible);//yangfan debug tiles
++            logf(tileRecord.tile.getState().label +" visible=%b",tileRecord.tile.getState().visible);//yangfan debug tiles
+         }
+     }
+ 
+diff --git a/SystemUI/src/com/android/systemui/statusbar/BaseStatusBar.java b/SystemUI/src/com/android/systemui/statusbar/BaseStatusBar.java
+index 142677e..5415278 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/BaseStatusBar.java
++++ b/SystemUI/src/com/android/systemui/statusbar/BaseStatusBar.java
+@@ -2128,11 +2128,10 @@ public abstract class BaseStatusBar extends SystemUI implements
+             }
+             return false;
+         }
+-// (暂时屏蔽"连续通知无法弹出的bug") 2017年02月23日 16:48:47
+-//        if (isSnoozedPackage(sbn)) {
+-//            return false;
+-//        }
+-// (暂时屏蔽"连续通知无法弹出的bug") end 2017年02月23日 16:48:47
++        
++        if (isSnoozedPackage(sbn)) {
++            return false;
++        }
+         
+         Notification notification = sbn.getNotification();
+         // some predicates to make the boolean logic legible
+-- 
+2.8.3.windows.1
+

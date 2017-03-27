@@ -1,0 +1,83 @@
+From 1990086cac3c3a794325f68356702e25064a01af Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Tue, 14 Mar 2017 14:07:45 +0800
+Subject: [PATCH 142/185] =?UTF-8?q?=E3=80=90=E6=95=85=E9=9A=9C=E3=80=91?=
+ =?UTF-8?q?=E4=BF=AE=E5=A4=8D=E5=81=B6=E5=B0=94=E7=8A=B6=E6=80=81=E6=A0=8F?=
+ =?UTF-8?q?=E8=A2=AB=E9=9A=90=E8=97=8F=E7=9A=84bug(=E4=B8=8D=E5=A4=9F?=
+ =?UTF-8?q?=E5=AE=8C=E5=96=84=20=E8=BF=98=E6=9C=89=E5=85=B6=E4=BB=96?=
+ =?UTF-8?q?=E5=9C=B0=E6=96=B9=E5=BC=95=E5=8F=91)?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../systemui/statusbar/phone/PhoneStatusBar.java   | 25 +++++++++-------------
+ 1 file changed, 10 insertions(+), 15 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
+index 628c91e..939b6a1 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
+@@ -211,11 +211,11 @@ import android.content.ComponentName;
+ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
+         DragDownHelper.DragDownCallback, ActivityStarter, OnUnlockMethodChangedListener,
+         HeadsUpManager.OnHeadsUpChangedListener {
+-    static final String TAG = "PhoneStatusBar";
+-    public static final boolean DEBUG = BaseStatusBar.DEBUG;
+-    public static final boolean SPEW = false;
++    static final String TAG = "mare";
++    public static final boolean DEBUG = /*BaseStatusBar.DEBUG*/true;
++    public static final boolean SPEW = true;
+     public static final boolean DUMPTRUCK = true; // extra dumpsys info
+-    public static final boolean DEBUG_GESTURES = false;
++    public static final boolean DEBUG_GESTURES = /*false*/true;
+     public static final boolean DEBUG_MEDIA = false;
+     public static final boolean DEBUG_MEDIA_FAKE_ARTWORK = false;
+ 
+@@ -2520,7 +2520,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
+     }
+ 
+     public void makeExpandedInvisible() {
+-        if (SPEW) Log.d(TAG, "makeExpandedInvisible: mExpandedVisible=" + mExpandedVisible
++        if (SPEW) Log.i(TAG, "makeExpandedInvisible: mExpandedVisible=" + mExpandedVisible
+                 + " mExpandedVisible=" + mExpandedVisible);
+ 
+         if (!mExpandedVisible || mStatusBarWindow == null) {
+@@ -3227,18 +3227,12 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
+             }
+          // hsp 2016-08-11 : Add button to show or hide navigatin bar @{
+             else if (ACTION_NAVIGATION_BAR_VISIBLE.equals(action)) {                    
+-            	  ActivityManager activityManager = (ActivityManager) mContext.getSystemService(mContext.ACTIVITY_SERVICE);
+-
+-                  List<ActivityManager.RunningTaskInfo> tasks = activityManager.getRunningTasks(1);
+-
+-                  ActivityManager.RunningTaskInfo taskInfo = tasks.get(0);
+-                  String className = taskInfo.topActivity.getClassName();
+ 
+                   final TelephonyManager tm = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
+                   //  System.out.println("=======sss============>" + className+"======getCallState============"+(tm.getCallState() == TelephonyManager.CALL_STATE_IDLE));
+ 
+                   if ("shows".equals(intent.getStringExtra("callbar"))) {
+-                      if (tm.getCallState() != TelephonyManager.CALL_STATE_IDLE && !className.equals(INCALL_UI_ACTIVITY)) {
++                      if (tm.getCallState() != TelephonyManager.CALL_STATE_IDLE && !isInCallUIActivity()) {
+                           showCallBar();
+                       }
+                   } else if ("hides".equals(intent.getStringExtra("callbar"))) {
+@@ -4091,10 +4085,11 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
+     private void instantExpandNotificationsPanel() {
+ 
+         // Make our window larger and the panel expanded.
+-        if (isInCallUIActivity()) {
+-			return ;
+-		}// added by yangfan
+         makeExpandedVisible(true);
++        if (isInCallUIActivity()) {
++        	if(DEBUG)Log.i("mare", "instantExpandNotificationsPanel >> isInCallUIActivity ");
++        	return ;
++        }// added by yangfan
+         mNotificationPanel.instantExpand();
+     }
+ 
+-- 
+2.8.3.windows.1
+

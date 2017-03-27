@@ -1,0 +1,29 @@
+From cf0e2523b13fa7bf4f31acc3cd0d6b8cdc57db2b Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Thu, 23 Feb 2017 17:10:54 +0800
+Subject: [PATCH 061/185] =?UTF-8?q?=E3=80=90=E9=81=97=E6=BC=8F=E3=80=91?=
+ =?UTF-8?q?=E5=A4=9A=E6=8F=90=E4=BA=A4=E4=BA=86=E8=A1=8Cdebug=E4=BB=A3?=
+ =?UTF-8?q?=E7=A0=81?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/src/com/android/systemui/statusbar/BaseStatusBar.java | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/BaseStatusBar.java b/SystemUI/src/com/android/systemui/statusbar/BaseStatusBar.java
+index 172f96c..142677e 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/BaseStatusBar.java
++++ b/SystemUI/src/com/android/systemui/statusbar/BaseStatusBar.java
+@@ -98,7 +98,6 @@ import com.android.systemui.SystemUI;
+ import com.android.systemui.assist.AssistManager;
+ import com.android.systemui.recents.Recents;
+ import com.android.systemui.statusbar.NotificationData.Entry;
+-import com.android.systemui.statusbar.phone.LogUtil;
+ import com.android.systemui.statusbar.phone.NavigationBarView;
+ import com.android.systemui.statusbar.phone.NotificationGroupManager;
+ import com.android.systemui.statusbar.phone.ObservableScrollView;
+-- 
+2.8.3.windows.1
+

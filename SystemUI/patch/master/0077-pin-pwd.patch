@@ -1,0 +1,31 @@
+From 9037d068b6ec2ad7eb145901f65cb1f540fb83e3 Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Tue, 28 Feb 2017 15:07:36 +0800
+Subject: [PATCH 077/185] =?UTF-8?q?=E3=80=90=E9=81=97=E6=BC=8F=E3=80=91?=
+ =?UTF-8?q?=E4=BF=AE=E6=94=B9pin=20pwd=E9=81=97=E6=BC=8F=E4=BA=86=E5=B8=83?=
+ =?UTF-8?q?=E5=B1=80=E6=96=87=E4=BB=B6?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ Keyguard/res/layout/keyguard_pin_view.xml | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/Keyguard/res/layout/keyguard_pin_view.xml b/Keyguard/res/layout/keyguard_pin_view.xml
+index 0d79421..516d5a2 100644
+--- a/Keyguard/res/layout/keyguard_pin_view.xml
++++ b/Keyguard/res/layout/keyguard_pin_view.xml
+@@ -205,6 +205,9 @@
+                     android:paddingBottom="11sp"
+                     android:src="@drawable/ic_done_wht"
+                     android:background="@drawable/ripple_drawable"
++                    android:visibility="invisible"
++                    android:clickable="false"
++                    android:focusable="false"
+                     android:contentDescription="@string/keyboardview_keycode_enter"
+                     />
+         </LinearLayout>
+-- 
+2.8.3.windows.1
+

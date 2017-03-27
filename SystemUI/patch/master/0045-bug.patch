@@ -1,0 +1,149 @@
+From d738cae24a566feae095f0953cccb4a5354fb4be Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Sat, 18 Feb 2017 19:55:36 +0800
+Subject: [PATCH 045/185] =?UTF-8?q?=E3=80=90bug=E3=80=91=E5=A4=B4=E9=83=A8?=
+ =?UTF-8?q?=E8=AE=BE=E7=BD=AE=E6=8C=89=E9=92=AE=E7=82=B9=E5=87=BB=E6=9C=89?=
+ =?UTF-8?q?=E7=A7=BB=E4=BD=8D=E6=88=96=E8=80=85=E7=82=B9=E5=87=BB=E6=97=A0?=
+ =?UTF-8?q?=E6=95=88=E6=9E=9C?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../systemui/statusbar/phone/SettingsButton.java   | 26 ++++++++++------
+ .../statusbar/phone/StatusBarHeaderView.java       | 36 ++++++++++++----------
+ 2 files changed, 36 insertions(+), 26 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/SettingsButton.java b/SystemUI/src/com/android/systemui/statusbar/phone/SettingsButton.java
+index 18db5b8..7f34ea3 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/SettingsButton.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/SettingsButton.java
+@@ -60,14 +60,15 @@ public class SettingsButton extends AlphaOptimizedImageButton {
+     public boolean onTouchEvent(MotionEvent event) {
+         switch (event.getActionMasked()) {
+             case MotionEvent.ACTION_DOWN:
+-                postDelayed(mLongPressCallback, LONG_PRESS_LENGTH);
++// modified by yangfan 
++                postDelayed(mLongPressCallback, /**LONG_PRESS_LENGTH**/0);
+                 break;
+             case MotionEvent.ACTION_UP:
+-                if (mUpToSpeed) {
++//                if (mUpToSpeed) {
+                     startExitAnimation();
+-                } else {
+-                    cancelLongClick();
+-                }
++//                } else {
++//                    cancelLongClick();
++//                }
+                 break;
+             case MotionEvent.ACTION_CANCEL:
+                 cancelLongClick();
+@@ -75,9 +76,13 @@ public class SettingsButton extends AlphaOptimizedImageButton {
+             case MotionEvent.ACTION_MOVE:
+                 float x = event.getX();
+                 float y = event.getY();
+-                if ((x < -mSlop) || (y < -mSlop) || (x > getWidth() + mSlop)
+-                        || (y > getHeight() + mSlop)) {
++//                if ((x < -mSlop) || (y < -mSlop) || (x > getWidth() + mSlop)
++//                        || (y > getHeight() + mSlop)) {
++                if ((x > getWidth() + mSlop + getPaddingBottom() + getPaddingTop())
++                        || (y > getHeight() + mSlop + getPaddingStart() + getPaddingEnd())) {
+                     cancelLongClick();
++					startExitAnimation();//added by yangfan 
++// modified by yangfan
+                 }
+                 break;
+         }
+@@ -100,7 +105,7 @@ public class SettingsButton extends AlphaOptimizedImageButton {
+ 
+     private void startExitAnimation() {
+         animate()
+-                .translationX(((View) getParent().getParent()).getWidth() - getX())
++                //.translationX(((View) getParent().getParent()).getWidth() - getX())
+                 .alpha(0)
+                 .setDuration(RUN_DURATION)
+                 .setInterpolator(AnimationUtils.loadInterpolator(mContext,
+@@ -117,7 +122,7 @@ public class SettingsButton extends AlphaOptimizedImageButton {
+                     @Override
+                     public void onAnimationEnd(Animator animation) {
+                         setAlpha(1f);
+-                        setTranslationX(0);
++                        //setTranslationX(0);
+                         cancelLongClick();
+                     }
+ 
+@@ -137,6 +142,7 @@ public class SettingsButton extends AlphaOptimizedImageButton {
+         mAnimator.addListener(new AnimatorListener() {
+             @Override
+             public void onAnimationStart(Animator animation) {
++					startContinuousSpin();//added by yangfan 
+             }
+ 
+             @Override
+@@ -145,7 +151,7 @@ public class SettingsButton extends AlphaOptimizedImageButton {
+ 
+             @Override
+             public void onAnimationEnd(Animator animation) {
+-                startContinuousSpin();
++                //startContinuousSpin(); //modified by yangfan 
+             }
+ 
+             @Override
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/StatusBarHeaderView.java b/SystemUI/src/com/android/systemui/statusbar/phone/StatusBarHeaderView.java
+index bd435a1..c98283a 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/StatusBarHeaderView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/StatusBarHeaderView.java
+@@ -539,21 +539,25 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
+ 
+     @Override
+     public void onClick(View v) {
+-        if (v == mSettingsButton||v == mQuciiSettingsButton) {
+-            if (mSettingsButton.isTunerClick()) {
+-                if (TunerService.isTunerEnabled(mContext)) {
+-                    TunerService.showResetRequest(mContext, new Runnable() {
+-                        @Override
+-                        public void run() {
+-                            // Relaunch settings so that the tuner disappears.
+-                            startSettingsActivity();
+-                        }
+-                    });
+-                } else {
+-                    Toast.makeText(getContext(), R.string.tuner_toast, Toast.LENGTH_LONG).show();
+-                    TunerService.setTunerEnabled(mContext, true);
+-                }
+-            }
++// modified by yangfan 
++        //if (v == mSettingsButton||v == mQuciiSettingsButton) {
++		    if (v == mSettingsButton) {
++//            if (mSettingsButton.isTunerClick()) {
++//                if (TunerService.isTunerEnabled(mContext)) {
++//                    TunerService.showResetRequest(mContext, new Runnable() {
++//                        @Override
++//                        public void run() {
++//                            // Relaunch settings so that the tuner disappears.
++//
++//                            startSettingsActivity();
++//                        }
++//                    });
++//                } else {
++//                    Toast.makeText(getContext(), R.string.tuner_toast, Toast.LENGTH_LONG).show();
++//                    TunerService.setTunerEnabled(mContext, true);
++//                }
++//            }
++// modified by yangfan 
+             startSettingsActivity();
+         } else if (v == mSystemIconsSuperContainer) {
+             startBatteryActivity();
+@@ -695,7 +699,7 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
+         }
+         if (!mSettingsButton.isAnimating()) {
+             mSettingsContainer.setTranslationY(mSystemIconsSuperContainer.getTranslationY());
+-            mSettingsContainer.setTranslationX(values.settingsTranslation);
++            //mSettingsContainer.setTranslationX(values.settingsTranslation);// modified by yangfan 
+             mSettingsButton.setRotation(values.settingsRotation);
+         }
+         applyAlpha(mEmergencyCallsOnly, values.emergencyCallsOnlyAlpha);
+-- 
+2.8.3.windows.1
+

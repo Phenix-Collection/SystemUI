@@ -16,13 +16,10 @@
 
 package com.android.systemui.statusbar.phone;
 
-import com.android.systemui.statusbar.StatusBarState;
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.widget.ScrollView;
 
 /**
@@ -38,8 +35,7 @@ public class ObservableScrollView extends ScrollView {
     private float mLastY;
     private boolean mBlockFlinging;
     private boolean mTouchCancelled;
-    private NotificationPanelView panelView;
-    
+
     public ObservableScrollView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
@@ -114,10 +110,7 @@ public class ObservableScrollView extends ScrollView {
     @Override
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
         super.onScrollChanged(l, t, oldl, oldt);
-        if (!panelView.isQsExpansionEnabled()) {
-			return ;
-		}
-        if (mListener != null  ) {
+        if (mListener != null) {
             mListener.onScrollChanged();
         }
     }
@@ -127,9 +120,6 @@ public class ObservableScrollView extends ScrollView {
             int scrollRangeX, int scrollRangeY, int maxOverScrollX, int maxOverScrollY,
             boolean isTouchEvent) {
         mLastOverscrollAmount = Math.max(0, scrollY + deltaY - getMaxScrollY());
-        if (!panelView.isQsExpansionEnabled()) {
-			return false;
-		}
         return super.overScrollBy(deltaX, deltaY, scrollX, scrollY, scrollRangeX, scrollRangeY,
                         maxOverScrollX, maxOverScrollY, isTouchEvent);
     }
@@ -148,9 +138,6 @@ public class ObservableScrollView extends ScrollView {
     @Override
     protected void onOverScrolled(int scrollX, int scrollY, boolean clampedX, boolean clampedY) {
         super.onOverScrolled(scrollX, scrollY, clampedX, clampedY);
-        if (!panelView.isQsExpansionEnabled()) {
-			return ;
-		}
         if (mListener != null && mLastOverscrollAmount > 0) {
             mListener.onOverscrolled(mLastX, mLastY, mLastOverscrollAmount);
         }
@@ -159,9 +146,5 @@ public class ObservableScrollView extends ScrollView {
     public interface Listener {
         void onScrollChanged();
         void onOverscrolled(float lastX, float lastY, int amount);
-    }
-    
-    public void setNotificationPanelView(NotificationPanelView view){
-    	panelView = view;
     }
 }

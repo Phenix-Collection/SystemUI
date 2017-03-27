@@ -100,14 +100,10 @@ public final class SignalTileView extends QSTileView {
         boolean isRtl = getLayoutDirection() == LAYOUT_DIRECTION_RTL;
         int left, right;
         if (isRtl) {
-//modified by yangfan begin 
-            //right = mIconFrame.getLeft();
-			right = mSignal.getLeft() +mIn.getMeasuredWidth();
+            right = mIconFrame.getLeft();
             left = right - indicator.getMeasuredWidth();
         } else {
-            //left = mIconFrame.getRight();
-			left = mSignal.getRight() + mIn.getMeasuredWidth();
-//modified by yangfan end 
+            left = mIconFrame.getRight();
             right = left + indicator.getMeasuredWidth();
         }
         indicator.layout(
@@ -121,7 +117,7 @@ public final class SignalTileView extends QSTileView {
     protected void handleStateChanged(QSTile.State state) {
         super.handleStateChanged(state);
         final SignalState s = (SignalState) state;
-        //setIcon(mSignal, s);//modified by yangfan 
+        setIcon(mSignal, s);
         if (s.overlayIconId > 0) {
             mOverlay.setVisibility(VISIBLE);
             mOverlay.setImageResource(s.overlayIconId);

@@ -1,43 +1,27 @@
-<?xml version="1.0" encoding="utf-8"?>
-<inset xmlns:android="http://schemas.android.com/apk/res/android"
-    android:insetBottom="2.5dp"
-    android:insetTop="2.5dp">
-    <vector
-        android:width="15.4dp"
-        android:height="16dp"
-        android:viewportHeight="54"
-        android:viewportWidth="49">
+<!--
+Copyright (C) 2014 The Android Open Source Project
 
-        <path
-            android:fillAlpha="0.45"
-            android:fillColor="?attr/backgroundColor"
-            android:pathData="M 0.95 19.80 C 7.13 13.90 15.39 10.11 23.99 9.96 C 33.06 9.61 42.02 13.24 48.64
-19.38 C 48.30 19.78 47.62 20.57 47.28 20.97 C 39.09 13.34 26.96 9.96 16.15 13.32
-C 10.86 14.62 6.56 18.01 2.24 21.12 L 0.95 19.80 Z"
-            android:strokeAlpha="0.45"
-            android:strokeWidth="1" />
-        <path
-            android:fillAlpha="1.00"
-            android:fillColor="?attr/fillColor"
-            android:pathData="M 8.38 26.75 C 17.12 17.83 32.60 17.96 41.56 26.50 C 41.21 26.87 40.51 27.61
-40.15 27.97 C 34.82 23.12 27.18 20.86 20.11 22.57 C 15.92 23.39 12.39 25.89 9.10
-28.47 L 8.38 26.75 Z"
-            android:strokeAlpha="1.00"
-            android:strokeWidth="1" />
-        <path
-            android:fillAlpha="1.00"
-            android:fillColor="?attr/fillColor"
-            android:pathData="M 17.97 31.91 C 23.43 28.59 30.74 29.85 35.22 34.26 C 34.87 34.63 34.16 35.38
-33.81 35.75 C 31.35 33.64 28.36 31.94 25.02 32.05 C 21.64 31.89 18.73 33.77
-16.01 35.50 C 14.19 33.58 16.90 32.82 17.97 31.91 Z"
-            android:strokeAlpha="1.00"
-            android:strokeWidth="1" />
-        <path
-            android:fillAlpha="1.00"
-            android:fillColor="?attr/fillColor"
-            android:pathData="M 23.38 40.46 C 25.19 39.11 28.14 40.72 27.98 42.96 C 28.26 45.56 24.56 47.00
-22.85 45.13 C 21.46 43.87 21.74 41.37 23.38 40.46 Z"
-            android:strokeAlpha="1.00"
-            android:strokeWidth="1" />
-    </vector>
-</inset>
+   Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+        android:width="18.41dp"
+        android:height="17dp"
+        android:viewportWidth="26.0"
+        android:viewportHeight="24.0">
+    <path
+        android:fillColor="?attr/backgroundColor"
+        android:pathData="M13.000000,22.000000L25.600000,6.500000C25.100000,6.100000 20.299999,2.100000 13.000000,2.100000S0.900000,6.100000 0.400000,6.500000L13.000000,22.000000L13.000000,22.000000L13.000000,22.000000L13.000000,22.000000L13.000000,22.000000z"/>
+    <path
+        android:fillColor="?attr/fillColor"
+        android:pathData="M13.000000,22.000000l7.600000,-9.400000C20.299999,12.400000 17.400000,10.000000 13.000000,10.000000s-7.300000,2.400000 -7.600000,2.700000L13.000000,22.000000L13.000000,22.000000L13.000000,22.000000L13.000000,22.000000L13.000000,22.000000z"/>
+</vector>

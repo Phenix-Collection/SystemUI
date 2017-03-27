@@ -23,7 +23,6 @@ import android.hardware.camera2.CameraManager;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Process;
-import android.os.PowerManager;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -42,11 +41,7 @@ public class FlashlightController {
     private static final int DISPATCH_CHANGED = 1;
     private static final int DISPATCH_AVAILABILITY_CHANGED = 2;
 
-    private static final int TORCH_ON = 255;
-    private static final int TORCH_OFF = 0;
-
     private final CameraManager mCameraManager;
-    private final PowerManager mPowerManager;
     /** Call {@link #ensureHandler()} before using */
     private Handler mHandler;
 
@@ -61,7 +56,6 @@ public class FlashlightController {
 
     public FlashlightController(Context mContext) {
         mCameraManager = (CameraManager) mContext.getSystemService(Context.CAMERA_SERVICE);
-        mPowerManager = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);
 
         String cameraId = null;
         try {
@@ -85,10 +79,8 @@ public class FlashlightController {
             if (mFlashlightEnabled != enabled) {
                 mFlashlightEnabled = enabled;
                 try {
-                    // mCameraManager.setTorchMode(mCameraId, enabled);
-                    mPowerManager.setTorchBrightness(enabled ? TORCH_ON : TORCH_OFF);
-                    mFlashlightEnabled = enabled;
-                } catch (Exception e) {
+                    mCameraManager.setTorchMode(mCameraId, enabled);
+                } catch (CameraAccessException e) {
                     Log.e(TAG, "Couldn't set torch mode", e);
                     mFlashlightEnabled = false;
                     pendingError = true;
@@ -189,25 +181,13 @@ public class FlashlightController {
         }
     }
 
-    private boolean isCameraOpen = false;
-    
-    public boolean isCameraOpen() {
-		return isCameraOpen;
-	}
-
-	public void setCameraOpen(boolean isCameraOpen) {
-		this.isCameraOpen = isCameraOpen;
-	}
-
-	private final CameraManager.TorchCallback mTorchCallback =
+    private final CameraManager.TorchCallback mTorchCallback =
             new CameraManager.TorchCallback() {
 
         @Override
         public void onTorchModeUnavailable(String cameraId) {
             if (TextUtils.equals(cameraId, mCameraId)) {
                 setCameraAvailable(false);
-                setCameraOpen(true);
-				 setFlashlight(false);
             }
         }
 
@@ -215,9 +195,7 @@ public class FlashlightController {
         public void onTorchModeChanged(String cameraId, boolean enabled) {
             if (TextUtils.equals(cameraId, mCameraId)) {
                 setCameraAvailable(true);
-               // setTorchMode(enabled);
-                setCameraOpen(false);
-				 setFlashlight(enabled);
+                setTorchMode(enabled);
             }
         }
 

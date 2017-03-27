@@ -1,0 +1,426 @@
+From 7d723ddd22a2de954430265cffbdbe6ac9983868 Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Thu, 16 Mar 2017 19:58:34 +0800
+Subject: [PATCH 154/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E6=94=B9=E4=BF=A1=E5=8F=B7=E5=9B=BE=E6=A0=87?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/res/drawable/stat_sys_signal_0.xml       |  8 ++++----
+ SystemUI/res/drawable/stat_sys_signal_0_fully.xml |  8 ++++----
+ SystemUI/res/drawable/stat_sys_signal_1.xml       |  8 ++++----
+ SystemUI/res/drawable/stat_sys_signal_1_fully.xml |  8 ++++----
+ SystemUI/res/drawable/stat_sys_signal_2.xml       | 10 +++++-----
+ SystemUI/res/drawable/stat_sys_signal_2_fully.xml |  8 ++++----
+ SystemUI/res/drawable/stat_sys_signal_3.xml       |  8 ++++----
+ SystemUI/res/drawable/stat_sys_signal_3_fully.xml |  8 ++++----
+ SystemUI/res/drawable/stat_sys_signal_4.xml       |  8 ++++----
+ SystemUI/res/drawable/stat_sys_signal_4_fully.xml |  8 ++++----
+ 10 files changed, 41 insertions(+), 41 deletions(-)
+
+diff --git a/SystemUI/res/drawable/stat_sys_signal_0.xml b/SystemUI/res/drawable/stat_sys_signal_0.xml
+index febd838..ab25fa5 100644
+--- a/SystemUI/res/drawable/stat_sys_signal_0.xml
++++ b/SystemUI/res/drawable/stat_sys_signal_0.xml
+@@ -11,7 +11,7 @@
+ 
+         <path
+             android:fillAlpha="1.00"
+-            android:fillColor="?attr/backgroundColor"
++            android:fillColor="?attr/bgColor_signal"
+             android:pathData="M 44.26 9.13 C 45.42 9.04 46.58 9.04 47.74 9.13 C 48.36 15.06 47.87 21.04 47.99
+ 27.00 C 47.88 32.96 48.36 38.94 47.74 44.88 C 46.58 44.96 45.42 44.96 44.26
+ 44.87 C 43.64 38.93 44.12 32.95 44.01 27.00 C 44.12 21.04 43.64 15.06 44.26 9.13
+@@ -20,7 +20,7 @@ Z"
+             android:strokeWidth="1" />
+         <path
+             android:fillAlpha="1.00"
+-            android:fillColor="?attr/backgroundColor"
++            android:fillColor="?attr/bgColor_signal"
+             android:pathData="M 30.26 19.13 C 31.42 19.04 32.58 19.04 33.74 19.13 C 34.21 27.69 34.21 36.32
+ 33.74 44.87 C 32.58 44.96 31.42 44.96 30.26 44.87 C 29.79 36.32 29.79 27.68
+ 30.26 19.13 Z"
+@@ -28,7 +28,7 @@ Z"
+             android:strokeWidth="1" />
+         <path
+             android:fillAlpha="1.00"
+-            android:fillColor="?attr/backgroundColor"
++            android:fillColor="?attr/bgColor_signal"
+             android:pathData="M 16.27 29.13 C 17.42 29.04 18.58 29.04 19.73 29.13 C 20.25 34.35 20.24 39.65
+ 19.73 44.87 C 18.58 44.96 17.42 44.96 16.27 44.87 C 15.76 39.65 15.76 34.35
+ 16.27 29.13 Z"
+@@ -36,7 +36,7 @@ Z"
+             android:strokeWidth="1" />
+         <path
+             android:fillAlpha="1.00"
+-            android:fillColor="?attr/backgroundColor"
++            android:fillColor="?attr/bgColor_signal"
+             android:pathData="M 2.21 37.12 C 3.40 37.03 4.60 37.03 5.80 37.13 C 6.16 39.69 6.15 42.31 5.79
+ 44.88 C 4.60 44.97 3.40 44.97 2.21 44.88 C 1.85 42.31 1.85 39.69 2.21 37.12 Z"
+             android:strokeAlpha="1.00"
+diff --git a/SystemUI/res/drawable/stat_sys_signal_0_fully.xml b/SystemUI/res/drawable/stat_sys_signal_0_fully.xml
+index 78ccaf5..6d372e4 100644
+--- a/SystemUI/res/drawable/stat_sys_signal_0_fully.xml
++++ b/SystemUI/res/drawable/stat_sys_signal_0_fully.xml
+@@ -8,7 +8,7 @@
+ 
+     <path
+         android:fillAlpha="1.0"
+-        android:fillColor="?attr/backgroundColor"
++        android:fillColor="?attr/bgColor_signal"
+         android:pathData="M 44.26 9.13 C 45.42 9.04 46.58 9.04 47.74 9.13 C 48.36 15.06 47.87 21.04 47.99
+ 27.00 C 47.88 32.96 48.36 38.94 47.74 44.88 C 46.58 44.96 45.42 44.96 44.26
+ 44.87 C 43.64 38.93 44.12 32.95 44.01 27.00 C 44.12 21.04 43.64 15.06 44.26 9.13
+@@ -17,7 +17,7 @@ Z"
+         android:strokeWidth="1" />
+     <path
+         android:fillAlpha="1.0"
+-        android:fillColor="?attr/backgroundColor"
++        android:fillColor="?attr/bgColor_signal"
+         android:pathData="M 30.26 19.13 C 31.42 19.04 32.58 19.04 33.74 19.13 C 34.21 27.69 34.21 36.32
+ 33.74 44.87 C 32.58 44.96 31.42 44.96 30.26 44.87 C 29.79 36.32 29.79 27.68
+ 30.26 19.13 Z"
+@@ -25,7 +25,7 @@ Z"
+         android:strokeWidth="1" />
+     <path
+         android:fillAlpha="1.0"
+-        android:fillColor="?attr/backgroundColor"
++        android:fillColor="?attr/bgColor_signal"
+         android:pathData="M 16.27 29.13 C 17.42 29.04 18.58 29.04 19.73 29.13 C 20.25 34.35 20.24 39.65
+ 19.73 44.87 C 18.58 44.96 17.42 44.96 16.27 44.87 C 15.76 39.65 15.76 34.35
+ 16.27 29.13 Z"
+@@ -33,7 +33,7 @@ Z"
+         android:strokeWidth="1" />
+     <path
+         android:fillAlpha="1.0"
+-        android:fillColor="?attr/backgroundColor"
++        android:fillColor="?attr/bgColor_signal"
+         android:pathData="M 2.21 37.12 C 3.40 37.03 4.60 37.03 5.80 37.13 C 6.16 39.69 6.15 42.31 5.79
+ 44.88 C 4.60 44.97 3.40 44.97 2.21 44.88 C 1.85 42.31 1.85 39.69 2.21 37.12 Z"
+         android:strokeAlpha="1.0"
+diff --git a/SystemUI/res/drawable/stat_sys_signal_1.xml b/SystemUI/res/drawable/stat_sys_signal_1.xml
+index d3da90c..5aa496e 100644
+--- a/SystemUI/res/drawable/stat_sys_signal_1.xml
++++ b/SystemUI/res/drawable/stat_sys_signal_1.xml
+@@ -8,7 +8,7 @@
+ 
+     <path
+         android:fillAlpha="1.00"
+-        android:fillColor="?attr/backgroundColor"
++        android:fillColor="?attr/bgColor_signal"
+         android:pathData="M 44.14 9.07 C 45.38 9.08 46.62 9.08 47.86 9.07 C 48.10 21.02 48.11 32.98 47.85
+ 44.92 C 46.62 44.92 45.38 44.92 44.14 44.92 C 43.90 32.97 43.89 21.02 44.14 9.07
+ Z"
+@@ -16,7 +16,7 @@ Z"
+         android:strokeWidth="1" />
+     <path
+         android:fillAlpha="1.00"
+-        android:fillColor="?attr/backgroundColor"
++        android:fillColor="?attr/bgColor_signal"
+         android:pathData="M 30.14 19.07 C 31.38 19.08 32.62 19.08 33.86 19.07 C 34.11 27.69 34.11 36.31
+ 33.86 44.92 C 32.62 44.92 31.38 44.92 30.14 44.93 C 29.89 36.31 29.89 27.69
+ 30.14 19.07 Z"
+@@ -24,7 +24,7 @@ Z"
+         android:strokeWidth="1" />
+     <path
+         android:fillAlpha="1.00"
+-        android:fillColor="?attr/backgroundColor"
++        android:fillColor="?attr/bgColor_signal"
+         android:pathData="M 16.15 29.07 C 17.38 29.07 18.62 29.07 19.85 29.07 C 20.12 34.35 20.12 39.64
+ 19.84 44.93 C 18.61 44.92 17.38 44.92 16.15 44.93 C 15.88 39.64 15.88 34.35
+ 16.15 29.07 Z"
+@@ -32,7 +32,7 @@ Z"
+         android:strokeWidth="1" />
+     <path
+         android:fillAlpha="1.00"
+-        android:fillColor="?attr/fillColor"
++        android:fillColor="?attr/fillColor_signal"
+         android:pathData="M 2.07 37.06 C 3.36 37.08 4.64 37.08 5.93 37.06 C 5.97 39.69 5.97 42.31 5.93
+ 44.94 C 4.64 44.92 3.36 44.92 2.07 44.94 C 2.03 42.31 2.03 39.69 2.07 37.06 Z"
+         android:strokeAlpha="1.00"
+diff --git a/SystemUI/res/drawable/stat_sys_signal_1_fully.xml b/SystemUI/res/drawable/stat_sys_signal_1_fully.xml
+index d3da90c..5aa496e 100644
+--- a/SystemUI/res/drawable/stat_sys_signal_1_fully.xml
++++ b/SystemUI/res/drawable/stat_sys_signal_1_fully.xml
+@@ -8,7 +8,7 @@
+ 
+     <path
+         android:fillAlpha="1.00"
+-        android:fillColor="?attr/backgroundColor"
++        android:fillColor="?attr/bgColor_signal"
+         android:pathData="M 44.14 9.07 C 45.38 9.08 46.62 9.08 47.86 9.07 C 48.10 21.02 48.11 32.98 47.85
+ 44.92 C 46.62 44.92 45.38 44.92 44.14 44.92 C 43.90 32.97 43.89 21.02 44.14 9.07
+ Z"
+@@ -16,7 +16,7 @@ Z"
+         android:strokeWidth="1" />
+     <path
+         android:fillAlpha="1.00"
+-        android:fillColor="?attr/backgroundColor"
++        android:fillColor="?attr/bgColor_signal"
+         android:pathData="M 30.14 19.07 C 31.38 19.08 32.62 19.08 33.86 19.07 C 34.11 27.69 34.11 36.31
+ 33.86 44.92 C 32.62 44.92 31.38 44.92 30.14 44.93 C 29.89 36.31 29.89 27.69
+ 30.14 19.07 Z"
+@@ -24,7 +24,7 @@ Z"
+         android:strokeWidth="1" />
+     <path
+         android:fillAlpha="1.00"
+-        android:fillColor="?attr/backgroundColor"
++        android:fillColor="?attr/bgColor_signal"
+         android:pathData="M 16.15 29.07 C 17.38 29.07 18.62 29.07 19.85 29.07 C 20.12 34.35 20.12 39.64
+ 19.84 44.93 C 18.61 44.92 17.38 44.92 16.15 44.93 C 15.88 39.64 15.88 34.35
+ 16.15 29.07 Z"
+@@ -32,7 +32,7 @@ Z"
+         android:strokeWidth="1" />
+     <path
+         android:fillAlpha="1.00"
+-        android:fillColor="?attr/fillColor"
++        android:fillColor="?attr/fillColor_signal"
+         android:pathData="M 2.07 37.06 C 3.36 37.08 4.64 37.08 5.93 37.06 C 5.97 39.69 5.97 42.31 5.93
+ 44.94 C 4.64 44.92 3.36 44.92 2.07 44.94 C 2.03 42.31 2.03 39.69 2.07 37.06 Z"
+         android:strokeAlpha="1.00"
+diff --git a/SystemUI/res/drawable/stat_sys_signal_2.xml b/SystemUI/res/drawable/stat_sys_signal_2.xml
+index cf529ec..d93b39e 100644
+--- a/SystemUI/res/drawable/stat_sys_signal_2.xml
++++ b/SystemUI/res/drawable/stat_sys_signal_2.xml
+@@ -11,7 +11,7 @@
+ 
+         <path
+             android:fillAlpha="1.00"
+-            android:fillColor="?attr/backgroundColor"
++            android:fillColor="?attr/bgColor_signal"
+             android:pathData="M 44.13 9.07 C 45.38 9.07 46.62 9.07 47.87 9.07 C 48.09 21.02 48.09 32.98 47.87
+ 44.93 C 46.62 44.93 45.38 44.93 44.13 44.93 C 43.91 32.98 43.91 21.02 44.13 9.07
+ Z"
+@@ -19,15 +19,15 @@ Z"
+             android:strokeWidth="1" />
+         <path
+             android:fillAlpha="1.0"
+-            android:fillColor="?attr/backgroundColor"
++            android:fillColor="?attr/bgColor_signal"
+             android:pathData="M 30.13 19.07 C 31.38 19.07 32.62 19.07 33.87 19.07 C 34.09 27.69 34.09 36.31
+ 33.87 44.93 C 32.62 44.93 31.38 44.93 30.13 44.93 C 29.91 36.32 29.91 27.69
+ 30.13 19.07 Z"
+-            android:strokeAlpha="0.50"
++            android:strokeAlpha="1.0"
+             android:strokeWidth="1" />
+         <path
+             android:fillAlpha="1.00"
+-            android:fillColor="?attr/fillColor"
++            android:fillColor="?attr/fillColor_signal"
+             android:pathData="M 16.12 29.07 C 17.37 29.05 18.62 29.05 19.87 29.06 C 20.08 34.35 20.07 39.65
+ 19.88 44.94 C 18.63 44.95 17.38 44.95 16.13 44.94 C 15.92 39.65 15.93 34.35
+ 16.12 29.07 Z"
+@@ -35,7 +35,7 @@ Z"
+             android:strokeWidth="1" />
+         <path
+             android:fillAlpha="1.00"
+-            android:fillColor="?attr/fillColor"
++            android:fillColor="?attr/fillColor_signal"
+             android:pathData="M 2.12 37.06 C 3.37 37.05 4.63 37.05 5.88 37.07 C 6.03 39.69 6.03 42.31 5.88
+ 44.94 C 4.63 44.95 3.37 44.95 2.12 44.93 C 1.97 42.31 1.97 39.69 2.12 37.06 Z"
+             android:strokeAlpha="1.00"
+diff --git a/SystemUI/res/drawable/stat_sys_signal_2_fully.xml b/SystemUI/res/drawable/stat_sys_signal_2_fully.xml
+index 2f750c2..52b2675 100644
+--- a/SystemUI/res/drawable/stat_sys_signal_2_fully.xml
++++ b/SystemUI/res/drawable/stat_sys_signal_2_fully.xml
+@@ -11,7 +11,7 @@
+ 
+         <path
+             android:fillAlpha="1.00"
+-            android:fillColor="?attr/backgroundColor"
++            android:fillColor="?attr/bgColor_signal"
+             android:pathData="M 44.13 9.07 C 45.38 9.07 46.62 9.07 47.87 9.07 C 48.09 21.02 48.09 32.98 47.87
+ 44.93 C 46.62 44.93 45.38 44.93 44.13 44.93 C 43.91 32.98 43.91 21.02 44.13 9.07
+ Z"
+@@ -19,7 +19,7 @@ Z"
+             android:strokeWidth="1" />
+         <path
+             android:fillAlpha="1.00"
+-            android:fillColor="?attr/backgroundColor"
++            android:fillColor="?attr/bgColor_signal"
+             android:pathData="M 30.13 19.07 C 31.38 19.07 32.62 19.07 33.87 19.07 C 34.09 27.69 34.09 36.31
+ 33.87 44.93 C 32.62 44.93 31.38 44.93 30.13 44.93 C 29.91 36.32 29.91 27.69
+ 30.13 19.07 Z"
+@@ -27,7 +27,7 @@ Z"
+             android:strokeWidth="1" />
+         <path
+             android:fillAlpha="1.00"
+-            android:fillColor="?attr/fillColor"
++            android:fillColor="?attr/fillColor_signal"
+             android:pathData="M 16.12 29.07 C 17.37 29.05 18.62 29.05 19.87 29.06 C 20.08 34.35 20.07 39.65
+ 19.88 44.94 C 18.63 44.95 17.38 44.95 16.13 44.94 C 15.92 39.65 15.93 34.35
+ 16.12 29.07 Z"
+@@ -35,7 +35,7 @@ Z"
+             android:strokeWidth="1" />
+         <path
+             android:fillAlpha="1.00"
+-            android:fillColor="?attr/fillColor"
++            android:fillColor="?attr/fillColor_signal"
+             android:pathData="M 2.12 37.06 C 3.37 37.05 4.63 37.05 5.88 37.07 C 6.03 39.69 6.03 42.31 5.88
+ 44.94 C 4.63 44.95 3.37 44.95 2.12 44.93 C 1.97 42.31 1.97 39.69 2.12 37.06 Z"
+             android:strokeAlpha="1.00"
+diff --git a/SystemUI/res/drawable/stat_sys_signal_3.xml b/SystemUI/res/drawable/stat_sys_signal_3.xml
+index 7747e5d..b944e53 100644
+--- a/SystemUI/res/drawable/stat_sys_signal_3.xml
++++ b/SystemUI/res/drawable/stat_sys_signal_3.xml
+@@ -11,7 +11,7 @@
+ 
+         <path
+             android:fillAlpha="1.00"
+-            android:fillColor="?attr/backgroundColor"
++            android:fillColor="?attr/bgColor_signal"
+             android:pathData="M 44.16 9.04 C 45.39 9.04 46.61 9.04 47.84 9.04 C 48.11 21.01 48.11 32.99 47.84
+ 44.96 C 46.61 44.96 45.39 44.96 44.16 44.96 C 43.89 32.99 43.89 21.01 44.16 9.04
+ Z"
+@@ -19,7 +19,7 @@ Z"
+             android:strokeWidth="1" />
+         <path
+             android:fillAlpha="1.00"
+-            android:fillColor="?attr/fillColor"
++            android:fillColor="?attr/fillColor_signal"
+             android:pathData="M 30.13 19.05 C 31.38 19.04 32.62 19.04 33.86 19.05 C 34.09 27.68 34.09 36.32
+ 33.87 44.95 C 32.62 44.96 31.38 44.96 30.14 44.95 C 29.91 36.32 29.91 27.68
+ 30.13 19.05 Z"
+@@ -27,7 +27,7 @@ Z"
+             android:strokeWidth="1" />
+         <path
+             android:fillAlpha="1.00"
+-            android:fillColor="?attr/fillColor"
++            android:fillColor="?attr/fillColor_signal"
+             android:pathData="M 16.13 29.05 C 17.38 29.04 18.62 29.04 19.86 29.05 C 20.08 34.35 20.08 39.65
+ 19.87 44.95 C 18.62 44.96 17.38 44.96 16.13 44.95 C 15.92 39.65 15.92 34.35
+ 16.13 29.05 Z"
+@@ -35,7 +35,7 @@ Z"
+             android:strokeWidth="1" />
+         <path
+             android:fillAlpha="1.00"
+-            android:fillColor="?attr/fillColor"
++            android:fillColor="?attr/fillColor_signal"
+             android:pathData="M 2.13 37.06 C 3.38 37.04 4.62 37.04 5.87 37.06 C 6.03 39.68 6.03 42.32 5.87
+ 44.94 C 4.62 44.96 3.38 44.95 2.13 44.94 C 1.97 42.32 1.97 39.68 2.13 37.06 Z"
+             android:strokeAlpha="1.00"
+diff --git a/SystemUI/res/drawable/stat_sys_signal_3_fully.xml b/SystemUI/res/drawable/stat_sys_signal_3_fully.xml
+index 8575068..99dc7d6 100644
+--- a/SystemUI/res/drawable/stat_sys_signal_3_fully.xml
++++ b/SystemUI/res/drawable/stat_sys_signal_3_fully.xml
+@@ -11,7 +11,7 @@
+ 
+         <path
+             android:fillAlpha="1.00"
+-            android:fillColor="?attr/fillColor"
++            android:fillColor="?attr/fillColor_signal"
+             android:pathData="M 44.16 9.04 C 45.39 9.04 46.61 9.04 47.84 9.04 C 48.11 21.01 48.11 32.99 47.84
+ 44.96 C 46.61 44.96 45.39 44.96 44.16 44.96 C 43.89 32.99 43.89 21.01 44.16 9.04
+ Z"
+@@ -19,7 +19,7 @@ Z"
+             android:strokeWidth="1" />
+         <path
+             android:fillAlpha="1.00"
+-            android:fillColor="?attr/fillColor"
++            android:fillColor="?attr/fillColor_signal"
+             android:pathData="M 30.13 19.05 C 31.38 19.04 32.62 19.04 33.86 19.05 C 34.09 27.68 34.09 36.32
+ 33.87 44.95 C 32.62 44.96 31.38 44.96 30.14 44.95 C 29.91 36.32 29.91 27.68
+ 30.13 19.05 Z"
+@@ -27,7 +27,7 @@ Z"
+             android:strokeWidth="1" />
+         <path
+             android:fillAlpha="1.00"
+-            android:fillColor="?attr/fillColor"
++            android:fillColor="?attr/fillColor_signal"
+             android:pathData="M 16.13 29.05 C 17.38 29.04 18.62 29.04 19.86 29.05 C 20.08 34.35 20.08 39.65
+ 19.87 44.95 C 18.62 44.96 17.38 44.96 16.13 44.95 C 15.92 39.65 15.92 34.35
+ 16.13 29.05 Z"
+@@ -35,7 +35,7 @@ Z"
+             android:strokeWidth="1" />
+         <path
+             android:fillAlpha="1.00"
+-            android:fillColor="?attr/fillColor"
++            android:fillColor="?attr/fillColor_signal"
+             android:pathData="M 2.13 37.06 C 3.38 37.04 4.62 37.04 5.87 37.06 C 6.03 39.68 6.03 42.32 5.87
+ 44.94 C 4.62 44.96 3.38 44.95 2.13 44.94 C 1.97 42.32 1.97 39.68 2.13 37.06 Z"
+             android:strokeAlpha="1.00"
+diff --git a/SystemUI/res/drawable/stat_sys_signal_4.xml b/SystemUI/res/drawable/stat_sys_signal_4.xml
+index e31e0e1..40ee6d3 100644
+--- a/SystemUI/res/drawable/stat_sys_signal_4.xml
++++ b/SystemUI/res/drawable/stat_sys_signal_4.xml
+@@ -11,7 +11,7 @@
+ 
+         <path
+             android:fillAlpha="1.00"
+-            android:fillColor="?attr/fillColor"
++            android:fillColor="?attr/fillColor_signal"
+             android:pathData="M 44.14 9.06 C 45.38 9.04 46.62 9.04 47.86 9.06 C 48.09 21.01 48.09 32.99 47.86
+ 44.94 C 46.62 44.96 45.38 44.96 44.14 44.94 C 43.91 32.99 43.91 21.01 44.14 9.06
+ Z"
+@@ -19,7 +19,7 @@ Z"
+             android:strokeWidth="1" />
+         <path
+             android:fillAlpha="1.00"
+-            android:fillColor="?attr/fillColor"
++            android:fillColor="?attr/fillColor_signal"
+             android:pathData="M 30.14 19.06 C 31.38 19.04 32.62 19.04 33.86 19.06 C 34.09 27.68 34.09 36.32
+ 33.86 44.94 C 32.62 44.96 31.38 44.96 30.14 44.94 C 29.91 36.32 29.91 27.68
+ 30.14 19.06 Z"
+@@ -27,7 +27,7 @@ Z"
+             android:strokeWidth="1" />
+         <path
+             android:fillAlpha="1.00"
+-            android:fillColor="?attr/fillColor"
++            android:fillColor="?attr/fillColor_signal"
+             android:pathData="M 16.14 29.06 C 17.38 29.04 18.62 29.04 19.86 29.06 C 20.08 34.35 20.08 39.65
+ 19.86 44.94 C 18.62 44.96 17.38 44.96 16.14 44.94 C 15.92 39.65 15.92 34.35
+ 16.14 29.06 Z"
+@@ -35,7 +35,7 @@ Z"
+             android:strokeWidth="1" />
+         <path
+             android:fillAlpha="1.00"
+-            android:fillColor="?attr/fillColor"
++            android:fillColor="?attr/fillColor_signal"
+             android:pathData="M 2.13 37.06 C 3.38 37.04 4.62 37.04 5.87 37.06 C 6.03 39.68 6.03 42.32 5.87
+ 44.94 C 4.62 44.96 3.38 44.96 2.13 44.94 C 1.97 42.31 1.97 39.68 2.13 37.06 Z"
+             android:strokeAlpha="1.00"
+diff --git a/SystemUI/res/drawable/stat_sys_signal_4_fully.xml b/SystemUI/res/drawable/stat_sys_signal_4_fully.xml
+index e31e0e1..40ee6d3 100644
+--- a/SystemUI/res/drawable/stat_sys_signal_4_fully.xml
++++ b/SystemUI/res/drawable/stat_sys_signal_4_fully.xml
+@@ -11,7 +11,7 @@
+ 
+         <path
+             android:fillAlpha="1.00"
+-            android:fillColor="?attr/fillColor"
++            android:fillColor="?attr/fillColor_signal"
+             android:pathData="M 44.14 9.06 C 45.38 9.04 46.62 9.04 47.86 9.06 C 48.09 21.01 48.09 32.99 47.86
+ 44.94 C 46.62 44.96 45.38 44.96 44.14 44.94 C 43.91 32.99 43.91 21.01 44.14 9.06
+ Z"
+@@ -19,7 +19,7 @@ Z"
+             android:strokeWidth="1" />
+         <path
+             android:fillAlpha="1.00"
+-            android:fillColor="?attr/fillColor"
++            android:fillColor="?attr/fillColor_signal"
+             android:pathData="M 30.14 19.06 C 31.38 19.04 32.62 19.04 33.86 19.06 C 34.09 27.68 34.09 36.32
+ 33.86 44.94 C 32.62 44.96 31.38 44.96 30.14 44.94 C 29.91 36.32 29.91 27.68
+ 30.14 19.06 Z"
+@@ -27,7 +27,7 @@ Z"
+             android:strokeWidth="1" />
+         <path
+             android:fillAlpha="1.00"
+-            android:fillColor="?attr/fillColor"
++            android:fillColor="?attr/fillColor_signal"
+             android:pathData="M 16.14 29.06 C 17.38 29.04 18.62 29.04 19.86 29.06 C 20.08 34.35 20.08 39.65
+ 19.86 44.94 C 18.62 44.96 17.38 44.96 16.14 44.94 C 15.92 39.65 15.92 34.35
+ 16.14 29.06 Z"
+@@ -35,7 +35,7 @@ Z"
+             android:strokeWidth="1" />
+         <path
+             android:fillAlpha="1.00"
+-            android:fillColor="?attr/fillColor"
++            android:fillColor="?attr/fillColor_signal"
+             android:pathData="M 2.13 37.06 C 3.38 37.04 4.62 37.04 5.87 37.06 C 6.03 39.68 6.03 42.32 5.87
+ 44.94 C 4.62 44.96 3.38 44.96 2.13 44.94 C 1.97 42.31 1.97 39.68 2.13 37.06 Z"
+             android:strokeAlpha="1.00"
+-- 
+2.8.3.windows.1
+

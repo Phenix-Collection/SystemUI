@@ -1,0 +1,58 @@
+From 74c4cf722284694cee9f6cd2184e86750c735c48 Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Sat, 18 Feb 2017 20:22:31 +0800
+Subject: [PATCH 048/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E8=B0=83=E6=95=B4=E7=94=B5=E6=B1=A0=E5=9B=BE=E6=A0=87=E9=97=B4?=
+ =?UTF-8?q?=E8=B7=9D=E5=92=8C=E5=8B=BF=E6=89=B0=E7=9A=84=E5=A4=A7=E5=B0=8F?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/res/drawable/stat_sys_dnd.xml | 4 ++--
+ SystemUI/res/layout/system_icons.xml   | 1 +
+ SystemUI/res/values/dimens.xml         | 2 +-
+ 3 files changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/SystemUI/res/drawable/stat_sys_dnd.xml b/SystemUI/res/drawable/stat_sys_dnd.xml
+index 536df44..f58f5cc 100644
+--- a/SystemUI/res/drawable/stat_sys_dnd.xml
++++ b/SystemUI/res/drawable/stat_sys_dnd.xml
+@@ -1,7 +1,7 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <vector xmlns:android="http://schemas.android.com/apk/res/android"
+-    android:width="16dp"
+-    android:height="21.6dp"
++    android:width="10dp"
++    android:height="13dp"
+     android:viewportWidth="40"
+     android:viewportHeight="54">
+ 
+diff --git a/SystemUI/res/layout/system_icons.xml b/SystemUI/res/layout/system_icons.xml
+index ad1f235..84c554c 100644
+--- a/SystemUI/res/layout/system_icons.xml
++++ b/SystemUI/res/layout/system_icons.xml
+@@ -35,6 +35,7 @@
+ 
+     <!-- battery must be padded below to match assets -->
+     <com.android.systemui.BatteryMeterView android:id="@+id/battery"
++        android:layout_marginStart="@dimen/signal_cluster_battery_padding"
+         android:layout_width="18dp"
+         android:layout_height="18dp"/>
+ 
+diff --git a/SystemUI/res/values/dimens.xml b/SystemUI/res/values/dimens.xml
+index 087d6b0..1335c0e 100644
+--- a/SystemUI/res/values/dimens.xml
++++ b/SystemUI/res/values/dimens.xml
+@@ -541,7 +541,7 @@
+     <dimen name="fake_shadow_size">8dp</dimen>
+ 
+     <!-- Padding between signal cluster and battery icon -->
+-    <dimen name="signal_cluster_battery_padding">3dp</dimen>
++    <dimen name="signal_cluster_battery_padding">2dp</dimen>
+ 
+     <!-- Padding for signal cluster and battery icon when there are not icons in signal cluster -->
+     <dimen name="no_signal_cluster_battery_padding">3dp</dimen>
+-- 
+2.8.3.windows.1
+

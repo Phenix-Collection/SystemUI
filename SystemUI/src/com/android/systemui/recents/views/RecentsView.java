@@ -16,7 +16,6 @@
 
 package com.android.systemui.recents.views;
 
-import android.app.ActivityManager;
 import android.app.ActivityOptions;
 import android.app.TaskStackBuilder;
 import android.content.Context;
@@ -82,8 +81,6 @@ public class RecentsView extends FrameLayout implements TaskStackView.TaskStackV
     RecentsAppWidgetHostView mSearchBar;
     RecentsViewCallbacks mCb;
 
-    ActivityManager mAM;
-
     public RecentsView(Context context) {
         super(context);
     }
@@ -101,8 +98,6 @@ public class RecentsView extends FrameLayout implements TaskStackView.TaskStackV
         mConfig = RecentsConfiguration.getInstance();
         mInflater = LayoutInflater.from(context);
         mLayoutAlgorithm = new RecentsViewLayoutAlgorithm(mConfig);
-
-        mAM = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
     }
 
     /** Sets the callbacks */
@@ -258,28 +253,6 @@ public class RecentsView extends FrameLayout implements TaskStackView.TaskStackV
         }
         return false;
     }
-
-    // hsp 2016-09-12 : Add for clear all task @{
-    public void onClearAllTask() {
-        List<TaskStackView> stackViews = getTaskStackViews();
-        int count = stackViews.size();
-        for (int i = 0; i < count; i++) {
-            TaskStackView stackView = stackViews.get(i);
-            stackView.onClearAllTask();
-        }
-    }
-
-    public int getTaskSize() {
-        List<TaskStackView> stackViews = getTaskStackViews();
-        int size = 0;
-        int count = stackViews.size();
-        for (int i = 0; i < count; i++) {
-            TaskStackView stackView = stackViews.get(i);
-            size += stackView.getTaskSize();
-        }
-        return size;
-    }
-    // @}
 
     /** Requests all task stacks to start their enter-recents animation */
     public void startEnterRecentsAnimation(ViewAnimation.TaskViewEnterContext ctx) {
@@ -669,54 +642,23 @@ public class RecentsView extends FrameLayout implements TaskStackView.TaskStackV
         RecentsTaskLoader loader = RecentsTaskLoader.getInstance();
         loader.deleteTaskData(t, false);
 
-        //hsp , Kill process when task dismissed
-        killProcess(t);
-
         // Remove the old task from activity manager
         loader.getSystemServicesProxy().removeTask(t.key.id);
     }
 
     @Override
     public void onAllTaskViewsDismissed(ArrayList<Task> removedTasks) {
-        /*modified by dubin - BEGIN*/
-        mCb.onAllTaskViewsDismissed();
-
-        Task[] tasks = null;
         if (removedTasks != null) {
             int taskCount = removedTasks.size();
-            tasks = new Task[taskCount];
-            for (int i = taskCount - 1; i >= 0; i--) {
-                tasks[i] = (removedTasks.get(i));
+            for (int i = 0; i < taskCount; i++) {
+                onTaskViewDismissed(removedTasks.get(i));
             }
         }
 
-        new android.os.AsyncTask<Task, String, Void>() {
-            @Override
-            protected Void doInBackground(Task... params) {
-                for(Task task : params)
-                    onTaskViewDismissed(task);
-                return null;
-            }
-        }.executeOnExecutor(android.os.AsyncTask.THREAD_POOL_EXECUTOR, tasks != null ? tasks : new Task[]{});
-        /*modified by dubin - END*/
-        
+        mCb.onAllTaskViewsDismissed();
+
         // Keep track of all-deletions
         MetricsLogger.count(getContext(), "overview_task_all_dismissed", 1);
-    }
-
-    public void killProcess(Task task) {
-        if (mAM != null && task != null) {
-            String pkname = task.key.mComponentNameKey.component.getPackageName().toString();
-            // ansen 170114 ignore WeChat QQ @{
-            if (!pkname.contains("com.android")) {
-                if("com.tencent.mm".equals(pkname)||"com.tencent.mobileqq".equals(pkname)){
-                    mAM.killBackgroundProcesses(pkname);
-                }else{
-                    mAM.forceStopPackage(pkname);
-                }
-            }
-            // @}
-        }
     }
 
     /** Final callback after Recents is finally hidden. */

@@ -15,7 +15,7 @@
  */
 
 package com.android.systemui.screenshot;
-import android.animation.ObjectAnimator;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
@@ -58,16 +58,14 @@ import android.view.animation.Interpolator;
 import android.widget.ImageView;
 
 import com.android.systemui.R;
-import android.telephony.TelephonyManager;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
-import java.lang.Thread;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import android.widget.Toast;
-import android.media.AudioManager;
+
 /**
  * POD used in the AsyncTask which saves an image in the background.
  */
@@ -126,9 +124,7 @@ class SaveImageInBackgroundTask extends AsyncTask<SaveImageInBackgroundData, Voi
 
         // Prepare all the output metadata
         mImageTime = System.currentTimeMillis();
-
         String imageDate = new SimpleDateFormat("yyyyMMdd-HHmmss").format(new Date(mImageTime));
-        imageDate=(""+this).split("@", 2)[1]+"_"+imageDate;
         mImageFileName = String.format(SCREENSHOT_FILE_NAME_TEMPLATE, imageDate);
 
         mScreenshotDir = new File(Environment.getExternalStoragePublicDirectory(
@@ -267,14 +263,12 @@ class SaveImageInBackgroundTask extends AsyncTask<SaveImageInBackgroundData, Voi
             sharingIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
 
             // Create a share action for the notification
-            /*
             final PendingIntent callback = PendingIntent.getBroadcast(context, 0,
                     new Intent(context, GlobalScreenshot.TargetChosenReceiver.class)
                             .putExtra(GlobalScreenshot.CANCEL_ID, mNotificationId),
                     PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_ONE_SHOT);
-            */
-            Intent chooserIntent = Intent.createChooser(sharingIntent, null/*,
-                    callback.getIntentSender()*/);
+            Intent chooserIntent = Intent.createChooser(sharingIntent, null,
+                    callback.getIntentSender());
             chooserIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
                     | Intent.FLAG_ACTIVITY_NEW_TASK);
             mNotificationBuilder.addAction(R.drawable.ic_screenshot_share,
@@ -305,6 +299,7 @@ class SaveImageInBackgroundTask extends AsyncTask<SaveImageInBackgroundData, Voi
         if (image != null) {
             image.recycle();
         }
+
         return params[0];
     }
 
@@ -328,7 +323,6 @@ class SaveImageInBackgroundTask extends AsyncTask<SaveImageInBackgroundData, Voi
             Intent launchIntent = new Intent(Intent.ACTION_VIEW);
             launchIntent.setDataAndType(params.imageUri, "image/png");
             launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            launchIntent.putExtra("from-snapcam", true); //make sure it not be READ_ONLY in Gallery2
 
             final long now = System.currentTimeMillis();
 
@@ -391,7 +385,7 @@ class DeleteImageInBackgroundTask extends AsyncTask<Uri, Void, Void> {
  *   - what do we say in the Toast? Which icon do we get if the user uses another
  *     type of gallery?
  */
-public class GlobalScreenshot {
+class GlobalScreenshot {
     private static final String TAG = "GlobalScreenshot";
 
     static final String CANCEL_ID = "android:cancel_id";
@@ -399,7 +393,7 @@ public class GlobalScreenshot {
 
     private static final int SCREENSHOT_FLASH_TO_PEAK_DURATION = 130;
     private static final int SCREENSHOT_DROP_IN_DURATION = 430;
-    private static final int SCREENSHOT_DROP_OUT_DELAY = 200;
+    private static final int SCREENSHOT_DROP_OUT_DELAY = 500;
     private static final int SCREENSHOT_DROP_OUT_DURATION = 430;
     private static final int SCREENSHOT_DROP_OUT_SCALE_DURATION = 370;
     private static final int SCREENSHOT_FAST_DROP_OUT_DURATION = 320;
@@ -413,8 +407,6 @@ public class GlobalScreenshot {
     private final int mPreviewHeight;
 
     private Context mContext;
-    private TelephonyManager tm;
-    private AudioManager  rm;
     private WindowManager mWindowManager;
     private WindowManager.LayoutParams mWindowLayoutParams;
     private NotificationManager mNotificationManager;
@@ -444,8 +436,6 @@ public class GlobalScreenshot {
      */
     public GlobalScreenshot(Context context) {
         Resources r = context.getResources();
-        tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-        rm = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
         mContext = context;
         LayoutInflater layoutInflater = (LayoutInflater)
                 context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -465,15 +455,14 @@ public class GlobalScreenshot {
             }
         });
 
-
         // Setup the window that we are going to use
         mWindowLayoutParams = new WindowManager.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 0, 0,
                 WindowManager.LayoutParams.TYPE_SECURE_SYSTEM_OVERLAY,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN
-                        | WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED
-                        | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
-                        | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED,
+                    | WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED
+                    | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
+                    | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED,
                 PixelFormat.TRANSLUCENT);
         mWindowLayoutParams.setTitle("ScreenshotAnimation");
         mWindowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
@@ -513,9 +502,6 @@ public class GlobalScreenshot {
      * Creates a new worker thread and saves the screenshot to the media store.
      */
     private void saveScreenshotInWorkerThread(Runnable finisher) {
-
-
-
         SaveImageInBackgroundData data = new SaveImageInBackgroundData();
         data.context = mContext;
         data.image = mScreenBitmap;
@@ -524,9 +510,8 @@ public class GlobalScreenshot {
         data.previewWidth = mPreviewWidth;
         data.previewheight = mPreviewHeight;
         if (mSaveInBgTask != null) {
-           //  mSaveInBgTask.cancel(false);
+            mSaveInBgTask.cancel(false);
         }
-
         mSaveInBgTask = new SaveImageInBackgroundTask(mContext, data, mNotificationManager,
                 R.id.notification_screenshot).execute(data);
     }
@@ -549,7 +534,7 @@ public class GlobalScreenshot {
     /**
      * Takes a screenshot of the current display and shows an animation.
      */
-    public void takeScreenshot(Runnable finisher, boolean statusBarVisible, boolean navBarVisible) {
+    void takeScreenshot(Runnable finisher, boolean statusBarVisible, boolean navBarVisible) {
         // We need to orient the screenshot correctly (and the Surface api seems to take screenshots
         // only in the natural orientation of the device :!)
         mDisplay.getRealMetrics(mDisplayMetrics);
@@ -568,11 +553,6 @@ public class GlobalScreenshot {
         // Take the screenshot
         mScreenBitmap = SurfaceControl.screenshot((int) dims[0], (int) dims[1]);
         if (mScreenBitmap == null) {
-            Intent intent = new Intent("com.qucii.screenshot.gs");
-            //Send broadcast to PhoneWindowManager to cature screen
-            intent.putExtra("isFirst", true);
-            mContext.sendBroadcast(intent);
-            Toast.makeText(mContext,R.string.screenshot_failed_text,Toast.LENGTH_SHORT).show();
             notifyScreenshotError(mContext, mNotificationManager);
             finisher.run();
             return;
@@ -597,73 +577,11 @@ public class GlobalScreenshot {
         mScreenBitmap.setHasAlpha(false);
         mScreenBitmap.prepareToDraw();
 
-
-      //  startAnimation(finisher);
         // Start the post-screenshot animation
-            startAnimation(finisher, mDisplayMetrics.widthPixels, mDisplayMetrics.heightPixels,
+        startAnimation(finisher, mDisplayMetrics.widthPixels, mDisplayMetrics.heightPixels,
                 statusBarVisible, navBarVisible);
     }
-   /*  private  ObjectAnimator alpha;
-   private void startAnimation(final Runnable finisher){
-        mScreenshotLayout.requestFocus();
 
-        // Setup the animation with the screenshot just taken
-        if (alpha != null) {
-            alpha.end();
-            alpha.removeAllListeners();
-        }
-        mWindowManager.addView(mScreenshotLayout, mWindowLayoutParams);
-        alpha = ObjectAnimator.ofFloat(mScreenshotView, "alpha", 1f, 1f,0.8f,0.6f,0.4f,0.2f,0f);
-        alpha.setDuration(800);
-
-        alpha.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-                mScreenshotView.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                saveScreenshotInWorkerThread(finisher);
-                mScreenshotView.setLayerType(View.LAYER_TYPE_NONE, null);
-                mScreenshotView.setVisibility(View.GONE);
-                mWindowManager.removeView(mScreenshotLayout);
-
-                // Clear any references to the bitmap
-                mScreenBitmap = null;
-                Intent intent = new Intent("com.qucii.screenshot.gs");
-                //Send broadcast to PhoneWindowManager to cature screen
-                intent.putExtra("isFirst", true);
-                mContext.sendBroadcast(intent);
-
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
-        });
-
-        mScreenshotView.post(new Runnable() {
-            @Override
-            public void run() {
-                // Play the shutter sound to notify that we've taken a screenshot
-                if (tm.getCallState() == TelephonyManager.CALL_STATE_IDLE) {
-                    mCameraSound.play(MediaActionSound.SHUTTER_CLICK);
-                }
-                mScreenshotView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
-                mScreenshotView.buildLayer();
-                alpha.start();
-            }
-        });
-
-
-    }*/
 
     /**
      * Starts the animation after taking the screenshot
@@ -685,7 +603,7 @@ public class GlobalScreenshot {
         ValueAnimator screenshotFadeOutAnim = createScreenshotDropOutAnimation(w, h,
                 statusBarVisible, navBarVisible);
         mScreenshotAnimation = new AnimatorSet();
-        mScreenshotAnimation.playSequentially(screenshotDropInAnim,screenshotFadeOutAnim);
+        mScreenshotAnimation.playSequentially(screenshotDropInAnim, screenshotFadeOutAnim);
         mScreenshotAnimation.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -694,23 +612,16 @@ public class GlobalScreenshot {
                 mWindowManager.removeView(mScreenshotLayout);
 
                 // Clear any references to the bitmap
-
-                mScreenshotView.setImageBitmap(null);
-
-                Intent intent = new Intent("com.qucii.screenshot.gs");
-                //Send broadcast to PhoneWindowManager to cature screen
-                intent.putExtra("isFirst", true);
-                mContext.sendBroadcast(intent);
                 mScreenBitmap = null;
+                mScreenshotView.setImageBitmap(null);
             }
         });
         mScreenshotLayout.post(new Runnable() {
             @Override
             public void run() {
                 // Play the shutter sound to notify that we've taken a screenshot
-                if (tm.getCallState() == TelephonyManager.CALL_STATE_IDLE&&rm.getRingerMode()== AudioManager.RINGER_MODE_NORMAL) {
-                    mCameraSound.play(MediaActionSound.SHUTTER_CLICK);
-                }
+                mCameraSound.play(MediaActionSound.SHUTTER_CLICK);
+
                 mScreenshotView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
                 mScreenshotView.buildLayer();
                 mScreenshotAnimation.start();

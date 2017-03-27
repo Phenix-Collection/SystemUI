@@ -1,0 +1,125 @@
+From 84347158beb82a93c842a57686b92559b50c959a Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Mon, 27 Mar 2017 10:48:10 +0800
+Subject: [PATCH 184/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E6=9B=B4=E6=AD=A3=E7=A7=BB=E5=8A=A8=E4=BF=A1=E5=8F=B7=E6=A0=BC?=
+ =?UTF-8?q?=E4=B8=BA0=E7=9A=84=E5=9B=BE=E6=A0=87?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/res/drawable/stat_sys_signal_0.xml       | 24 +++++++++-----
+ SystemUI/res/drawable/stat_sys_signal_0_fully.xml | 39 +++++++++++------------
+ 2 files changed, 35 insertions(+), 28 deletions(-)
+
+diff --git a/SystemUI/res/drawable/stat_sys_signal_0.xml b/SystemUI/res/drawable/stat_sys_signal_0.xml
+index 5f24235..dbeeaf8 100644
+--- a/SystemUI/res/drawable/stat_sys_signal_0.xml
++++ b/SystemUI/res/drawable/stat_sys_signal_0.xml
+@@ -12,24 +12,32 @@
+         <path
+             android:fillAlpha="1.00"
+             android:fillColor="?attr/bgColor_signal"
+-            android:pathData="M 30.26 19.13 C 31.42 19.04 32.58 19.04 33.74 19.13 C 34.21 27.69 34.21 36.32
+-33.74 44.87 C 32.58 44.96 31.42 44.96 30.26 44.87 C 29.79 36.32 29.79 27.68
+-30.26 19.13 Z"
++            android:pathData="M 44.14 9.07 C 45.38 9.08 46.62 9.08 47.86 9.07 C 48.10 21.02 48.11 32.98 47.85
++44.92 C 46.62 44.92 45.38 44.92 44.14 44.92 C 43.90 32.97 43.89 21.02 44.14 9.07
++Z"
+             android:strokeAlpha="1.00"
+             android:strokeWidth="1" />
+         <path
+             android:fillAlpha="1.00"
+             android:fillColor="?attr/bgColor_signal"
+-            android:pathData="M 16.27 29.13 C 17.42 29.04 18.58 29.04 19.73 29.13 C 20.25 34.35 20.24 39.65
+-19.73 44.87 C 18.58 44.96 17.42 44.96 16.27 44.87 C 15.76 39.65 15.76 34.35
+-16.27 29.13 Z"
++            android:pathData="M 30.14 19.07 C 31.38 19.08 32.62 19.08 33.86 19.07 C 34.11 27.69 34.11 36.31
++33.86 44.92 C 32.62 44.92 31.38 44.92 30.14 44.93 C 29.89 36.31 29.89 27.69
++30.14 19.07 Z"
+             android:strokeAlpha="1.00"
+             android:strokeWidth="1" />
+         <path
+             android:fillAlpha="1.00"
+             android:fillColor="?attr/bgColor_signal"
+-            android:pathData="M 2.21 37.12 C 3.40 37.03 4.60 37.03 5.80 37.13 C 6.16 39.69 6.15 42.31 5.79
+-44.88 C 4.60 44.97 3.40 44.97 2.21 44.88 C 1.85 42.31 1.85 39.69 2.21 37.12 Z"
++            android:pathData="M 16.15 29.07 C 17.38 29.07 18.62 29.07 19.85 29.07 C 20.12 34.35 20.12 39.64
++19.84 44.93 C 18.61 44.92 17.38 44.92 16.15 44.93 C 15.88 39.64 15.88 34.35
++16.15 29.07 Z"
++            android:strokeAlpha="1.00"
++            android:strokeWidth="1" />
++        <path
++            android:fillAlpha="1.00"
++            android:fillColor="?attr/bgColor_signal"
++            android:pathData="M 2.07 37.06 C 3.36 37.08 4.64 37.08 5.93 37.06 C 5.97 39.69 5.97 42.31 5.93
++44.94 C 4.64 44.92 3.36 44.92 2.07 44.94 C 2.03 42.31 2.03 39.69 2.07 37.06 Z"
+             android:strokeAlpha="1.00"
+             android:strokeWidth="1" />
+     </vector>
+diff --git a/SystemUI/res/drawable/stat_sys_signal_0_fully.xml b/SystemUI/res/drawable/stat_sys_signal_0_fully.xml
+index 54ec0d0..dbeeaf8 100644
+--- a/SystemUI/res/drawable/stat_sys_signal_0_fully.xml
++++ b/SystemUI/res/drawable/stat_sys_signal_0_fully.xml
+@@ -10,37 +10,36 @@
+         android:viewportWidth="49"
+         android:width="15.4dp" >
+         <path
+-            android:fillAlpha="1.0"
++            android:fillAlpha="1.00"
+             android:fillColor="?attr/bgColor_signal"
+-            android:pathData="M 44.26 9.13 C 45.42 9.04 46.58 9.04 47.74 9.13 C 48.36 15.06 47.87 21.04 47.99
+-27.00 C 47.88 32.96 48.36 38.94 47.74 44.88 C 46.58 44.96 45.42 44.96 44.26
+-44.87 C 43.64 38.93 44.12 32.95 44.01 27.00 C 44.12 21.04 43.64 15.06 44.26 9.13
++            android:pathData="M 44.14 9.07 C 45.38 9.08 46.62 9.08 47.86 9.07 C 48.10 21.02 48.11 32.98 47.85
++44.92 C 46.62 44.92 45.38 44.92 44.14 44.92 C 43.90 32.97 43.89 21.02 44.14 9.07
+ Z"
+-            android:strokeAlpha="1.0"
++            android:strokeAlpha="1.00"
+             android:strokeWidth="1" />
+         <path
+-            android:fillAlpha="1.0"
++            android:fillAlpha="1.00"
+             android:fillColor="?attr/bgColor_signal"
+-            android:pathData="M 30.26 19.13 C 31.42 19.04 32.58 19.04 33.74 19.13 C 34.21 27.69 34.21 36.32
+-33.74 44.87 C 32.58 44.96 31.42 44.96 30.26 44.87 C 29.79 36.32 29.79 27.68
+-30.26 19.13 Z"
+-            android:strokeAlpha="1.0"
++            android:pathData="M 30.14 19.07 C 31.38 19.08 32.62 19.08 33.86 19.07 C 34.11 27.69 34.11 36.31
++33.86 44.92 C 32.62 44.92 31.38 44.92 30.14 44.93 C 29.89 36.31 29.89 27.69
++30.14 19.07 Z"
++            android:strokeAlpha="1.00"
+             android:strokeWidth="1" />
+         <path
+-            android:fillAlpha="1.0"
++            android:fillAlpha="1.00"
+             android:fillColor="?attr/bgColor_signal"
+-            android:pathData="M 16.27 29.13 C 17.42 29.04 18.58 29.04 19.73 29.13 C 20.25 34.35 20.24 39.65
+-19.73 44.87 C 18.58 44.96 17.42 44.96 16.27 44.87 C 15.76 39.65 15.76 34.35
+-16.27 29.13 Z"
+-            android:strokeAlpha="1.0"
++            android:pathData="M 16.15 29.07 C 17.38 29.07 18.62 29.07 19.85 29.07 C 20.12 34.35 20.12 39.64
++19.84 44.93 C 18.61 44.92 17.38 44.92 16.15 44.93 C 15.88 39.64 15.88 34.35
++16.15 29.07 Z"
++            android:strokeAlpha="1.00"
+             android:strokeWidth="1" />
+         <path
+-            android:fillAlpha="1.0"
++            android:fillAlpha="1.00"
+             android:fillColor="?attr/bgColor_signal"
+-            android:pathData="M 2.21 37.12 C 3.40 37.03 4.60 37.03 5.80 37.13 C 6.16 39.69 6.15 42.31 5.79
+-44.88 C 4.60 44.97 3.40 44.97 2.21 44.88 C 1.85 42.31 1.85 39.69 2.21 37.12 Z"
+-            android:strokeAlpha="1.0"
++            android:pathData="M 2.07 37.06 C 3.36 37.08 4.64 37.08 5.93 37.06 C 5.97 39.69 5.97 42.31 5.93
++44.94 C 4.64 44.92 3.36 44.92 2.07 44.94 C 2.03 42.31 2.03 39.69 2.07 37.06 Z"
++            android:strokeAlpha="1.00"
+             android:strokeWidth="1" />
+     </vector>
+ 
+-</inset>
++</inset>
+\ No newline at end of file
+-- 
+2.8.3.windows.1
+

@@ -1,0 +1,31 @@
+From 1004c950590ece450cd9d0d762fafb50f015e0a1 Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Tue, 21 Feb 2017 09:50:58 +0800
+Subject: [PATCH 051/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E4=BF=AE=E6=94=B9=E9=95=BF=E6=8C=89=E9=80=9A=E7=9F=A5=E5=90=8E?=
+ =?UTF-8?q?=E7=9A=84gust=E7=9A=84=E8=83=8C=E6=99=AF(=E9=81=BF=E5=85=8D?=
+ =?UTF-8?q?=E9=87=8D=E5=8F=A0)?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/res/values/colors.xml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/SystemUI/res/values/colors.xml b/SystemUI/res/values/colors.xml
+index c59fc88..e05bd7d 100644
+--- a/SystemUI/res/values/colors.xml
++++ b/SystemUI/res/values/colors.xml
+@@ -36,7 +36,7 @@
+     <color name="qs_batterymeter_frame_color">#FF404040</color>
+     <color name="system_primary_color">#ff263238</color><!-- blue grey 900 -->
+      <color name="qs_primary_color">#00ffffff</color>
+-    <color name="system_secondary_color">#00ffffff</color>
++    <color name="system_secondary_color"><!-- #00ffffff -->#ff384248</color><!-- "notification gust bg" modified by yangfan -->
+     <color name="system_accent_color">#ff80CBC4</color><!-- deep teal 200 -->
+     <color name="system_warning_color">#fff4511e</color><!-- deep orange 600 -->
+     <color name="qs_text">#FFFFFFFF</color>
+-- 
+2.8.3.windows.1
+

@@ -1,0 +1,60 @@
+From 71597324ee0a49c62f81b30a551747f1b93bc9d6 Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Wed, 22 Feb 2017 20:24:30 +0800
+Subject: [PATCH 057/185] =?UTF-8?q?=E3=80=90bug=E3=80=91=E5=BD=93=E4=B8=94?=
+ =?UTF-8?q?=E6=9C=89=E6=9C=8D=E5=8A=A1=E6=89=8D=E5=A4=84=E7=90=86=E4=BF=A1?=
+ =?UTF-8?q?=E5=8F=B7=E5=BB=B6=E8=BF=9F?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../systemui/statusbar/policy/MobileSignalController.java | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/policy/MobileSignalController.java b/SystemUI/src/com/android/systemui/statusbar/policy/MobileSignalController.java
+index 01c67cf..4cfa90e 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/policy/MobileSignalController.java
++++ b/SystemUI/src/com/android/systemui/statusbar/policy/MobileSignalController.java
+@@ -632,9 +632,10 @@ public class MobileSignalController extends SignalController<
+      * This will call listeners if necessary.
+      */
+     private final void updateTelephony() {
++    	boolean hasService = hasService();
+         if (DEBUG) {
+-            Log.d(mTag, "updateTelephony: hasService=" + hasService()
+-                    + " ss=" + mSignalStrength);
++            Log.d(mTag, "updateTelephony: hasService=" + hasService
++                    + " ss=" + mSignalStrength );
+         }
+         mCurrentState.connected = hasService() && mSignalStrength != null;
+ //modified by yangfan begin
+@@ -653,10 +654,13 @@ public class MobileSignalController extends SignalController<
+                 }
+             }
+         }
+-        if (tmpLevel < mCurrentState.level) {
++        if (hasService && tmpLevel < mCurrentState.level) {
+             isDelay = true;
+-        }else if(tmpLevel > mCurrentState.level){
++            Log.e(mTag, "postDelayedCallbacks: " + tmpLevel);
++        }else {
+             mCallbackHandler.removeCallbacks(mSignalChanged);
++            isDelay = false;
++            Log.e(mTag, "removeCallbacks : " + tmpLevel);
+         }
+         if (mNetworkToIconLookup.indexOfKey(mDataNetType) >= 0) {
+             mCurrentState.iconGroup = mNetworkToIconLookup.get(mDataNetType);
+@@ -695,9 +699,6 @@ public class MobileSignalController extends SignalController<
+     Runnable mSignalChanged = new Runnable() {
+         @Override
+         public void run() {
+-            if (mCurrentState.level == tmpLevel) {
+-                return ;
+-            }
+             mCurrentState.level = tmpLevel;
+             Log.e(mTag, "mCurrentState.level : " + mCurrentState.level);
+             notifyListenersIfNecessary();
+-- 
+2.8.3.windows.1
+

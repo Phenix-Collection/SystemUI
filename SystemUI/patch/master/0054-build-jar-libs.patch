@@ -1,0 +1,67 @@
+From e6b05c079ed51d914e9a55aa339aa245bdc08d3c Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Wed, 22 Feb 2017 16:19:04 +0800
+Subject: [PATCH 054/185] =?UTF-8?q?=E3=80=90=E8=B0=83=E8=AF=95=E3=80=91?=
+ =?UTF-8?q?=E4=BF=AE=E6=94=B9build=E5=85=B3=E8=81=94=E7=9A=84jar=E5=92=8C?=
+ =?UTF-8?q?=E5=88=9B=E5=BB=BAlibs=E6=96=87=E4=BB=B6=E5=A4=B9?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/build_weiliji.xml | 25 +++++++++++--------------
+ 1 file changed, 11 insertions(+), 14 deletions(-)
+
+diff --git a/SystemUI/build_weiliji.xml b/SystemUI/build_weiliji.xml
+index 6a350e9..2c8bcac 100644
+--- a/SystemUI/build_weiliji.xml
++++ b/SystemUI/build_weiliji.xml
+@@ -90,7 +90,7 @@
+ <!-- 应用名称 -->  
+     <property name="appName" value="${ant.project.name}"/>  
+     <!-- SDK目录(获取操作系统环境变量ANDROID_SDK_HOME的便 -->  
+-    <property name="sdk-folder" value="D:/Tools/Android/adt-bundle-windows-x86_64-20140702/sdk" />  
++    <property name="sdk-folder" value="D:\Android_eclispe\sdk" />  
+     <!--  <property name="sdk-folder" value="${env.Android_SDK_HOME}" />   -->    
+     <!-- SDK指定平台目录 -->  
+     <property name="sdk-platform-folder" value="${sdk-folder}/platforms/android-23"/>  
+@@ -171,19 +171,15 @@
+     
+      <path id="lib_classpath">
+          <!-- <fileset dir="${jar-path}" includes="*.jar" /> -->
+-		<fileset dir="${ext-lib}">
+-<!-- 
+-		    <include name="core-libart.jar" />
+-         	<include name="framework.jar" />
+-         	<include name="services.jar" />
+-         	<include name="telephony-common.jar" />
+- -->    	
+-         	<include name="android-support-v4.jar" />
+-         	<include name="core-libart.jar" />
+-			<include name="frameworks.jar" />
+-         	<include name="javalib.jar" />
+-			<include name="service.jar" />
+-         	<include name="telephony-common.jar" />
++		<fileset dir="${ext-lib}">  	
++         	<!-- <include name="android-support-v4.jar" />
++         	<include name="core-libart_intermediates.jar" />
++			<include name="core-tests_intermediates.jar" />
++         	<include name="framework_intermediates.jar" />
++			<include name="services_intermediates.jar" />
++         	<include name="telephony-common_intermediates.jar" /> -->
++         	
++         	<include name="*.jar" />
+          </fileset>
+         <path refid="libs_classpath"/>
+          <pathelement location="${android-jar}" />
+@@ -199,6 +195,7 @@
+         <mkdir dir="${outdir-gen}" />
+         <mkdir dir="${outdir-bin}" />  
+         <mkdir dir="${outdir-classes}" />  
++        <mkdir dir="${external-lib}" />  <!-- if null == libs --> 
+     </target>
+     
+     <!-- 根据工程中的资源文件生成R.java文件  -->  
+-- 
+2.8.3.windows.1
+

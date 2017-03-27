@@ -1,0 +1,38 @@
+From e98ab6d5ef808e2baef19be1139145c045ea7c32 Mon Sep 17 00:00:00 2001
+From: mengzhiya <392824146@qq.com>
+Date: Tue, 21 Mar 2017 11:08:14 +0800
+Subject: [PATCH 155/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E9=80=82=E9=85=8D=E8=BF=90=E8=90=A5=E5=95=86=E5=8F=B0=E6=B9=BE?=
+ =?UTF-8?q?=E7=B9=81=E4=BD=93=E4=B8=AD=E5=9B=BD=E8=BF=87=E6=BB=A4=E8=AF=8D?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/res/values-zh-rHK/strings.xml | 1 +
+ SystemUI/res/values-zh-rTW/strings.xml | 1 +
+ 2 files changed, 2 insertions(+)
+
+diff --git a/SystemUI/res/values-zh-rHK/strings.xml b/SystemUI/res/values-zh-rHK/strings.xml
+index e1a862b..09e0824 100644
+--- a/SystemUI/res/values-zh-rHK/strings.xml
++++ b/SystemUI/res/values-zh-rHK/strings.xml
+@@ -434,4 +434,5 @@
+     <string name="enable_bluetooth_message" msgid="9106595990708985385">"如要將鍵盤連接至平板電腦，請先開啟藍牙。"</string>
+     <string name="enable_bluetooth_confirmation_ok" msgid="6258074250948309715">"開啟"</string>
+     <string name="hotspot_apm_message">"飛行模式開啟的情況下不能夠鏈接到移動網絡,請關閉飛行模式後重試。"</string>
++    <string name="mobile_network_namae_filter">中國</string>
+ </resources>
+diff --git a/SystemUI/res/values-zh-rTW/strings.xml b/SystemUI/res/values-zh-rTW/strings.xml
+index 8c39e20..b58bc76 100644
+--- a/SystemUI/res/values-zh-rTW/strings.xml
++++ b/SystemUI/res/values-zh-rTW/strings.xml
+@@ -433,4 +433,5 @@
+     <string name="enable_bluetooth_title" msgid="5027037706500635269">"要開啟藍牙功能嗎？"</string>
+     <string name="enable_bluetooth_message" msgid="9106595990708985385">"如要將鍵盤連線到平板電腦，您必須先開啟藍牙。"</string>
+     <string name="enable_bluetooth_confirmation_ok" msgid="6258074250948309715">"開啟"</string>
++    <string name="mobile_network_namae_filter">中國</string>
+ </resources>
+-- 
+2.8.3.windows.1
+

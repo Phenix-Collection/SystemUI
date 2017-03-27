@@ -21,7 +21,6 @@ import android.os.AsyncTask;
 import android.os.CountDownTimer;
 import android.os.SystemClock;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.HapticFeedbackConstants;
 import android.view.KeyEvent;
 import android.view.View;
@@ -191,8 +190,7 @@ public abstract class KeyguardAbsKeyInputView extends LinearLayout
 
             @Override
             public void onFinish() {
-            	 //mSecurityMessageDisplay.setMessage("", false);
-            	mSecurityMessageDisplay.setMessage(isPinView() ? getResources().getString(R.string.kg_pin_bits_limit) : "", isPinView());// 显示至少六位 by yangfan
+                mSecurityMessageDisplay.setMessage("", false);
                 resetState();
             }
         }.start();
@@ -218,9 +216,7 @@ public abstract class KeyguardAbsKeyInputView extends LinearLayout
         if (mCallback != null) {
             mCallback.userActivity();
         }
-        //mSecurityMessageDisplay.setMessage("", false);
-        mSecurityMessageDisplay.setMessage(isPinView() ? getResources().getString(R.string.kg_pin_bits_limit) : "", isPinView());// 显示至少六位 by yangfan 
-        
+        mSecurityMessageDisplay.setMessage("", false);
     }
 
     @Override
@@ -283,14 +279,6 @@ public abstract class KeyguardAbsKeyInputView extends LinearLayout
     @Override
     public boolean startDisappearAnimation(Runnable finishRunnable) {
         return false;
-    }
-    
-    /**
-     * 判断当前密码解锁界面是否是PIN码解锁 by yangfan 
-     * @return
-     */
-    protected boolean isPinView(){
-    	return false;
     }
 }
 

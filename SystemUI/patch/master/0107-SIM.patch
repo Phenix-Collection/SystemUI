@@ -1,0 +1,71 @@
+From a6ced7486a51686e7a4a9a258a0aaeedbaf230bf Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Mon, 6 Mar 2017 17:57:46 +0800
+Subject: [PATCH 107/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E6=9B=B4=E6=AD=A3=E6=97=A0SIM=20=E9=A6=99=E6=B8=AF=E5=92=8C?=
+ =?UTF-8?q?=E5=8F=B0=E6=B9=BE=E8=AF=AD=E8=A8=80=E4=B8=8B=E7=B9=81=E4=BD=93?=
+ =?UTF-8?q?=E6=98=BE=E7=A4=BA?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/res/values-zh-rCN/strings.xml | 4 ++--
+ SystemUI/res/values-zh-rHK/strings.xml | 4 ++--
+ SystemUI/res/values-zh-rTW/strings.xml | 4 ++--
+ 3 files changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/SystemUI/res/values-zh-rCN/strings.xml b/SystemUI/res/values-zh-rCN/strings.xml
+index 4f50a2e..4732f13 100644
+--- a/SystemUI/res/values-zh-rCN/strings.xml
++++ b/SystemUI/res/values-zh-rCN/strings.xml
+@@ -146,10 +146,10 @@
+     <string name="accessibility_data_connection_roaming" msgid="5977362333466556094">"数据漫游"</string>
+     <string name="accessibility_data_connection_edge" msgid="4477457051631979278">"EDGE"</string>
+     <string name="accessibility_data_connection_wifi" msgid="2324496756590645221">"WLAN"</string>
+-    <string name="accessibility_no_sim" msgid="8274017118472455155">"無SIM"</string>
++    <string name="accessibility_no_sim" msgid="8274017118472455155">"无SIM"</string>
+     <string name="accessibility_bluetooth_tether" msgid="4102784498140271969">"蓝牙网络共享。"</string>
+     <string name="accessibility_airplane_mode" msgid="834748999790763092">"飞行模式。"</string>
+-    <string name="accessibility_no_sims" msgid="3957997018324995781">"無SIM"</string>
++    <string name="accessibility_no_sims" msgid="3957997018324995781">"无SIM"</string>
+     <string name="accessibility_carrier_network_change_mode" msgid="4017301580441304305">"运营商网络正在更改。"</string>
+     <!-- String.format failed for translation -->
+     <!-- no translation found for accessibility_battery_level (7451474187113371965) -->
+diff --git a/SystemUI/res/values-zh-rHK/strings.xml b/SystemUI/res/values-zh-rHK/strings.xml
+index b1e53b1..e1a862b 100644
+--- a/SystemUI/res/values-zh-rHK/strings.xml
++++ b/SystemUI/res/values-zh-rHK/strings.xml
+@@ -145,10 +145,10 @@
+     <string name="accessibility_data_connection_roaming" msgid="5977362333466556094">"漫遊"</string>
+     <string name="accessibility_data_connection_edge" msgid="4477457051631979278">"Edge"</string>
+     <string name="accessibility_data_connection_wifi" msgid="2324496756590645221">"Wi-Fi"</string>
+-    <string name="accessibility_no_sim" msgid="8274017118472455155">"無 SIM 卡。"</string>
++    <string name="accessibility_no_sim" msgid="8274017118472455155">"無SIM"</string>
+     <string name="accessibility_bluetooth_tether" msgid="4102784498140271969">"藍牙網絡共享。"</string>
+     <string name="accessibility_airplane_mode" msgid="834748999790763092">"飛航模式。"</string>
+-    <string name="accessibility_no_sims" msgid="3957997018324995781">"沒有 SIM 卡。"</string>
++    <string name="accessibility_no_sims" msgid="3957997018324995781">"無 SIM"</string>
+     <string name="accessibility_carrier_network_change_mode" msgid="4017301580441304305">"流動網絡供應商網絡正在變更。"</string>
+     <!-- String.format failed for translation -->
+     <!-- no translation found for accessibility_battery_level (7451474187113371965) -->
+diff --git a/SystemUI/res/values-zh-rTW/strings.xml b/SystemUI/res/values-zh-rTW/strings.xml
+index 7d704d3..8c39e20 100644
+--- a/SystemUI/res/values-zh-rTW/strings.xml
++++ b/SystemUI/res/values-zh-rTW/strings.xml
+@@ -145,10 +145,10 @@
+     <string name="accessibility_data_connection_roaming" msgid="5977362333466556094">"數據漫遊"</string>
+     <string name="accessibility_data_connection_edge" msgid="4477457051631979278">"Edge"</string>
+     <string name="accessibility_data_connection_wifi" msgid="2324496756590645221">"Wi-Fi"</string>
+-    <string name="accessibility_no_sim" msgid="8274017118472455155">"沒有 SIM 卡。"</string>
++    <string name="accessibility_no_sim" msgid="8274017118472455155">"無SIM"</string>
+     <string name="accessibility_bluetooth_tether" msgid="4102784498140271969">"藍牙網路共用"</string>
+     <string name="accessibility_airplane_mode" msgid="834748999790763092">"飛行模式。"</string>
+-    <string name="accessibility_no_sims" msgid="3957997018324995781">"沒有 SIM 卡。"</string>
++    <string name="accessibility_no_sims" msgid="3957997018324995781">"無SIM"</string>
+     <string name="accessibility_carrier_network_change_mode" msgid="4017301580441304305">"行動通訊業者網路正在變更。"</string>
+     <!-- String.format failed for translation -->
+     <!-- no translation found for accessibility_battery_level (7451474187113371965) -->
+-- 
+2.8.3.windows.1
+

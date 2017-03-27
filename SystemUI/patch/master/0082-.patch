@@ -1,0 +1,77 @@
+From 901d001ed5af0a1dabee202092beae55993bb2de Mon Sep 17 00:00:00 2001
+From: zengqingshuai <zengqingshuai@qucii.com>
+Date: Wed, 1 Mar 2017 02:31:34 +0800
+Subject: [PATCH 082/185] =?UTF-8?q?=E3=80=90=E6=95=85=E9=9A=9C=E3=80=91?=
+ =?UTF-8?q?=E4=BF=AE=E8=AE=A2=E6=B5=AE=E5=8A=A8=E9=80=9A=E7=9F=A5=E7=95=8C?=
+ =?UTF-8?q?=E9=9D=A2=E9=97=AA=E5=B1=8F=E9=97=AE=E9=A2=98?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../android/systemui/statusbar/phone/HeadsUpTouchHelper.java | 11 +++++++++++
+ .../systemui/statusbar/phone/NotificationPanelView.java      | 12 +++++++-----
+ 2 files changed, 18 insertions(+), 5 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/HeadsUpTouchHelper.java b/SystemUI/src/com/android/systemui/statusbar/phone/HeadsUpTouchHelper.java
+index df8c7fa..0983c57 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/HeadsUpTouchHelper.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/HeadsUpTouchHelper.java
+@@ -24,6 +24,7 @@ import com.android.systemui.Gefingerpoken;
+ import com.android.systemui.R;
+ import com.android.systemui.statusbar.ExpandableNotificationRow;
+ import com.android.systemui.statusbar.ExpandableView;
++import com.android.systemui.statusbar.StatusBarState;
+ import com.android.systemui.statusbar.policy.HeadsUpManager;
+ import com.android.systemui.statusbar.stack.NotificationStackScrollLayout;
+ 
+@@ -105,6 +106,16 @@ public class HeadsUpTouchHelper implements Gefingerpoken {
+                 final float h = y - mInitialTouchY;
+                 if (mTouchingHeadsUpView && Math.abs(h) > mTouchSlop
+                         && Math.abs(h) > Math.abs(x - mInitialTouchX)) {
++                	//add by zqs 2017/3/1 begin
++                	//========================>
++                	//在悬浮框出现下滑时才加入模糊背景
++                	if(h>0){
++                		if (mPanel.mStatusBarState != StatusBarState.KEYGUARD&&mPanel.getBackground()==null) {
++                			mPanel.mStatusBar.blurPanelBg();// blurred bg by yangfan 
++                		}
++                	}
++                	//<========================
++                	//add by zqs 2017/3/1 end
+                     setTrackingHeadsUp(true);
+                     mCollapseSnoozes = h < 0;
+                     mInitialTouchX = x;
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+index 0709102..8b7aa60 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+@@ -2423,18 +2423,20 @@ public class NotificationPanelView extends PanelView implements
+         if (inPinnedMode) {
+         	//add by lrh 在锁屏状态下，不需要截图虚化背景 begin
+     		if (mStatusBarState != StatusBarState.KEYGUARD) {
+-    			 setBackgroundResource(0); 
++    			 setBackground(null); 
+     		}
+     		//add by lrh 在锁屏状态下，不需要截图虚化背景 end
+-        	setBackgroundResource(0); // clear bg by yangfan
++//        	setBackgroundResource(0); // clear bg by yangfan
+         	updateIndicatorVisibility(GONE);// gone indicator by yangfan
+             mHeadsUpExistenceChangedRunnable.run();
+             updateNotificationTranslucency();
+         } else {
+         	//add by lrh 在锁屏状态下，不需要截图虚化背景 begin
+-    		if (mStatusBarState != StatusBarState.KEYGUARD) {
+-    			mStatusBar.blurPanelBg();// blurred bg by yangfan 
+-    		}
++        	//remove by zqs
++//    		if (mStatusBarState != StatusBarState.KEYGUARD) {
++//    			mStatusBar.blurPanelBg();// blurred bg by yangfan 
++//    		}
++    		//remove by zqs
+     		//add by lrh 在锁屏状态下，不需要截图虚化背景 end
+         	
+         	updateIndicatorVisibility(mStatusBarState != StatusBarState.KEYGUARD?VISIBLE:GONE);// visible indicator by yangfan
+-- 
+2.8.3.windows.1
+

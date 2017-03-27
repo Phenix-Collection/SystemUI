@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:insetBottom="2.5dp"
+    android:insetTop="2.5dp" >
+
+    <vector
+        android:autoMirrored="true"
+        android:height="17dp"
+        android:viewportHeight="54"
+        android:viewportWidth="49"
+        android:width="15.4dp" >
+        <path
+            android:fillAlpha="1.00"
+            android:fillColor="?attr/bgColor_signal"
+            android:pathData="M 30.26 19.13 C 31.42 19.04 32.58 19.04 33.74 19.13 C 34.21 27.69 34.21 36.32
+33.74 44.87 C 32.58 44.96 31.42 44.96 30.26 44.87 C 29.79 36.32 29.79 27.68
+30.26 19.13 Z"
+            android:strokeAlpha="1.00"
+            android:strokeWidth="1" />
+        <path
+            android:fillAlpha="1.00"
+            android:fillColor="?attr/bgColor_signal"
+            android:pathData="M 16.27 29.13 C 17.42 29.04 18.58 29.04 19.73 29.13 C 20.25 34.35 20.24 39.65
+19.73 44.87 C 18.58 44.96 17.42 44.96 16.27 44.87 C 15.76 39.65 15.76 34.35
+16.27 29.13 Z"
+            android:strokeAlpha="1.00"
+            android:strokeWidth="1" />
+        <path
+            android:fillAlpha="1.00"
+            android:fillColor="?attr/bgColor_signal"
+            android:pathData="M 2.21 37.12 C 3.40 37.03 4.60 37.03 5.80 37.13 C 6.16 39.69 6.15 42.31 5.79
+44.88 C 4.60 44.97 3.40 44.97 2.21 44.88 C 1.85 42.31 1.85 39.69 2.21 37.12 Z"
+            android:strokeAlpha="1.00"
+            android:strokeWidth="1" />
+    </vector>
+
+</inset>

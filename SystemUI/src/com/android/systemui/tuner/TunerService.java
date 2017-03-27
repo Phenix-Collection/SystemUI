@@ -135,15 +135,12 @@ public class TunerService extends SystemUI {
     public void clearAll() {
         // A couple special cases.
         Settings.Global.putString(mContentResolver, DemoMode.DEMO_MODE_ALLOWED, null);
-        // Settings.System.putString(mContentResolver, BatteryMeterView.SHOW_PERCENT_SETTING, null);// modified by yangfan
+        Settings.System.putString(mContentResolver, BatteryMeterView.SHOW_PERCENT_SETTING, null);
         Intent intent = new Intent(DemoMode.ACTION_DEMO);
         intent.putExtra(DemoMode.EXTRA_COMMAND, DemoMode.COMMAND_EXIT);
         mContext.sendBroadcast(intent);
 
         for (String key : mTunableLookup.keySet()) {
-            if (BatteryMeterView.SHOW_PERCENT_SETTING .equals(key)) {
-                continue;
-            }// modified by yangfan
             Settings.Secure.putString(mContentResolver, key, null);
         }
     }

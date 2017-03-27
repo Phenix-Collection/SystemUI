@@ -100,7 +100,6 @@ import com.android.systemui.recents.Recents;
 import com.android.systemui.statusbar.NotificationData.Entry;
 import com.android.systemui.statusbar.phone.NavigationBarView;
 import com.android.systemui.statusbar.phone.NotificationGroupManager;
-import com.android.systemui.statusbar.phone.ObservableScrollView;
 import com.android.systemui.statusbar.phone.StatusBarKeyguardViewManager;
 import com.android.systemui.statusbar.policy.HeadsUpManager;
 import com.android.systemui.statusbar.policy.PreviewInflater;
@@ -162,7 +161,6 @@ public abstract class BaseStatusBar extends SystemUI implements
     // all notifications
     protected NotificationData mNotificationData;
     protected NotificationStackScrollLayout mStackScroller;
-    protected ObservableScrollView mScrollView;
 
     protected NotificationGroupManager mGroupManager = new NotificationGroupManager();
 
@@ -2128,11 +2126,11 @@ public abstract class BaseStatusBar extends SystemUI implements
             }
             return false;
         }
-        
+
         if (isSnoozedPackage(sbn)) {
             return false;
         }
-        
+
         Notification notification = sbn.getNotification();
         // some predicates to make the boolean logic legible
         boolean isNoisy = (notification.defaults & Notification.DEFAULT_SOUND) != 0

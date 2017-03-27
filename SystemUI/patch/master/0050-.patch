@@ -1,0 +1,45 @@
+From 380fe4882b42332b8502114309f5b9755c4b963a Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Mon, 20 Feb 2017 17:49:33 +0800
+Subject: [PATCH 050/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E8=AE=A9=E9=94=81=E5=B1=8F'=E5=8F=AA=E6=98=BE=E7=A4=BA?=
+ =?UTF-8?q?=E6=AD=A3=E5=9C=A8=E5=85=85=E7=94=B5'?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../android/systemui/statusbar/KeyguardIndicationController.java | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/KeyguardIndicationController.java b/SystemUI/src/com/android/systemui/statusbar/KeyguardIndicationController.java
+index 2236892..031571d 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/KeyguardIndicationController.java
++++ b/SystemUI/src/com/android/systemui/statusbar/KeyguardIndicationController.java
+@@ -194,7 +194,7 @@ public class KeyguardIndicationController {
+         } catch (RemoteException e) {
+             Log.e(TAG, "Error calling IBatteryStats: ", e);
+         }
+-        final boolean hasChargingTime = chargingTimeRemaining > 0;
++        final boolean hasChargingTime = /*chargingTimeRemaining > 0*/ false;// 去掉显示"还有xx时间充满"
+ 
+         int chargingId;
+         switch (mChargingSpeed) {
+@@ -215,9 +215,12 @@ public class KeyguardIndicationController {
+                 break;
+         }
+ 
++        String chargingTimeFormatted = Formatter.formatShortElapsedTimeRoundingUpToMinutes(
++        		mContext, chargingTimeRemaining);
++        Log.i(TAG,"chargingTimeFormatted : " + chargingTimeFormatted);
++        // 只显示'正在充电' by yangfan 
++        chargingId = R.string.keyguard_plugged_in;
+         if (hasChargingTime) {
+-            String chargingTimeFormatted = Formatter.formatShortElapsedTimeRoundingUpToMinutes(
+-                    mContext, chargingTimeRemaining);
+             return mContext.getResources().getString(chargingId, chargingTimeFormatted);
+         } else {
+             return mContext.getResources().getString(chargingId);
+-- 
+2.8.3.windows.1
+

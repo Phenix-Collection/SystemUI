@@ -145,10 +145,10 @@
     <string name="accessibility_data_connection_roaming" msgid="5977362333466556094">"數據漫遊"</string>
     <string name="accessibility_data_connection_edge" msgid="4477457051631979278">"Edge"</string>
     <string name="accessibility_data_connection_wifi" msgid="2324496756590645221">"Wi-Fi"</string>
-    <string name="accessibility_no_sim" msgid="8274017118472455155">"無SIM"</string>
+    <string name="accessibility_no_sim" msgid="8274017118472455155">"沒有 SIM 卡。"</string>
     <string name="accessibility_bluetooth_tether" msgid="4102784498140271969">"藍牙網路共用"</string>
     <string name="accessibility_airplane_mode" msgid="834748999790763092">"飛行模式。"</string>
-    <string name="accessibility_no_sims" msgid="3957997018324995781">"無SIM"</string>
+    <string name="accessibility_no_sims" msgid="3957997018324995781">"沒有 SIM 卡。"</string>
     <string name="accessibility_carrier_network_change_mode" msgid="4017301580441304305">"行動通訊業者網路正在變更。"</string>
     <!-- String.format failed for translation -->
     <!-- no translation found for accessibility_battery_level (7451474187113371965) -->

@@ -20,7 +20,6 @@ import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.RenderNode;
 import android.view.RenderNodeAnimator;
 import android.view.View;
@@ -29,7 +28,6 @@ import android.view.animation.AnimationUtils;
 
 import com.android.settingslib.animation.AppearAnimationUtils;
 import com.android.settingslib.animation.DisappearAnimationUtils;
-
 
 
 //add by wumin
@@ -76,7 +74,7 @@ public class KeyguardPINView extends KeyguardPinBasedInputView {
 
     protected void resetState() {
         super.resetState();
-        mSecurityMessageDisplay.setMessage(getMsgWithCnt(R.string.kg_pin_instructions), true);
+        mSecurityMessageDisplay.setMessage(getMsgWithCnt(R.string.kg_pin_instructions), false);
     }
 
     @Override
@@ -208,10 +206,5 @@ public class KeyguardPINView extends KeyguardPinBasedInputView {
     @Override
     public boolean hasOverlappingRendering() {
         return false;
-    }
-    
-    @Override
-    public boolean isPinView() {
-    	return true;
     }
 }

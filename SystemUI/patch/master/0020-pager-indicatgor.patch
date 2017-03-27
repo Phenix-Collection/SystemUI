@@ -1,0 +1,1116 @@
+From 953c2a56442258b6dfcdebc734b9f3b60e2bc0ae Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Mon, 13 Feb 2017 14:02:34 +0800
+Subject: [PATCH 020/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E6=B7=BB=E5=8A=A0pager=E5=BA=95=E9=83=A8indicatgor?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../res/drawable-xhdpi/circle_dot_indicator.png    | Bin 0 -> 1136 bytes
+ .../res/drawable-xxhdpi/circle_dot_indicator.png   | Bin 0 -> 1136 bytes
+ .../res/drawable-xxxhdpi/circle_dot_indicator.png  | Bin 0 -> 1136 bytes
+ SystemUI/res/layout/status_bar_expanded.xml        |   7 +-
+ SystemUI/res/values/dimens.xml                     |   2 +
+ SystemUI/res/values/vpi__attrs.xml                 |  44 ++
+ SystemUI/res/values/vpi__defaults.xml              |  35 ++
+ SystemUI/src/com/android/systemui/qs/QSPanel.java  | 154 +++++-
+ .../statusbar/phone/NotificationPanelView.java     |  24 +-
+ .../statusbar/phone/CirclePageIndicator.java       | 515 +++++++++++++++++++++
+ 10 files changed, 755 insertions(+), 26 deletions(-)
+ create mode 100644 SystemUI/res/drawable-xhdpi/circle_dot_indicator.png
+ create mode 100644 SystemUI/res/drawable-xxhdpi/circle_dot_indicator.png
+ create mode 100644 SystemUI/res/drawable-xxxhdpi/circle_dot_indicator.png
+ create mode 100644 SystemUI/res/values/vpi__attrs.xml
+ create mode 100644 SystemUI/res/values/vpi__defaults.xml
+ create mode 100644 SystemUI/src/com/qucii/systemui/statusbar/phone/CirclePageIndicator.java
+
+diff --git a/SystemUI/res/drawable-xhdpi/circle_dot_indicator.png b/SystemUI/res/drawable-xhdpi/circle_dot_indicator.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..ec85d811e56ef1a2445bebdc69021dfab4536563
+GIT binary patch
+literal 1136
+zcmeAS@N?(olHy`uVBq!ia0vp^f*{Pn1|+R>-G2co$r9IylHmNblJdl&R0hYC{G?O`
+z&)mfH)S%SFl*+=BsWuD@%xak-5hW46K32*3xq68pHF_1f1wh>l3^w)^1&PVosU-?Y
+zsp*+{wo31J?^jaDOtDo8H}y5}EpSfF$n>ZxN)4{^3rViZPPR-@vbR&PsjvbXkegbP
+zs8ErclUHn2VXFi-*9yo63F|8<fR&VF+bTgE72zA8;GAESs$i;TrkiYFX0Bjvsb^?v
+zZf;_(qhMrUXsT~utZ!_fYh-L?Vqj%rqyPm<K--E^(yW49+@N*=dA3R!B_#z``ugSN
+z<$C4Ddih1^`i7R4mih)p`bI{&Koz>hm3bwJ6}oxF$}kgLQj3#|G7CyF^YauyCMG83
+zmzLNn0bL65LT&-v*t}wBFaZNhzap_f-%!s0<RzFwUtj!6b93RUi%Wu15$?rmaB)aw
+zL8^XGYH@yPQ8F;%(v(3~6<9eJr6!i-7lq{K=fFZSAS1sdzc?emK*8A=9BK+0;hA|U
+z`Q^o$U_HLRR-SpqC5d^-sh%#jN<dTeGBZ=G%uP()T%28;%`F|x4Gmq*oXngJ-AoNk
+zEDg*IEsZRlVR~KilS^|`^GaZPQxJMxaOwpmhui|7%`T}$nPsUdZbkXI3Se(rW#V>=
+zBTn<6dQ)(_#R;cgeV}9XL6M6T*)Sns3IZ|VNf*e0C;rqtV2UpSCT%B;JSSkbc;M;c
+z7*cU-$rW2ZMn{Q;hp}99=d<Yww$68Y#AMZ(vRH`kA=f&Ei`LCt?g5=FtwEm3n>1Vu
+z@98VfyxZ~SUCqhOH`DGVrIqI_o$^##I`&JTvzY#y4F^QZ&vSKVyoy-;zxa?t{BriF
+z9V;Ige{%2IvFd~I1!ZH=+;bkcY*yu*z1L-TSfal#)vV9Ot8L;Y7o)a`TU_+o1jCi2
+z51;VzQ$K%Nu(M<0z3<kN?tlEsI_i}*bDY`aGJgG^%k+(rS?|{VI){lzSkBuws%rhR
+v`hC1sNqP3$1&woLl=)`VzY{&bhgE_><hoGj27y<epfbSI)z4*}Q$iB}7lL`f
+
+literal 0
+HcmV?d00001
+
+diff --git a/SystemUI/res/drawable-xxhdpi/circle_dot_indicator.png b/SystemUI/res/drawable-xxhdpi/circle_dot_indicator.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..ec85d811e56ef1a2445bebdc69021dfab4536563
+GIT binary patch
+literal 1136
+zcmeAS@N?(olHy`uVBq!ia0vp^f*{Pn1|+R>-G2co$r9IylHmNblJdl&R0hYC{G?O`
+z&)mfH)S%SFl*+=BsWuD@%xak-5hW46K32*3xq68pHF_1f1wh>l3^w)^1&PVosU-?Y
+zsp*+{wo31J?^jaDOtDo8H}y5}EpSfF$n>ZxN)4{^3rViZPPR-@vbR&PsjvbXkegbP
+zs8ErclUHn2VXFi-*9yo63F|8<fR&VF+bTgE72zA8;GAESs$i;TrkiYFX0Bjvsb^?v
+zZf;_(qhMrUXsT~utZ!_fYh-L?Vqj%rqyPm<K--E^(yW49+@N*=dA3R!B_#z``ugSN
+z<$C4Ddih1^`i7R4mih)p`bI{&Koz>hm3bwJ6}oxF$}kgLQj3#|G7CyF^YauyCMG83
+zmzLNn0bL65LT&-v*t}wBFaZNhzap_f-%!s0<RzFwUtj!6b93RUi%Wu15$?rmaB)aw
+zL8^XGYH@yPQ8F;%(v(3~6<9eJr6!i-7lq{K=fFZSAS1sdzc?emK*8A=9BK+0;hA|U
+z`Q^o$U_HLRR-SpqC5d^-sh%#jN<dTeGBZ=G%uP()T%28;%`F|x4Gmq*oXngJ-AoNk
+zEDg*IEsZRlVR~KilS^|`^GaZPQxJMxaOwpmhui|7%`T}$nPsUdZbkXI3Se(rW#V>=
+zBTn<6dQ)(_#R;cgeV}9XL6M6T*)Sns3IZ|VNf*e0C;rqtV2UpSCT%B;JSSkbc;M;c
+z7*cU-$rW2ZMn{Q;hp}99=d<Yww$68Y#AMZ(vRH`kA=f&Ei`LCt?g5=FtwEm3n>1Vu
+z@98VfyxZ~SUCqhOH`DGVrIqI_o$^##I`&JTvzY#y4F^QZ&vSKVyoy-;zxa?t{BriF
+z9V;Ige{%2IvFd~I1!ZH=+;bkcY*yu*z1L-TSfal#)vV9Ot8L;Y7o)a`TU_+o1jCi2
+z51;VzQ$K%Nu(M<0z3<kN?tlEsI_i}*bDY`aGJgG^%k+(rS?|{VI){lzSkBuws%rhR
+v`hC1sNqP3$1&woLl=)`VzY{&bhgE_><hoGj27y<epfbSI)z4*}Q$iB}7lL`f
+
+literal 0
+HcmV?d00001
+
+diff --git a/SystemUI/res/drawable-xxxhdpi/circle_dot_indicator.png b/SystemUI/res/drawable-xxxhdpi/circle_dot_indicator.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..ec85d811e56ef1a2445bebdc69021dfab4536563
+GIT binary patch
+literal 1136
+zcmeAS@N?(olHy`uVBq!ia0vp^f*{Pn1|+R>-G2co$r9IylHmNblJdl&R0hYC{G?O`
+z&)mfH)S%SFl*+=BsWuD@%xak-5hW46K32*3xq68pHF_1f1wh>l3^w)^1&PVosU-?Y
+zsp*+{wo31J?^jaDOtDo8H}y5}EpSfF$n>ZxN)4{^3rViZPPR-@vbR&PsjvbXkegbP
+zs8ErclUHn2VXFi-*9yo63F|8<fR&VF+bTgE72zA8;GAESs$i;TrkiYFX0Bjvsb^?v
+zZf;_(qhMrUXsT~utZ!_fYh-L?Vqj%rqyPm<K--E^(yW49+@N*=dA3R!B_#z``ugSN
+z<$C4Ddih1^`i7R4mih)p`bI{&Koz>hm3bwJ6}oxF$}kgLQj3#|G7CyF^YauyCMG83
+zmzLNn0bL65LT&-v*t}wBFaZNhzap_f-%!s0<RzFwUtj!6b93RUi%Wu15$?rmaB)aw
+zL8^XGYH@yPQ8F;%(v(3~6<9eJr6!i-7lq{K=fFZSAS1sdzc?emK*8A=9BK+0;hA|U
+z`Q^o$U_HLRR-SpqC5d^-sh%#jN<dTeGBZ=G%uP()T%28;%`F|x4Gmq*oXngJ-AoNk
+zEDg*IEsZRlVR~KilS^|`^GaZPQxJMxaOwpmhui|7%`T}$nPsUdZbkXI3Se(rW#V>=
+zBTn<6dQ)(_#R;cgeV}9XL6M6T*)Sns3IZ|VNf*e0C;rqtV2UpSCT%B;JSSkbc;M;c
+z7*cU-$rW2ZMn{Q;hp}99=d<Yww$68Y#AMZ(vRH`kA=f&Ei`LCt?g5=FtwEm3n>1Vu
+z@98VfyxZ~SUCqhOH`DGVrIqI_o$^##I`&JTvzY#y4F^QZ&vSKVyoy-;zxa?t{BriF
+z9V;Ige{%2IvFd~I1!ZH=+;bkcY*yu*z1L-TSfal#)vV9Ot8L;Y7o)a`TU_+o1jCi2
+z51;VzQ$K%Nu(M<0z3<kN?tlEsI_i}*bDY`aGJgG^%k+(rS?|{VI){lzSkBuws%rhR
+v`hC1sNqP3$1&woLl=)`VzY{&bhgE_><hoGj27y<epfbSI)z4*}Q$iB}7lL`f
+
+literal 0
+HcmV?d00001
+
+diff --git a/SystemUI/res/layout/status_bar_expanded.xml b/SystemUI/res/layout/status_bar_expanded.xml
+index a1282ad..c86e80e 100644
+--- a/SystemUI/res/layout/status_bar_expanded.xml
++++ b/SystemUI/res/layout/status_bar_expanded.xml
+@@ -43,7 +43,6 @@
+ 
+     <include
+         layout="@layout/keyguard_status_view"
+-        android:layout_height="wrap_content"
+         android:visibility="gone" />
+ 
+     <com.android.systemui.statusbar.phone.NotificationsQuickSettingsContainer
+@@ -71,6 +70,12 @@
+             layout="@layout/keyguard_status_bar"
+             android:visibility="invisible" />
+ 
++        <com.qucii.systemui.statusbar.phone.CirclePageIndicator
++            android:id="@+id/qucii_indicator"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:layout_gravity="bottom|center_horizontal"
++            android:layout_marginBottom="@dimen/pager_indicator_bottom" />
+     </com.android.systemui.statusbar.phone.NotificationsQuickSettingsContainer>
+ 
+     <include
+diff --git a/SystemUI/res/values/dimens.xml b/SystemUI/res/values/dimens.xml
+index 2bd2600..f8463e9 100644
+--- a/SystemUI/res/values/dimens.xml
++++ b/SystemUI/res/values/dimens.xml
+@@ -596,4 +596,6 @@
+ 
+     <!-- Thickness of the shadows of the assist disclosure beams -->
+     <dimen name="assist_disclosure_shadow_thickness">1.5dp</dimen>
++    <!-- added by mare  -->
++    <dimen name="pager_indicator_bottom">15dp</dimen> <!-- close_handle_height + qsPaddingBottom -->
+ </resources>
+diff --git a/SystemUI/res/values/vpi__attrs.xml b/SystemUI/res/values/vpi__attrs.xml
+new file mode 100644
+index 0000000..911df54
+--- /dev/null
++++ b/SystemUI/res/values/vpi__attrs.xml
+@@ -0,0 +1,44 @@
++<?xml version="1.0" encoding="utf-8"?>
++<!-- Copyright (C) 2012 Jake Wharton
++     Copyright (C) 2011 Patrik Åkerfeldt
++
++     Licensed under the Apache License, Version 2.0 (the "License");
++     you may not use this file except in compliance with the License.
++     You may obtain a copy of the License at
++
++          http://www.apache.org/licenses/LICENSE-2.0
++
++     Unless required by applicable law or agreed to in writing, software
++     distributed under the License is distributed on an "AS IS" BASIS,
++     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++     See the License for the specific language governing permissions and
++     limitations under the License.
++-->
++
++<resources>
++    <attr name="centered" format="boolean" />
++    <attr name="selectedColor" format="color" />
++    <attr name="strokeWidth" format="dimension" />
++    <attr name="unselectedColor" format="color" />
++
++    <declare-styleable name="CirclePageIndicator">
++        <!-- Whether or not the indicators should be centered. -->
++        <attr name="centered" />
++        <!-- Color of the filled circle that represents the current page. -->
++        <attr name="indicatorFillColor" format="color" />
++        <!-- Color of the filled circles that represents pages. -->
++        <attr name="pageColor" format="color" />
++        <!-- Orientation of the indicator. -->
++        <attr name="android:orientation"/>
++        <!-- Radius of the circles. This is also the spacing between circles. -->
++        <attr name="radius" format="dimension" />
++        <!-- Whether or not the selected indicator snaps to the circles. -->
++        <attr name="snap" format="boolean" />
++        <!-- Color of the open circles. -->
++        <attr name="strokeColor" format="color" />
++        <!-- Width of the stroke used to draw the circles. -->
++        <attr name="strokeWidth" />
++        <!-- View background -->
++        <attr name="android:background"/>
++    </declare-styleable>
++</resources>
+diff --git a/SystemUI/res/values/vpi__defaults.xml b/SystemUI/res/values/vpi__defaults.xml
+new file mode 100644
+index 0000000..660a61f
+--- /dev/null
++++ b/SystemUI/res/values/vpi__defaults.xml
+@@ -0,0 +1,35 @@
++<?xml version="1.0" encoding="utf-8"?>
++<!--
++     Copyright (C) 2012 Jake Wharton
++
++     Licensed under the Apache License, Version 2.0 (the "License");
++     you may not use this file except in compliance with the License.
++     You may obtain a copy of the License at
++
++          http://www.apache.org/licenses/LICENSE-2.0
++
++     Unless required by applicable law or agreed to in writing, software
++     distributed under the License is distributed on an "AS IS" BASIS,
++     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++     See the License for the specific language governing permissions and
++     limitations under the License.
++-->
++
++<resources>
++
++    <bool name="default_circle_indicator_centered">true</bool>
++
++    <color name="default_circle_indicator_fill_color">#ffFFFFFF</color>
++    <color name="default_circle_indicator_page_color">#ffcccccc</color>
++
++    <integer name="default_circle_indicator_orientation">0</integer>
++
++    <dimen name="default_circle_indicator_radius">3dp</dimen>
++
++    <bool name="default_circle_indicator_snap">false</bool>
++
++    <color name="default_circle_indicator_stroke_color">#ffcccccc</color>
++
++    <dimen name="default_circle_indicator_stroke_width">0dp</dimen>
++
++</resources>
+\ No newline at end of file
+diff --git a/SystemUI/src/com/android/systemui/qs/QSPanel.java b/SystemUI/src/com/android/systemui/qs/QSPanel.java
+index 19d3479..7048af7 100644
+--- a/SystemUI/src/com/android/systemui/qs/QSPanel.java
++++ b/SystemUI/src/com/android/systemui/qs/QSPanel.java
+@@ -27,6 +27,7 @@ import android.os.Handler;
+ import android.os.Message;
+ import android.util.AttributeSet;
+ import android.view.LayoutInflater;
++import android.util.Log;
+ import android.view.View;
+ import android.view.ViewGroup;
+ import android.view.accessibility.AccessibilityEvent;
+@@ -84,6 +85,20 @@ public class QSPanel extends ViewGroup {
+     private QSFooter mFooter;
+     private boolean mGridContentVisible = true;
+     CarrierAppUtils.CARRIER carrier = CarrierAppUtils.getCarrierId();
++    private static boolean DEBUG =true;
++    private UpdateIndicator mIndicatorListener;// added by yangfan 
++    //add by lrh for land screen layout begin 20170110
++     private static int mCurrentScreenConfig = Configuration.ORIENTATION_PORTRAIT;
++    //add by lrh for land screen layout end 20170110
++
++    private void logf(String text){
++        logf("%s", text);
++    }
++    
++    private  void logf(String format,Object... args){
++        if(!DEBUG) return;
++        Log.v(this.getClass().getSimpleName(), String.format(format, args));
++    }
+ 
+     public QSPanel(Context context) {
+         this(context, null);
+@@ -177,15 +192,49 @@ public class QSPanel extends ViewGroup {
+         }
+         updateDetailText();
+     }
+-
++	
++    //add by lrh for land screen layout begin 20170110
++    public void updateResources(int col) {
++        final Resources res = mContext.getResources();
++        final int columns = Math.max(1,col);
++        mCellHeight = res.getDimensionPixelSize(R.dimen.qs_tile_height);
++        mCellWidth = (int)(mCellHeight * TILE_ASPECT);
++        mLargeCellHeight = res.getDimensionPixelSize(R.dimen.qs_dual_tile_height);
++        mLargeCellWidth = (int)(mLargeCellHeight * TILE_ASPECT);
++        mPanelPaddingBottom = res.getDimensionPixelSize(R.dimen.qs_panel_padding_bottom);
++        mDualTileUnderlap = res.getDimensionPixelSize(R.dimen.qs_dual_tile_padding_vertical);
++        mBrightnessPaddingTop = 0/*res.getDimensionPixelSize(R.dimen.qs_brightness_padding_top)*/;
++        if (mColumns != columns) {
++            mColumns = columns;
++            postInvalidate();
++        }
++        for (TileRecord r : mRecords) {
++            r.tile.clearState();
++        }
++        if (mListening) {
++            refreshAllTiles();
++        }
++        updateDetailText();
++    }
++    //add by lrh for land screen layout end 20170110
++	
+     @Override
+     protected void onConfigurationChanged(Configuration newConfig) {
+         super.onConfigurationChanged(newConfig);
+-        FontSizeUtils.updateFontSize(mDetailDoneButton, R.dimen.qs_detail_button_text_size);
+-        FontSizeUtils.updateFontSize(mDetailSettingsButton, R.dimen.qs_detail_button_text_size);
++        //FontSizeUtils.updateFontSize(mDetailDoneButton, R.dimen.qs_detail_button_text_size);// mdoified by yangfan
++        //FontSizeUtils.updateFontSize(mDetailSettingsButton, R.dimen.qs_detail_button_text_size);// mdoified by yangfan 
+ 
+         // We need to poke the detail views as well as they might not be attached to the view
+         // hierarchy but reused at a later point.
++        //add by lrh for land screen layout begin 20170110
++         if(newConfig.orientation==Configuration.ORIENTATION_LANDSCAPE){
++            updateResources(mContext.getResources().getInteger(R.integer.quick_settings_num_columns_landscreen));
++            mCurrentScreenConfig = Configuration.ORIENTATION_LANDSCAPE;
++         }else{
++            updateResources();
++            mCurrentScreenConfig = Configuration.ORIENTATION_PORTRAIT;
++         }
++      //add by lrh for land screen layout end 20170110
+         int count = mRecords.size();
+         for (int i = 0; i < count; i++) {
+             View detailView = mRecords.get(i).detailView;
+@@ -249,6 +298,9 @@ public class QSPanel extends ViewGroup {
+ 
+     private void showDetail(boolean show, Record r) {
+         mHandler.obtainMessage(H.SHOW_DETAIL, show ? 1 : 0, 0, r).sendToTarget();
++		// added by yangfan 
++        mIndicatorListener.updateIndicatorVisibility(show ? View.GONE : View.VISIBLE);// gone indicator when show detail
++		// added by yangfan end
+     }
+ 
+     private void setTileVisibility(View v, int visibility) {
+@@ -463,6 +515,7 @@ public class QSPanel extends ViewGroup {
+     @Override
+     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+         final int width = MeasureSpec.getSize(widthMeasureSpec);
++        final int height = MeasureSpec.getSize(heightMeasureSpec);
+ 
+         int simswitcherHeight = 0;
+         if (isVoicePrefEnabled()) {
+@@ -470,8 +523,12 @@ public class QSPanel extends ViewGroup {
+             simswitcherHeight = mSimSwitcherView.getMeasuredHeight() + mBrightnessPaddingTop;
+         }
+         mBrightnessView.measure(exactly(width), MeasureSpec.UNSPECIFIED);
++		//modified by yangfan
++        /**final int brightnessHeight =
++                mBrightnessView.getMeasuredHeight() + mBrightnessPaddingTop + simswitcherHeight;**/
+         final int brightnessHeight =
+-                mBrightnessView.getMeasuredHeight() + mBrightnessPaddingTop + simswitcherHeight;
++                mBrightnessView.getMeasuredHeight() + mBrightnessPaddingTop *2+ simswitcherHeight;
++		//modified by yangfan end
+         mFooter.getView().measure(exactly(width), MeasureSpec.UNSPECIFIED);
+         int r = -1;
+         int c = -1;
+@@ -492,19 +549,26 @@ public class QSPanel extends ViewGroup {
+             record.col = c;
+             rows = r + 1;
+         }
+-
++        //add by lrh for land screen layout begin 20170110
++        if(mCurrentScreenConfig == Configuration.ORIENTATION_LANDSCAPE){
++            rows = 2;//quiltsettings defualt value when landscreen
++         }
++        //add by lrh for land screen layout end 20170110
+         View previousView = mBrightnessView;
+         for (TileRecord record : mRecords) {
+             if (record.tileView.setDual(record.tile.supportsDualTargets())) {
+                 record.tileView.handleStateChanged(record.tile.getState());
+             }
+             if (record.tileView.getVisibility() == GONE) continue;
+-            final int cw = record.row == 0 ? mLargeCellWidth : mCellWidth;
+-            final int ch = record.row == 0 ? mLargeCellHeight : mCellHeight;
++            final int cw = record.row == 0 ? /*mLargeCellWidth*/mCellWidth : mCellWidth;// remove Large Cell
++            final int ch = record.row == 0 ? /*mLargeCellHeight*/mCellHeight : mCellHeight;
+             record.tileView.measure(exactly(cw), exactly(ch));
+             previousView = record.tileView.updateAccessibilityOrder(previousView);
+         }
+-        int h = rows == 0 ? brightnessHeight : (getRowTop(rows) + mPanelPaddingBottom);
++		// add brightnessHeight by yangfan 
++        //int h = rows == 0 ? brightnessHeight : (getRowTop(rows) + mPanelPaddingBottom);
++		int h = rows == 0 ? brightnessHeight : (getRowTop(rows) + mPanelPaddingBottom + brightnessHeight) ;
++		// add brightnessHeight by yangfan end
+         if (mFooter.hasFooter()) {
+             h += mFooter.getView().getMeasuredHeight();
+         }
+@@ -526,20 +590,34 @@ public class QSPanel extends ViewGroup {
+         int padding = mBrightnessPaddingTop;
+         if (isVoicePrefEnabled()) {
+             if (mSimSwitcherView.getVisibility() != View.GONE) {
+-                padding = mBrightnessPaddingTop*2 + mSimSwitcherView.getMeasuredHeight();
++                padding = mBrightnessPaddingTop/**2**/ + mSimSwitcherView.getMeasuredHeight();//adjust paddingTop by yangfan
+             }
+             mSimSwitcherView.layout(0, mBrightnessPaddingTop,
+                     mSimSwitcherView.getMeasuredWidth(),
+                     mBrightnessPaddingTop + mSimSwitcherView.getMeasuredHeight());
+         }
+-        mBrightnessView.layout(0, padding,
++        /**mBrightnessView.layout(0, padding,
+                 mBrightnessView.getMeasuredWidth(),
+-                padding + mBrightnessView.getMeasuredHeight());
++                padding + mBrightnessView.getMeasuredHeight());**/ //adjust brgihtnessBlock by yangfan
+         boolean isRtl = getLayoutDirection() == LAYOUT_DIRECTION_RTL;
+-        for (TileRecord record : mRecords) {
++// adjust layout of Panel  by yangfan
++        int curTop = 0;
++        int tilesSumH = getRowTop(0);
++        int curTileH = 0;
++        for (int i =0;i< mRecords.size();i++){
++        //for (TileRecord record : mRecords) {
++            TileRecord record = mRecords.get(i);
++            //add by lrh for land screen layout begin 20170110
++            if((mCurrentScreenConfig == Configuration.ORIENTATION_LANDSCAPE)
++                &&(i==(mRecords.size()-1))){
++                 record.tileView.setVisibility(GONE);
++            }else{
++                 record.tileView.setVisibility(VISIBLE);
++            }
++            //add by lrh for land screen layout end 20170110
+             if (record.tileView.getVisibility() == GONE) continue;
+             final int cols = getColumnCount(record.row);
+-            final int cw = record.row == 0 ? mLargeCellWidth : mCellWidth;
++            final int cw = record.row == 0 ? /*mLargeCellWidth*/ mCellWidth: mCellWidth;
+             final int extra = (w - cw * cols) / (cols + 1);
+             int left = record.col * cw + (record.col + 1) * extra;
+             final int top = getRowTop(record.row);
+@@ -551,8 +629,28 @@ public class QSPanel extends ViewGroup {
+             } else {
+                 right = left + tileWith;
+             }
+-            record.tileView.layout(left, top, right, top + record.tileView.getMeasuredHeight());
++            curTileH = record.tileView.getMeasuredHeight();
++            record.tileView.layout(left, top, right, top + curTileH);
++            boolean isNewRow = false;
++            if (top != curTop ) {
++                isNewRow = true;
++                curTop = top;
++            }
++            if (isNewRow) {
++                tilesSumH += curTileH;
++                logf("curTileH : %d,tilesSumH : %d",curTileH ,tilesSumH);
++            }
++        }
++        tilesSumH += curTileH;
++        //add by lrh for land screen layout begin 20170110
++        if(mCurrentScreenConfig == Configuration.ORIENTATION_LANDSCAPE){
++            tilesSumH -= 30; //landscreen mBrightnessView paddingTop
+         }
++         //add by lrh for land screen layout end 20170110
++
++        mBrightnessView.layout(0, mBrightnessPaddingTop + tilesSumH,
++                mBrightnessView.getMeasuredWidth(), mBrightnessPaddingTop + mBrightnessView.getMeasuredHeight() + tilesSumH);
++// adjust layout of Panel  by yangfan end       
+         final int dh = Math.max(mDetail.getMeasuredHeight(), getMeasuredHeight());
+         mDetail.layout(0, 0, mDetail.getMeasuredWidth(), dh);
+         if (mFooter.hasFooter()) {
+@@ -564,16 +662,18 @@ public class QSPanel extends ViewGroup {
+ 
+     private int getRowTop(int row) {
+         if (!isVoicePrefEnabled() || mSimSwitcherView.getVisibility() == View.GONE) {
+-            if (row <= 0) return mBrightnessView.getMeasuredHeight() + mBrightnessPaddingTop;
+-            return mBrightnessView.getMeasuredHeight() + mBrightnessPaddingTop
+-                    + mLargeCellHeight - mDualTileUnderlap + (row - 1) * mCellHeight;
++// added by yangfan
++            if (row <= 0) return /*mBrightnessView.getMeasuredHeight() + mBrightnessPaddingTop*/0;
++            return/* mBrightnessView.getMeasuredHeight() + mBrightnessPaddingTop
++                    +*/ /*mLargeCellHeight*/mCellHeight - mDualTileUnderlap + (row - 1) * mCellHeight;
+         } else {
+-            if (row <= 0) return mSimSwitcherView.getMeasuredHeight() + mBrightnessPaddingTop*2
+-                    + mBrightnessView.getMeasuredHeight();
+-            return mBrightnessView.getMeasuredHeight() + mBrightnessPaddingTop*2
++            if (row <= 0) return mSimSwitcherView.getMeasuredHeight() /*+ mBrightnessPaddingTop*2
++                    + mBrightnessView.getMeasuredHeight()*/;
++            return /*mBrightnessView.getMeasuredHeight() + mBrightnessPaddingTop*2
+                     + mBrightnessView.getMeasuredHeight()
+-                    + mLargeCellHeight - mDualTileUnderlap + (row - 1) * mCellHeight;
++                    + *//*mLargeCellHeight*/mCellHeight - mDualTileUnderlap + (row - 1) * mCellHeight;
+         }
++// added by yangfan
+     }
+ 
+     private int getColumnCount(int row) {
+@@ -644,6 +744,7 @@ public class QSPanel extends ViewGroup {
+         public void onAnimationEnd(Animator animation) {
+             mDetailContent.removeAllViews();
+             setDetailRecord(null);
++            mIndicatorListener.updateIndicatorVisibility(VISIBLE);// added by yangfan 
+             mClosingDetail = false;
+         };
+     };
+@@ -653,6 +754,7 @@ public class QSPanel extends ViewGroup {
+             // If we have been cancelled, remove the listener so that onAnimationEnd doesn't get
+             // called, this will avoid accidentally turning off the grid when we don't want to.
+             animation.removeListener(this);
++            mIndicatorListener.updateIndicatorVisibility(GONE);// added by yangfan 
+             redrawTile();
+         };
+ 
+@@ -688,4 +790,14 @@ public class QSPanel extends ViewGroup {
+         }
+         return status;
+     }
++
++// added by yangfan    
++    public void setIndicatorListener(UpdateIndicator listener){
++        this.mIndicatorListener = listener;
++    }
++    
++    public interface UpdateIndicator{
++        public void updateIndicatorVisibility(int vis);
++    }
++// added by yangfan end
+ }
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+index d377f14..6fdf881 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+@@ -55,6 +55,7 @@ import com.android.systemui.EventLogTags;
+ import com.android.systemui.R;
+ import com.android.systemui.qs.QSContainer;
+ import com.android.systemui.qs.QSPanel;
++import com.android.systemui.qs.QSPanel.UpdateIndicator;
+ import com.android.systemui.statusbar.ExpandableNotificationRow;
+ import com.android.systemui.statusbar.ExpandableView;
+ import com.android.systemui.statusbar.FlingAnimationUtils;
+@@ -66,6 +67,7 @@ import com.android.systemui.statusbar.policy.HeadsUpManager;
+ import com.android.systemui.statusbar.policy.KeyguardUserSwitcher;
+ import com.android.systemui.statusbar.stack.NotificationStackScrollLayout;
+ import com.android.systemui.statusbar.stack.StackStateAnimator;
++import com.qucii.systemui.statusbar.phone.CirclePageIndicator;
+ import com.qucii.systemui.statusbar.phone.NotificationPagerAdapter;
+ import com.qucii.systemui.statusbar.phone.NotificationsViewPager;
+ 
+@@ -75,7 +77,7 @@ public class NotificationPanelView extends PanelView implements
+         ExpandableView.OnHeightChangedListener, ObservableScrollView.Listener,
+         View.OnClickListener, NotificationStackScrollLayout.OnOverscrollTopChangedListener,
+         KeyguardAffordanceHelper.Callback, NotificationStackScrollLayout.OnEmptySpaceClickListener,
+-        HeadsUpManager.OnHeadsUpChangedListener , OnPageChangeListener{
++        HeadsUpManager.OnHeadsUpChangedListener , OnPageChangeListener,UpdateIndicator{
+ 
+     private static final boolean DEBUG = false;  //weiliji modify
+     public static final String TAG = NotificationPanelView.class.getSimpleName();
+@@ -210,8 +212,10 @@ public class NotificationPanelView extends PanelView implements
+     private boolean mClosingWithAlphaFadeOut;
+     private boolean mHeadsUpAnimatingAway;
+     private boolean mLaunchingAffordance;
++    private CirclePageIndicator mIndicator;// added by yangfan 
+     private NotificationsViewPager mNotificationsViewPager;
+     private String mLastCameraLaunchSource = KeyguardBottomAreaView.CAMERA_LAUNCH_SOURCE_AFFORDANCE;
++    private boolean mIndicatorVisible = false;// added by yangfan 
+     private static final int NOTIFICATION_PAGE_INDEX = 0;
+     private static final int QUICKSETTINGS_PAGE_INDEX = 1;
+     private int mCurPage = NOTIFICATION_PAGE_INDEX;
+@@ -257,7 +261,9 @@ public class NotificationPanelView extends PanelView implements
+ 
+         mNotificationsViewPager=(NotificationsViewPager)mNotificationContainerParent.findViewById(R.id.notification_viewpager);
+         NotificationPagerAdapter mAdapter = (NotificationPagerAdapter) mNotificationsViewPager.getAdapter();
+-        mNotificationsViewPager.setOnPageChangeListener(this);
++		mIndicator = (CirclePageIndicator) mNotificationContainerParent.findViewById(R.id.qucii_indicator);
++		mIndicator.setViewPager(mNotificationsViewPager);
++		mIndicator.setOnPageChangeListener(this);
+         mNotificationsViewPager.setPanelView(this);
+         List<View> views = mAdapter.getViews();
+         mNotificationStackScroller= (NotificationStackScrollLayout) views.get(0);
+@@ -268,7 +274,7 @@ public class NotificationPanelView extends PanelView implements
+         mQsPanel = (QSPanel) mScrollView.findViewById(R.id.quick_settings_panel);
+         mQsPanel_Qucii = (QSPanel) mScrollView.findViewById(R.id.qucii_quick_settings_panel);
+         mQsPanel_Qucii.setExpanded(true);
+-
++		mQsPanel_Qucii.setIndicatorListener(this);// added by yangfan 
+         mScrollView.setListener(this);
+         mScrollView.setFocusable(false);
+         mReserveNotificationSpace = mScrollView.findViewById(R.id.reserve_notification_space);
+@@ -1037,6 +1043,7 @@ public class NotificationPanelView extends PanelView implements
+         mStatusBarState = statusBarState;
+         mKeyguardShowing = keyguardShowing;
+ 	    mNotificationsViewPager.setDisable(keyguardShowing);
++		updateIndicatorVisibility(statusBarState == StatusBarState.KEYGUARD ? INVISIBLE : VISIBLE);// added by yangfan 
+ 	    //add by lrh for viewpager
+         if(keyguardShowing){
+             mNotificationsViewPager.setCurrentItem(0);
+@@ -2537,6 +2544,15 @@ public class NotificationPanelView extends PanelView implements
+     public boolean isNotificationView(){
+     	return (mCurPage!=QUICKSETTINGS_PAGE_INDEX);
+     }
+-		
++    
++// added by yangfan 		
++    @Override
++    public void updateIndicatorVisibility(int vis) {
++        if (mIndicator.getVisibility() == vis) {
++            return;
++        }
++        mIndicator.setVisibility(vis);
++    }
++// added by yangfan 	end
+ }
+ 
+diff --git a/SystemUI/src/com/qucii/systemui/statusbar/phone/CirclePageIndicator.java b/SystemUI/src/com/qucii/systemui/statusbar/phone/CirclePageIndicator.java
+new file mode 100644
+index 0000000..f0a16a5
+--- /dev/null
++++ b/SystemUI/src/com/qucii/systemui/statusbar/phone/CirclePageIndicator.java
+@@ -0,0 +1,515 @@
++package com.qucii.systemui.statusbar.phone;
++
++import android.content.Context;
++import android.content.res.Resources;
++import android.content.res.TypedArray;
++import android.graphics.Bitmap;
++import android.graphics.BitmapFactory;
++import android.graphics.Canvas;
++import android.graphics.Paint;
++import android.graphics.Paint.Style;
++import android.graphics.drawable.Drawable;
++import android.support.v4.view.MotionEventCompat;
++import android.support.v4.view.ViewConfigurationCompat;
++import android.support.v4.view.ViewPager;
++import android.util.AttributeSet;
++import android.view.MotionEvent;
++import android.view.View;
++import android.view.ViewConfiguration;
++
++import com.android.systemui.R;
++
++import static android.graphics.Paint.ANTI_ALIAS_FLAG;
++import static android.widget.LinearLayout.HORIZONTAL;
++import static android.widget.LinearLayout.VERTICAL;
++
++/**
++ * Draws circles (one for each view). The current view position is filled and
++ * others are only stroked.
++ */
++public class CirclePageIndicator extends View implements PageIndicator {
++    private static final int INVALID_POINTER = -1;
++
++    private float mRadius;
++    private final Paint mPaintPageFill = new Paint(ANTI_ALIAS_FLAG);
++    private final Paint mPaintStroke = new Paint(ANTI_ALIAS_FLAG);
++    private final Paint mPaintFill = new Paint(ANTI_ALIAS_FLAG);
++    private ViewPager mViewPager;
++    private ViewPager.OnPageChangeListener mListener;
++    private int mCurrentPage;
++    private int mSnapPage;
++    private float mPageOffset;
++    private int mScrollState;
++    private int mOrientation;
++    private boolean mCentered;
++    private boolean mSnap;
++
++    private int mTouchSlop;
++    private float mLastMotionX = -1;
++    private int mActivePointerId = INVALID_POINTER;
++    private boolean mIsDragging;
++
++    private Bitmap mSettingsIcon;
++    private boolean mEditing;
++
++    public CirclePageIndicator(Context context) {
++        this(context, null);
++    }
++
++    public CirclePageIndicator(Context context, AttributeSet attrs) {
++        this(context, attrs, 0);
++    }
++
++    public CirclePageIndicator(Context context, AttributeSet attrs, int defStyle) {
++        super(context, attrs, defStyle);
++        if (isInEditMode()) return;
++
++        //Load defaults from resources
++        final Resources res = getResources();
++        final int defaultPageColor = res.getColor(R.color.default_circle_indicator_page_color);
++        final int defaultFillColor = res.getColor(R.color.default_circle_indicator_fill_color);
++        final int defaultOrientation = res.getInteger(R.integer.default_circle_indicator_orientation);
++        final int defaultStrokeColor = res.getColor(R.color.default_circle_indicator_stroke_color);
++        final float defaultStrokeWidth = res.getDimension(R.dimen.default_circle_indicator_stroke_width);
++        final float defaultRadius = res.getDimension(R.dimen.default_circle_indicator_radius);
++        final boolean defaultCentered = res.getBoolean(R.bool.default_circle_indicator_centered);
++        final boolean defaultSnap = res.getBoolean(R.bool.default_circle_indicator_snap);
++
++        //Retrieve styles attributes
++        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CirclePageIndicator, defStyle, 0);
++
++        mCentered = a.getBoolean(R.styleable.CirclePageIndicator_centered, defaultCentered);
++        mOrientation = a.getInt(R.styleable.CirclePageIndicator_android_orientation, defaultOrientation);
++        mPaintPageFill.setStyle(Style.FILL);
++        mPaintPageFill.setColor(a.getColor(R.styleable.CirclePageIndicator_pageColor, defaultPageColor));
++        mPaintStroke.setStyle(Style.STROKE);
++        mPaintStroke.setColor(a.getColor(R.styleable.CirclePageIndicator_strokeColor, defaultStrokeColor));
++        mPaintStroke.setStrokeWidth(a.getDimension(R.styleable.CirclePageIndicator_strokeWidth, defaultStrokeWidth));
++        mPaintFill.setStyle(Style.FILL);
++        mPaintFill.setColor(a.getColor(R.styleable.CirclePageIndicator_indicatorFillColor, defaultFillColor));
++        mRadius = a.getDimension(R.styleable.CirclePageIndicator_radius, defaultRadius);
++        mSnap = a.getBoolean(R.styleable.CirclePageIndicator_snap, defaultSnap);
++
++        Drawable background = a.getDrawable(R.styleable.CirclePageIndicator_android_background);
++        if (background != null) {
++            setBackgroundDrawable(background);
++        }
++
++        a.recycle();
++
++        final ViewConfiguration configuration = ViewConfiguration.get(context);
++        mTouchSlop = ViewConfigurationCompat.getScaledPagingTouchSlop(configuration);
++        mSettingsIcon = BitmapFactory.decodeResource(res, R.drawable.circle_dot_indicator);
++    }
++
++    @Override
++    public boolean hasOverlappingRendering() {
++        return false;
++    }
++
++    public void setCentered(boolean centered) {
++        mCentered = centered;
++        invalidate();
++    }
++
++    public boolean isCentered() {
++        return mCentered;
++    }
++
++    public void setPageColor(int pageColor) {
++        mPaintPageFill.setColor(pageColor);
++        invalidate();
++    }
++
++    public int getPageColor() {
++        return mPaintPageFill.getColor();
++    }
++
++    public void setFillColor(int fillColor) {
++        mPaintFill.setColor(fillColor);
++        invalidate();
++    }
++
++    public int getFillColor() {
++        return mPaintFill.getColor();
++    }
++
++    public void setOrientation(int orientation) {
++        switch (orientation) {
++            case HORIZONTAL:
++            case VERTICAL:
++                mOrientation = orientation;
++                requestLayout();
++                break;
++
++            default:
++                throw new IllegalArgumentException("Orientation must be either HORIZONTAL or VERTICAL.");
++        }
++    }
++
++    public int getOrientation() {
++        return mOrientation;
++    }
++
++    public void setStrokeColor(int strokeColor) {
++        mPaintStroke.setColor(strokeColor);
++        invalidate();
++    }
++
++    public int getStrokeColor() {
++        return mPaintStroke.getColor();
++    }
++
++    public void setStrokeWidth(float strokeWidth) {
++        mPaintStroke.setStrokeWidth(strokeWidth);
++        invalidate();
++    }
++
++    public float getStrokeWidth() {
++        return mPaintStroke.getStrokeWidth();
++    }
++
++    public void setRadius(float radius) {
++        mRadius = radius;
++        invalidate();
++    }
++
++    public float getRadius() {
++        return mRadius;
++    }
++
++    public void setSnap(boolean snap) {
++        mSnap = snap;
++        invalidate();
++    }
++
++    public boolean isSnap() {
++        return mSnap;
++    }
++
++    @Override
++    protected void onDraw(Canvas canvas) {
++        super.onDraw(canvas);
++
++        if (mViewPager == null) {
++            return;
++        }
++        final int count = mViewPager.getAdapter().getCount();
++        if (count == 0) {
++            return;
++        }
++
++        if (mCurrentPage >= count) {
++            setCurrentItem(count - 1);
++            return;
++        }
++
++        int longSize;
++        int longPaddingBefore;
++        int longPaddingAfter;
++        int shortPaddingBefore;
++        if (mOrientation == HORIZONTAL) {
++            longSize = getWidth();
++            longPaddingBefore = getPaddingLeft();
++            longPaddingAfter = getPaddingRight();
++            shortPaddingBefore = getPaddingTop();
++        } else {
++            longSize = getHeight();
++            longPaddingBefore = getPaddingTop();
++            longPaddingAfter = getPaddingBottom();
++            shortPaddingBefore = getPaddingLeft();
++        }
++
++        final float threeRadius = mRadius * 3;
++        final float shortOffset = shortPaddingBefore + mRadius;
++        float longOffset = longPaddingBefore + mRadius;
++        if (mCentered) {
++            longOffset += ((longSize - longPaddingBefore - longPaddingAfter) / 2.0f) - ((count * threeRadius) / 2.0f);
++        }
++
++        float dX;
++        float dY;
++
++        float pageFillRadius = mRadius;
++        if (mPaintStroke.getStrokeWidth() > 0) {
++            pageFillRadius -= mPaintStroke.getStrokeWidth() / 2.0f;
++        }
++
++        //Draw stroked circles
++        for (int iLoop = 0; iLoop < count; iLoop++) {
++            float drawLong = longOffset + (iLoop * threeRadius);
++            if (mOrientation == HORIZONTAL) {
++                dX = drawLong;
++                dY = shortOffset;
++            } else {
++                dX = shortOffset;
++                dY = drawLong;
++            }
++            // Only paint fill if not completely transparent
++            if (mPaintPageFill.getAlpha() > 0) {
++                if (mEditing && iLoop == 0) {
++                    canvas.drawBitmap(mSettingsIcon,
++                            (int) (dX - mRadius),
++                            (int) (dY - mRadius),
++                            mPaintPageFill);
++                } else {
++                    canvas.drawCircle(dX, dY, (float) (pageFillRadius / 1.5f), mPaintPageFill);
++                }
++            }
++
++            // Only paint stroke if a stroke width was non-zero
++            if (pageFillRadius != mRadius) {
++                canvas.drawCircle(dX, dY, mRadius, mPaintStroke);
++            }
++        }
++
++        //Draw the filled circle according to the current scroll
++        float cx = (mSnap ? mSnapPage : mCurrentPage) * threeRadius;
++        if (!mSnap) {
++            cx += mPageOffset * threeRadius;
++        }
++        if (mOrientation == HORIZONTAL) {
++            dX = longOffset + cx;
++            dY = shortOffset;
++        } else {
++            dX = shortOffset;
++            dY = longOffset + cx;
++        }
++        canvas.drawCircle(dX, dY, mRadius, mPaintFill);
++    }
++
++    public boolean onTouchEvent(MotionEvent ev) {
++        if (super.onTouchEvent(ev)) {
++            return true;
++        }
++        if ((mViewPager == null) || (mViewPager.getAdapter().getCount() == 0)) {
++            return false;
++        }
++
++        final int action = ev.getAction() & MotionEventCompat.ACTION_MASK;
++        switch (action) {
++            case MotionEvent.ACTION_DOWN:
++                mActivePointerId = MotionEventCompat.getPointerId(ev, 0);
++                mLastMotionX = ev.getX();
++                break;
++
++            case MotionEvent.ACTION_MOVE: {
++                final int activePointerIndex = MotionEventCompat.findPointerIndex(ev, mActivePointerId);
++                final float x = MotionEventCompat.getX(ev, activePointerIndex);
++                final float deltaX = x - mLastMotionX;
++
++                if (!mIsDragging) {
++                    if (Math.abs(deltaX) > mTouchSlop) {
++                        mIsDragging = true;
++                    }
++                }
++
++                if (mIsDragging) {
++                    mLastMotionX = x;
++                    if (mViewPager.isFakeDragging() || mViewPager.beginFakeDrag()) {
++                        mViewPager.fakeDragBy(deltaX);
++                    }
++                }
++
++                break;
++            }
++
++            case MotionEvent.ACTION_CANCEL:
++            case MotionEvent.ACTION_UP:
++                if (!mIsDragging) {
++                    final int count = mViewPager.getAdapter().getCount();
++                    final int width = getWidth();
++                    final float halfWidth = width / 2f;
++                    final float sixthWidth = width / 6f;
++
++                    if ((mCurrentPage > 0) && (ev.getX() < halfWidth - sixthWidth)) {
++                        if (action != MotionEvent.ACTION_CANCEL) {
++                            mViewPager.setCurrentItem(mCurrentPage - 1);
++                        }
++                        return true;
++                    } else if ((mCurrentPage < count - 1) && (ev.getX() > halfWidth + sixthWidth)) {
++                        if (action != MotionEvent.ACTION_CANCEL) {
++                            mViewPager.setCurrentItem(mCurrentPage + 1);
++                        }
++                        return true;
++                    }
++                }
++
++                mIsDragging = false;
++                mActivePointerId = INVALID_POINTER;
++                if (mViewPager.isFakeDragging()) mViewPager.endFakeDrag();
++                break;
++
++            case MotionEventCompat.ACTION_POINTER_DOWN: {
++                final int index = MotionEventCompat.getActionIndex(ev);
++                mLastMotionX = MotionEventCompat.getX(ev, index);
++                mActivePointerId = MotionEventCompat.getPointerId(ev, index);
++                break;
++            }
++
++            case MotionEventCompat.ACTION_POINTER_UP:
++                final int pointerIndex = MotionEventCompat.getActionIndex(ev);
++                final int pointerId = MotionEventCompat.getPointerId(ev, pointerIndex);
++                if (pointerId == mActivePointerId) {
++                    final int newPointerIndex = pointerIndex == 0 ? 1 : 0;
++                    mActivePointerId = MotionEventCompat.getPointerId(ev, newPointerIndex);
++                }
++                mLastMotionX = MotionEventCompat.getX(ev, MotionEventCompat.findPointerIndex(ev, mActivePointerId));
++                break;
++        }
++
++        return true;
++    }
++
++    @Override
++    public void setViewPager(ViewPager view) {
++        if (mViewPager == view) {
++            return;
++        }
++        if (mViewPager != null) {
++            mViewPager.setOnPageChangeListener(null);
++        }
++        if (view.getAdapter() == null) {
++            throw new IllegalStateException("ViewPager does not have adapter instance.");
++        }
++        mViewPager = view;
++        mViewPager.setOnPageChangeListener(this);
++        invalidate();
++    }
++
++    @Override
++    public void setViewPager(ViewPager view, int initialPosition) {
++        setViewPager(view);
++        setCurrentItem(initialPosition);
++    }
++
++    @Override
++    public void setCurrentItem(int item) {
++        if (mViewPager == null) {
++            throw new IllegalStateException("ViewPager has not been bound.");
++        }
++        mViewPager.setCurrentItem(item);
++        mCurrentPage = item;
++        invalidate();
++    }
++
++    @Override
++    public void notifyDataSetChanged() {
++        invalidate();
++    }
++
++    @Override
++    public void onPageScrollStateChanged(int state) {
++        mScrollState = state;
++
++        if (mListener != null) {
++            mListener.onPageScrollStateChanged(state);
++        }
++    }
++
++    @Override
++    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
++        mCurrentPage = position;
++        mPageOffset = positionOffset;
++        invalidate();
++
++        if (mListener != null) {
++            mListener.onPageScrolled(position, positionOffset, positionOffsetPixels);
++        }
++    }
++
++    @Override
++    public void onPageSelected(int position) {
++        if (mSnap || mScrollState == ViewPager.SCROLL_STATE_IDLE) {
++            mCurrentPage = position;
++            mSnapPage = position;
++            invalidate();
++        }
++
++        if (mListener != null) {
++            mListener.onPageSelected(position);
++        }
++    }
++
++    @Override
++    public void setOnPageChangeListener(ViewPager.OnPageChangeListener listener) {
++        mListener = listener;
++    }
++
++    /*
++     * (non-Javadoc)
++     *
++     * @see android.view.View#onMeasure(int, int)
++     */
++    @Override
++    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
++        if (mOrientation == HORIZONTAL) {
++            setMeasuredDimension(measureLong(widthMeasureSpec), measureShort(heightMeasureSpec));
++        } else {
++            setMeasuredDimension(measureShort(widthMeasureSpec), measureLong(heightMeasureSpec));
++        }
++    }
++
++    /**
++     * Determines the width of this view
++     *
++     * @param measureSpec
++     *            A measureSpec packed into an int
++     * @return The width of the view, honoring constraints from measureSpec
++     */
++    private int measureLong(int measureSpec) {
++        int result;
++        int specMode = MeasureSpec.getMode(measureSpec);
++        int specSize = MeasureSpec.getSize(measureSpec);
++
++        if ((specMode == MeasureSpec.EXACTLY) || (mViewPager == null)) {
++            //We were told how big to be
++            result = specSize;
++        } else {
++            //Calculate the width according the views count
++            final int count = mViewPager.getAdapter().getCount();
++            result = (int)(getPaddingLeft() + getPaddingRight()
++                    + (count * 2 * mRadius) + (count - 1) * mRadius + 1);
++            //Respect AT_MOST value if that was what is called for by measureSpec
++            if (specMode == MeasureSpec.AT_MOST) {
++                result = Math.min(result, specSize);
++            }
++        }
++        return result;
++    }
++
++    /**
++     * Determines the height of this view
++     *
++     * @param measureSpec
++     *            A measureSpec packed into an int
++     * @return The height of the view, honoring constraints from measureSpec
++     */
++    private int measureShort(int measureSpec) {
++        int result;
++        int specMode = MeasureSpec.getMode(measureSpec);
++        int specSize = MeasureSpec.getSize(measureSpec);
++
++        if (specMode == MeasureSpec.EXACTLY) {
++            //We were told how big to be
++            result = specSize;
++        } else {
++            //Measure the height
++            result = (int)(2 * mRadius + getPaddingTop() + getPaddingBottom() + 1);
++            //Respect AT_MOST value if that was what is called for by measureSpec
++            if (specMode == MeasureSpec.AT_MOST) {
++                result = Math.min(result, specSize);
++            }
++        }
++        return result;
++    }
++
++    public void setEditing(boolean editing) {
++        mEditing = editing;
++        invalidate();
++    }
++    
++    public int getCurrentPage(){
++    	return mCurrentPage;
++    }
++}
+-- 
+2.8.3.windows.1
+

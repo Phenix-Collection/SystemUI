@@ -1,0 +1,197 @@
+From 308f22d14b998ec13d57e564ededbcc3da11b987 Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Mon, 27 Feb 2017 20:54:45 +0800
+Subject: [PATCH 073/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91pin?=
+ =?UTF-8?q?=E5=AF=86=E7=A0=81=E8=A7=A3=E9=94=81=E5=AD=97=E6=95=B0=E8=BE=BE?=
+ =?UTF-8?q?=E5=88=B06=E4=BD=8D=E8=87=AA=E5=8A=A8=E8=A7=A3=E9=94=81?=
+ =?UTF-8?q?=E5=AE=9E=E7=8E=B0?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../keyguard/KeyguardPinBasedInputView.java        | 22 +++++++--
+ .../src/com/android/keyguard/PasswordTextView.java | 52 +++++++++++++++++++++-
+ 2 files changed, 70 insertions(+), 4 deletions(-)
+
+diff --git a/SystemUI/src/com/android/keyguard/KeyguardPinBasedInputView.java b/SystemUI/src/com/android/keyguard/KeyguardPinBasedInputView.java
+index f51e10f..5e0d010 100644
+--- a/SystemUI/src/com/android/keyguard/KeyguardPinBasedInputView.java
++++ b/SystemUI/src/com/android/keyguard/KeyguardPinBasedInputView.java
+@@ -16,6 +16,8 @@
+ 
+ package com.android.keyguard;
+ 
++import com.android.keyguard.PasswordTextView.OnFinishedListener;
++
+ import android.content.Context;
+ import android.graphics.Rect;
+ import android.util.AttributeSet;
+@@ -26,7 +28,7 @@ import android.view.View;
+  * A Pin based Keyguard input view
+  */
+ public abstract class KeyguardPinBasedInputView extends KeyguardAbsKeyInputView
+-        implements View.OnKeyListener {
++        implements View.OnKeyListener, OnFinishedListener {
+ 
+     protected PasswordTextView mPasswordEntry;
+     private View mOkButton;
+@@ -161,6 +163,7 @@ public abstract class KeyguardPinBasedInputView extends KeyguardAbsKeyInputView
+     protected void onFinishInflate() {
+         mPasswordEntry = (PasswordTextView) findViewById(getPasswordTextViewId());
+         mPasswordEntry.setOnKeyListener(this);
++        mPasswordEntry.setOnFinishedListener(this);
+ 
+         // Set selected property on so the view can send accessibility events.
+         mPasswordEntry.setSelected(true);
+@@ -174,7 +177,7 @@ public abstract class KeyguardPinBasedInputView extends KeyguardAbsKeyInputView
+ 
+         mOkButton = findViewById(R.id.key_enter);
+         if (mOkButton != null) {
+-            mOkButton.setOnClickListener(new View.OnClickListener() {
++            /*mOkButton.setOnClickListener(new View.OnClickListener() {
+                 @Override
+                 public void onClick(View v) {
+                     doHapticKeyClick();
+@@ -183,7 +186,7 @@ public abstract class KeyguardPinBasedInputView extends KeyguardAbsKeyInputView
+                     }
+                 }
+             });
+-            mOkButton.setOnHoverListener(new LiftToActivateListener(getContext()));
++            mOkButton.setOnHoverListener(new LiftToActivateListener(getContext()));*/
+         }
+ 
+         mDeleteButton = findViewById(R.id.delete_button);
+@@ -233,4 +236,17 @@ public abstract class KeyguardPinBasedInputView extends KeyguardAbsKeyInputView
+         }
+         return false;
+     }
++    
++    //added by yangfan
++    @Override
++    public void OnFinished() {
++    	mPasswordEntry.setEnabled(true);
++        doHapticKeyClick();
++        verifyPasswordAndUnlock();
++    }
++    
++    @Override
++    public void OnUnFinished() {
++    	//提示不足6位
++    }
+ }
+diff --git a/SystemUI/src/com/android/keyguard/PasswordTextView.java b/SystemUI/src/com/android/keyguard/PasswordTextView.java
+index 50e7ecb..5433d47 100644
+--- a/SystemUI/src/com/android/keyguard/PasswordTextView.java
++++ b/SystemUI/src/com/android/keyguard/PasswordTextView.java
+@@ -20,6 +20,7 @@ import android.animation.Animator;
+ import android.animation.AnimatorListenerAdapter;
+ import android.animation.AnimatorSet;
+ import android.animation.ValueAnimator;
++import android.app.PendingIntent.OnFinished;
+ import android.content.Context;
+ import android.content.res.TypedArray;
+ import android.graphics.Canvas;
+@@ -30,15 +31,20 @@ import android.os.PowerManager;
+ import android.os.SystemClock;
+ import android.os.UserHandle;
+ import android.provider.Settings;
++import android.text.Editable;
+ import android.text.InputType;
+ import android.text.TextUtils;
++import android.text.TextWatcher;
+ import android.util.AttributeSet;
++import android.util.Log;
+ import android.view.View;
+ import android.view.accessibility.AccessibilityEvent;
+ import android.view.accessibility.AccessibilityManager;
+ import android.view.accessibility.AccessibilityNodeInfo;
+ import android.view.animation.AnimationUtils;
+ import android.view.animation.Interpolator;
++import android.widget.TextView;
++import android.widget.Toast;
+ 
+ import java.util.ArrayList;
+ import java.util.Stack;
+@@ -47,7 +53,7 @@ import java.util.Stack;
+  * A View similar to a textView which contains password text and can animate when the text is
+  * changed
+  */
+-public class PasswordTextView extends View {
++public class PasswordTextView extends TextView implements TextWatcher {
+ 
+     private static final float DOT_OVERSHOOT_FACTOR = 1.5f;
+     private static final long DOT_APPEAR_DURATION_OVERSHOOT = 320;
+@@ -93,6 +99,7 @@ public class PasswordTextView extends View {
+     private Interpolator mFastOutSlowInInterpolator;
+     private boolean mShowPassword;
+     private UserActivityListener mUserActivityListener;
++    private final static int MAXLENGTH = 6;
+ 
+     public interface UserActivityListener {
+         void onUserActivity();
+@@ -115,6 +122,7 @@ public class PasswordTextView extends View {
+         super(context, attrs, defStyleAttr, defStyleRes);
+         setFocusableInTouchMode(true);
+         setFocusable(true);
++        addTextChangedListener(this);
+         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.PasswordTextView);
+         try {
+             mTextHeightRaw = a.getInt(R.styleable.PasswordTextView_scaledTextSize, 0);
+@@ -209,6 +217,10 @@ public class PasswordTextView extends View {
+         }
+         userActivity();
+         sendAccessibilityEventTypeViewTextChanged(textbefore, textbefore.length(), 0, 1);
++    	//added by yangfan
++    	if (mText.length() >= MAXLENGTH) {
++    		mFinishedListener.OnFinished();
++		}//added by yangfan
+     }
+ 
+     public void setUserActivityListener(UserActivityListener userActivitiListener) {
+@@ -680,4 +692,42 @@ public class PasswordTextView extends View {
+             return charWidth + mCharPadding * currentWidthFactor;
+         }
+     }
++
++    //added by yangfan begin
++	@Override
++	public void beforeTextChanged(CharSequence s, int start, int count,
++			int after) {
++		Log.e(this.getClass().getSimpleName(), "beforeTextChanged");
++	}
++	
++	@Override
++	public void onTextChanged(CharSequence s, int start, int before, int count) {
++		Log.e(this.getClass().getSimpleName(), "onTextChanged");
++	}
++	
++	@Override
++	public void afterTextChanged(Editable s) {
++		Log.e(this.getClass().getSimpleName(), "afterTextChanged");
++		int curLength = s.length();
++		if (curLength >= MAXLENGTH) {
++			//执行ok内容
++			Log.i(this.getClass().getSimpleName(), "curLength : "  + curLength );
++			Toast.makeText(mContext, curLength + "", Toast.LENGTH_SHORT).show();
++			mFinishedListener.OnFinished();
++		}else {
++			
++		}
++	}
++	
++	public void setOnFinishedListener(OnFinishedListener listener){
++		mFinishedListener = listener;
++	}
++	
++	private OnFinishedListener mFinishedListener;
++	
++	public static interface OnFinishedListener{
++		public void OnFinished();
++		public void OnUnFinished();
++	}
++    //added by yangfan end
+ }
+-- 
+2.8.3.windows.1
+

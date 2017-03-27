@@ -1,0 +1,388 @@
+From 71bb78aacf18c64b2dd316bdc0c5c48f2d245328 Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Thu, 2 Mar 2017 18:44:20 +0800
+Subject: [PATCH 093/185] =?UTF-8?q?=E3=80=90=E5=8A=9F=E8=83=BD=E3=80=91?=
+ =?UTF-8?q?=E5=BB=B6=E8=BF=9F=E6=89=8B=E6=9C=BA=E4=BF=A1=E5=8F=B7?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../android/systemui/qs/tiles/CellularTile.java    |  4 +-
+ .../systemui/statusbar/SignalClusterView.java      | 90 +++++++++++++---------
+ .../systemui/statusbar/policy/CallbackHandler.java | 10 +--
+ .../statusbar/policy/MobileSignalController.java   | 31 +++-----
+ .../statusbar/policy/NetworkController.java        |  4 +-
+ .../statusbar/policy/SignalCallbackAdapter.java    |  2 +-
+ 6 files changed, 76 insertions(+), 65 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/qs/tiles/CellularTile.java b/SystemUI/src/com/android/systemui/qs/tiles/CellularTile.java
+index d5e3d48..1484522 100644
+--- a/SystemUI/src/com/android/systemui/qs/tiles/CellularTile.java
++++ b/SystemUI/src/com/android/systemui/qs/tiles/CellularTile.java
+@@ -200,6 +200,7 @@ public class CellularTile extends QSTile<QSTile.BooleanState> {
+         boolean isDataTypeIconWide;
+         String networkName;// added by yangfan
+         boolean isForbidden;// added by yangfan
++        boolean isDelaySignal;
+     }
+ 
+     private final class CellSignalCallback extends SignalCallbackAdapter {
+@@ -217,7 +218,7 @@ public class CellularTile extends QSTile<QSTile.BooleanState> {
+                                             boolean activityIn, boolean activityOut, int dataActivityId,
+                                             int mobileActivityId, int stackedDataIcon,
+                                             int stackedVoiceIcon, String typeContentDescription,
+-                                            String description, boolean isWide, int subId,String networkName,boolean showNetworkClass) {// added by yangfan
++                                            String description, boolean isWide, int subId,String networkName,boolean showNetworkClass,boolean isDelaySignal) {// added by yangfan
+             if (qsIcon == null) {
+                 // Not data sim, don't display.
+                 return;
+@@ -233,6 +234,7 @@ public class CellularTile extends QSTile<QSTile.BooleanState> {
+             mInfo.isDataTypeIconWide = qsType != 0 && isWide;
+             mInfo.networkName = networkName;// added by yangfan
+             mInfo.isForbidden = showNetworkClass;// added by yangfan
++            mInfo.isDelaySignal = isDelaySignal;
+             refreshState(mInfo);
+         }
+ 
+diff --git a/SystemUI/src/com/android/systemui/statusbar/SignalClusterView.java b/SystemUI/src/com/android/systemui/statusbar/SignalClusterView.java
+index c449656..822303c 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/SignalClusterView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/SignalClusterView.java
+@@ -23,6 +23,7 @@ import android.graphics.Color;
+ import android.graphics.PorterDuff;
+ import android.graphics.drawable.Animatable;
+ import android.graphics.drawable.Drawable;
++import android.os.Handler;
+ import android.telephony.SubscriptionInfo;
+ import android.telephony.SubscriptionManager;
+ import android.telephony.TelephonyManager;
+@@ -106,6 +107,7 @@ public class SignalClusterView
+     private boolean mBlockWifi;
+     private boolean mBlockEthernet;
+     private boolean mBlockNetworkLabel;// added by yangfan
++    private Handler mDelaySignaHandler = new  Handler();
+ 
+     public SignalClusterView(Context context) {
+         this(context, null);
+@@ -254,7 +256,7 @@ public class SignalClusterView
+                                         boolean activityOut, int dataActivityId, int mobileActivityId,
+                                         int stackedDataId, int stackedVoiceId,
+                                         String typeContentDescription, String description, boolean isWide,
+-                                        int subId, String networkName,boolean showNetworkClass) {// add 'showDataIcon,networkName,showNetworkClass' by yangfan
++                                        int subId, String networkName,boolean showNetworkClass,boolean isDelaySignal) {// add 'showDataIcon,networkName,showNetworkClass' by yangfan
+         PhoneState state = getState(subId);
+         if (state == null) {
+             return;
+@@ -273,6 +275,7 @@ public class SignalClusterView
+ 		state.mShowDataIcon = showDataIcon;
+         state.mNetworkLabelName = networkName;
+         state.mShowNetworkClass = showNetworkClass;
++        state.mDelaySignal = isDelaySignal;
+ // added by yangfan
+         apply();
+     }
+@@ -285,7 +288,7 @@ public class SignalClusterView
+                                         int stackedDataId, int stackedVoiceId,
+                                         String typeContentDescription, String description, boolean isWide,
+                                         int subId, int imsIconId, boolean isImsOverWifi,
+-                                        int dataNetworkTypeInRoamingId, int embmsIconId, String networkName,boolean showNetworkClass) {
++                                        int dataNetworkTypeInRoamingId, int embmsIconId, String networkName,boolean showNetworkClass,boolean isDelaySignal) {
+         PhoneState state = getState(subId);
+         if (state == null) {
+             return;
+@@ -298,7 +301,7 @@ public class SignalClusterView
+         this.setMobileDataIndicators(statusIcon, qsIcon, statusType,showDataIcon, qsType,
+                 activityIn, activityOut, dataActivityId, mobileActivityId,
+                 stackedDataId, stackedVoiceId, typeContentDescription,
+-                description, isWide, subId, networkName,showNetworkClass);
++                description, isWide, subId, networkName,showNetworkClass, isDelaySignal);
+     }
+ // add 'showDataIcon,networkName,showNetworkClass' by yangfan end
+ 
+@@ -644,6 +647,7 @@ public class SignalClusterView
+         private boolean mNoserviceEnable;
+         private SubscriptionManager mSubscriptionManager;
+         private boolean mShowNetworkClass;
++        private boolean mDelaySignal;
+ //declare variable by yangfan end
+ 
+         public PhoneState(int subId, Context context) {
+@@ -725,51 +729,31 @@ public class SignalClusterView
+             mMobileSingleGroup = (ViewGroup) root.findViewById(R.id.mobile_signal_single);
+             mMobileStackedGroup = (ViewGroup) root.findViewById(R.id.mobile_signal_stacked);
+             mRoaming        = (ImageView) root.findViewById(R.id.mobile_roaming);
+-//add 'label and label container' by yangfan 
+             mMobileNetworkLaberGroup = root
+                     .findViewById(R.id.mobile_network_label);
+             mNetWorkNameLabelView = (TextView) root
+                     .findViewById(R.id.network_label);
+-//add 'label and label container' by yangfan  end
+         }
+ 
+         public boolean apply(boolean isSecondaryIcon) {
+-//add 'tm' by yangfan 
+             TelephonyManager tm = (TelephonyManager) mContext
+                     .getSystemService(Context.TELEPHONY_SERVICE);
+-//add 'tm' by yangfan end
+-
+-//update labelName by yangfan
+             String networkLabelName = getNetworkLabelName(tm,mShowDataIcon);
+-            mNetWorkNameLabelView.setText(networkLabelName);
+-            mNetWorkNameLabelView.setVisibility(mIsNetworkLabelEnable && !TextUtils.isEmpty(networkLabelName) ? VISIBLE : GONE);
+-//                mMobileSingleGroup.setVisibility(mNoserviceEnable ? GONE : VISIBLE);
++            updateOperator(networkLabelName);
+ 
+-            int mobileStrengthId =  TextUtils.isEmpty(networkLabelName) ? R.drawable.qucii_stat_sys_no_service : mMobileStrengthId;
+-//update labelName by yangfan end
+             if (mMobileVisible && !mIsAirplaneMode) {
+-                mMobile.setImageResource(mMobileStrengthId);
+-                Drawable mobileDrawable = mMobile.getDrawable();
+-                if (mobileDrawable instanceof Animatable) {
+-                    Animatable ad = (Animatable) mobileDrawable;
+-                    if (!ad.isRunning()) {
+-                        ad.start();
+-                    }
+-                }
+-//added by yangfan 
+-                mMobileDark.setImageResource(mMobileStrengthId);
+-//added by yangfan end
+-                Drawable mobileDarkDrawable = mMobileDark.getDrawable();
+-                if (mobileDarkDrawable instanceof Animatable) {
+-                    Animatable ad = (Animatable) mobileDarkDrawable;
+-                    if (!ad.isRunning()) {
+-                        ad.start();
+-                    }
+-                }
++            	// add delay strength by yangfan begin 
++            	if (mDelaySignal) {
++					if (mDelaySignaHandler.hasCallbacks(mSignalChanged)) {
++						mDelaySignaHandler.removeCallbacks(mSignalChanged);
++					}
++				}else {
++					mDelaySignaHandler.removeCallbacks(mSignalChanged);
++				}
++            	mDelaySignaHandler.postDelayed(mSignalChanged,mDelaySignal ? 20 * 1000 : 0);
++            	// add delay strength by yangfan end 
+                 mMobileType.setImageResource(mMobileTypeId);
+-				
+                 mMobileDataType.setImageResource(0);
+-
+                 mDataActivity.setImageResource(mDataActivityId);
+                 Drawable dataActivityDrawable = mDataActivity.getDrawable();
+                 if (dataActivityDrawable instanceof Animatable) {
+@@ -797,9 +781,7 @@ public class SignalClusterView
+                     mStackedData.setImageResource(mStackedDataId);
+                     mStackedVoice.setImageResource(mStackedVoiceId);
+                     mMobileSingleGroup.setVisibility(View.GONE);
+-// added by yangfan
+                     mMobileDataType.setVisibility(GONE);
+-// added by yangfan end
+                     mMobileStackedGroup.setVisibility(View.VISIBLE);
+                 } else {
+                     mStackedData.setImageResource(0);
+@@ -848,6 +830,42 @@ public class SignalClusterView
+             return mMobileVisible;
+         }
+ 
++		private void updateOperator(String networkLabelName) {
++			mNetWorkNameLabelView.setText(networkLabelName);
++            mNetWorkNameLabelView.setVisibility(mIsNetworkLabelEnable && !TextUtils.isEmpty(networkLabelName) ? VISIBLE : GONE);
++		}
++		
++        public void updateMobileStrength(){
++            TelephonyManager tm = (TelephonyManager) mContext
++                    .getSystemService(Context.TELEPHONY_SERVICE);
++            String networkLabelName = getNetworkLabelName(tm,mShowDataIcon);
++        	int mobileStrengthId =  TextUtils.isEmpty(networkLabelName) ? R.drawable.qucii_stat_sys_no_service : mMobileStrengthId;
++            mMobile.setImageResource(mobileStrengthId);
++            Drawable mobileDrawable = mMobile.getDrawable();
++            if (mobileDrawable instanceof Animatable) {
++                Animatable ad = (Animatable) mobileDrawable;
++                if (!ad.isRunning()) {
++                    ad.start();
++                }
++            }
++            mMobileDark.setImageResource(mobileStrengthId);
++            Drawable mobileDarkDrawable = mMobileDark.getDrawable();
++            if (mobileDarkDrawable instanceof Animatable) {
++                Animatable ad = (Animatable) mobileDarkDrawable;
++                if (!ad.isRunning()) {
++                    ad.start();
++                }
++            }
++        }
++        
++        Runnable mSignalChanged = new  Runnable() {
++			
++			@Override
++			public void run() {
++				updateMobileStrength();
++			}
++		};
++
+         public void populateAccessibilityEvent(AccessibilityEvent event) {
+             if (mMobileVisible && mMobileGroup != null
+                     && mMobileGroup.getContentDescription() != null) {
+diff --git a/SystemUI/src/com/android/systemui/statusbar/policy/CallbackHandler.java b/SystemUI/src/com/android/systemui/statusbar/policy/CallbackHandler.java
+index 58caac0..077c338 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/policy/CallbackHandler.java
++++ b/SystemUI/src/com/android/systemui/statusbar/policy/CallbackHandler.java
+@@ -137,7 +137,7 @@ public class CallbackHandler extends Handler implements EmergencyListener, Signa
+             final boolean activityOut, final int dataActivityId, final int mobileActivityId,
+             final int stackedDataIcon, final int stackedVoiceIcon,
+             final String typeContentDescription, final String description, final boolean isWide,
+-            final int subId,final String networkName,final boolean showNetworkClass) {// added by yangfan 
++            final int subId,final String networkName,final boolean showNetworkClass,final boolean isDelaySignal) {// added by yangfan 
+         post(new Runnable() {
+             @Override
+             public void run() {
+@@ -145,7 +145,7 @@ public class CallbackHandler extends Handler implements EmergencyListener, Signa
+                     signalCluster.setMobileDataIndicators(statusIcon, qsIcon, statusType, showDataIcon,qsType,
+                             activityIn, activityOut, dataActivityId, mobileActivityId,
+                             stackedDataIcon, stackedVoiceIcon,
+-                            typeContentDescription, description, isWide, subId,networkName,  showNetworkClass);// added by yangfan 
++                            typeContentDescription, description, isWide, subId,networkName,  showNetworkClass,isDelaySignal);// added by yangfan 
+                 }
+             }
+         });
+@@ -158,7 +158,7 @@ public class CallbackHandler extends Handler implements EmergencyListener, Signa
+             final int stackedDataIcon, final int stackedVoiceIcon,
+             final String typeContentDescription, final String description, final boolean isWide,
+             final int subId, final int imsIconId, final boolean isImsOverWifi,
+-            final int dataNetworkTypeInRoamingId, final int embmsIconId,final String networkName,final boolean showNetworkClass) {// added by yangfan 
++            final int dataNetworkTypeInRoamingId, final int embmsIconId,final String networkName,final boolean showNetworkClass,final boolean isDelaySignal) {// added by yangfan 
+         post(new Runnable() {
+             @Override
+             public void run() {
+@@ -169,12 +169,12 @@ public class CallbackHandler extends Handler implements EmergencyListener, Signa
+                                 activityOut, dataActivityId, mobileActivityId,
+                                 stackedDataIcon, stackedVoiceIcon, typeContentDescription,
+                                 description, isWide, subId, imsIconId, isImsOverWifi,
+-                                dataNetworkTypeInRoamingId, embmsIconId,networkName,showNetworkClass);// added by yangfan 
++                                dataNetworkTypeInRoamingId, embmsIconId,networkName,showNetworkClass,isDelaySignal);// added by yangfan 
+                     } else {
+                         signalCluster.setMobileDataIndicators(statusIcon, qsIcon, statusType,showDataIcon,
+                                 qsType, activityIn, activityOut, dataActivityId,
+                                 mobileActivityId, stackedDataIcon, stackedVoiceIcon,
+-                                typeContentDescription, description, isWide, subId,networkName,showNetworkClass);// added by yangfan 
++                                typeContentDescription, description, isWide, subId,networkName,showNetworkClass,isDelaySignal);// added by yangfan 
+                     }
+                 }
+             }
+diff --git a/SystemUI/src/com/android/systemui/statusbar/policy/MobileSignalController.java b/SystemUI/src/com/android/systemui/statusbar/policy/MobileSignalController.java
+index f14fb4e..5d8fcb4 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/policy/MobileSignalController.java
++++ b/SystemUI/src/com/android/systemui/statusbar/policy/MobileSignalController.java
+@@ -95,6 +95,7 @@ public class MobileSignalController extends SignalController<
+     private DataEnabledSettingObserver mDataEnabledSettingObserver;
+     CarrierAppUtils.CARRIER carrier = CarrierAppUtils.getCarrierId();
+     private int tmpLevel = 0;// added by yangfan 
++    private boolean  isDelaySignal = false;//added by yangfan
+ 
+     // TODO: Reduce number of vars passed in, if we have the NetworkController, probably don't
+     // need listener lists anymore.
+@@ -338,13 +339,14 @@ public class MobileSignalController extends SignalController<
+         String networkLabelName = mCurrentState.networkNameData.replace(" ", "");
+         Log.i(mTag, " MobileSignalController >> networkLabelName : " + networkLabelName);
+         int dataTypeIcon = typeIcon; //added by yangfan
++        
+         mCallbackHandler.setMobileDataIndicators(statusIcon, qsIcon, typeIcon,showDataIcon, qsTypeIcon,
+                 activityIn, activityOut, dataActivityId, mobileActivityId,
+                 icons.mStackedDataIcon, icons.mStackedVoiceIcon,
+                 dataContentDescription, description, icons.mIsWide,
+                 mSubscriptionInfo.getSubscriptionId(), getImsIconId(),
+                 isImsRegisteredInWifi(), getdataNetworkTypeInRoamingId(),
+-                getEmbmsIconId(), networkLabelName,mCurrentState.isForbidden);
++                getEmbmsIconId(), networkLabelName,mCurrentState.isForbidden,isDelaySignal);
+ 
+         mCallbackHandler.post(new Runnable() {
+             @Override
+@@ -638,8 +640,8 @@ public class MobileSignalController extends SignalController<
+                     + " ss=" + mSignalStrength );
+         }
+         mCurrentState.connected = hasService() && mSignalStrength != null;
+-//modified by yangfan begin
+-        boolean isDelay = false;
++        //modified by yangfan begin
++        isDelaySignal = false;
+         if (mCurrentState.connected) {
+             if (!mSignalStrength.isGsm() && mConfig.alwaysShowCdmaRssi) {
+                 tmpLevel = mSignalStrength.getCdmaLevel();
+@@ -654,13 +656,10 @@ public class MobileSignalController extends SignalController<
+                 }
+             }
+         }
+-        if (hasService && tmpLevel < mCurrentState.level) {
+-            isDelay = true;
+-            Log.e(mTag, "postDelayedCallbacks: " + tmpLevel);
++        if (hasService && tmpLevel <= mCurrentState.level) {
++        	isDelaySignal = true;
+         }else {
+-            mCallbackHandler.removeCallbacks(mSignalChanged);
+-            isDelay = false;
+-            Log.e(mTag, "removeCallbacks : " + tmpLevel);
++        	isDelaySignal = false;
+         }
+         if (mNetworkToIconLookup.indexOfKey(mDataNetType) >= 0) {
+             mCurrentState.iconGroup = mNetworkToIconLookup.get(mDataNetType);
+@@ -692,18 +691,10 @@ public class MobileSignalController extends SignalController<
+         if (mStyle == STATUS_BAR_STYLE_EXTENDED) {
+             mCurrentState.imsRadioTechnology = mServiceState.getRilImsRadioTechnology();
+         }
+-        Log.e(mTag, "tmpLevel : " + tmpLevel);
+-        mCallbackHandler.postDelayed(mSignalChanged, 0);
++        mCurrentState.level = tmpLevel;
++        Log.d(mTag, "mCurrentState.level : " + mCurrentState.level);
++        notifyListenersIfNecessary();
+     }
+-
+-    Runnable mSignalChanged = new Runnable() {
+-        @Override
+-        public void run() {
+-            mCurrentState.level = tmpLevel;
+-            Log.e(mTag, "mCurrentState.level : " + mCurrentState.level);
+-            notifyListenersIfNecessary();
+-        }
+-    } ;
+ //modified by yangfan end
+ 
+     private void generateIconGroup() {
+diff --git a/SystemUI/src/com/android/systemui/statusbar/policy/NetworkController.java b/SystemUI/src/com/android/systemui/statusbar/policy/NetworkController.java
+index a6c7743..e488ef1 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/policy/NetworkController.java
++++ b/SystemUI/src/com/android/systemui/statusbar/policy/NetworkController.java
+@@ -42,7 +42,7 @@ public interface NetworkController {
+                 int qsType, boolean activityIn, boolean activityOut, int dataActivityId,
+                 int mobileActivityId, int stackedDataIcon, int stackedVoiceIcon,
+                 String typeContentDescription, String description,
+-                boolean isWide, int subId,String networkName,final boolean showNetworkClass);// modified by yangfan 
++                boolean isWide, int subId,String networkName,final boolean showNetworkClass,boolean isDelaySignal);// modified by yangfan 
+         void setSubs(List<SubscriptionInfo> subs);
+         void setNoSims(boolean show);
+ 
+@@ -61,7 +61,7 @@ public interface NetworkController {
+                 int mobileActivityId, int stackedDataIcon, int stackedVoiceIcon,
+                 String typeContentDescription, String description, boolean isWide,
+                 int subId, int imsIconId, boolean isImsOverWifi, int dataNetworkTypeInRoamingId,
+-                int embmsIconId,String networkName,final boolean showNetworkClass);// modified by yangfan 
++                int embmsIconId,String networkName,final boolean showNetworkClass,boolean isDelaySignal);// modified by yangfan 
+     }
+ 
+     public static class IconState {
+diff --git a/SystemUI/src/com/android/systemui/statusbar/policy/SignalCallbackAdapter.java b/SystemUI/src/com/android/systemui/statusbar/policy/SignalCallbackAdapter.java
+index e3576c6..e01549d 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/policy/SignalCallbackAdapter.java
++++ b/SystemUI/src/com/android/systemui/statusbar/policy/SignalCallbackAdapter.java
+@@ -38,7 +38,7 @@ public class SignalCallbackAdapter implements SignalCallback {
+     public void setMobileDataIndicators(IconState statusIcon, IconState qsIcon, int statusType,boolean showDataIcon,
+             int qsType, boolean activityIn, boolean activityOut, int dataActivity,
+             int mobileActivity, int stackedDataIcon, int stackedVoiceIcon,
+-            String typeContentDescription, String description, boolean isWide, int subId,String networkName,boolean showNetworkClass) {
++            String typeContentDescription, String description, boolean isWide, int subId,String networkName,boolean showNetworkClass,boolean isDelaySignal) {
+     }// modified by yangfan 
+ 
+     @Override
+-- 
+2.8.3.windows.1
+

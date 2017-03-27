@@ -60,15 +60,14 @@ public class SettingsButton extends AlphaOptimizedImageButton {
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
-// modified by yangfan 
-                postDelayed(mLongPressCallback, /**LONG_PRESS_LENGTH**/0);
+                postDelayed(mLongPressCallback, LONG_PRESS_LENGTH);
                 break;
             case MotionEvent.ACTION_UP:
-//                if (mUpToSpeed) {
+                if (mUpToSpeed) {
                     startExitAnimation();
-//                } else {
-//                    cancelLongClick();
-//                }
+                } else {
+                    cancelLongClick();
+                }
                 break;
             case MotionEvent.ACTION_CANCEL:
                 cancelLongClick();
@@ -76,13 +75,9 @@ public class SettingsButton extends AlphaOptimizedImageButton {
             case MotionEvent.ACTION_MOVE:
                 float x = event.getX();
                 float y = event.getY();
-//                if ((x < -mSlop) || (y < -mSlop) || (x > getWidth() + mSlop)
-//                        || (y > getHeight() + mSlop)) {
-                if ((x > getWidth() + mSlop + getPaddingBottom() + getPaddingTop())
-                        || (y > getHeight() + mSlop + getPaddingStart() + getPaddingEnd())) {
+                if ((x < -mSlop) || (y < -mSlop) || (x > getWidth() + mSlop)
+                        || (y > getHeight() + mSlop)) {
                     cancelLongClick();
-					startExitAnimation();//added by yangfan 
-// modified by yangfan
                 }
                 break;
         }
@@ -105,7 +100,7 @@ public class SettingsButton extends AlphaOptimizedImageButton {
 
     private void startExitAnimation() {
         animate()
-                //.translationX(((View) getParent().getParent()).getWidth() - getX())
+                .translationX(((View) getParent().getParent()).getWidth() - getX())
                 .alpha(0)
                 .setDuration(RUN_DURATION)
                 .setInterpolator(AnimationUtils.loadInterpolator(mContext,
@@ -122,7 +117,7 @@ public class SettingsButton extends AlphaOptimizedImageButton {
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         setAlpha(1f);
-                        //setTranslationX(0);
+                        setTranslationX(0);
                         cancelLongClick();
                     }
 
@@ -142,7 +137,6 @@ public class SettingsButton extends AlphaOptimizedImageButton {
         mAnimator.addListener(new AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
-					startContinuousSpin();//added by yangfan 
             }
 
             @Override
@@ -151,7 +145,7 @@ public class SettingsButton extends AlphaOptimizedImageButton {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                //startContinuousSpin(); //modified by yangfan 
+                startContinuousSpin();
             }
 
             @Override

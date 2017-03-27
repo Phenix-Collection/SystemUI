@@ -1,0 +1,134 @@
+diff --git a/SystemUI/res/values/config.xml b/SystemUI/res/values/config.xml
+index 02c796b..3cdbcd4 100644
+--- a/SystemUI/res/values/config.xml
++++ b/SystemUI/res/values/config.xml
+@@ -123,6 +123,11 @@
+     <string name="quick_settings_tiles_default" translatable="false">
+         cell,wifi,bt<!-- ,inversion -->,dnd,airplane,rotation,flashlight,profile,location
+     </string>
++    
++        <!-- The default tiles to display in QuickSettings -->
++    <string name="quick_settings_tiles_default_land" translatable="false">
++        cell,wifi,bt<!-- ,inversion -->,dnd,airplane,rotation,flashlight,profile
++    </string>
+ 
+     <!-- The tiles to display in QuickSettings -->
+     <string name="quick_settings_tiles" translatable="false">default</string>
+diff --git a/SystemUI/src/com/android/systemui/qs/QSPanel.java b/SystemUI/src/com/android/systemui/qs/QSPanel.java
+index ad4d0f9..0b16d0c 100644
+--- a/SystemUI/src/com/android/systemui/qs/QSPanel.java
++++ b/SystemUI/src/com/android/systemui/qs/QSPanel.java
+@@ -36,7 +36,6 @@ import android.widget.TextView;
+ 
+ import com.android.internal.logging.MetricsLogger;
+ import com.android.internal.telephony.CarrierAppUtils;
+-import com.android.systemui.FontSizeUtils;
+ import com.android.systemui.R;
+ import com.android.systemui.qs.QSTile.DetailAdapter;
+ import com.android.systemui.settings.BrightnessController;
+@@ -172,7 +171,8 @@ public class QSPanel extends ViewGroup {
+ 
+     public void updateResources() {
+         final Resources res = mContext.getResources();
+-        final int columns = Math.max(1, res.getInteger(R.integer.quick_settings_num_columns));
++        final int columns = Math.max(1, mCurrentScreenConfig == Configuration.ORIENTATION_PORTRAIT ?  
++        		res.getInteger(R.integer.quick_settings_num_columns) : res.getInteger(R.integer.quick_settings_num_columns_landscreen));
+         mCellHeight = res.getDimensionPixelSize(R.dimen.qs_tile_height);
+         mCellWidth = (int)(mCellHeight * TILE_ASPECT);
+         mLargeCellHeight = res.getDimensionPixelSize(R.dimen.qs_dual_tile_height);
+@@ -227,13 +227,14 @@ public class QSPanel extends ViewGroup {
+         // We need to poke the detail views as well as they might not be attached to the view
+         // hierarchy but reused at a later point.
+         //add by lrh for land screen layout begin 20170110
+-         if(newConfig.orientation==Configuration.ORIENTATION_LANDSCAPE){
+-            updateResources(mContext.getResources().getInteger(R.integer.quick_settings_num_columns_landscreen));
+-            mCurrentScreenConfig = Configuration.ORIENTATION_LANDSCAPE;
+-         }else{
+-            updateResources();
+-            mCurrentScreenConfig = Configuration.ORIENTATION_PORTRAIT;
+-         }
++        int newOrientation = newConfig.orientation;
++		if (mCurrentScreenConfig != newOrientation) {
++			mCurrentScreenConfig = newOrientation;
++			if (null != mHost) {
++				mHost.onTuningChanged("sysui_qs_tiles", mCurrentScreenConfig == Configuration.ORIENTATION_PORTRAIT ? "default" : "land");
++			}
++			updateResources();
++		}
+       //add by lrh for land screen layout end 20170110
+         int count = mRecords.size();
+         for (int i = 0; i < count; i++) {
+@@ -551,9 +552,9 @@ public class QSPanel extends ViewGroup {
+             rows = r + 1;
+         }
+         //add by lrh for land screen layout begin 20170110
+-        if(mCurrentScreenConfig == Configuration.ORIENTATION_LANDSCAPE){
+-            rows = 2;//quiltsettings defualt value when landscreen
+-         }
++//        if(mCurrentScreenConfig == Configuration.ORIENTATION_LANDSCAPE){
++//            rows = 2;//quiltsettings defualt value when landscreen
++//         }
+         //add by lrh for land screen layout end 20170110
+         View previousView = mBrightnessView;
+         for (TileRecord record : mRecords) {
+@@ -609,12 +610,12 @@ public class QSPanel extends ViewGroup {
+         //for (TileRecord record : mRecords) {
+             TileRecord record = mRecords.get(i);
+             //add by lrh for land screen layout begin 20170110
+-            if((mCurrentScreenConfig == Configuration.ORIENTATION_LANDSCAPE)
+-                &&(i==(mRecords.size()-1))){
+-                 record.tileView.setVisibility(GONE);
+-            }else{
+-                 record.tileView.setVisibility(VISIBLE);
+-            }
++//            if((mCurrentScreenConfig == Configuration.ORIENTATION_LANDSCAPE)
++//                &&(i==(mRecords.size()-1))){
++//                 record.tileView.setVisibility(GONE);
++//            }else{
++//                 record.tileView.setVisibility(VISIBLE);
++//            }
+             //add by lrh for land screen layout end 20170110
+             if (record.tileView.getVisibility() == GONE) continue;
+             final int cols = getColumnCount(record.row);
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/QSTileHost.java b/SystemUI/src/com/android/systemui/statusbar/phone/QSTileHost.java
+index 87c8e5f..7842e44 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/QSTileHost.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/QSTileHost.java
+@@ -65,7 +65,7 @@ import java.util.Map;
+ /** Platform implementation of the quick settings tile host **/
+ public class QSTileHost implements QSTile.Host, Tunable {
+     private static final String TAG = "QSTileHost";
+-    private static final boolean DEBUG = Log.isLoggable(TAG, Log.DEBUG);
++    private static final boolean DEBUG = /*Log.isLoggable(TAG, Log.DEBUG)*/true;
+ 
+     protected static final String TILES_SETTING = "sysui_qs_tiles";
+ 
+@@ -227,7 +227,7 @@ public class QSTileHost implements QSTile.Host, Tunable {
+         if (!TILES_SETTING.equals(key)) {
+             return;
+         }
+-        if (DEBUG) Log.d(TAG, "Recreating tiles");
++        if (DEBUG)Log.d(TAG, "onTuningChanged >> Recreating tiles ，key : " +key + " , newValue : " +newValue);
+         final List<String> tileSpecs = loadTileSpecs(newValue);
+         if (tileSpecs.equals(mTileSpecs)) return;
+         for (Map.Entry<String, QSTile<?>> tile : mTiles.entrySet()) {
+@@ -280,6 +280,7 @@ public class QSTileHost implements QSTile.Host, Tunable {
+     protected List<String> loadTileSpecs(String tileList) {
+         final Resources res = mContext.getResources();
+         final String defaultTileList = res.getString(R.string.quick_settings_tiles_default);
++        final String landTileList = res.getString(R.string.quick_settings_tiles_default_land);
+         if (tileList == null) {
+             tileList = res.getString(R.string.quick_settings_tiles);
+             if (DEBUG) Log.d(TAG, "Loaded tile specs from config: " + tileList);
+@@ -296,6 +297,11 @@ public class QSTileHost implements QSTile.Host, Tunable {
+                     tiles.addAll(Arrays.asList(defaultTileList.split(",")));
+                     addedDefault = true;
+                 }
++            } else if (tile.equals("land")) {
++                if (!addedDefault) {
++                    tiles.addAll(Arrays.asList(landTileList.split(",")));
++                    addedDefault = true;
++                }
+             } else {
+                 tiles.add(tile);
+             }

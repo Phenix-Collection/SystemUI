@@ -186,12 +186,8 @@ public class FingerprintUnlockController extends KeyguardUpdateMonitorCallback {
                 if (!wasDeviceInteractive) {
                     mStatusBarKeyguardViewManager.notifyDeviceWakeUpRequested();
                 }
-        		//modified by wumin
-			if (mUpdateMonitor.musicLockScreenActive()) {
-				mStatusBarKeyguardViewManager.keyguardDone();
-			}
-			mStatusBarKeyguardViewManager.animateCollapsePanels(
-					FINGERPRINT_COLLAPSE_SPEEDUP_FACTOR, false);
+                mStatusBarKeyguardViewManager.animateCollapsePanels(
+                        FINGERPRINT_COLLAPSE_SPEEDUP_FACTOR);
                 break;
             case MODE_WAKE_AND_UNLOCK_PULSING:
                 mPhoneStatusBar.updateMediaMetaData(false /* metaDataChanged */);

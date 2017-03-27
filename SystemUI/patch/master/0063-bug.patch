@@ -1,0 +1,99 @@
+From e3f1424cef485ccc24dde17d10f03d9f71bbd2d9 Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Fri, 24 Feb 2017 10:59:24 +0800
+Subject: [PATCH 063/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E4=BF=AE=E5=A4=8D'=E6=83=85=E6=99=AF=E6=A8=A1=E5=BC=8F?=
+ =?UTF-8?q?=E6=BB=91=E5=9D=97=E6=9C=89=E6=97=B6=E5=80=99=E6=98=BE=E7=A4=BA?=
+ =?UTF-8?q?=E6=97=A7=E5=9B=BE=E7=89=87'=E7=9A=84bug?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/res/drawable/ic_qs_profile_ring.xml       | 59 ----------------------
+ .../src/com/android/systemui/tuner/QsTuner.java    |  2 +-
+ 2 files changed, 1 insertion(+), 60 deletions(-)
+ delete mode 100644 SystemUI/res/drawable/ic_qs_profile_ring.xml
+
+diff --git a/SystemUI/res/drawable/ic_qs_profile_ring.xml b/SystemUI/res/drawable/ic_qs_profile_ring.xml
+deleted file mode 100644
+index ff7adf5..0000000
+--- a/SystemUI/res/drawable/ic_qs_profile_ring.xml
++++ /dev/null
+@@ -1,59 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<vector xmlns:android="http://schemas.android.com/apk/res/android"
+-    android:width="128dp"
+-    android:height="128dp"
+-    android:viewportWidth="128"
+-    android:viewportHeight="128">
+-
+-    <path
+-        android:fillColor="#5696e7"
+-        android:fillAlpha="0.97"
+-        android:strokeAlpha="0.97"
+-        android:strokeWidth="1"
+-        android:pathData="M 60.53 0.00 L 67.36 0.00 C 81.56 0.91 95.47 6.36 106.14 15.84 C 119.07 27.00
+-126.99 43.52 128.00 60.54 L 128.00 67.37 C 126.99 85.60 117.93 103.22 103.45
+-114.40 C 93.42 122.42 80.92 126.87 68.19 128.00 L 60.11 128.00 C 45.88 126.90
+-31.96 121.36 21.36 111.73 C 8.71 100.57 0.99 84.25 0.00 67.44 L 0.00 60.62 C
+-0.98 43.57 8.91 27.03 21.85 15.84 C 32.49 6.38 46.37 0.94 60.53 0.00 M 54.53
+-2.75 C 41.14 4.78 28.53 11.40 19.22 21.21 C 9.67 31.12 3.61 44.29 2.31 57.99 C
+-0.61 74.48 5.98 91.54 16.79 104.11 C 25.73 114.67 38.29 122.13 51.88 124.78 C
+-64.97 127.43 78.92 125.67 90.93 119.81 C 105.05 113.03 116.39 100.69 121.93
+-86.04 C 127.33 72.02 127.33 56.02 121.94 42.00 C 116.49 27.57 105.43 15.39 91.62
+-8.53 C 80.26 2.81 67.09 0.78 54.53 2.75 Z" />
+-    <path
+-        android:fillColor="#5696e7"
+-        android:fillAlpha="0.97"
+-        android:strokeAlpha="0.97"
+-        android:strokeWidth="1"
+-        android:pathData="M 60.01 41.91 C 61.91 40.29 63.44 37.88 66.21 37.82 C 66.83 39.14 67.73 40.44
+-67.58 41.98 C 67.63 47.27 67.50 52.56 67.62 57.85 C 69.58 59.30 71.56 61.33
+-71.23 63.99 C 71.18 66.36 69.25 67.89 67.62 69.29 C 67.50 74.87 67.63 80.45
+-67.58 86.03 C 67.73 87.56 66.80 88.84 66.19 90.15 C 64.81 89.93 63.38 89.65
+-62.48 88.48 C 58.12 84.42 53.63 80.49 49.10 76.63 C 43.95 75.54 38.28 77.65
+-33.39 75.06 C 32.74 68.26 33.16 61.42 33.14 54.60 C 37.33 50.98 43.16 53.07
+-48.17 52.48 C 52.01 48.85 56.05 45.42 60.01 41.91 M 49.86 54.76 C 45.52 55.75
+-40.89 54.94 36.44 55.15 C 36.48 61.36 36.40 67.58 36.49 73.79 C 40.66 73.73
+-44.84 73.57 49.01 73.79 C 50.65 73.76 51.91 74.94 53.06 75.95 C 56.97 79.61
+-60.92 83.24 64.85 86.88 C 64.88 71.63 64.87 56.37 64.85 41.12 C 59.81 45.61
+-55.13 50.55 49.86 54.76 M 67.52 61.04 C 67.46 62.73 67.48 64.42 67.58 66.11 C
+-69.26 65.00 69.35 62.05 67.52 61.04 Z" />
+-    <path
+-        android:fillColor="#5696e7"
+-        android:fillAlpha="0.97"
+-        android:strokeAlpha="0.97"
+-        android:strokeWidth="1"
+-        android:pathData="M 82.23 40.85 C 82.87 40.64 84.15 40.20 84.79 39.99 C 89.29 45.26 92.93 51.51
+-93.75 58.51 C 93.99 58.42 94.47 58.24 94.71 58.15 C 94.96 62.03 94.92 65.92
+-94.54 69.78 L 93.62 69.24 C 92.67 75.92 89.33 82.10 84.75 86.98 C 84.16 86.73
+-83.00 86.22 82.42 85.97 C 88.11 79.72 92.15 71.56 91.66 62.93 C 91.83 54.59
+-87.63 46.93 82.23 40.85 Z" />
+-    <path
+-        android:fillColor="#5696e7"
+-        android:fillAlpha="0.97"
+-        android:strokeAlpha="0.97"
+-        android:strokeWidth="1"
+-        android:pathData="M 73.29 48.79 C 73.91 48.64 75.13 48.34 75.75 48.19 C 79.00 52.45 81.65 57.52
+-81.64 63.00 C 81.94 68.85 79.28 74.38 75.76 78.90 C 75.14 78.71 73.91 78.34
+-73.30 78.16 C 76.99 73.26 80.05 67.28 78.93 60.95 C 78.48 56.35 75.69 52.56
+-73.29 48.79 Z" />
+-</vector>
+\ No newline at end of file
+diff --git a/SystemUI/src/com/android/systemui/tuner/QsTuner.java b/SystemUI/src/com/android/systemui/tuner/QsTuner.java
+index cdd0e7a..9a6debb 100644
+--- a/SystemUI/src/com/android/systemui/tuner/QsTuner.java
++++ b/SystemUI/src/com/android/systemui/tuner/QsTuner.java
+@@ -471,7 +471,7 @@ public class QsTuner extends Fragment implements Callback {
+             else if (mSpec.equals("location")) return R.drawable.ic_signal_location_enable;
+             else if (mSpec.equals("cast")) return R.drawable.ic_qs_cast_on;
+             else if (mSpec.equals("hotspot")) return R.drawable.ic_hotspot_enable;
+-            else if (mSpec.equals("profile")) return R.drawable.ic_qs_profile_ring;// add 'profile' by yangfan
++            else if (mSpec.equals("profile")) return R.drawable.ic_qs_profile_ringing;// add 'profile' by yangfan
+             return R.drawable.android;
+         }
+ 
+-- 
+2.8.3.windows.1
+

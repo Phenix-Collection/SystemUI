@@ -1,0 +1,161 @@
+From 5de2fd3ac25012d8aeb15cfcb84103086484f96b Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Thu, 23 Feb 2017 14:26:01 +0800
+Subject: [PATCH 058/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E4=BF=AE=E6=94=B9=E6=B5=AE=E5=8A=A8=E9=80=9A=E7=9F=A5=E8=A7=A6?=
+ =?UTF-8?q?=E6=91=B8=E4=BA=8B=E4=BB=B6=E5=92=8C=E8=83=8C=E6=99=AF=E9=97=AE?=
+ =?UTF-8?q?=E9=A2=98?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../statusbar/phone/NotificationPanelView.java     |  2 ++
+ .../stack/NotificationStackScrollLayout.java       | 10 +++---
+ .../statusbar/phone/NotificationsViewPager.java    | 39 +++++++++++++++++-----
+ 3 files changed, 39 insertions(+), 12 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+index 19be2b3..0233301 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+@@ -2402,9 +2402,11 @@ public class NotificationPanelView extends PanelView implements
+     @Override
+     public void onHeadsUpPinnedModeChanged(final boolean inPinnedMode) {
+         if (inPinnedMode) {
++        	setBackground(null);// clear bg by yangfan
+             mHeadsUpExistenceChangedRunnable.run();
+             updateNotificationTranslucency();
+         } else {
++        	mStatusBar.blurPanelBg();// blurred bg by yangfan
+             mHeadsUpAnimatingAway = true;
+             mNotificationStackScroller.runAfterAnimationFinished(
+                     mHeadsUpExistenceChangedRunnable);
+diff --git a/SystemUI/src/com/android/systemui/statusbar/stack/NotificationStackScrollLayout.java b/SystemUI/src/com/android/systemui/statusbar/stack/NotificationStackScrollLayout.java
+index 35aef25..14cfddf 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/stack/NotificationStackScrollLayout.java
++++ b/SystemUI/src/com/android/systemui/statusbar/stack/NotificationStackScrollLayout.java
+@@ -526,6 +526,8 @@ public class NotificationStackScrollLayout extends ViewGroup
+             updateAlgorithmHeightAndPadding();
+             requestChildrenUpdate();//禁止通知在当前container内滚动
+         }
++      //modify by zqs 2017/2/22 start
++      //=======================
+         if (trackingHeadsUp) {
+         	panelView.updateIndicatorVisibility(INVISIBLE);
+ 		}else {
+@@ -533,9 +535,9 @@ public class NotificationStackScrollLayout extends ViewGroup
+ 			//mPhoneStatusBar.blurPanelBg();
+ 			panelView.updateIndicatorVisibility(mPhoneStatusBar.getBarState()==StatusBarState.KEYGUARD?View.INVISIBLE:View.VISIBLE);
+ 		}
+-        if (trackingHeadsUp) {
+-        	setStackTranslation(paddingOffset);//允许通知和头部一起滚动
+-		}
++        setStackTranslation(paddingOffset);//允许通知和头部一起滚动
++      //modify by zqs 2017/2/22 end
++      //=======================
+     }
+ 
+     public float getStackTranslation() {
+@@ -3211,7 +3213,7 @@ public class NotificationStackScrollLayout extends ViewGroup
+     }
+ //added by yangfan 
+     public boolean isTrackingHeadsUp(){
+-    	return mTrackingHeadsUp;
++    	return mTrackingHeadsUp || mHeadsUpManager.hasPinnedHeadsUp();
+     }
+ //added by yangfan  end
+ }
+diff --git a/SystemUI/src/com/qucii/systemui/statusbar/phone/NotificationsViewPager.java b/SystemUI/src/com/qucii/systemui/statusbar/phone/NotificationsViewPager.java
+index 3b7ec08..a5cf9ed 100644
+--- a/SystemUI/src/com/qucii/systemui/statusbar/phone/NotificationsViewPager.java
++++ b/SystemUI/src/com/qucii/systemui/statusbar/phone/NotificationsViewPager.java
+@@ -8,6 +8,7 @@ import android.database.DataSetObserver;
+ import android.support.v4.view.PagerAdapter;
+ import android.support.v4.view.ViewPager;
+ import android.util.AttributeSet;
++import android.util.Log;
+ import android.view.MotionEvent;
+ import android.view.ViewConfiguration;
+ 
+@@ -15,10 +16,11 @@ import android.view.ViewConfiguration;
+  * Created by ansen on 9/14/16.
+  */
+ public class NotificationsViewPager extends ViewPager {
++	private final static String TAG = NotificationsViewPager.class.getSimpleName();
+ 	private boolean mIsAnti;
+ 	private NotificationPanelView mPanelView;
+ 	private NotificationStackScrollLayout mNotificationStackScroller;
+-	private boolean mIsDisable;
++	private boolean mIsDisable;//screen sldie when Keyguard
+ 	private float mLastX, mLastY;
+ 	private boolean mPagerWantsIntercept = false;
+ 	private float mSwipTheshold;
+@@ -54,11 +56,8 @@ public class NotificationsViewPager extends ViewPager {
+ 
+ 	@Override
+ 	public boolean onInterceptTouchEvent(MotionEvent ev) {
+-		if (mIsDisable) {
+-			mPagerWantsIntercept = false;
+-			return false;
+-		}
+ 		boolean isNotificationView = mPanelView.isNotificationView();
++		Log.i(TAG, "isTrackingHeadsUp() : " + mNotificationStackScroller.isTrackingHeadsUp());
+ 		int action = ev.getAction();
+ 		switch (action) {
+ 		case MotionEvent.ACTION_DOWN:
+@@ -87,9 +86,14 @@ public class NotificationsViewPager extends ViewPager {
+ 					mPagerWantsIntercept = super.onInterceptTouchEvent(ev);//force intercept when 1 --> 0
+ 				}
+ 			} else if (deltaX <= -mSwipTheshold) {// left flip
+-				if (isNotificationView && !mNotificationStackScroller.isTrackingHeadsUp()) {// don`t allow intercept when isTrackingHeadsUp
++				if (isNotificationView && (mIsDisable || mNotificationStackScroller.isTrackingHeadsUp()) ) {// swallowEvent t when isTrackingHeadsUp
++					// swallowEvent
++					// ....
++					mPagerWantsIntercept = false;
++				} else if (isNotificationView) {
+ 					mPagerWantsIntercept = super.onInterceptTouchEvent(ev);//force intercept when 0 --> 1
+-				} else {
++					
++				}else {
+ 					mPagerWantsIntercept = false;//don`t intercept when 0 --> 1
+ 				}
+ 			} else {// don`t intercept when not beyond slop 
+@@ -107,6 +111,25 @@ public class NotificationsViewPager extends ViewPager {
+ 		}
+ 		return super.onInterceptTouchEvent(ev);
+ 	}
++	
++//	@Override
++//	public boolean dispatchTouchEvent(MotionEvent ev) {
++//		int action = ev.getAction();
++//		Log.i(TAG, "isAllowDispatch : " + isAllowDispatch + MotionEvent.actionToString(action));
++//		switch (action) {
++//		case MotionEvent.ACTION_DOWN:
++//			return  false;
++//		case MotionEvent.ACTION_MOVE:
++//			if (mNotificationStackScroller.isTrackingHeadsUp()) {// force dispatch 
++//				return  true;
++//			}
++//			break;
++//		case MotionEvent.ACTION_CANCEL:
++//		case MotionEvent.ACTION_UP:
++//			return  false;
++//		}
++//		return super.dispatchTouchEvent(ev);
++//	}
+ 
+ 	public void resetState() {
+ 		mPagerWantsIntercept = false;
+@@ -123,7 +146,7 @@ public class NotificationsViewPager extends ViewPager {
+ 
+ 	@Override
+ 	public boolean onTouchEvent(MotionEvent ev) {
+-		if (mIsDisable) {
++		if (mIsDisable || mNotificationStackScroller.isTrackingHeadsUp()) {
+ 			return false;
+ 		}
+ 		return super.onTouchEvent(ev);
+-- 
+2.8.3.windows.1
+

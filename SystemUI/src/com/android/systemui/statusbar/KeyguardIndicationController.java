@@ -194,7 +194,7 @@ public class KeyguardIndicationController {
         } catch (RemoteException e) {
             Log.e(TAG, "Error calling IBatteryStats: ", e);
         }
-        final boolean hasChargingTime = /*chargingTimeRemaining > 0*/ false;// add by yangfan 
+        final boolean hasChargingTime = chargingTimeRemaining > 0;
 
         int chargingId;
         switch (mChargingSpeed) {
@@ -215,11 +215,9 @@ public class KeyguardIndicationController {
                 break;
         }
 
-        // add  by yangfan 
-        chargingId = R.string.keyguard_plugged_in;
         if (hasChargingTime) {
-        	String chargingTimeFormatted = Formatter.formatShortElapsedTimeRoundingUpToMinutes(
-        			mContext, chargingTimeRemaining);
+            String chargingTimeFormatted = Formatter.formatShortElapsedTimeRoundingUpToMinutes(
+                    mContext, chargingTimeRemaining);
             return mContext.getResources().getString(chargingId, chargingTimeFormatted);
         } else {
             return mContext.getResources().getString(chargingId);
@@ -323,9 +321,4 @@ public class KeyguardIndicationController {
             StatusBarKeyguardViewManager statusBarKeyguardViewManager) {
         mStatusBarKeyguardViewManager = statusBarKeyguardViewManager;
     }
-
-    public void cleanup() {
-        KeyguardUpdateMonitor.getInstance(mContext).removeCallback(mUpdateMonitor);
-        mContext.unregisterReceiver(mReceiver);
-    }//added by yangfan 
 }

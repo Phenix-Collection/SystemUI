@@ -26,7 +26,6 @@ import android.content.res.Resources;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewTreeObserver;
 import android.view.animation.AnimationUtils;
@@ -285,7 +284,7 @@ public abstract class PanelView extends FrameLayout {
                     onTrackingStarted();
                 }
                 if (isFullyCollapsed() && !mHeadsUpManager.hasPinnedHeadsUp()) {
-                    //schedulePeek();
+                    schedulePeek();
                 }
                 break;
 
@@ -657,13 +656,13 @@ public abstract class PanelView extends FrameLayout {
         mOverExpandedBeforeFling = getOverExpansionAmount() > 0f;
         ValueAnimator animator = createHeightAnimator(target);
         if (expand) {
-//            if (expandBecauseOfFalsing) {
+            if (expandBecauseOfFalsing) {
                 vel = 0;
-//            }
+            }
             mFlingAnimationUtils.apply(animator, mExpandedHeight, target, vel, getHeight());
-//            if (expandBecauseOfFalsing) {
-                animator.setDuration(100);
-//            }
+            if (expandBecauseOfFalsing) {
+                animator.setDuration(350);
+            }
         } else {
             mFlingAnimationUtils.applyDismissing(animator, mExpandedHeight, target, vel,
                     getHeight());
@@ -862,25 +861,9 @@ public abstract class PanelView extends FrameLayout {
                     false /* expandBecauseOfFalsing */);
         }
     };
-    //add by zqs 2017/3/1 begin
-	//========================>
-	//子类方法放到父类，更新底部两个点显示状态
-    public void updateIndicatorVisibility(int vis) {
-    }
-    //<========================
-    //add by zqs 2017/3/1 end
-    
+
     public void expand() {
         if (DEBUG) logf("expand: " + this);
-        //add by zqs 2017/3/1 begin
-    	//========================>
-    	//在悬浮框出现壁纸下滑下拉通知栏处理，这里改变悬浮通知为普通通知
-        if(mHeadsUpManager.hasPinnedHeadsUp()&&mStatusBar.getBarState() != StatusBarState.KEYGUARD){
-        	mHeadsUpManager.unpinAll();
-        	updateIndicatorVisibility(View.VISIBLE);
-        }	
-        //<========================
-        //add by zqs 2017/3/1 end
         if (isFullyCollapsed()) {
             mBar.startOpeningPanel(this);
             notifyExpandingStarted();

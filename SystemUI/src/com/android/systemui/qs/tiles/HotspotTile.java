@@ -17,7 +17,6 @@
 package com.android.systemui.qs.tiles;
 
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.provider.Settings;
@@ -32,8 +31,6 @@ import com.android.systemui.statusbar.policy.HotspotController;
 
 /** Quick settings tile: Hotspot **/
 public class HotspotTile extends QSTile<QSTile.BooleanState> {
-    private static final Intent TETHER_SETTINGS = new Intent().setComponent(new ComponentName(
-            "com.android.settings", "com.android.settings.WifiHotSettings"));//added by yangfan 
     private final AnimationIcon mEnable =
             new AnimationIcon(R.drawable.ic_hotspot_enable_animation);
     private final AnimationIcon mDisable =
@@ -91,18 +88,15 @@ public class HotspotTile extends QSTile<QSTile.BooleanState> {
 
     @Override
     protected void handleLongClick() {
-//modified by yangfan 
-//        if (mState.value) return;  // don't allow usage reset if hotspot is active
-//        final String title = mContext.getString(R.string.quick_settings_reset_confirmation_title,
-//                mState.label);
-//        mUsageTracker.showResetConfirmation(title, new Runnable() {
-//            @Override
-//            public void run() {
-//                refreshState();
-//            }
-//        });
-        mHost.startActivityDismissingKeyguard(TETHER_SETTINGS);//added by yangfan 
-//modified by yangfan end
+        if (mState.value) return;  // don't allow usage reset if hotspot is active
+        final String title = mContext.getString(R.string.quick_settings_reset_confirmation_title,
+                mState.label);
+        mUsageTracker.showResetConfirmation(title, new Runnable() {
+            @Override
+            public void run() {
+                refreshState();
+            }
+        });
     }
 
     @Override

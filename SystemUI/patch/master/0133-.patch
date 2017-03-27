@@ -1,0 +1,57 @@
+From e9fb85160b9acbc58b33e7cb4e3c9a3e9c877ca7 Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Fri, 10 Mar 2017 09:57:26 +0800
+Subject: [PATCH 133/185] =?UTF-8?q?=E5=B1=85=E4=B8=AD=E9=80=9A=E7=9F=A5?=
+ =?UTF-8?q?=E5=8C=BA=E5=9F=9F=E5=9B=BE=E6=A0=87?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/res/layout/status_bar.xml | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
+
+diff --git a/SystemUI/res/layout/status_bar.xml b/SystemUI/res/layout/status_bar.xml
+index 5996121..4cd0c3f 100644
+--- a/SystemUI/res/layout/status_bar.xml
++++ b/SystemUI/res/layout/status_bar.xml
+@@ -87,9 +87,7 @@
+         <com.android.systemui.statusbar.AlphaOptimizedFrameLayout
+             android:id="@+id/notification_icon_area"
+             android:layout_width="0dip"
+-            android:layout_height="wrap_content"
+-            android:paddingTop="@dimen/notification_container_paddingtop"
+-            android:paddingBottom="@dimen/notification_container_paddingtop"
++            android:layout_height="match_parent"
+             android:layout_weight="1"
+             android:gravity="center_vertical"
+             android:orientation="horizontal"
+@@ -99,7 +97,7 @@
+             <com.android.keyguard.AlphaOptimizedLinearLayout
+                 android:id="@+id/notification_icon_area_inner"
+                 android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
++                android:layout_height="@dimen/status_bar_height"
+                 android:gravity="center_vertical"
+                 >
+                 <com.android.keyguard.CarrierText
+@@ -116,13 +114,14 @@
+ 
+                 <com.android.systemui.statusbar.StatusBarIconView android:id="@+id/moreIcon"
+                     android:layout_width="wrap_content"
+-                    android:layout_height="wrap_content"
++                    android:layout_height="match_parent"
+                     android:src="@drawable/stat_notify_more"
++                    android:layout_gravity="center_horizontal"
+                     android:visibility="gone"
+                     />
+                 <com.android.systemui.statusbar.phone.IconMerger android:id="@+id/notificationIcons"
+                     android:layout_width="wrap_content"
+-                    android:layout_height="wrap_content"
++                    android:layout_height="match_parent"
+                     android:layout_alignParentStart="true"
+                     android:orientation="horizontal"/>
+             </com.android.keyguard.AlphaOptimizedLinearLayout>
+-- 
+2.8.3.windows.1
+

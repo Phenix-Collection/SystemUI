@@ -1,0 +1,34 @@
+From b7983a63dc4c2b4367690cc395d81c4ccfdf10f1 Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Thu, 2 Mar 2017 20:11:03 +0800
+Subject: [PATCH 094/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E5=A2=9E=E5=8A=A0tty=E4=B8=8E=E9=9D=99=E9=9F=B3=E9=97=B4paddin?=
+ =?UTF-8?q?g?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/res/drawable/stat_sys_tty_mode.xml | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/SystemUI/res/drawable/stat_sys_tty_mode.xml b/SystemUI/res/drawable/stat_sys_tty_mode.xml
+index 1e82223..d509c83 100644
+--- a/SystemUI/res/drawable/stat_sys_tty_mode.xml
++++ b/SystemUI/res/drawable/stat_sys_tty_mode.xml
+@@ -1,10 +1,11 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <inset xmlns:android="http://schemas.android.com/apk/res/android"
+     android:insetBottom="2.5dp"
++    android:insetRight="2.5dp"
+     android:insetTop="2.5dp" >
+ 
+     <vector
+-        android:height="18dp"
++        android:height="16dp"
+         android:viewportHeight="54"
+         android:viewportWidth="45"
+         android:width="15dp" >
+-- 
+2.8.3.windows.1
+
