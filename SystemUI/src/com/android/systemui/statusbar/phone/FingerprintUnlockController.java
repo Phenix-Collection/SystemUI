@@ -27,6 +27,9 @@ import com.android.keyguard.KeyguardUpdateMonitor;
 import com.android.keyguard.KeyguardUpdateMonitorCallback;
 import com.android.systemui.keyguard.KeyguardViewMediator;
 
+//add by mare
+import android.hardware.fingerprint.FingerprintManager;
+
 /**
  * Controller which coordinates all the fingerprint unlocking actions with the UI.
  */
@@ -96,6 +99,9 @@ public class FingerprintUnlockController extends KeyguardUpdateMonitorCallback {
     private boolean mGoingToSleep;
     private int mPendingAuthenticatedUserId = -1;
 
+    //add by mare
+    private FingerprintManager mFingerprintManager;
+
     public FingerprintUnlockController(Context context,
             StatusBarWindowManager statusBarWindowManager,
             DozeScrimController dozeScrimController,
@@ -110,6 +116,9 @@ public class FingerprintUnlockController extends KeyguardUpdateMonitorCallback {
         mKeyguardViewMediator = keyguardViewMediator;
         mScrimController = scrimController;
         mPhoneStatusBar = phoneStatusBar;
+
+	//add by mare
+	mFingerprintManager = (FingerprintManager) context.getSystemService(Context.FINGERPRINT_SERVICE);
     }
 
     public void setStatusBarKeyguardViewManager(
@@ -186,8 +195,12 @@ public class FingerprintUnlockController extends KeyguardUpdateMonitorCallback {
                 if (!wasDeviceInteractive) {
                     mStatusBarKeyguardViewManager.notifyDeviceWakeUpRequested();
                 }
-                mStatusBarKeyguardViewManager.animateCollapsePanels(
-                        FINGERPRINT_COLLAPSE_SPEEDUP_FACTOR);
+        		//modified by mare
+			if (mUpdateMonitor.musicLockScreenActive()) {
+				mStatusBarKeyguardViewManager.keyguardDone();
+			}
+			mStatusBarKeyguardViewManager.animateCollapsePanels(
+					FINGERPRINT_COLLAPSE_SPEEDUP_FACTOR, false);
                 break;
             case MODE_WAKE_AND_UNLOCK_PULSING:
                 mPhoneStatusBar.updateMediaMetaData(false /* metaDataChanged */);
@@ -260,8 +273,24 @@ public class FingerprintUnlockController extends KeyguardUpdateMonitorCallback {
         return MODE_NONE;
     }
 
+    //add by mare
+    private Runnable mKeyguardGoneAwayRunnable = new Runnable() {
+
+        @Override
+        public void run() {
+            if(mFingerprintManager.getAttemptTimes() == 5 && mStatusBarKeyguardViewManager.isShowing()){
+                mStatusBarKeyguardViewManager.animateCollapsePanels(
+                    FINGERPRINT_COLLAPSE_SPEEDUP_FACTOR,false);
+            }
+        }
+    };
+
     @Override
     public void onFingerprintAuthFailed() {
+	//add by mare
+        mHandler.removeCallbacks(mKeyguardGoneAwayRunnable);
+        mHandler.postDelayed(mKeyguardGoneAwayRunnable,10);
+
         cleanup();
     }
 

@@ -1,0 +1,29 @@
+From 3dd4a2821a7172b5e4b54ba5db4e071b59693c75 Mon Sep 17 00:00:00 2001
+From: weiliji <yangfan@qucii.com>
+Date: Wed, 1 Mar 2017 02:55:12 +0800
+Subject: [PATCH 083/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E4=BF=AE=E6=94=B9=E5=8B=BF=E6=89=B0=E6=A8=A1=E5=BC=8F?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/src/com/android/systemui/qs/tiles/DndTile.java | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/SystemUI/src/com/android/systemui/qs/tiles/DndTile.java b/SystemUI/src/com/android/systemui/qs/tiles/DndTile.java
+index bb6c952..18186a0 100644
+--- a/SystemUI/src/com/android/systemui/qs/tiles/DndTile.java
++++ b/SystemUI/src/com/android/systemui/qs/tiles/DndTile.java
+@@ -145,7 +145,7 @@ public class DndTile extends QSTile<QSTile.BooleanState> {
+         } else {
+             //hsp : Don't need to show detail
+             //int zen = Prefs.getInt(mContext, Prefs.Key.DND_FAVORITE_ZEN, Global.ZEN_MODE_ALARMS);  //weiliji modify the defualt value
+-            int zen = Prefs.getInt(mContext, Prefs.Key.DND_FAVORITE_ZEN, Global.ZEN_MODE_IMPORTANT_INTERRUPTIONS);
++            int zen = Prefs.getInt(mContext, Prefs.Key.DND_FAVORITE_ZEN, Global.ZEN_MODE_NO_INTERRUPTIONS);
+             mController.setZen(zen, null, TAG);
+             //showDetail(true);
+             // mController.setZen(Global.ZEN_MODE_IMPORTANT_INTERRUPTIONS, null, TAG);
+-- 
+2.8.3.windows.1
+

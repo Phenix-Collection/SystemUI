@@ -1,0 +1,73 @@
+From 40833d9331d9ac6104786557fbdeb1b49a9af85b Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Thu, 23 Feb 2017 14:38:53 +0800
+Subject: [PATCH 059/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E6=A0=B9=E6=8D=AE=E6=B5=AE=E5=8A=A8=E9=80=9A=E7=9F=A5=E7=8A=B6?=
+ =?UTF-8?q?=E6=80=81=E6=9B=B4=E6=94=B9=E6=8C=87=E7=A4=BA=E5=99=A8=E5=8F=AF?=
+ =?UTF-8?q?=E8=A7=81=E6=80=A7=E5=92=8C=E5=B1=8F=E8=94=BD=E9=94=81=E5=B1=8F?=
+ =?UTF-8?q?=E7=8A=B6=E6=80=81=E6=A0=8F=E4=B8=8B=E6=8B=89?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../systemui/statusbar/phone/NotificationPanelView.java       |  8 ++++++++
+ .../statusbar/stack/NotificationStackScrollLayout.java        | 11 -----------
+ 2 files changed, 8 insertions(+), 11 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+index 0233301..ce21695 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+@@ -792,6 +792,12 @@ public class NotificationPanelView extends PanelView implements
+ 
+     private boolean handleQsTouch(MotionEvent event) {
+         final int action = event.getActionMasked();
++        // screen statusBar animator by yangfan 
++        if(mStatusBarState==StatusBarState.KEYGUARD){
++        	  if(event.getY()<getResources().getDimensionPixelOffset(R.dimen.status_bar_height))
++        	       return true;
++        }
++        // screen statusBar animator by yangfan 
+         if (action == MotionEvent.ACTION_DOWN && getExpandedFraction() == 1f
+                 && mStatusBar.getBarState() != StatusBarState.KEYGUARD && !mQsExpanded
+                 && mQsExpansionEnabled) {
+@@ -2403,10 +2409,12 @@ public class NotificationPanelView extends PanelView implements
+     public void onHeadsUpPinnedModeChanged(final boolean inPinnedMode) {
+         if (inPinnedMode) {
+         	setBackground(null);// clear bg by yangfan
++        	updateIndicatorVisibility(GONE);// gone indicator by yangfan
+             mHeadsUpExistenceChangedRunnable.run();
+             updateNotificationTranslucency();
+         } else {
+         	mStatusBar.blurPanelBg();// blurred bg by yangfan
++        	updateIndicatorVisibility(VISIBLE);// visible indicator by yangfan
+             mHeadsUpAnimatingAway = true;
+             mNotificationStackScroller.runAfterAnimationFinished(
+                     mHeadsUpExistenceChangedRunnable);
+diff --git a/SystemUI/src/com/android/systemui/statusbar/stack/NotificationStackScrollLayout.java b/SystemUI/src/com/android/systemui/statusbar/stack/NotificationStackScrollLayout.java
+index 14cfddf..ce56f19 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/stack/NotificationStackScrollLayout.java
++++ b/SystemUI/src/com/android/systemui/statusbar/stack/NotificationStackScrollLayout.java
+@@ -526,18 +526,7 @@ public class NotificationStackScrollLayout extends ViewGroup
+             updateAlgorithmHeightAndPadding();
+             requestChildrenUpdate();//禁止通知在当前container内滚动
+         }
+-      //modify by mare 2017/2/22 start
+-      //=======================
+-        if (trackingHeadsUp) {
+-        	panelView.updateIndicatorVisibility(INVISIBLE);
+-		}else {
+-			//加模糊
+-			//mPhoneStatusBar.blurPanelBg();
+-			panelView.updateIndicatorVisibility(mPhoneStatusBar.getBarState()==StatusBarState.KEYGUARD?View.INVISIBLE:View.VISIBLE);
+-		}
+         setStackTranslation(paddingOffset);//允许通知和头部一起滚动
+-      //modify by mare 2017/2/22 end
+-      //=======================
+     }
+ 
+     public float getStackTranslation() {
+-- 
+2.8.3.windows.1
+

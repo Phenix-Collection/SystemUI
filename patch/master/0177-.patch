@@ -1,0 +1,76 @@
+From f54686c229eda0ca51c44c2e54c2fb747d558330 Mon Sep 17 00:00:00 2001
+From: mare <yangfan@qucii.com>
+Date: Fri, 24 Mar 2017 16:01:34 +0800
+Subject: [PATCH 177/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E4=BF=AE=E6=94=B9=E4=B8=A4=E7=82=B9=E5=8D=8A=E5=BE=84=E5=92=8C?=
+ =?UTF-8?q?=E7=BB=98=E5=9B=BE=E8=BF=87=E7=A8=8B?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/res/values/vpi__defaults.xml                 |  2 +-
+ .../systemui/statusbar/phone/CirclePageIndicator.java | 19 ++++++++++++-------
+ 2 files changed, 13 insertions(+), 8 deletions(-)
+
+diff --git a/SystemUI/res/values/vpi__defaults.xml b/SystemUI/res/values/vpi__defaults.xml
+index 660a61f..0ad723a 100644
+--- a/SystemUI/res/values/vpi__defaults.xml
++++ b/SystemUI/res/values/vpi__defaults.xml
+@@ -24,7 +24,7 @@
+ 
+     <integer name="default_circle_indicator_orientation">0</integer>
+ 
+-    <dimen name="default_circle_indicator_radius">3dp</dimen>
++    <dimen name="default_circle_indicator_radius">2.6dp</dimen>
+ 
+     <bool name="default_circle_indicator_snap">false</bool>
+ 
+diff --git a/SystemUI/src/com/qucii/systemui/statusbar/phone/CirclePageIndicator.java b/SystemUI/src/com/qucii/systemui/statusbar/phone/CirclePageIndicator.java
+index f0a16a5..ea4e4c6 100644
+--- a/SystemUI/src/com/qucii/systemui/statusbar/phone/CirclePageIndicator.java
++++ b/SystemUI/src/com/qucii/systemui/statusbar/phone/CirclePageIndicator.java
+@@ -49,7 +49,7 @@ public class CirclePageIndicator extends View implements PageIndicator {
+     private int mActivePointerId = INVALID_POINTER;
+     private boolean mIsDragging;
+ 
+-    private Bitmap mSettingsIcon;
++//    private Bitmap mSettingsIcon;
+     private boolean mEditing;
+ 
+     public CirclePageIndicator(Context context) {
+@@ -99,7 +99,7 @@ public class CirclePageIndicator extends View implements PageIndicator {
+ 
+         final ViewConfiguration configuration = ViewConfiguration.get(context);
+         mTouchSlop = ViewConfigurationCompat.getScaledPagingTouchSlop(configuration);
+-        mSettingsIcon = BitmapFactory.decodeResource(res, R.drawable.circle_dot_indicator);
++//        mSettingsIcon = BitmapFactory.decodeResource(res, R.drawable.circle_dot_indicator);
+     }
+ 
+     @Override
+@@ -248,12 +248,17 @@ public class CirclePageIndicator extends View implements PageIndicator {
+             // Only paint fill if not completely transparent
+             if (mPaintPageFill.getAlpha() > 0) {
+                 if (mEditing && iLoop == 0) {
+-                    canvas.drawBitmap(mSettingsIcon,
+-                            (int) (dX - mRadius),
+-                            (int) (dY - mRadius),
+-                            mPaintPageFill);
++                	//modify by mare 2017/3/24 begin
++                	//========================>
++                	//这里直接画圆不用图片并在values/vpi___defaults.xml中default_circle_indicator_radius修改圆半径
++                	canvas.drawCircle(dX, dY, mRadius, mPaintPageFill);
++//                    canvas.drawBitmap(mSettingsIcon,
++//                            (int) (dX - mRadius),
++//                            (int) (dY - mRadius),
++//                            mPaintPageFill);
++                	//modify by mare 2017/3/24 end
+                 } else {
+-                    canvas.drawCircle(dX, dY, (float) (pageFillRadius / 1.5f), mPaintPageFill);
++                    canvas.drawCircle(dX, dY, (float) (pageFillRadius / 1.2f), mPaintPageFill);
+                 }
+             }
+ 
+-- 
+2.8.3.windows.1
+

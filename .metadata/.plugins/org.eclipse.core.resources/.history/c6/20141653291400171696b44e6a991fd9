@@ -1,0 +1,106 @@
+From 9e5b82eb5ce03fb627d3c06aa094b6f18ac4a9cc Mon Sep 17 00:00:00 2001
+From: mare <yangfan@qucii.com>
+Date: Fri, 17 Mar 2017 10:36:25 +0800
+Subject: [PATCH 169/185] =?UTF-8?q?=E3=80=90BUG=E3=80=91=E4=BF=AE=E8=AE=A2?=
+ =?UTF-8?q?=E9=94=81=E5=B1=8F=E4=B8=8B=E6=8B=89=E9=80=9A=E7=9F=A5=E4=BD=8D?=
+ =?UTF-8?q?=E7=BD=AE=E9=94=99=E4=B9=B1=EF=BC=8C=E9=80=9A=E7=9F=A5=E6=A0=8F?=
+ =?UTF-8?q?=E5=A4=B4=E9=83=A8=E6=94=B9=E4=B8=BA=E8=A2=AB=E7=AE=AD=E5=A4=B4?=
+ =?UTF-8?q?=E6=A0=8F=E9=81=AE=E6=8C=A1=EF=BC=8C=E4=BF=AE=E8=AE=A2=E4=B8=A4?=
+ =?UTF-8?q?=E4=B8=AA=E5=B0=8F=E7=82=B9=E4=BD=8D=E7=BD=AE?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/res/layout/status_bar_expanded.xml                      | 3 ++-
+ .../android/systemui/statusbar/phone/NotificationPanelView.java  | 9 +++++++--
+ .../systemui/statusbar/stack/NotificationStackScrollLayout.java  | 4 +++-
+ 3 files changed, 12 insertions(+), 4 deletions(-)
+
+diff --git a/SystemUI/res/layout/status_bar_expanded.xml b/SystemUI/res/layout/status_bar_expanded.xml
+index 6fc5e28..8bebdbf 100644
+--- a/SystemUI/res/layout/status_bar_expanded.xml
++++ b/SystemUI/res/layout/status_bar_expanded.xml
+@@ -76,6 +76,7 @@
+             android:layout_height="wrap_content"
+             android:layout_gravity="bottom|center_horizontal"
+             android:layout_marginBottom="@dimen/pager_indicator_bottom" />
++        <include layout="@layout/status_bar_expanded_header" />
+     </com.android.systemui.statusbar.phone.NotificationsQuickSettingsContainer>
+ 	
+     
+@@ -102,7 +103,7 @@
+             layout="@layout/keyguard_bottom_area"
+             android:visibility="gone" />
+ 
+-    <include layout="@layout/status_bar_expanded_header" />
++    
+ 
+     <com.android.systemui.statusbar.AlphaOptimizedView
+         android:id="@+id/qs_navbar_scrim"
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+index c612c4e..2388762 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+@@ -230,6 +230,7 @@ public class NotificationPanelView extends PanelView implements
+     //added by dongwei end}
+     private ImageView mArrow; 
+     private View mArrowLayout; 
++    private int marginIndicatorBottom;
+     private Runnable mHeadsUpExistenceChangedRunnable = new Runnable() {
+         @Override
+         public void run() {
+@@ -341,6 +342,9 @@ public class NotificationPanelView extends PanelView implements
+                 R.dimen.qs_falsing_threshold);
+         mPositionMinSideMargin = getResources().getDimensionPixelSize(
+                 R.dimen.notification_panel_min_side_margin);
++        marginIndicatorBottom = getResources().getDimensionPixelSize(
++        		R.dimen.pager_indicator_bottom);
++        
+     }
+ 
+     public void updateResources() {
+@@ -378,6 +382,7 @@ public class NotificationPanelView extends PanelView implements
+         	mNotificationContainerParent.layout(left, top, right, noBottom);
+         	mArrowLayout.layout(left, noBottom, right, mChangedBottom);
+         }
++        mIndicator.layout(left, bottom-marginIndicatorBottom-mIndicator.getMeasuredHeight(), right, bottom-marginIndicatorBottom);
+  	   	//add by zqs 2017/3/15 end
+         // Update Clock Pivot
+         mKeyguardStatusView.setPivotX(getWidth() / 2);
+@@ -785,7 +790,7 @@ public class NotificationPanelView extends PanelView implements
+ 
+     @Override
+     public boolean onTouchEvent(MotionEvent event) {
+-    	Log.e("=====onTouchEvent======", "event:"+event.getActionMasked());
++//    	Log.e("=====onTouchEvent======", "event:"+event.getActionMasked());
+         if (mBlockTouches) {
+             return false;
+         }
+@@ -2703,7 +2708,7 @@ public class NotificationPanelView extends PanelView implements
+     	setBottom(mPanelHeight);
+     	mChangedBottom=mPanelHeight;
+  	   	int arrowHeight=mArrowLayout.getMeasuredHeight();
+- 	   	noBottom=Math.max(0, mPanelHeight-arrowHeight);
++ 	   	noBottom=Math.max(-arrowHeight, mPanelHeight-arrowHeight);
+  	   	mNotificationContainerParent.setBottom(noBottom);
+  	   	mArrowLayout.layout(mArrowLayout.getLeft(), noBottom, mArrowLayout.getRight(), mPanelHeight);
+     }
+diff --git a/SystemUI/src/com/android/systemui/statusbar/stack/NotificationStackScrollLayout.java b/SystemUI/src/com/android/systemui/statusbar/stack/NotificationStackScrollLayout.java
+index cc8a049..4f7e717 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/stack/NotificationStackScrollLayout.java
++++ b/SystemUI/src/com/android/systemui/statusbar/stack/NotificationStackScrollLayout.java
+@@ -495,7 +495,9 @@ public class NotificationStackScrollLayout extends ViewGroup
+     	//add by zqs 2017/3/16 begin
+         //========================>
+         //通知组的滑动效果上升高度多一个底部箭头高度
+-    	height=height-mArrowHeight;
++    	if(mPhoneStatusBar.getBarState()!=StatusBarState.KEYGUARD){
++    		height=height-mArrowHeight;
++    	}
+     	//add by zqs 2017/3/16 end
+         mLastSetStackHeight = height;
+         setIsExpanded(height > 0.0f);
+-- 
+2.8.3.windows.1
+

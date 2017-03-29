@@ -374,7 +374,7 @@
     </plurals>
 
     <!-- Fingerprint hint message when finger was not recognized.-->
-    <string name="fingerprint_not_recognized">Not recognized</string>
+    <string name="fingerprint_not_recognized">Not recognized, you can also try %d times.</string>
 
     <!-- Instructions telling the user remaining times when enter SIM PIN view.  -->
     <plurals name="kg_password_default_pin_message">
@@ -383,4 +383,8 @@
     </plurals>
 
     <string name="pattern_cancel">Cancle</string>
+    
+    <string name="kg_pin_bits_limit" >must be 6 bits</string>
+    <string name="fingerprint_error_lockout_pwd">"Too many failures attempts of fingerprint unlock. Try again later."</string>
+    <string name="fingerprint_error_lockout_pat">"Too many failures attempts of fingerprint unlock. Try again later."</string>
 </resources>

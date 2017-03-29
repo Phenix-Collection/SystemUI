@@ -17,16 +17,35 @@
 package com.android.systemui.statusbar.phone;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.Shader.TileMode;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
+import android.os.SystemProperties;
 import android.util.AttributeSet;
+import com.android.systemui.statusbar.StatusBarState;
+import android.util.DisplayMetrics;
 import android.util.EventLog;
+import android.util.Log;
 import android.view.MotionEvent;
+import android.view.SurfaceControl;
 import android.view.View;
 import android.view.accessibility.AccessibilityEvent;
 
 import com.android.systemui.DejankUtils;
 import com.android.systemui.EventLogTags;
 import com.android.systemui.R;
+import com.qucii.systemui.utils.FastBlur;
 
 public class PhoneStatusBarView extends PanelBar {
     private static final String TAG = "PhoneStatusBarView";
@@ -41,6 +60,9 @@ public class PhoneStatusBarView extends PanelBar {
     private ScrimController mScrimController;
     private float mMinFraction;
     private float mPanelFraction;
+    //add by mare 2017/3/4 begin
+    private int mIconSize;
+    //add by mare 2017/3/4 end
     private Runnable mHideExpandedRunnable = new Runnable() {
         @Override
         public void run() {
@@ -53,6 +75,14 @@ public class PhoneStatusBarView extends PanelBar {
 
         Resources res = getContext().getResources();
         mBarTransitions = new PhoneStatusBarTransitions(this);
+        
+        //add by mare 2017/3/4 begin
+        //=======================>
+        //通知栏小图标宽度和中间时钟一半宽度
+        mIconSize = res.getDimensionPixelSize(
+                R.dimen.status_bar_icon_size);
+        //<=======================
+        //add by mare 2017/3/4 end
     }
 
     public BarTransitions getBarTransitions() {
@@ -67,12 +97,64 @@ public class PhoneStatusBarView extends PanelBar {
         mScrimController = scrimController;
     }
 
+    //add by mare 2017/3/6 begin
+    //=======================>
+    //这里判断左侧大于时钟左边，然后截取部分显示
+    private View mNotificationIconsParent,mSystemIcons;
+    private View centerClock;
+    Rect outRect=new Rect();
+    Rect outRectSys=new Rect();
+    //add by mare 2017/3/6 end
     @Override
     public void onFinishInflate() {
         mBarTransitions.init();
+        //add by mare 2017/3/6 begin
+        //=======================>
+        //这里判断左侧大于时钟左边，然后截取部分显示
+        mNotificationIconsParent=findViewById(R.id.notification_icon_area_inner);
+        mSystemIcons=findViewById(R.id.statusIcons);
+        centerClock=findViewById(R.id.center_clock);
+        //add by mare 2017/3/6 end
+        
     }
-
+    //add by mare 2017/3/6 begin
+    //=======================>
+    //这里判断左侧大于时钟左边，然后截取部分显示
+   
     @Override
+	protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+		super.onLayout(changed, left, top, right, bottom);
+		if(centerClock.getVisibility()==View.VISIBLE){
+			mNotificationIconsParent.getBoundsOnScreen(outRect);
+			int totalWidth = centerClock.getLeft();
+			// 这里判断左侧大于时钟左边
+			if (outRect.right > totalWidth) {
+				// 按图标大小截取宽度
+				int width = (totalWidth - outRect.left) - (totalWidth - outRect.left) % mIconSize - 10;
+				mNotificationIconsParent.layout(mNotificationIconsParent.getLeft(), mNotificationIconsParent.getTop(),
+						mNotificationIconsParent.getLeft() + width, mNotificationIconsParent.getBottom());
+			}
+			//add by mare 2017/3/9 begin
+	        //=======================>
+	        //这里判断右边部分左侧小于时钟右侧边，就截取部分显示
+			mSystemIcons.getBoundsOnScreen(outRectSys);
+			
+			int totalRight=centerClock.getRight();
+			if(totalRight>outRectSys.left){
+				int width=outRectSys.right-totalRight-10;
+				mSystemIcons.layout(mSystemIcons.getRight()-width, mSystemIcons.getTop(),
+						mSystemIcons.getRight(), mSystemIcons.getBottom());
+			}
+			//add by mare 2017/3/9 end
+		}else{
+			mNotificationIconsParent.layout(mNotificationIconsParent.getLeft(), mNotificationIconsParent.getTop(),
+					mNotificationIconsParent.getLeft() + mNotificationIconsParent.getMeasuredWidth(), mNotificationIconsParent.getBottom());
+			mSystemIcons.layout(mSystemIcons.getRight() - mSystemIcons.getMeasuredWidth(), mSystemIcons.getTop(),
+					mSystemIcons.getRight(), mSystemIcons.getBottom());
+		}
+	}
+    //add by mare 2017/3/6 end
+	@Override
     public void addPanel(PanelView pv) {
         super.addPanel(pv);
         if (pv.getId() == R.id.notification_panel) {
@@ -85,7 +167,7 @@ public class PhoneStatusBarView extends PanelBar {
         return mBar.panelsEnabled();
     }
 
-    @Override
+	@Override
     public boolean onRequestSendAccessibilityEventInternal(View child, AccessibilityEvent event) {
         if (super.onRequestSendAccessibilityEventInternal(child, event)) {
             // The status bar is very small so augment the view that the user is touching
@@ -126,7 +208,7 @@ public class PhoneStatusBarView extends PanelBar {
         DejankUtils.removeCallbacks(mHideExpandedRunnable);
     }
 
-    @Override
+	@Override
     public void onPanelFullyOpened(PanelView openPanel) {
         super.onPanelFullyOpened(openPanel);
         if (openPanel != mLastFullyOpenedPanel) {
@@ -134,9 +216,120 @@ public class PhoneStatusBarView extends PanelBar {
         }
         mLastFullyOpenedPanel = openPanel;
     }
+    /**
+     * *add by mare 截取桌面图片并且做虚化处理 begin
+     */
+	public static boolean leftOrRightLandscape = true;
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
+	private boolean isNavigationEnable() {
+		if (SystemProperties.getBoolean("persist.sys.navg_bar_visible", false)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	protected Bitmap shot() {
+		DisplayMetrics dm = getResources().getDisplayMetrics();
+		int width, height;
+		int navigationHeight = 108;
+		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+			width = dm.widthPixels;
+			height = dm.heightPixels+navigationHeight;
+		} else {
+			if(isNavigationEnable()){
+				width = dm.heightPixels;
+				height = dm.widthPixels+navigationHeight;
+			}else{
+				width = dm.heightPixels;
+				height = dm.widthPixels;
+			}
+			
+		}
+		Bitmap mBitmap = SurfaceControl.screenshot(width, height);
+		return mBitmap;
+	}
+
+	protected Bitmap fastBlur(Bitmap bkg) {
+		float scaleFactor = 7;
+		float radius = 10;
+
+		Bitmap overlay = Bitmap.createBitmap(
+				(int) (bkg.getWidth() / scaleFactor),
+				(int) (bkg.getHeight() / scaleFactor), Bitmap.Config.ARGB_8888);
+		Canvas canvas = new Canvas(overlay);
+		canvas.translate(0, 0);
+		canvas.scale(1 / scaleFactor, 1 / scaleFactor);
+		Paint paint = new Paint();
+		paint.setFlags(Paint.FILTER_BITMAP_FLAG);
+		canvas.drawBitmap(bkg, 0, 0, paint);
+
+		overlay = FastBlur.doBlur(overlay, (int) radius, true);
+		DisplayMetrics dm = getResources().getDisplayMetrics();
+		int width = bkg.getWidth();
+		int height = bkg.getHeight();
+		Bitmap mBitmap = overlay.createScaledBitmap(overlay, width, height,
+				true);
+		return mBitmap;
+	}
+
+	protected Bitmap darkBitmap(Bitmap srcBitmap) {
+		int imgHeight, imgWidth;
+		imgHeight = srcBitmap.getHeight();
+		imgWidth = srcBitmap.getWidth();
+
+		Bitmap dstBitmap = Bitmap.createBitmap(imgWidth, imgHeight,
+				Config.ARGB_8888);
+		Bitmap bmp = Bitmap.createBitmap(imgWidth, imgHeight, Config.ARGB_8888);
+		float contrast = (float) (35 / 100.0);
+		ColorMatrix cMatrix = new ColorMatrix();
+		cMatrix.set(new float[] { contrast, 0, 0, 0, 0, 0, contrast, 0, 0, 0,
+				0, 0, contrast, 0, 0, 0, 0, 0, 1, 0 });
+
+		Paint paint = new Paint();
+		paint.setColorFilter(new ColorMatrixColorFilter(cMatrix));
+
+		Canvas canvas = new Canvas(bmp);
+		canvas.drawBitmap(srcBitmap, 0, 0, paint);
+		return bmp;
+	}
+
+	protected Bitmap rotateBitmap(Bitmap bmp) {
+		Bitmap mbmp = Bitmap.createBitmap(bmp.getWidth(), bmp.getHeight(),
+				Config.ARGB_8888);
+		Canvas canvas = new Canvas(mbmp);
+		canvas.drawBitmap(bmp, 0, 0, null);
+		Matrix matrix = new Matrix();
+		matrix.postScale(1f, 1f);
+		if (leftOrRightLandscape == true) {
+			matrix.postRotate(90);
+		} else {
+			matrix.postRotate(-90);
+		}
+		Bitmap dstbmp = Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(),
+				bmp.getHeight(), matrix, true);
+		canvas.drawBitmap(dstbmp, 0, 0, null);
+		return dstbmp;
+	}
+	 /**
+     * *add by mare 截取桌面图片并且做虚化处理 end
+     */
+	@Override
+    public boolean onTouchEvent(MotionEvent event) {	
+		// add by mare 当用户点击最上面的状态栏时就会触发事件，而我们获取到这个事件，并在这时截取屏幕
+		if (event.getAction() == MotionEvent.ACTION_DOWN) {
+			BitmapDrawable mBitmapDrawable;
+			if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+				mBitmapDrawable = new BitmapDrawable(getResources(),
+						darkBitmap(fastBlur(shot())));
+			} else {
+				mBitmapDrawable = new BitmapDrawable(getResources(),
+						darkBitmap(fastBlur(rotateBitmap(shot()))));
+			}
+			mBitmapDrawable.setTileModeXY(TileMode.REPEAT, TileMode.REPEAT);
+			mBar.mNotificationPanel.setBackground(mBitmapDrawable);
+		}
+		// add by mare
         boolean barConsumedEvent = mBar.interceptTouchEvent(event);
 
         if (DEBUG_GESTURES) {
@@ -192,11 +385,34 @@ public class PhoneStatusBarView extends PanelBar {
     public void panelExpansionChanged(PanelView panel, float frac, boolean expanded) {
         super.panelExpansionChanged(panel, frac, expanded);
         mPanelFraction = frac;
-        updateScrimFraction();
-    }
+        //remove by mare 2017/3/7 begin
+        //===========================>
+        //这里去掉作用是不改变锁屏滑动解锁时的亮度变化
 
+        if ((mBar.getBarState() != StatusBarState.KEYGUARD)) {
+            updateScrimFraction();
+        }
+
+        //remove by mare 2017/3/7 end
+    }
+    //Note by mare 2017/3/7
+    //通知前的蒙层画布
     private void updateScrimFraction() {
         float scrimFraction = Math.max(mPanelFraction - mMinFraction / (1.0f - mMinFraction), 0);
         mScrimController.setPanelExpansion(scrimFraction);
     }
+    
+// show QS page when pull down by yangfan begin   
+    @Override
+    public void showPage(int target) {
+    	super.showPage(target);
+    	mBar.mNotificationPanel.showPage(target);
+    }
+ // show QS page when pull down by yangfan end  
+
+    @Override
+    protected boolean isInCallUIActivity() {
+    	 return mBar.isInCallUIActivity();
+    }
+    
 }

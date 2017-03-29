@@ -1,0 +1,182 @@
+From f15605a67fc55cea830c8a812753a84451bc33a5 Mon Sep 17 00:00:00 2001
+From: mare <yangfan@qucii.com>
+Date: Mon, 6 Mar 2017 10:58:14 +0800
+Subject: [PATCH 104/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E4=BF=AE=E8=AE=A2=E7=8A=B6=E6=80=81=E6=A0=8F=E5=9B=BE=E6=A0=87?=
+ =?UTF-8?q?=E8=BF=87=E5=A4=9A=E5=92=8C=E6=97=B6=E9=97=B4=E9=87=8D=E5=8F=A0?=
+ =?UTF-8?q?=E7=9A=84=E9=97=AE=E9=A2=98?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/res/layout/status_bar.xml                 |  4 +-
+ .../systemui/statusbar/phone/IconMerger.java       | 32 +++++++------
+ .../statusbar/phone/PhoneStatusBarView.java        | 52 +++++++++++++++++++++-
+ 3 files changed, 72 insertions(+), 16 deletions(-)
+
+diff --git a/SystemUI/res/layout/status_bar.xml b/SystemUI/res/layout/status_bar.xml
+index 9f88f2d..180b09d 100644
+--- a/SystemUI/res/layout/status_bar.xml
++++ b/SystemUI/res/layout/status_bar.xml
+@@ -95,7 +95,7 @@
+                  PhoneStatusBar (DISABLE_NOTIFICATION_ICONS), so we need two views here. -->
+             <com.android.keyguard.AlphaOptimizedLinearLayout
+                 android:id="@+id/notification_icon_area_inner"
+-                android:layout_width="match_parent"
++                android:layout_width="wrap_content"
+                 android:layout_height="match_parent"
+                 >
+                 <com.android.keyguard.CarrierText
+@@ -117,7 +117,7 @@
+                     android:visibility="gone"
+                     />
+                 <com.android.systemui.statusbar.phone.IconMerger android:id="@+id/notificationIcons"
+-                    android:layout_width="match_parent"
++                    android:layout_width="wrap_content"
+                     android:layout_height="match_parent"
+                     android:layout_alignParentStart="true"
+                     android:gravity="center_vertical"
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/IconMerger.java b/SystemUI/src/com/android/systemui/statusbar/phone/IconMerger.java
+index e17e30c..61994d0 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/IconMerger.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/IconMerger.java
+@@ -49,21 +49,27 @@ public class IconMerger extends LinearLayout {
+         mMoreView = v;
+     }
+ 
+-    @Override
+-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
++    //delete by mare 2017/3/6 begin
++    //=======================>
++    //这里改回原来的宽度判断
++//    @Override
++//    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
++//        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
++        
++        
+         // we need to constrain this to an integral multiple of our children
+-        int width = getMeasuredWidth();
++//        int width = getMeasuredWidth();
++//		//modified  by yangfan
++//        if (mClockLocation == ClockController.STYLE_CLOCK_CENTER) {
++//            int totalWidth = getResources().getDisplayMetrics().widthPixels;
++//            width = totalWidth / 2 - mIconSize * 2;
++//        }
++//        int iconMegerSize = width - (width % mIconSize);
++//        Log.d(TAG, "iconMegerSize : " + iconMegerSize + "mIconSize : " + mIconSize);
++//        setMeasuredDimension(getMeasuredWidth()/*iconMegerSize*/, getMeasuredHeight());
+ 		//modified  by yangfan
+-        if (mClockLocation == ClockController.STYLE_CLOCK_CENTER) {
+-            int totalWidth = getResources().getDisplayMetrics().widthPixels;
+-            width = totalWidth / 2 - mIconSize * 2;
+-        }
+-        int iconMegerSize = width - (width % mIconSize);
+-        Log.d(TAG, "iconMegerSize : " + iconMegerSize + "mIconSize : " + mIconSize);
+-        setMeasuredDimension(iconMegerSize, getMeasuredHeight());
+-		//modified  by yangfan
+-    }
++//    }
++    //delete by mare 2017/3/6 end
+ 
+     @Override
+     protected void onLayout(boolean changed, int l, int t, int r, int b) {
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarView.java b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarView.java
+index 12de27d..30467c9 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarView.java
+@@ -22,12 +22,15 @@ import android.content.res.Resources;
+ import android.graphics.Bitmap;
+ import android.graphics.Bitmap.Config;
+ import android.graphics.Canvas;
++import android.graphics.Color;
+ import android.graphics.ColorMatrix;
+ import android.graphics.ColorMatrixColorFilter;
+ import android.graphics.Matrix;
+ import android.graphics.Paint;
++import android.graphics.Rect;
+ import android.graphics.Shader.TileMode;
+ import android.graphics.drawable.BitmapDrawable;
++import android.graphics.drawable.ColorDrawable;
+ import android.os.SystemProperties;
+ import android.util.AttributeSet;
+ import android.util.DisplayMetrics;
+@@ -56,6 +59,9 @@ public class PhoneStatusBarView extends PanelBar {
+     private ScrimController mScrimController;
+     private float mMinFraction;
+     private float mPanelFraction;
++    //add by mare 2017/3/4 begin
++    private int mIconSize;
++    //add by mare 2017/3/4 end
+     private Runnable mHideExpandedRunnable = new Runnable() {
+         @Override
+         public void run() {
+@@ -68,6 +74,14 @@ public class PhoneStatusBarView extends PanelBar {
+ 
+         Resources res = getContext().getResources();
+         mBarTransitions = new PhoneStatusBarTransitions(this);
++        
++        //add by mare 2017/3/4 begin
++        //=======================>
++        //通知栏小图标宽度和中间时钟一半宽度
++        mIconSize = res.getDimensionPixelSize(
++                R.dimen.status_bar_icon_size);
++        //<=======================
++        //add by mare 2017/3/4 end
+     }
+ 
+     public BarTransitions getBarTransitions() {
+@@ -82,12 +96,48 @@ public class PhoneStatusBarView extends PanelBar {
+         mScrimController = scrimController;
+     }
+ 
++    //add by mare 2017/3/6 begin
++    //=======================>
++    //这里判断左侧大于时钟左边，然后截取部分显示
++    private View mNotificationIconsParent;
++    private View centerClock;
++    Rect outRect=new Rect();
++    //add by mare 2017/3/6 end
+     @Override
+     public void onFinishInflate() {
+         mBarTransitions.init();
++        //add by mare 2017/3/6 begin
++        //=======================>
++        //这里判断左侧大于时钟左边，然后截取部分显示
++        mNotificationIconsParent=findViewById(R.id.notification_icon_area_inner);
++        centerClock=findViewById(R.id.center_clock);
++        //add by mare 2017/3/6 end
++        
+     }
+-
++    //add by mare 2017/3/6 begin
++    //=======================>
++    //这里判断左侧大于时钟左边，然后截取部分显示
++   
+     @Override
++	protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
++		super.onLayout(changed, left, top, right, bottom);
++		if(centerClock.getVisibility()==View.VISIBLE){
++			mNotificationIconsParent.getBoundsOnScreen(outRect);
++			int totalWidth = centerClock.getLeft();
++			// 这里判断左侧大于时钟左边
++			if (outRect.right > totalWidth) {
++				// 按图标大小截取宽度
++				int width = (totalWidth - outRect.left) - (totalWidth - outRect.left) % mIconSize - 10;
++				mNotificationIconsParent.layout(mNotificationIconsParent.getLeft(), mNotificationIconsParent.getTop(),
++						mNotificationIconsParent.getLeft() + width, mNotificationIconsParent.getBottom());
++			}
++		}else{
++			mNotificationIconsParent.layout(mNotificationIconsParent.getLeft(), mNotificationIconsParent.getTop(),
++					mNotificationIconsParent.getLeft() + mNotificationIconsParent.getMeasuredWidth(), mNotificationIconsParent.getBottom());
++		}
++	}
++    //add by mare 2017/3/6 end
++	@Override
+     public void addPanel(PanelView pv) {
+         super.addPanel(pv);
+         if (pv.getId() == R.id.notification_panel) {
+-- 
+2.8.3.windows.1
+

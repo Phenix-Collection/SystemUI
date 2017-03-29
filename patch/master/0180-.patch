@@ -1,0 +1,46 @@
+From 70ae6e3993cfa6b64e6df793ae8c8afacc316a45 Mon Sep 17 00:00:00 2001
+From: mare <yangfan@qucii.com>
+Date: Fri, 24 Mar 2017 18:54:16 +0800
+Subject: [PATCH 180/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E9=A1=B6=E9=83=A8=E6=97=B6=E9=97=B4=E6=A0=8F=E9=81=AE=E6=8C=A1?=
+ =?UTF-8?q?=E6=95=88=E6=9E=9C?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../com/android/systemui/statusbar/phone/NotificationPanelView.java   | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+index 330229b..95598c4 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+@@ -228,6 +228,8 @@ public class NotificationPanelView extends PanelView implements
+     private long mSecondClickTime = 0;
+     //added by dongwei end}
+     
++    
++    
+     private int mBarSize;
+     private Runnable mHeadsUpExistenceChangedRunnable = new Runnable() {
+         @Override
+@@ -380,6 +382,7 @@ public class NotificationPanelView extends PanelView implements
+     	}else{
+     		if(getIsTouchOrAnimationOrBarState()){
+     			mNotificationContainerParent.layout(left, top, right, noBottom);
++    			mHeader.layout(left, top, right, Math.min(noBottom, mHeader.getMeasuredHeight()));
+     			mArrowLayout.layout(left, noBottom, right, mChangedBottom);
+     		}
+     		
+@@ -2719,6 +2722,7 @@ public class NotificationPanelView extends PanelView implements
+ 			int arrowHeight = mArrowLayout.getMeasuredHeight();
+ 			noBottom = Math.max(-arrowHeight, mPanelHeight - arrowHeight);
+ 			mNotificationContainerParent.setBottom(noBottom);
++			mHeader.setBottom(Math.min(noBottom, mHeader.getMeasuredHeight()));
+ 			mArrowLayout.layout(mArrowLayout.getLeft(), noBottom, mArrowLayout.getRight(), noBottom+arrowHeight);
+ 		}
+     }
+-- 
+2.8.3.windows.1
+

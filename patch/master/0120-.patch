@@ -1,0 +1,38 @@
+From 56f31983384365881b7598dd76ea1e9313e1481a Mon Sep 17 00:00:00 2001
+From: mare <yangfan@qucci.com>
+Date: Wed, 8 Mar 2017 15:37:04 +0800
+Subject: [PATCH 120/185] =?UTF-8?q?=E3=80=90=E6=95=85=E9=9A=9C=E3=80=91?=
+ =?UTF-8?q?=E8=AE=BE=E7=BD=AE=EF=BC=8D=E6=98=BE=E7=A4=BA=EF=BC=8D=E7=BD=91?=
+ =?UTF-8?q?=E7=BB=9C=E8=BF=90=E8=90=A5=E5=95=86=EF=BC=8D=E5=BC=80=E5=90=AF?=
+ =?UTF-8?q?=E5=85=B3=E9=97=AD=E6=A6=82=E7=8E=87=E6=80=A7=E6=98=BE=E7=A4=BA?=
+ =?UTF-8?q?=E6=97=A0=E4=BD=9C=E7=94=A8?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../com/android/systemui/statusbar/policy/MobileSignalController.java | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/policy/MobileSignalController.java b/SystemUI/src/com/android/systemui/statusbar/policy/MobileSignalController.java
+index 25aa093..fd8a901 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/policy/MobileSignalController.java
++++ b/SystemUI/src/com/android/systemui/statusbar/policy/MobileSignalController.java
+@@ -350,12 +350,12 @@ public class MobileSignalController extends SignalController<
+                 isImsRegisteredInWifi(), getdataNetworkTypeInRoamingId(),
+                 getEmbmsIconId(), networkLabelName,mCurrentState.isForbidden,isDelaySignal);
+ 
+-        mCallbackHandler.post(new Runnable() {
++        /*mCallbackHandler.post(new Runnable() {
+             @Override
+             public void run() {
+                 mNetworkController.setNetworkLabelViewVisibility(true, true);
+             }
+-        });
++        });*/
+ 		//modified by yangfan end
+     }
+ 
+-- 
+2.8.3.windows.1
+

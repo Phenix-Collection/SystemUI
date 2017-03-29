@@ -1,0 +1,43 @@
+From e1553d9551ab211d8e09bb62b3d4b5b0d25fe11d Mon Sep 17 00:00:00 2001
+From: LRH <yangfan@qucci.com>
+Date: Wed, 15 Mar 2017 15:19:40 +0800
+Subject: [PATCH 148/185] =?UTF-8?q?=E3=80=90=E6=95=85=E9=9A=9C=E3=80=91?=
+ =?UTF-8?q?=E4=BF=AE=E6=94=B9=E7=AC=AC=E4=B8=80=E6=AC=A1=E5=BC=80=E6=9C=BA?=
+ =?UTF-8?q?systemUI=E6=8C=82=E6=8E=89=E9=97=AE=E9=A2=98?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../android/systemui/statusbar/phone/PhoneStatusBar.java  | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
+index 939b6a1..96de385 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
+@@ -709,13 +709,14 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
+ 
+ 	ActivityManager activityManager = (ActivityManager) mContext.getSystemService(mContext.ACTIVITY_SERVICE);
+         List<ActivityManager.RunningTaskInfo> tasks = activityManager.getRunningTasks(1);
+-        ActivityManager.RunningTaskInfo taskInfo = tasks.get(0);
+-        String className = taskInfo.topActivity.getClassName();
+-	Log.d("xiayy","call state"+tm.getCallState()+"--top activity="+className);
+-        if (tm.getCallState() != TelephonyManager.CALL_STATE_IDLE && !className.equals("com.android.incallui.InCallActivity")) {
+-               showCallBar();
+-         }
+-
++        if(tasks.size() != 0){
++		ActivityManager.RunningTaskInfo taskInfo = tasks.get(0);
++		String className = taskInfo.topActivity.getClassName();
++		Log.d("xiayy","call state"+tm.getCallState()+"--top activity="+className);
++		if (tm.getCallState() != TelephonyManager.CALL_STATE_IDLE && !"com.android.incallui.InCallActivity".equals(className)) {
++		       showCallBar();
++		 }
++	}
+         // Lastly, call to the icon policy to install/update all the icons.
+         mIconPolicy = new PhoneStatusBarPolicy(mContext, mCastController, mHotspotController,
+                 mUserInfoController, mBluetoothController, mRotationLockController, mProfilesController);// add 'mProfilesController' by yangfan
+-- 
+2.8.3.windows.1
+

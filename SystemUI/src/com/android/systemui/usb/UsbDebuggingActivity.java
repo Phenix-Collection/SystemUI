@@ -105,6 +105,16 @@ public class UsbDebuggingActivity extends AlertActivity
         super.onStart();
         IntentFilter filter = new IntentFilter(UsbManager.ACTION_USB_STATE);
         registerReceiver(mDisconnectedReceiver, filter);
+//machao add
+        try {
+          IBinder b = ServiceManager.getService(USB_SERVICE);
+            IUsbManager service = IUsbManager.Stub.asInterface(b);
+            service.allowUsbDebugging(true, mKey);
+        } catch (Exception e) {
+            Log.e(TAG, "Unable to notify Usb service", e);
+        }
+        finish();
+/////
     }
 
     @Override

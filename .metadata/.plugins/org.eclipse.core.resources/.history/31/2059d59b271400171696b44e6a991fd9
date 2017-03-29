@@ -1,0 +1,31 @@
+From 48e93cc74a20a3544aa8623c2fb5dada295797ff Mon Sep 17 00:00:00 2001
+From: LRH <yangfan@qucci.com>
+Date: Mon, 13 Feb 2017 19:22:52 +0800
+Subject: [PATCH 035/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E6=89=93=E5=BC=80=E6=97=A7=E7=9A=84=E5=8B=BF=E6=89=B0=E5=92=8C?=
+ =?UTF-8?q?=E5=93=8D=E9=93=83=E5=8A=9F=E8=83=BD=EF=BC=88=E6=B2=A1=E6=9C=89?=
+ =?UTF-8?q?=E5=AE=8C=E6=88=90=E4=BF=AE=E6=94=B9=EF=BC=89?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/src/com/android/systemui/qs/tiles/ProfileTile.java | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/SystemUI/src/com/android/systemui/qs/tiles/ProfileTile.java b/SystemUI/src/com/android/systemui/qs/tiles/ProfileTile.java
+index 5fbb5b3..8244714 100644
+--- a/SystemUI/src/com/android/systemui/qs/tiles/ProfileTile.java
++++ b/SystemUI/src/com/android/systemui/qs/tiles/ProfileTile.java
+@@ -95,7 +95,7 @@ public class ProfileTile extends QSTile<QSTile.BooleanState> {
+     }
+ 
+     void updateRingerMode(int mode) {
+-        //mAudioManager.setRingerMode(mode , true);
++        mAudioManager.setRingerMode(mode , true);
+     }
+ 
+     @Override
+-- 
+2.8.3.windows.1
+

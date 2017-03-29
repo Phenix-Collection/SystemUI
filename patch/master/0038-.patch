@@ -1,0 +1,30 @@
+From ba19135e21f967e5c196cec79536fdd96783a332 Mon Sep 17 00:00:00 2001
+From: mare <yangfan@qucci.com>
+Date: Wed, 15 Feb 2017 15:58:44 +0800
+Subject: [PATCH 038/185] =?UTF-8?q?=E3=80=90=E6=95=85=E9=9A=9C=E3=80=91?=
+ =?UTF-8?q?=E6=B7=BB=E5=8A=A0=E9=81=97=E6=BC=8F=E5=AD=97=E7=AC=A6=E4=B8=B2?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/res/values/strings.xml | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/SystemUI/res/values/strings.xml b/SystemUI/res/values/strings.xml
+index 6837843..c1ccbcc 100644
+--- a/SystemUI/res/values/strings.xml
++++ b/SystemUI/res/values/strings.xml
+@@ -1178,6 +1178,9 @@
+     <!-- Path data for circle battery -->
+     <string name="battery_circle_path" translatable="false">M 12 3.5 C 16.6944203736 3.5 20.5 7.30557962644 20.5 12 C 20.5 16.6944203736 16.6944203736 20.5 12 20.5 C 7.30557962644 20.5 3.5 16.6944203736 3.5 12 C 3.5 7.30557962644 7.30557962644 3.5 12 3.5 Z</string>
+     <string name="mobile_network_namae_filter">China</string>
++    <string name="clear_all_task_memory_text"><xliff:g id="number">%s</xliff:g>G Free | 4G</string>
++    <string name="clear_all_task_memory_release_text">Has released <xliff:g id="number">%d</xliff:g>M memory</string>
++    <string name="no_need_to_clear">The phone have been cleaned to the best state</string>
+     <string name="clear_all_tasks">Clear all</string>
+         <!-- add by mare-->
+     <string name="confirm_password_title">Confirm applock password</string>
+-- 
+2.8.3.windows.1
+

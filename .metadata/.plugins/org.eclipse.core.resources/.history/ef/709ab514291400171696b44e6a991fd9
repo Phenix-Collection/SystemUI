@@ -1,0 +1,38 @@
+From d70a9573f41807f78fa2de1867501655bf5de397 Mon Sep 17 00:00:00 2001
+From: zengqingshuai <yangfan@qucii.com>
+Date: Fri, 10 Mar 2017 10:14:44 +0800
+Subject: [PATCH 135/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E8=B0=83=E6=95=B4=E9=94=81=E5=B1=8F=E7=95=8C=E9=9D=A2=E5=92=8C?=
+ =?UTF-8?q?=E5=A3=81=E7=BA=B8=E4=BA=AE=E5=BA=A6=E4=B8=80=E8=87=B4?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../com/android/systemui/statusbar/phone/ScrimController.java  | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/ScrimController.java b/SystemUI/src/com/android/systemui/statusbar/phone/ScrimController.java
+index b9e9292..5488063 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/ScrimController.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/ScrimController.java
+@@ -314,7 +314,15 @@ public class ScrimController implements ViewTreeObserver.OnPreDrawListener,
+         if (scrim instanceof ScrimView) {
+             float alpha2 = getDozeAlpha(scrim);
+             float alpha = 1 - (1 - alpha1) * (1 - alpha2);
+-            ((ScrimView) scrim).setScrimColor(Color.argb((int) (alpha * 255), 0, 0, 0));
++            //add by zqs 2017/3/10 begin
++            //=========================>
++            //这里锁屏界面不加蒙层
++            if(mKeyguardShowing){
++            	scrim.setAlpha(1f);
++            }else{
++            	((ScrimView) scrim).setScrimColor(Color.argb((int) (alpha * 255), 0, 0, 0));
++            }
++            //add by zqs 2017/3/10 end
+         } else {
+             scrim.setAlpha(alpha1);
+         }
+-- 
+2.8.3.windows.1
+

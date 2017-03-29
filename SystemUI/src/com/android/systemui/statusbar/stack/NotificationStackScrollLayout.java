@@ -48,6 +48,7 @@ import com.android.systemui.statusbar.SpeedBumpView;
 import com.android.systemui.statusbar.StackScrollerDecorView;
 import com.android.systemui.statusbar.StatusBarState;
 import com.android.systemui.statusbar.phone.NotificationGroupManager;
+import com.android.systemui.statusbar.phone.NotificationPanelView;
 import com.android.systemui.statusbar.phone.PhoneStatusBar;
 import com.android.systemui.statusbar.phone.ScrimController;
 import com.android.systemui.statusbar.policy.HeadsUpManager;
@@ -182,6 +183,8 @@ public class NotificationStackScrollLayout extends ViewGroup
     private float mMinTopOverScrollToEscape;
     private int mIntrinsicPadding;
     private int mNotificationTopPadding;
+    ///////////////////////////
+    private int mArrowHeight,mMarginBottom;
     private float mStackTranslation;
     private float mTopPaddingOverflow;
     private boolean mDontReportNextOverScroll;
@@ -230,6 +233,9 @@ public class NotificationStackScrollLayout extends ViewGroup
     private ScrimController mScrimController;
     private boolean mForceNoOverlappingRendering;
     private NotificationOverflowContainer mOverflowContainer;
+    
+    private NotificationPanelView panelView;
+    
     private final ArrayList<Pair<ExpandableNotificationRow, Boolean>> mTmpList = new ArrayList<>();
 
     public NotificationStackScrollLayout(Context context) {
@@ -313,6 +319,10 @@ public class NotificationStackScrollLayout extends ViewGroup
                 R.dimen.notifications_top_padding);
         mCollapseSecondCardPadding = getResources().getDimensionPixelSize(
                 R.dimen.notification_collapse_second_card_padding);
+        mArrowHeight = getResources().getDimensionPixelSize(
+        		R.dimen.qucii_arrow_height);
+        mMarginBottom = getResources().getDimensionPixelSize(
+        		R.dimen.notification_min_height);
     }
 
     private void updatePadding(boolean dimmed) {
@@ -341,7 +351,6 @@ public class NotificationStackScrollLayout extends ViewGroup
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-
         // we layout all our children centered on the top
         float centerX = getWidth() / 2.0f;
         for (int i = 0; i < getChildCount(); i++) {
@@ -356,7 +365,11 @@ public class NotificationStackScrollLayout extends ViewGroup
                     (int) (centerX + width / 2.0f),
                     (int) height);
         }
-        setMaxLayoutHeight(getHeight());
+    	//modify by mare 2017/3/22 begin
+        //========================>
+        //上移通知组位置使它不和底部重叠
+        setMaxLayoutHeight(getHeight()-mMarginBottom);
+        //modify by mare 2017/3/22 end
         updateContentHeight();
         clampScrollPosition();
         if (mRequestViewResizeAnimationOnLayout) {
@@ -485,13 +498,20 @@ public class NotificationStackScrollLayout extends ViewGroup
      * @param height the new height of the stack
      */
     public void setStackHeight(float height) {
-        mLastSetStackHeight = height;
+    	//add by mare 2017/3/16 begin
+        //========================>
+        //通知组的滑动效果上升高度多一个底部箭头高度
+    	mLastSetStackHeight = height;
+    	if(mPhoneStatusBar.getBarState()!=StatusBarState.KEYGUARD){
+    		height=height-mArrowHeight;
+    	}
+    	boolean trackingHeadsUp = mTrackingHeadsUp || mHeadsUpManager.hasPinnedHeadsUp();
+
         setIsExpanded(height > 0.0f);
         int newStackHeight = (int) height;
         int minStackHeight = getMinStackHeight();
         int stackHeight;
         float paddingOffset;
-        boolean trackingHeadsUp = mTrackingHeadsUp || mHeadsUpManager.hasPinnedHeadsUp();
         int normalUnfoldPositionStart = trackingHeadsUp ? mHeadsUpManager.getTopHeadsUpHeight()
                 : minStackHeight;
         if (newStackHeight - mTopPadding - mTopPaddingOverflow >= normalUnfoldPositionStart
@@ -512,6 +532,10 @@ public class NotificationStackScrollLayout extends ViewGroup
                 translationY += (1 - partiallyThere) * (mBottomStackPeekSize +
                         mCollapseSecondCardPadding);
             } else {
+            	//add by mare 2017/2/24 begin
+            	//===================>
+            	panelView.showPage(0);
+            	//add by mare 2017/2/24 end
                 translationY = (int) (height - mHeadsUpManager.getTopHeadsUpHeight());
             }
             paddingOffset = translationY - mTopPadding;
@@ -520,9 +544,19 @@ public class NotificationStackScrollLayout extends ViewGroup
         if (stackHeight != mCurrentStackHeight) {
             mCurrentStackHeight = stackHeight;
             updateAlgorithmHeightAndPadding();
-            requestChildrenUpdate();
+            requestChildrenUpdate();//add by mare
         }
-        setStackTranslation(paddingOffset);
+        //modify by mare 2017/02/28 begin
+        //=============================>
+        //
+        if(!panelView.isNotificationView()&&!trackingHeadsUp){
+        	setStackTranslation(0);//
+        }else{
+        	setStackTranslation(paddingOffset);//
+        }
+        //<=============================
+        //modify by mare 2017/02/28 end
+        
     }
 
     public float getStackTranslation() {
@@ -531,9 +565,9 @@ public class NotificationStackScrollLayout extends ViewGroup
 
     private void setStackTranslation(float stackTranslation) {
         if (stackTranslation != mStackTranslation) {
-            mStackTranslation = stackTranslation;
-            mAmbientState.setStackTranslation(stackTranslation);
-            requestChildrenUpdate();
+        	mStackTranslation = stackTranslation;
+        	mAmbientState.setStackTranslation(stackTranslation);
+        	requestChildrenUpdate();
         }
     }
 
@@ -1552,6 +1586,9 @@ public class NotificationStackScrollLayout extends ViewGroup
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
+    	if(!panelView.isNotificationView()){
+    		return false;
+    	}
         if (mInterceptDelegateEnabled) {
             transformTouchEvent(ev, this, mScrollView);
             if (mScrollView.onInterceptTouchEvent(ev)) {
@@ -3025,7 +3062,8 @@ public class NotificationStackScrollLayout extends ViewGroup
                         .animateHeight()
                         .animateTopInset()
                         .animateY()
-                        .animateZ(),
+                        .animateZ()
+                        ,
 
                 // ANIMATION_TYPE_HEADS_UP_DISAPPEAR
                 new AnimationFilter()
@@ -3189,5 +3227,13 @@ public class NotificationStackScrollLayout extends ViewGroup
             return length;
         }
     }
-
+    
+    public void setNotificationPanelView(NotificationPanelView view){
+    	panelView = view;
+    }
+//added by yangfan 
+    public boolean isTrackingHeadsUp(){
+    	return mTrackingHeadsUp || mHeadsUpManager.hasPinnedHeadsUp();
+    }
+//added by yangfan  end
 }

@@ -46,6 +46,9 @@ import com.android.systemui.statusbar.policy.BluetoothController.Callback;
 import com.android.systemui.statusbar.policy.CastController;
 import com.android.systemui.statusbar.policy.CastController.CastDevice;
 import com.android.systemui.statusbar.policy.HotspotController;
+import com.android.systemui.statusbar.policy.ProfilesController;
+import com.android.systemui.statusbar.policy.RotationLockController;
+import com.android.systemui.statusbar.policy.RotationLockController.RotationLockControllerCallback;
 import com.android.systemui.statusbar.policy.UserInfoController;
 
 /**
@@ -65,7 +68,9 @@ public class PhoneStatusBarPolicy implements Callback {
     private static final String SLOT_VOLUME = "volume";
     private static final String SLOT_ALARM_CLOCK = "alarm_clock";
     private static final String SLOT_MANAGED_PROFILE = "managed_profile";
-
+    private static final String SLOT_ROTATION_LOCK = "rotation_lock";// added by yangfan 
+    private static final String SLOT_SILENT_MODE = "silent_mode";// added by yangfan 
+    
     private final Context mContext;
     private final StatusBarManager mService;
     private final Handler mHandler = new Handler();
@@ -73,6 +78,8 @@ public class PhoneStatusBarPolicy implements Callback {
     private final HotspotController mHotspot;
     private final AlarmManager mAlarmManager;
     private final UserInfoController mUserInfoController;
+    private final RotationLockController mRotationLockController;
+    private final ProfilesController mProfilesController;// added by yangfan
 
     // Assume it's all good unless we hear otherwise.  We don't always seem
     // to get broadcasts that it *is* there.
@@ -81,6 +88,7 @@ public class PhoneStatusBarPolicy implements Callback {
     private boolean mZenVisible;
     private boolean mVolumeVisible;
     private boolean mCurrentUserSetup;
+    private boolean mSilentVisible ;
 
     private int mZen;
 
@@ -99,7 +107,9 @@ public class PhoneStatusBarPolicy implements Callback {
             }
             else if (action.equals(AudioManager.RINGER_MODE_CHANGED_ACTION) ||
                     action.equals(AudioManager.INTERNAL_RINGER_MODE_CHANGED_ACTION)) {
-                updateVolumeZen();
+					//modified by yangfan
+                //updateVolumeZen();
+				updateProfile();
             }
             else if (action.equals(TelephonyIntents.ACTION_SIM_STATE_CHANGED)) {
                 updateSimState(intent);
@@ -119,15 +129,17 @@ public class PhoneStatusBarPolicy implements Callback {
     };
 
     public PhoneStatusBarPolicy(Context context, CastController cast, HotspotController hotspot,
-            UserInfoController userInfoController, BluetoothController bluetooth) {
+            UserInfoController userInfoController, BluetoothController bluetooth ,RotationLockController rotationLockController, ProfilesController profilesController) {// add 'profilesController' by yangfan
         mContext = context;
         mCast = cast;
         mHotspot = hotspot;
         mBluetooth = bluetooth;
         mBluetooth.addStateChangedCallback(this);
+        mRotationLockController = rotationLockController;
         mService = (StatusBarManager) context.getSystemService(Context.STATUS_BAR_SERVICE);
         mAlarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         mUserInfoController = userInfoController;
+        mProfilesController = profilesController;// added by yangfan
 
         // listen for broadcasts
         IntentFilter filter = new IntentFilter();
@@ -160,13 +172,20 @@ public class PhoneStatusBarPolicy implements Callback {
         mService.setIconVisibility(SLOT_ALARM_CLOCK, false);
 
         // zen
-        mService.setIcon(SLOT_ZEN, R.drawable.stat_sys_zen_important, 0, null);
+        mService.setIcon(SLOT_ZEN,/* R.drawable.stat_sys_zen_important*/R.drawable.stat_sys_dnd, 0, null);
         mService.setIconVisibility(SLOT_ZEN, false);
 
         // volume
         mService.setIcon(SLOT_VOLUME, R.drawable.stat_sys_ringer_vibrate, 0, null);
         mService.setIconVisibility(SLOT_VOLUME, false);
+		
+// added by yangfan 
+        // silent_mode
+        mService.setIcon(SLOT_SILENT_MODE, R.drawable.stat_sys_ringer_silent, 0, null);
+        mService.setIconVisibility(SLOT_SILENT_MODE, false);
+// added by yangfan 
         updateVolumeZen();
+        updateProfile();// added by yangfan
 
         // cast
         mService.setIcon(SLOT_CAST, R.drawable.stat_sys_cast, 0, null);
@@ -185,6 +204,13 @@ public class PhoneStatusBarPolicy implements Callback {
         mService.setIcon(SLOT_MANAGED_PROFILE, R.drawable.stat_sys_managed_profile_status, 0,
                 mContext.getString(R.string.accessibility_managed_profile));
         mService.setIconVisibility(SLOT_MANAGED_PROFILE, false);
+
+// added by yangfan 
+        // rotation_lock
+        mService.setIcon(SLOT_ROTATION_LOCK, R.drawable.stat_sys_screen_locked, 0, null);
+        mService.setIconVisibility(SLOT_ROTATION_LOCK, false);
+        mRotationLockController.addRotationLockControllerCallback(mRotationLockCallback);
+// added by yangfan 
     }
 
     public void setZenMode(int zen) {
@@ -196,8 +222,8 @@ public class PhoneStatusBarPolicy implements Callback {
         final AlarmClockInfo alarm = mAlarmManager.getNextAlarmClock(UserHandle.USER_CURRENT);
         final boolean hasAlarm = alarm != null && alarm.getTriggerTime() > 0;
         final boolean zenNone = mZen == Global.ZEN_MODE_NO_INTERRUPTIONS;
-        mService.setIcon(SLOT_ALARM_CLOCK, zenNone ? R.drawable.stat_sys_alarm_dim
-                : R.drawable.stat_sys_alarm, 0, null);
+        mService.setIcon(SLOT_ALARM_CLOCK, /*zenNone ? R.drawable.stat_sys_alarm_dim
+                : */R.drawable.stat_sys_alarm, 0, null);//仅显示亮图标
         mService.setIconVisibility(SLOT_ALARM_CLOCK, mCurrentUserSetup && hasAlarm);
     }
 
@@ -229,7 +255,8 @@ public class PhoneStatusBarPolicy implements Callback {
         }
     }
 
-    private final void updateVolumeZen() {
+//modified by yangfan
+    /**private final void updateVolumeZen() {
         AudioManager audioManager = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
 
         boolean zenVisible = false;
@@ -283,7 +310,64 @@ public class PhoneStatusBarPolicy implements Callback {
             mVolumeVisible = volumeVisible;
         }
         updateAlarm();
+    }**/
+	
+	    private final void updateVolumeZen() {
+        boolean zenVisible = false;
+        int zenIconId = 0;
+        String zenDescription = null;
+        
+        zenVisible = mZen != Global.ZEN_MODE_OFF /*&& mProfilesController.getRingerMode() == ProfilesController.RINGER_MODE_UNKNOWN*/;
+        if (mZen == Global.ZEN_MODE_NO_INTERRUPTIONS) {
+            zenIconId = R.drawable.stat_sys_dnd;
+            //zenIconId = R.drawable.stat_sys_dnd_total_silence;
+            //zenIconId = R.drawable.stat_sys_zen_none;
+            zenDescription = mContext.getString(R.string.quick_settings_dnd_label);
+        } else if (mZen == Global.ZEN_MODE_IMPORTANT_INTERRUPTIONS) {
+            zenIconId = R.drawable.stat_sys_dnd;
+            //zenIconId = R.drawable.stat_sys_dnd_priority;
+            //zenIconId = R.drawable.stat_sys_zen_important;
+            zenDescription = mContext.getString(R.string.interruption_level_priority);
+        } else if (mZen == Global.ZEN_MODE_ALARMS) {
+            zenIconId = R.drawable.stat_sys_dnd;
+            zenDescription = mContext.getString(R.string.interruption_level_alarms);
+        }
+        if (zenVisible) {
+            mService.setIcon(SLOT_ZEN, zenIconId, 0, zenDescription);
+        }
+        if (zenVisible != mZenVisible) {
+            mService.setIconVisibility(SLOT_ZEN, zenVisible);
+            mZenVisible = zenVisible;
+        }
+        updateAlarm();
     }
+
+    protected void updateProfile() {
+        boolean volumeVisible = false;
+        boolean silentVisible = false;
+        AudioManager audioManager = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
+        if (audioManager.getRingerModeInternal() == AudioManager.RINGER_MODE_VIBRATE) {
+            volumeVisible = true;
+            silentVisible = false;
+        }else if (audioManager.getRingerModeInternal() == AudioManager.RINGER_MODE_SILENT) {
+            volumeVisible = false;
+            silentVisible = true;
+        }else if (audioManager.getRingerModeInternal() == AudioManager.RINGER_MODE_NORMAL) {
+            volumeVisible = false;
+            silentVisible = false;
+        }
+        
+        if (silentVisible != mSilentVisible) {
+            mService.setIconVisibility(SLOT_SILENT_MODE, silentVisible);
+            mSilentVisible = silentVisible;
+        }
+        if (volumeVisible != mVolumeVisible) {
+            mService.setIconVisibility(SLOT_VOLUME, volumeVisible);
+            mVolumeVisible = volumeVisible;
+        }
+        Log.e(TAG, "mSilentVisible : "+ mSilentVisible + " ,mVolumeVisible : "+mVolumeVisible);
+    }
+//modified by yangfan end 
 
     @Override
     public void onBluetoothDevicesChanged() {
@@ -454,4 +538,16 @@ public class PhoneStatusBarPolicy implements Callback {
         mCurrentUserSetup = userSetup;
         updateAlarm();
     }
+ 
+ // added by yangfan    
+    private final RotationLockControllerCallback mRotationLockCallback = new  RotationLockControllerCallback() {
+        
+        @Override
+        public void onRotationLockStateChanged(boolean rotationLocked,
+                boolean affordanceVisible) {
+            mService.setIconVisibility(SLOT_ROTATION_LOCK, rotationLocked);
+        }
+    };
+// added by yangfan 
+    
 }

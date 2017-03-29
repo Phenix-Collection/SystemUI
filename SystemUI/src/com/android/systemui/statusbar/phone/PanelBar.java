@@ -16,6 +16,7 @@
 
 package com.android.systemui.statusbar.phone;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -25,10 +26,13 @@ import android.widget.FrameLayout;
 
 import java.util.ArrayList;
 
+import com.android.systemui.statusbar.StatusBarState;
+
 public abstract class PanelBar extends FrameLayout {
     public static final boolean DEBUG = false;
     public static final String TAG = PanelBar.class.getSimpleName();
     private static final boolean SPEW = false;
+    private ActivityManager activityManager = null;
 
     public static final void LOG(String fmt, Object... args) {
         if (!DEBUG) return;
@@ -52,6 +56,11 @@ public abstract class PanelBar extends FrameLayout {
         mState = state;
     }
 
+    public int getState(){
+    	return mState;
+    }
+    
+    
     public PanelBar(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
@@ -105,6 +114,13 @@ public abstract class PanelBar extends FrameLayout {
     public boolean panelsEnabled() {
         return true;
     }
+    
+    /***
+     * 判断 top Activity 是否是来电界面  by yangfan 
+     */
+    protected boolean isInCallUIActivity(){
+    	return false;
+    }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -116,6 +132,9 @@ public abstract class PanelBar extends FrameLayout {
             }
             return false;
         }
+        if (isInCallUIActivity()) {
+			return false;
+		}// added by yangfan
 
         // figure out which panel needs to be talked to here
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -149,6 +168,13 @@ public abstract class PanelBar extends FrameLayout {
     // called from PanelView when self-expanding, too
     public void startOpeningPanel(PanelView panel) {
         if (DEBUG) LOG("startOpeningPanel: " + panel);
+        
+        //=======================
+        // show QS page when pull down by yangfan begin
+        showPage(1);
+        // show QS page when pull down by yangfan begin
+        //=======================
+        
         mTouchingPanel = panel;
         mPanelHolder.setSelectedPanel(mTouchingPanel);
         for (PanelView pv : mPanels) {
@@ -173,6 +199,11 @@ public abstract class PanelBar extends FrameLayout {
         mPanelExpandedFractionSum = 0f;
         for (PanelView pv : mPanels) {
             pv.setVisibility(expanded ? View.VISIBLE : View.INVISIBLE);
+        	//modify by mare 2017/3/17 begin
+            //========================>
+            //在打开时判断显示两个点
+            pv.updateIndicatorVisibility(pv.mStatusBar.getBarState() == StatusBarState.KEYGUARD||pv.is_Qucii_Headup() ? INVISIBLE : VISIBLE);
+        	//modify by mare 2017/3/17 end
             // adjust any other panels that may be partially visible
             if (expanded) {
                 if (mState == STATE_CLOSED) {
@@ -249,4 +280,10 @@ public abstract class PanelBar extends FrameLayout {
     public void onClosingFinished() {
 
     }
+    
+ // show QS page when pull down by yangfan begin
+    public void showPage(int target){
+    	
+    }
+ // show QS page when pull down by yangfan end
 }

@@ -20,6 +20,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.text.format.DateFormat;
 import android.util.AttributeSet;
@@ -100,8 +101,14 @@ public class DateView extends TextView {
     protected void updateClock() {
         if (mDateFormat == null) {
             final Locale l = Locale.getDefault();
-            final String fmt = DateFormat.getBestDateTimePattern(l, mDatePattern);
+			// modified by yangfan 
+            final Resources res = getContext().getResources(); 
+            //final String fmt = DateFormat.getBestDateTimePattern(l, mDatePattern);
+            final String dateViewSkel = res.getString(R.string.abbrev_wday_month_day_no_year);
+            String fmt = DateFormat.getBestDateTimePattern(l, dateViewSkel);
+            fmt = fmt.replaceFirst("E"," E");
             mDateFormat = new SimpleDateFormat(fmt, l);
+			// modified by yangfan end
         }
 
         mCurrentTime.setTime(System.currentTimeMillis());

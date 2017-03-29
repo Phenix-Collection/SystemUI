@@ -1,0 +1,39 @@
+From 34e845b2bdca85e024b3ffac7879d3e2c6b0836d Mon Sep 17 00:00:00 2001
+From: mare <yangfan@qucci.com>
+Date: Mon, 6 Feb 2017 11:37:18 +0800
+Subject: [PATCH 007/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E7=A6=81=E6=AD=A2quitSeting=E4=B8=8B=E6=8B=89?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../src/com/android/systemui/statusbar/phone/PhoneStatusBar.java     | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
+index eedfb4e..538d95c 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
+@@ -370,6 +370,9 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
+ 
+     private int mNavigationIconHints = 0;
+     private HandlerThread mHandlerThread;
++    
++    
++    private boolean mQsExpansionEnabled = false;
+ 
+     // ensure quick settings is disabled until the current user makes it through the setup wizard
+     private boolean mUserSetup = false;
+@@ -1460,7 +1463,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
+                 && (mUserSetup || mUserSwitcherController == null
+                         || !mUserSwitcherController.isSimpleUserSwitcher())
+                 && ((mDisabled2 & StatusBarManager.DISABLE2_QUICK_SETTINGS) == 0)
+-                && !ONLY_CORE_APPS && !NotificationPanelView.QUCII_DISABLE_QS_PANNEL);
++                && !ONLY_CORE_APPS && mQsExpansionEnabled);//禁止qs下拉
+     }
+ 
+     private void updateNotificationShadeForChildren() {
+-- 
+2.8.3.windows.1
+

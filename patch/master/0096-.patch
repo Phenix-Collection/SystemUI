@@ -1,0 +1,39 @@
+From 7415c5d50bfa52ab68b8c3a659791b8ee599616a Mon Sep 17 00:00:00 2001
+From: mare <yangfan@qucii.com>
+Date: Fri, 3 Mar 2017 10:36:38 +0800
+Subject: [PATCH 096/185] =?UTF-8?q?=E3=80=90=E6=95=85=E9=9A=9C=E3=80=91?=
+ =?UTF-8?q?=E8=A7=A3=E5=86=B3=E9=94=81=E5=B1=8F=E8=A7=A3=E9=94=81=E9=A1=B6?=
+ =?UTF-8?q?=E9=83=A8=E4=B8=8A=E7=A7=BB=E9=97=AA=E5=B1=8F=E9=97=AE=E9=A2=98?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../systemui/statusbar/phone/NotificationPanelView.java       | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+index e4cdcb2..df257cb 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+@@ -443,9 +443,14 @@ public class NotificationPanelView extends PanelView implements
+         int stackScrollerPadding;
+         if (mStatusBarState != StatusBarState.KEYGUARD) {
+             int bottom = mHeader.getCollapsedHeight();
+-            stackScrollerPadding = mStatusBarState == StatusBarState.SHADE
+-                    ? bottom + mQsPeekHeight + mNotificationTopPadding
+-                    : mKeyguardStatusBar.getHeight() + mNotificationTopPadding;
++            //modify by mare 2017/03/03
++            //=======================>
++            //这里StatusBarState.SHADE_LOCK状态顶部位置和平常下拉不一样导致顶部上移闪屏bug
++            stackScrollerPadding = /*mStatusBarState == StatusBarState.SHADE
++                    ?*/ bottom + mQsPeekHeight + mNotificationTopPadding
++                    /*: mKeyguardStatusBar.getHeight() + mNotificationTopPadding*/;
++            //<=======================
++            //modify by mare 2017/03/03
+             mTopPaddingAdjustment = 0;
+         } else {
+             mClockPositionAlgorithm.setup(
+-- 
+2.8.3.windows.1
+

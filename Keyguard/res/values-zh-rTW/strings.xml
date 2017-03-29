@@ -132,4 +132,6 @@
       <item quantity="one">裝置已有 <xliff:g id="NUMBER_0">%d</xliff:g> 小時未解鎖。請確認密碼。</item>
     </plurals>
     <string name="fingerprint_not_recognized" msgid="2690661881608146617">"無法識別"</string>
+    <string name="fingerprint_error_lockout_pwd">"指紋解鎖失敗次數過多,請稍後再試;或使用密碼解鎖."</string>
+    <string name="fingerprint_error_lockout_pat">"指紋解鎖失敗次數過多,請稍後再試;或使用圖案解鎖."</string>
 </resources>

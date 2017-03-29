@@ -51,7 +51,7 @@ public class BluetoothTile extends QSTile<QSTile.BooleanState>  {
 
     @Override
     public boolean supportsDualTargets() {
-        return true;
+        return /*true*/false;// remove Large Cell by yangfan 
     }
 
     @Override
@@ -90,6 +90,12 @@ public class BluetoothTile extends QSTile<QSTile.BooleanState>  {
     }
 
     @Override
+    protected void handleLongClick() {
+        // handleSecondaryClick();
+        mHost.startActivityDismissingKeyguard(BLUETOOTH_SETTINGS);
+    }// modified by yangfan 
+	
+    @Override
     protected void handleUpdateState(BooleanState state, Object arg) {
         final boolean supported = mController.isBluetoothSupported();
         final boolean enabled = mController.isBluetoothEnabled();
@@ -101,12 +107,12 @@ public class BluetoothTile extends QSTile<QSTile.BooleanState>  {
         if (enabled) {
             state.label = null;
             if (connected) {
-                state.icon = ResourceIcon.get(R.drawable.ic_qs_bluetooth_connected);
+                state.icon = ResourceIcon.get(/*R.drawable.ic_qs_bluetooth_connected*/R.drawable.ic_qs_bluetooth_on);
                 state.contentDescription = mContext.getString(
                         R.string.accessibility_quick_settings_bluetooth_connected);
                 state.label = mController.getLastDeviceName();
             } else if (connecting) {
-                state.icon = ResourceIcon.get(R.drawable.ic_qs_bluetooth_connecting);
+                state.icon = ResourceIcon.get(R.drawable.ic_qs_bluetooth_on);
                 state.contentDescription = mContext.getString(
                         R.string.accessibility_quick_settings_bluetooth_connecting);
                 state.label = mContext.getString(R.string.quick_settings_bluetooth_label);
@@ -124,7 +130,7 @@ public class BluetoothTile extends QSTile<QSTile.BooleanState>  {
             state.contentDescription = mContext.getString(
                     R.string.accessibility_quick_settings_bluetooth_off);
         }
-
+        state.label = mContext.getString(R.string.quick_settings_bluetooth_label);// added by yangfan
         String bluetoothName = state.label;
         if (connected) {
             bluetoothName = state.dualLabelContentDescription = mContext.getString(

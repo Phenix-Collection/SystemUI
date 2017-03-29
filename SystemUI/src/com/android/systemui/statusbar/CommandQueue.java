@@ -65,8 +65,11 @@ public class CommandQueue extends IStatusBar.Stub {
     private static final int MSG_ASSIST_DISCLOSURE          = 22 << MSG_SHIFT;
     private static final int MSG_START_ASSIST               = 23 << MSG_SHIFT;
     private static final int MSG_CAMERA_LAUNCH_GESTURE      = 24 << MSG_SHIFT;
-    //this line add by wumin
+    //this line add by mare
     private static final int MSG_DISPATCH_FP_BACK           = 25 << MSG_SHIFT;
+    
+    //this line add by mare
+    private static final int MSG_COLLAPSE_PANELS_SMART      = 26 << MSG_SHIFT;
 
     public static final int FLAG_EXCLUDE_NONE = 0;
     public static final int FLAG_EXCLUDE_SEARCH_PANEL = 1 << 0;
@@ -113,8 +116,10 @@ public class CommandQueue extends IStatusBar.Stub {
         public void showAssistDisclosure();
         public void startAssist(Bundle args);
         public void onCameraLaunchGestureDetected(int source);
-        //this method add by wumin
+        //this method add by mare
         public void dispatchFingerprintBack();
+        //this method add by mare
+        public void collapsePanelsAnimation(boolean animate);
     }
 
     public CommandQueue(Callbacks callbacks, StatusBarIconList list) {
@@ -158,6 +163,14 @@ public class CommandQueue extends IStatusBar.Stub {
             mHandler.sendEmptyMessage(MSG_COLLAPSE_PANELS);
         }
     }
+    
+    public void collapsePanelsAnimation(boolean animate) {
+        synchronized (mList) {
+            mHandler.removeMessages(MSG_COLLAPSE_PANELS_SMART);
+            mHandler.sendEmptyMessage(MSG_COLLAPSE_PANELS_SMART);
+        }
+    }
+
 
     public void animateExpandSettingsPanel() {
         synchronized (mList) {
@@ -230,7 +243,7 @@ public class CommandQueue extends IStatusBar.Stub {
         }
     }
     
-    //this method add by wumin
+    //this method add by mare
     public void dispatchFingerprintBack(){
        synchronized (mList) {
             mHandler.removeMessages(MSG_DISPATCH_FP_BACK);
@@ -349,11 +362,19 @@ public class CommandQueue extends IStatusBar.Stub {
                     mCallbacks.disable(msg.arg1, msg.arg2, true /* animate */);
                     break;
                 case MSG_EXPAND_NOTIFICATIONS:
-                    mCallbacks.animateExpandNotificationsPanel();
+                	//delete by mare 2017/3/15 begin
+                    //========================>
+                    //桌面滑动这里状态栏不再响应
+                    //mCallbacks.animateExpandNotificationsPanel();
+                	//delete by mare 2017/3/15 end
                     break;
                 case MSG_COLLAPSE_PANELS:
                     mCallbacks.animateCollapsePanels(0);
                     break;
+                    
+                case MSG_COLLAPSE_PANELS_SMART:
+                    mCallbacks.collapsePanelsAnimation(false);
+                    break;   
                 case MSG_EXPAND_SETTINGS:
                     mCallbacks.animateExpandSettingsPanel();
                     break;
@@ -416,7 +437,7 @@ public class CommandQueue extends IStatusBar.Stub {
                 case MSG_CAMERA_LAUNCH_GESTURE:
                     mCallbacks.onCameraLaunchGestureDetected(msg.arg1);
                     break;
-               //this case add by wumin
+               //this case add by mare
                case MSG_DISPATCH_FP_BACK:
                     mCallbacks.dispatchFingerprintBack();
                    break;

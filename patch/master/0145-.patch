@@ -1,0 +1,42 @@
+From f3ffd2544b361f3c827187e0841b15319527c303 Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Tue, 14 Mar 2017 21:15:30 +0800
+Subject: [PATCH 145/185] =?UTF-8?q?=E3=80=90=E6=95=85=E9=9A=9C=E3=80=91?=
+ =?UTF-8?q?=E4=BF=AE=E5=A4=8D=E9=94=81=E5=B1=8F=E5=B1=8F=E5=B9=95=E4=BA=AE?=
+ =?UTF-8?q?=E5=BA=A6=E8=B0=83=E6=95=B4=E5=B8=A6=E6=9D=A5=E7=9A=84=E6=B5=AE?=
+ =?UTF-8?q?=E5=8A=A8=E9=80=9A=E7=9F=A5=E4=B8=8B=E6=BB=91=E5=86=8D=E4=B8=8A?=
+ =?UTF-8?q?=E6=BB=91=E8=83=8C=E6=99=AF=E9=97=AE=E9=A2=98?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../src/com/android/systemui/statusbar/phone/PhoneStatusBarView.java | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarView.java b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarView.java
+index 0f5c61e..c5b4947 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarView.java
+@@ -44,6 +44,7 @@ import android.view.accessibility.AccessibilityEvent;
+ import com.android.systemui.DejankUtils;
+ import com.android.systemui.EventLogTags;
+ import com.android.systemui.R;
++import com.android.systemui.statusbar.StatusBarState;
+ import com.qucii.systemui.utils.FastBlur;
+ 
+ public class PhoneStatusBarView extends PanelBar {
+@@ -387,7 +388,9 @@ public class PhoneStatusBarView extends PanelBar {
+         //remove by mare 2017/3/7 begin
+         //===========================>
+         //这里去掉作用是不改变锁屏滑动解锁时的亮度变化
+-//        updateScrimFraction();
++        if (mBar.getBarState() != StatusBarState.KEYGUARD) {
++        	updateScrimFraction();
++		}
+         //remove by mare 2017/3/7 end
+     }
+     //Note by mare 2017/3/7
+-- 
+2.8.3.windows.1
+

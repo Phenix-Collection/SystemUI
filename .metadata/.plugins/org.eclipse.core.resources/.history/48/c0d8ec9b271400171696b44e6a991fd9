@@ -1,0 +1,61 @@
+From fc2567930533b63f21d4b71d442af3562f86266f Mon Sep 17 00:00:00 2001
+From: LRH <yangfan@qucci.com>
+Date: Wed, 8 Mar 2017 21:57:51 +0800
+Subject: [PATCH 122/185] =?UTF-8?q?=E3=80=90=E6=95=85=E9=9A=9C=E3=80=91?=
+ =?UTF-8?q?=E7=AC=AC=E4=B8=80=E6=AC=A1=E5=BC=80=E6=9C=BA=E8=BF=90=E8=90=A5?=
+ =?UTF-8?q?=E5=95=86=E6=B2=A1=E6=9C=89=E6=98=BE=E7=A4=BA?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../statusbar/policy/MobileSignalController.java         | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/policy/MobileSignalController.java b/SystemUI/src/com/android/systemui/statusbar/policy/MobileSignalController.java
+index fd8a901..b49ffe0 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/policy/MobileSignalController.java
++++ b/SystemUI/src/com/android/systemui/statusbar/policy/MobileSignalController.java
+@@ -32,7 +32,6 @@ import android.telephony.SignalStrength;
+ import android.telephony.SubscriptionInfo;
+ import android.telephony.SubscriptionManager;
+ import android.telephony.TelephonyManager;
+-
+ import android.text.TextUtils;
+ import android.util.Log;
+ import android.util.SparseArray;
+@@ -98,6 +97,13 @@ public class MobileSignalController extends SignalController<
+     private int tmpLevel = 0;// added by yangfan 
+     private boolean  isDelaySignal = false;//added by yangfan
+ 
++    /**
++     * A key that is used to retrieve the value of the checkbox
++     * in Settings application that allows a user to add or remove
++     * the operator name in statusbar.
++     */
++    protected static final String SHOW_OPERATOR_NAME = "show_network_name_mode";
++    
+     // TODO: Reduce number of vars passed in, if we have the NetworkController, probably don't
+     // need listener lists anymore.
+     public MobileSignalController(Context context, Config config, boolean hasMobileData,
+@@ -350,12 +356,14 @@ public class MobileSignalController extends SignalController<
+                 isImsRegisteredInWifi(), getdataNetworkTypeInRoamingId(),
+                 getEmbmsIconId(), networkLabelName,mCurrentState.isForbidden,isDelaySignal);
+ 
+-        /*mCallbackHandler.post(new Runnable() {
++        mCallbackHandler.post(new Runnable() {
+             @Override
+             public void run() {
+-                mNetworkController.setNetworkLabelViewVisibility(true, true);
++            	boolean showOperatorName = (0 != Settings.System.getInt(
++                        mContext.getContentResolver(), SHOW_OPERATOR_NAME, 1));
++                mNetworkController.setNetworkLabelViewVisibility(showOperatorName, true);
+             }
+-        });*/
++        });
+ 		//modified by yangfan end
+     }
+ 
+-- 
+2.8.3.windows.1
+

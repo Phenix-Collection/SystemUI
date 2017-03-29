@@ -1,0 +1,44 @@
+From 79ae2db8b5f79e1a60b8f547a9ee140251e47d25 Mon Sep 17 00:00:00 2001
+From: mare <yangfan@qucci.com>
+Date: Mon, 6 Feb 2017 16:44:01 +0800
+Subject: [PATCH 009/185] =?UTF-8?q?=E3=80=90case=E3=80=91=E4=BF=AE?=
+ =?UTF-8?q?=E6=94=B9=E5=8C=85=E5=90=8D?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../src/com/android/systemui/statusbar/phone/PhoneStatusBarView.java    | 2 +-
+ SystemUI/src/com/{qucci => qucii}/systemui/utils/FastBlur.java          | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+ rename SystemUI/src/com/{qucci => qucii}/systemui/utils/FastBlur.java (99%)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarView.java b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarView.java
+index d28e374..f0436ee 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarView.java
+@@ -41,7 +41,7 @@ import android.view.accessibility.AccessibilityEvent;
+ import com.android.systemui.DejankUtils;
+ import com.android.systemui.EventLogTags;
+ import com.android.systemui.R;
+-import com.qucci.systemui.utils.FastBlur;
++import com.qucii.systemui.utils.FastBlur;
+ 
+ public class PhoneStatusBarView extends PanelBar {
+     private static final String TAG = "PhoneStatusBarView";
+diff --git a/SystemUI/src/com/qucci/systemui/utils/FastBlur.java b/SystemUI/src/com/qucii/systemui/utils/FastBlur.java
+similarity index 99%
+rename from SystemUI/src/com/qucci/systemui/utils/FastBlur.java
+rename to SystemUI/src/com/qucii/systemui/utils/FastBlur.java
+index bdd2a0a..7d7eca0 100644
+--- a/SystemUI/src/com/qucci/systemui/utils/FastBlur.java
++++ b/SystemUI/src/com/qucii/systemui/utils/FastBlur.java
+@@ -1,4 +1,4 @@
+-package com.qucci.systemui.utils;
++package com.qucii.systemui.utils;
+ 
+ import android.graphics.Bitmap;
+ /****
+-- 
+2.8.3.windows.1
+

@@ -1,0 +1,107 @@
+From 8f165950302fc04994332412ccb3905586a98a09 Mon Sep 17 00:00:00 2001
+From: mare <yangfan@qucii.com>
+Date: Mon, 27 Mar 2017 10:14:11 +0800
+Subject: [PATCH 181/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E4=BF=AE=E6=94=B9=E6=A8=AA=E6=9D=A0=E5=92=8C=E4=B8=A4=E7=82=B9?=
+ =?UTF-8?q?=E7=9A=84=E6=98=BE=E7=A4=BA=E9=80=BB=E8=BE=91?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../statusbar/phone/NotificationPanelView.java     | 26 +++++++++++++++++++++-
+ .../systemui/statusbar/phone/PanelView.java        | 14 +++++++-----
+ 2 files changed, 34 insertions(+), 6 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+index 87c95cf..5a2f2ec 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+@@ -210,13 +210,16 @@ public class NotificationPanelView extends PanelView implements
+     private boolean mListenForHeadsUp;
+     private int mNavigationBarBottomHeight;
+     
++    protected View mArrow;
++    protected View mArrowLayout; 
++    protected CirclePageIndicator mIndicator;// added by yangfan 
++    
+     private boolean mCollapsedOnDown;
+     private int mPositionMinSideMargin;
+     private int mLastOrientation = -1;
+     private boolean mClosingWithAlphaFadeOut;
+     private boolean mHeadsUpAnimatingAway;
+     private boolean mLaunchingAffordance;
+-    private CirclePageIndicator mIndicator;// added by yangfan 
+     private NotificationsViewPager mNotificationsViewPager;
+     private String mLastCameraLaunchSource = KeyguardBottomAreaView.CAMERA_LAUNCH_SOURCE_AFFORDANCE;
+     public static final int NOTIFICATION_PAGE_INDEX = 0;
+@@ -2717,6 +2720,7 @@ public class NotificationPanelView extends PanelView implements
+ 			if(SystemProperties.getBoolean("persist.sys.navg_bar_visible",false)&&!isScreenLand()){
+ 				mPanelHeight=Math.min(mPanelHeight, getMaxPanelHeight()-mBarSize);
+ 			}
++			changeIndicatorVisable(mPanelHeight);
+ 			setBottom(mPanelHeight);
+ 			mChangedBottom = mPanelHeight;
+ 			int arrowHeight = mArrowLayout.getMeasuredHeight();
+@@ -2729,6 +2733,26 @@ public class NotificationPanelView extends PanelView implements
+     //add by mare 2017/3/15 end
+     
+     
++	//modify by mare 2017/3/24 begin
++    //========================>
++    //根据通知栏高度判断是否显示两点和底部横杠的方法
++    public void changeIndicatorVisable(int mPanelHeight){
++    	if(mPanelHeight==getMaxPanelHeight()){
++    		if(mArrow.getVisibility()==View.INVISIBLE){
++    			return;
++    		}
++    		mIndicator.setVisibility(View.VISIBLE);
++    		mArrow.setVisibility(View.INVISIBLE);
++    	}else{
++    		if(mArrow.getVisibility()==View.VISIBLE){
++    			return;
++    		}
++    		mIndicator.setVisibility(View.INVISIBLE);
++    		mArrow.setVisibility(View.VISIBLE);
++    	}
++    }
++	//modify by mare 2017/3/24 end
++    
+ 	public void collapseAllPanels() {
+ 		mStatusBar.animateCollapsePanels();
+ 	}
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/PanelView.java b/SystemUI/src/com/android/systemui/statusbar/phone/PanelView.java
+index 94b3ef3..c183524 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/PanelView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/PanelView.java
+@@ -252,8 +252,7 @@ public abstract class PanelView extends FrameLayout {
+     //========================>
+     //这里加入并不是通知栏关闭状态，和设置底部横条的显示方法
+     protected boolean isTouch=false,isAnimation=false;
+-    protected View mArrow;
+-    protected View mArrowLayout; 
++    
+     //判断是否在layout读取缓存位置的判断方法
+     public boolean getIsTouchOrAnimationOrBarState(){
+     	return isTouch||isAnimation||mBar.getState()!=mBar.STATE_CLOSED;
+@@ -261,9 +260,14 @@ public abstract class PanelView extends FrameLayout {
+     
+     public void setIsTouch(boolean istouch){
+     	isTouch=istouch;
+-    	if(!is_Qucii_Headup()&&mArrow!=null){
+-    		mArrow.setVisibility(istouch?View.VISIBLE:View.INVISIBLE);
+-    	}
++//    	if(!is_Qucii_Headup()&&mArrow!=null){
++//    		Log.e("=====setIsTouch============", "istouch:"+istouch+",getBottom():"+getBottom());
++//    		if(getBottom()>=getMaxPanelHeight()&&istouch){
++//    			mArrow.setVisibility(View.VISIBLE);
++//    		}else{
++//    			mArrow.setVisibility(View.INVISIBLE);
++//    		}
++//    	}
+     }
+     //modify by mare 2017/3/24 end
+     
+-- 
+2.8.3.windows.1
+

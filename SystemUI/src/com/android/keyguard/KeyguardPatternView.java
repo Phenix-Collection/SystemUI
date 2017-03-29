@@ -38,7 +38,7 @@ import com.android.settingslib.animation.AppearAnimationUtils;
 import com.android.settingslib.animation.DisappearAnimationUtils;
 
 import java.util.List;
-//add by wumin
+//add by mare
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import java.io.IOException;
@@ -156,6 +156,7 @@ public class KeyguardPatternView extends LinearLayout implements KeyguardSecurit
         mSecurityMessageDisplay =
                 (KeyguardMessageArea) KeyguardMessageArea.findSecurityMessageDisplay(this);
         mEcaView = findViewById(R.id.keyguard_selector_fade_container);
+        displayDefaultSecurityMessage();
         mContainer = (ViewGroup) findViewById(R.id.container);
 
         EmergencyButton button = (EmergencyButton) findViewById(R.id.emergency_call_button);
@@ -163,7 +164,7 @@ public class KeyguardPatternView extends LinearLayout implements KeyguardSecurit
             button.setCallback(this);
         }
 
-	//add by wumin	
+	//add by mare	
         Button canclebutton = (Button) findViewById(R.id.cancle_button);
 	if(isNavigationEnable()){
 		canclebutton.setVisibility(View.GONE);
@@ -179,7 +180,7 @@ public class KeyguardPatternView extends LinearLayout implements KeyguardSecurit
 	//add end
     }
 
-    //add by wumin
+    //add by mare
     private void sendKeyEvent(int keyCode) {
 
         int eventCode = keyCode;
@@ -241,7 +242,7 @@ public class KeyguardPatternView extends LinearLayout implements KeyguardSecurit
     }
 
     private void displayDefaultSecurityMessage() {
-        mSecurityMessageDisplay.setMessage(getMsgWithCnt(R.string.kg_pattern_instructions), false);
+        mSecurityMessageDisplay.setMessage(getMsgWithCnt(R.string.kg_pattern_instructions), true);
     }
 
     @Override
@@ -410,6 +411,9 @@ public class KeyguardPatternView extends LinearLayout implements KeyguardSecurit
     @Override
     public void showMessage(String message, int color) {
         mSecurityMessageDisplay.setNextMessageColor(color);
+	if(mContext.getResources().getString(android.R.string.fingerprint_error_lockout).equals(message))
+		message = mContext.getResources().getString(R.string.fingerprint_error_lockout_pat);
+	//Log.d("xiayy","--pattern message="+message);
         mSecurityMessageDisplay.setMessage(message, true /* important */);
     }
 

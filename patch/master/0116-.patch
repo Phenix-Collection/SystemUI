@@ -1,0 +1,113 @@
+From 20caa798cea5f38c301a4d2f88052d2b19273c3d Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Tue, 7 Mar 2017 19:08:15 +0800
+Subject: [PATCH 116/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E4=BF=AE=E6=94=B9=E7=8A=B6=E6=80=81=E6=A0=8F=E4=B8=AD=E4=BF=A1?=
+ =?UTF-8?q?=E5=8F=B7=E5=8C=BA=E5=9F=9F=E5=92=8C=E9=80=9A=E7=9F=A5=E5=8C=BA?=
+ =?UTF-8?q?=E5=9F=9F=E5=9B=BE=E6=A0=87=E5=A4=A7=E5=B0=8F?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/res/layout/signal_cluster_view.xml | 11 +++++++----
+ SystemUI/res/layout/status_bar.xml          |  2 ++
+ SystemUI/res/values/dimens.xml              |  4 ++++
+ SystemUI/res/values/styles.xml              | 12 +++++++++++-
+ 4 files changed, 24 insertions(+), 5 deletions(-)
+
+diff --git a/SystemUI/res/layout/signal_cluster_view.xml b/SystemUI/res/layout/signal_cluster_view.xml
+index bb39017..a2f0daf 100644
+--- a/SystemUI/res/layout/signal_cluster_view.xml
++++ b/SystemUI/res/layout/signal_cluster_view.xml
+@@ -6,7 +6,9 @@
+     android:layout_width="wrap_content"
+     android:layout_height="match_parent"
+     android:gravity="center_vertical"
+-    android:orientation="horizontal">
++    android:orientation="horizontal"
++    android:paddingTop="@dimen/signal_container_paddingtop"
++    android:paddingBottom="@dimen/signal_container_paddingtop">
+ 
+     <!-- order -->
+     <!-- no_sim/air¡¢mobile_signal¡¢net_operator¡¢rat¡¢hotspot/wifi¡¢vpn¡¢¡¢¡¢¡¢¡¢¡¢¡¢¡¢¡¢¡¢¡¢¡¢¡¢¡¢¡¢ -->
+@@ -24,7 +26,7 @@
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:gravity="center"
+-            android:theme="@style/DualToneLightTheme" />
++            android:theme="@style/LightNoSimTextStyle" />
+ 
+         <TextView
+             android:id="@+id/no_sims_dark"
+@@ -32,7 +34,7 @@
+             android:layout_height="wrap_content"
+             android:alpha="0.0"
+             android:gravity="center"
+-            android:theme="@style/DualToneDarkTheme" />
++            android:theme="@style/DarkNoSimTextStyle" />
+     </FrameLayout>
+ 
+     <ImageView
+@@ -60,7 +62,8 @@
+     <FrameLayout
+         android:id="@+id/wifi_combo"
+         android:layout_width="wrap_content"
+-        android:layout_height="wrap_content">
++        android:layout_height="wrap_content"
++        android:gravity="center">
+ 
+         <com.android.systemui.statusbar.AlphaOptimizedImageView
+             android:id="@+id/wifi_signal"
+diff --git a/SystemUI/res/layout/status_bar.xml b/SystemUI/res/layout/status_bar.xml
+index 180b09d..38a6319 100644
+--- a/SystemUI/res/layout/status_bar.xml
++++ b/SystemUI/res/layout/status_bar.xml
+@@ -88,6 +88,8 @@
+             android:id="@+id/notification_icon_area"
+             android:layout_width="0dip"
+             android:layout_height="match_parent"
++            android:paddingTop="@dimen/notification_container_paddingtop"
++            android:paddingBottom="@dimen/notification_container_paddingtop"
+             android:layout_weight="1"
+             android:orientation="horizontal"
+             >
+diff --git a/SystemUI/res/values/dimens.xml b/SystemUI/res/values/dimens.xml
+index 1335c0e..0384c97 100644
+--- a/SystemUI/res/values/dimens.xml
++++ b/SystemUI/res/values/dimens.xml
+@@ -603,4 +603,8 @@
+      <dimen name="clear_all_ring_size">1dp</dimen>
+          <!-- add by mare -->
+      <dimen name="dialpad_font_size">36sp</dimen>
++     
++     <dimen name="signal_container_paddingtop">2.5dp</dimen><!-- added by yangfan -->
++     <dimen name="notification_container_paddingtop">2.5dp</dimen><!-- added by yangfan -->
++     <dimen name="statusbar_nosim_text_size">12sp</dimen><!-- added by yangfan -->
+ </resources>
+diff --git a/SystemUI/res/values/styles.xml b/SystemUI/res/values/styles.xml
+index a561402..cedcde0 100644
+--- a/SystemUI/res/values/styles.xml
++++ b/SystemUI/res/values/styles.xml
+@@ -290,7 +290,17 @@
+         <item name="fillColor">@color/dark_mode_icon_color_dual_tone_fill</item>
+         <item name="singleToneColor">@color/dark_mode_icon_color_single_tone</item>
+     </style>
+-
++    
++    <!-- added by yangfan begin -->
++    <style name="LightNoSimTextStyle" parent="DualToneLightTheme">
++        <item name="android:textSize">@dimen/statusbar_nosim_text_size</item>
++    </style>
++    
++     <style name="DarkNoSimTextStyle" parent="DualToneDarkTheme">
++         <item name="android:textSize">@dimen/statusbar_nosim_text_size</item>
++    </style>
++	<!-- added by yangfan end -->
++	
+     <style name="TextAppearance.Volume">
+         <item name="android:textStyle">normal</item>
+         <item name="android:textColor">#ffffffff</item>
+-- 
+2.8.3.windows.1
+

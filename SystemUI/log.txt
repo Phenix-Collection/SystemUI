@@ -3621,7 +3621,7 @@
 03-03 22:05:51.394  8919  8919 V ConfigResourceUtil: resourceName = config_enable_displaying_sdn resourceId = 2130837510resourceValue = false
 03-03 22:05:51.435  5699  7556 I chatty  : uid=1001(radio) Binder_9 expire 2 lines
 03-03 22:05:51.496  8919  8919 I InCall  : StatusBarNotifier - Displaying notification for 1
-03-03 22:05:51.523  3611  3611 D NotificationService: zolen tag, Interrupting notification Notification(pri=1 contentView=null vibrate=null sound=null defaults=0x0 flags=0x2 color=0xff0288d1 actions=2 vis=PRIVATE)
+03-03 22:05:51.523  3611  3611 D NotificationService: mare tag, Interrupting notification Notification(pri=1 contentView=null vibrate=null sound=null defaults=0x0 flags=0x2 color=0xff0288d1 actions=2 vis=PRIVATE)
 03-03 22:05:51.538  8919  8919 I InCall  : CallCardPresenter - checkIdp phone type:1 enabled:false
 03-03 22:05:51.539  8919  8919 I InCall  : CallCardPresenter - checkIdp number: 182 2335 8067 subid:1 isIncoming:true checked number:182 2335 8067 inValid:false nameIsNumbertrue
 03-03 22:05:51.577  8919  8919 I InCall  : CallCardPresenter - checkIdp phone type:1 enabled:false
@@ -4540,9 +4540,9 @@
 03-03 22:06:11.164 19298 19298 I SignalClusterView: label : 中国移动4Gnames.length : 1
 03-03 22:06:11.164 19298 19298 I SignalClusterView: mShowNetworkClass : true
 03-03 22:06:11.171 19298 19298 I KeyguardClockPositionAlgorithm: getClockY() : 519 , mKeyguardStatusHeight : 386
-03-03 22:06:11.172 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 0.0
-03-03 22:06:11.172 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
-03-03 22:06:11.173 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
+03-03 22:06:11.172 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 0.0
+03-03 22:06:11.172 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
+03-03 22:06:11.173 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
 03-03 22:06:11.175  5699  7018 D IccSmsInterfaceManager: [IccSmsInterfaceManager] enableCdmaBroadcastRange
 03-03 22:06:11.178  5699  7018 D IccSmsInterfaceManager: [IccSmsInterfaceManager] Calling setCdmaBroadcastConfig with 1 configurations
 03-03 22:06:11.186  5699  7018 D IccSmsInterfaceManager: [IccSmsInterfaceManager] Failed to add cdma broadcast subscription for MID range 4098 to 4098 from client com.android.cellbroadcastreceiver
@@ -4576,9 +4576,9 @@
 03-03 22:06:11.233 19298 19298 I SignalClusterView: label : 中国移动4Gnames.length : 1
 03-03 22:06:11.233 19298 19298 I SignalClusterView: mShowNetworkClass : true
 03-03 22:06:11.236 19298 19298 I KeyguardClockPositionAlgorithm: getClockY() : 519 , mKeyguardStatusHeight : 386
-03-03 22:06:11.236 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 0.0
-03-03 22:06:11.236 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
-03-03 22:06:11.236 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
+03-03 22:06:11.236 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 0.0
+03-03 22:06:11.236 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
+03-03 22:06:11.236 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
 03-03 22:06:11.250  5699  7556 E OperatorSimInfo: Create Res Apk Failed
 03-03 22:06:11.252  5699  7556 E OperatorSimInfo: Create Res Apk Failed
 03-03 22:06:11.269  5699  6019 D IccSmsInterfaceManager: [IccSmsInterfaceManager] enableCdmaBroadcastRange
@@ -4694,9 +4694,9 @@
 03-03 22:06:11.702 19298 19350 I QSTile.CellularTile: state : BooleanState[visible=true,icon=ResourceIcon[resId=0x7f020129],label=移动数据网络,contentDescription=移动数据连接：手机信号满格。，没有数据网络信号。，移动数据网络。,dualLabelContentDescription=null,autoMirrorDrawable=true,enableClick=true,value=false]
 03-03 22:06:11.703 19298 19351 I QSTile.CellularTile: state : BooleanState[visible=true,icon=ResourceIcon[resId=0x7f020129],label=移动数据网络,contentDescription=移动数据连接：手机信号满格。，没有数据网络信号。，移动数据网络。,dualLabelContentDescription=null,autoMirrorDrawable=true,enableClick=true,value=false]
 03-03 22:06:11.710 19298 19298 I KeyguardClockPositionAlgorithm: getClockY() : 519 , mKeyguardStatusHeight : 386
-03-03 22:06:11.710 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 0.0
-03-03 22:06:11.712 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
-03-03 22:06:11.713 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
+03-03 22:06:11.710 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 0.0
+03-03 22:06:11.712 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
+03-03 22:06:11.713 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
 03-03 22:06:11.722  3611  5723 I ActivityManager: Killing 19066:com.innopath.activecare/u0a14 (adj 15): empty #17
 03-03 22:06:11.723 19298 19298 I SignalClusterView: mNetworkLabelName ; 中国移动4G
 03-03 22:06:11.728 19298 19298 I SignalClusterView: filterChina : false, result : 中国移动4G ,filter : 中国
@@ -4727,11 +4727,11 @@
 03-03 22:06:11.765 19298 19298 I SignalClusterView: label : 中国移动4Gnames.length : 1
 03-03 22:06:11.766 19298 19298 I SignalClusterView: mShowNetworkClass : true
 03-03 22:06:11.771 19298 19298 I KeyguardClockPositionAlgorithm: getClockY() : 519 , mKeyguardStatusHeight : 386
-03-03 22:06:11.771 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 0.0
+03-03 22:06:11.771 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 0.0
 03-03 22:06:11.771  5699 10799 D PhoneInterfaceManager: [PhoneIntfMgr] getDataEnabled: subId=1 phoneId=1
-03-03 22:06:11.772 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
+03-03 22:06:11.772 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
 03-03 22:06:11.772  5699 10799 D PhoneInterfaceManager: [PhoneIntfMgr] getDataEnabled: subId=1 retVal=true
-03-03 22:06:11.772 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
+03-03 22:06:11.772 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
 03-03 22:06:11.773 19298 19351 D TelephonyManager: getDataEnabled: retVal=true
 03-03 22:06:11.779  5699  5716 D PhoneInterfaceManager: [PhoneIntfMgr] getDataEnabled: subId=1 phoneId=1
 03-03 22:06:11.780  5699  5716 D PhoneInterfaceManager: [PhoneIntfMgr] getDataEnabled: subId=1 retVal=true
@@ -4775,63 +4775,63 @@
 03-03 22:06:12.981  4989  4989 D wpa_supplicant: EAPOL: EAP Session-Id not available
 03-03 22:06:12.981  4989  4989 D wpa_supplicant: CTRL-DEBUG: global_ctrl_sock-sendto: sock=11 sndbuf=212992 outq=0 send_len=124
 03-03 22:06:13.674   775   775 I MSM-irqbalance: Decided to move IRQ212 from CPU3 to CPU0
-03-03 22:06:14.313 19298 19298 V weiliji : com.android.systemui:id/notification_panel: isInSettings() mQsExpanded = false
+03-03 22:06:14.313 19298 19298 V mare : com.android.systemui:id/notification_panel: isInSettings() mQsExpanded = false
 03-03 22:06:14.321 19298 19298 I NotificationsViewPager: isTrackingHeadsUp() : false
-03-03 22:06:14.337 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 1067.0
+03-03 22:06:14.337 19298 19298 V mare : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 1067.0
 03-03 22:06:14.338 19298 19298 I KeyguardClockPositionAlgorithm: getClockY() : 519 , mKeyguardStatusHeight : 386
-03-03 22:06:14.338 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
-03-03 22:06:14.353 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 957.4874
+03-03 22:06:14.338 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
+03-03 22:06:14.353 19298 19298 V mare : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 957.4874
 03-03 22:06:14.357 19298 19298 I KeyguardClockPositionAlgorithm: getClockY() : 519 , mKeyguardStatusHeight : 386
-03-03 22:06:14.359 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
-03-03 22:06:14.370 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 793.39746
+03-03 22:06:14.359 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
+03-03 22:06:14.370 19298 19298 V mare : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 793.39746
 03-03 22:06:14.371 19298 19298 I KeyguardClockPositionAlgorithm: getClockY() : 519 , mKeyguardStatusHeight : 386
-03-03 22:06:14.372 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
-03-03 22:06:14.388 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 610.0323
+03-03 22:06:14.372 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
+03-03 22:06:14.388 19298 19298 V mare : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 610.0323
 03-03 22:06:14.389 19298 19298 I KeyguardClockPositionAlgorithm: getClockY() : 519 , mKeyguardStatusHeight : 386
-03-03 22:06:14.390 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
-03-03 22:06:14.405 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 395.6504
+03-03 22:06:14.390 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
+03-03 22:06:14.405 19298 19298 V mare : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 395.6504
 03-03 22:06:14.406 19298 19298 I KeyguardClockPositionAlgorithm: getClockY() : 519 , mKeyguardStatusHeight : 386
-03-03 22:06:14.407 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
-03-03 22:06:14.421 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 176.68152
+03-03 22:06:14.407 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
+03-03 22:06:14.421 19298 19298 V mare : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 176.68152
 03-03 22:06:14.422 19298 19298 I KeyguardClockPositionAlgorithm: getClockY() : 519 , mKeyguardStatusHeight : 386
-03-03 22:06:14.424 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
+03-03 22:06:14.424 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
 03-03 22:06:14.433  7181  7184 E ANDR-PERF-MPCTL: Invalid profile no. 0, total profiles 0 only
-03-03 22:06:14.438 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 0.0
+03-03 22:06:14.438 19298 19298 V mare : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 0.0
 03-03 22:06:14.439 19298 19298 I KeyguardClockPositionAlgorithm: getClockY() : 519 , mKeyguardStatusHeight : 386
-03-03 22:06:14.440 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
+03-03 22:06:14.440 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
 03-03 22:06:14.441 19298 19298 V PanelBar: onExpandingFinished
 03-03 22:06:14.448 19298 19298 V PanelBar: go state: 2 -> 0
 03-03 22:06:14.448 19298 19298 V PanelBar: onAllPanelsCollapsed
-03-03 22:06:14.463 19298 19298 D wumin   : makeExpandedInvisible ... 
-03-03 22:06:14.465 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 0.0
-03-03 22:06:14.465 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
-03-03 22:06:14.466 19298 19298 V weiliji : com.android.systemui:id/notification_panel: onOverscrollTopChanged() amount = 0.0,  isRubberbanded = true
-03-03 22:06:14.466 19298 19298 V weiliji : com.android.systemui:id/notification_panel: weiliji show the trace info  java.lang.Throwable
-03-03 22:06:14.466 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.NotificationPanelView.onOverscrollTopChanged(Unknown Source)
-03-03 22:06:14.466 19298 19298 V weiliji : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.notifyOverscrollTopListener(Unknown Source)
-03-03 22:06:14.466 19298 19298 V weiliji : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmountInternal(Unknown Source)
-03-03 22:06:14.466 19298 19298 V weiliji : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmount(Unknown Source)
-03-03 22:06:14.466 19298 19298 V weiliji : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmount(Unknown Source)
-03-03 22:06:14.466 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.NotificationPanelView.resetViews(Unknown Source)
-03-03 22:06:14.466 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.PanelBar.collapseAllPanels(Unknown Source)
-03-03 22:06:14.466 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.PhoneStatusBar.makeExpandedInvisible(Unknown Source)
-03-03 22:06:14.466 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.PhoneStatusBarView$1.run(Unknown Source)
-03-03 22:06:14.466 19298 19298 V weiliji : 	at android.os.Handler.handleCallback(Handler.java:739)
-03-03 22:06:14.466 19298 19298 V weiliji : 	at android.os.Handler.dispatchMessage(Handler.java:95)
-03-03 22:06:14.466 19298 19298 V weiliji : 	at android.os.Looper.loop(Looper.java:148)
-03-03 22:06:14.466 19298 19298 V weiliji : 	at android.app.ActivityThread.main(ActivityThread.java:5417)
-03-03 22:06:14.466 19298 19298 V weiliji : 	at java.lang.reflect.Method.invoke(Native Method)
-03-03 22:06:14.466 19298 19298 V weiliji : 	at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:726)
-03-03 22:06:14.466 19298 19298 V weiliji : 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:616)
-03-03 22:06:14.466 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 0.0
-03-03 22:06:14.466 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
-03-03 22:06:14.466 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setExpandedHeight(0.0)
-03-03 22:06:14.466 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 0.0
+03-03 22:06:14.463 19298 19298 D mare   : makeExpandedInvisible ... 
+03-03 22:06:14.465 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 0.0
+03-03 22:06:14.465 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
+03-03 22:06:14.466 19298 19298 V mare : com.android.systemui:id/notification_panel: onOverscrollTopChanged() amount = 0.0,  isRubberbanded = true
+03-03 22:06:14.466 19298 19298 V mare : com.android.systemui:id/notification_panel: mare show the trace info  java.lang.Throwable
+03-03 22:06:14.466 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.NotificationPanelView.onOverscrollTopChanged(Unknown Source)
+03-03 22:06:14.466 19298 19298 V mare : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.notifyOverscrollTopListener(Unknown Source)
+03-03 22:06:14.466 19298 19298 V mare : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmountInternal(Unknown Source)
+03-03 22:06:14.466 19298 19298 V mare : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmount(Unknown Source)
+03-03 22:06:14.466 19298 19298 V mare : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmount(Unknown Source)
+03-03 22:06:14.466 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.NotificationPanelView.resetViews(Unknown Source)
+03-03 22:06:14.466 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.PanelBar.collapseAllPanels(Unknown Source)
+03-03 22:06:14.466 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.PhoneStatusBar.makeExpandedInvisible(Unknown Source)
+03-03 22:06:14.466 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.PhoneStatusBarView$1.run(Unknown Source)
+03-03 22:06:14.466 19298 19298 V mare : 	at android.os.Handler.handleCallback(Handler.java:739)
+03-03 22:06:14.466 19298 19298 V mare : 	at android.os.Handler.dispatchMessage(Handler.java:95)
+03-03 22:06:14.466 19298 19298 V mare : 	at android.os.Looper.loop(Looper.java:148)
+03-03 22:06:14.466 19298 19298 V mare : 	at android.app.ActivityThread.main(ActivityThread.java:5417)
+03-03 22:06:14.466 19298 19298 V mare : 	at java.lang.reflect.Method.invoke(Native Method)
+03-03 22:06:14.466 19298 19298 V mare : 	at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:726)
+03-03 22:06:14.466 19298 19298 V mare : 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:616)
+03-03 22:06:14.466 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 0.0
+03-03 22:06:14.466 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
+03-03 22:06:14.466 19298 19298 V mare : com.android.systemui:id/notification_panel: setExpandedHeight(0.0)
+03-03 22:06:14.466 19298 19298 V mare : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 0.0
 03-03 22:06:14.467 19298 19298 I KeyguardClockPositionAlgorithm: getClockY() : 519 , mKeyguardStatusHeight : 386
-03-03 22:06:14.467 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
+03-03 22:06:14.467 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
 03-03 22:06:14.467 19298 19298 V PanelBar: collapseAllPanels: animate=false waiting=false
-03-03 22:06:14.468 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 0.0
-03-03 22:06:14.468 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
+03-03 22:06:14.468 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 0.0
+03-03 22:06:14.468 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
 03-03 22:06:14.478 19298 19298 D PhoneStatusBar: disable: < expand ICONS alerts SYSTEM_INFO back HOME RECENT clock SEARCH quick_settings >
 03-03 22:06:14.517   540  4940 D compress_voip: voice_extn_compress_voip_out_get_parameters: enter
 03-03 22:06:14.518 19298 19298 W AudioTrack: AUDIO_OUTPUT_FLAG_FAST denied by client; transfer 4, track 44100 Hz, output 48000 Hz
@@ -4845,10 +4845,10 @@
 03-03 22:06:14.541   540  3572 D msm8916_platform: platform_check_codec_backend_cfg: resetting sample_rate back to default, backend_idx: 0
 03-03 22:06:14.541   540  3572 I msm8916_platform: platform_check_codec_backend_cfg Codec selected backend: 0 updated bit width: 16 and sample rate: 48000
 03-03 22:06:14.541   540  3572 D hardware_info: hw_info_append_hw_type : device_name = wsa-speaker
-03-03 22:06:14.553 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setExpandedHeight(0.0)
-03-03 22:06:14.553 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 0.0
+03-03 22:06:14.553 19298 19298 V mare : com.android.systemui:id/notification_panel: setExpandedHeight(0.0)
+03-03 22:06:14.553 19298 19298 V mare : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 0.0
 03-03 22:06:14.554 19298 19298 I KeyguardClockPositionAlgorithm: getClockY() : 519 , mKeyguardStatusHeight : 386
-03-03 22:06:14.555 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
+03-03 22:06:14.555 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
 03-03 22:06:14.565   540  3572 D hardware_info: hw_info_append_hw_type : device_name = vi-feedback
 03-03 22:06:14.565   540  3572 D audio_hw_primary: enable_snd_device: snd_device(88: vi-feedback)
 03-03 22:06:14.565   540  3572 I soundtrigger: audio_extn_sound_trigger_update_device_status: device 0x58 of type 1 for Event 1, with Raise=0
@@ -4947,8 +4947,8 @@
 03-03 22:06:14.618   540  3572 D audio_hw_primary: select_devices: done
 03-03 22:06:14.624   540  3572 D msm8916_platform: platform_set_channel_map mixer_ctl_name:Playback Channel Map12
 03-03 22:06:14.624   540  3572 D msm8916_platform: platform_set_channel_map: set mapping(1 2 0 0 0 0 0 0) for channel:2
-03-03 22:06:14.636 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
-03-03 22:06:14.638 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 270.0
+03-03 22:06:14.636 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:06:14.638 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 270.0
 03-03 22:06:14.640  7977  7977 I cc      : invalidateMissedCallCount mMisseCallCount:0
 03-03 22:06:14.641  5699  6571 E OperatorSimInfo: Create Res Apk Failed
 03-03 22:06:14.644  5699  6186 E OperatorSimInfo: Create Res Apk Failed
@@ -4970,8 +4970,8 @@
 03-03 22:06:14.689  5699  6172 D PhoneInterfaceManager: [PhoneIntfMgr] getDataEnabled: subId=1 phoneId=1
 03-03 22:06:14.690  5699  6172 D PhoneInterfaceManager: [PhoneIntfMgr] getDataEnabled: subId=1 retVal=true
 03-03 22:06:14.690 19298 19350 D TelephonyManager: getDataEnabled: retVal=true
-03-03 22:06:14.697 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
-03-03 22:06:14.697 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 270.0
+03-03 22:06:14.697 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:06:14.697 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 270.0
 03-03 22:06:14.701  5699 10799 D PhoneInterfaceManager: [PhoneIntfMgr] getDataEnabled: subId=1 phoneId=1
 03-03 22:06:14.702  5699 10799 D PhoneInterfaceManager: [PhoneIntfMgr] getDataEnabled: subId=1 retVal=true
 03-03 22:06:14.703 19298 19351 D TelephonyManager: getDataEnabled: retVal=true
@@ -4989,8 +4989,8 @@
 03-03 22:06:14.773 19298 19298 V QSPanel : curTileH : 315,tilesSumH : 315
 03-03 22:06:14.774  7977  7977 I cc      : invalidateUnreadSmsCount mUnreadSmsCount:0
 03-03 22:06:14.774 19298 19298 V QSPanel : curTileH : 315,tilesSumH : 630
-03-03 22:06:14.775 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
-03-03 22:06:14.775 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 270.0
+03-03 22:06:14.775 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:06:14.775 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 270.0
 03-03 22:06:16.246 19298 19345 D NetworkController.MobileSignalController(1): mCurrentState.level : 4
 03-03 22:06:17.904   540  3572 D audio_hw_primary: out_standby: enter: stream (0xab574728) usecase(1: low-latency-playback)
 03-03 22:06:18.052   540  3572 D audio_hw_primary: disable_audio_route: reset and update mixer path: low-latency-playback
@@ -5275,8 +5275,8 @@
 03-03 22:06:20.068 19298 19298 I SignalClusterView: mShowNetworkClass : true
 03-03 22:06:20.074 19298 19298 D SignalClusterView: mobile: VISIBLE sig=2130838299 typ=2130837853
 03-03 22:06:20.078 19298 19298 D IconMerger: iconMegerSize : 360mIconSize : 72
-03-03 22:06:20.082 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
-03-03 22:06:20.083 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 270.0
+03-03 22:06:20.082 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:06:20.083 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 270.0
 03-03 22:06:20.088 19298 19298 I SignalClusterView: mNetworkLabelName ; 中国移动2G
 03-03 22:06:20.092 19298 19298 I SignalClusterView: filterChina : false, result : 中国移动2G ,filter : 中国
 03-03 22:06:20.092 19298 19298 I SignalClusterView: label : 中国移动2Gnames.length : 1
@@ -5313,8 +5313,8 @@
 03-03 22:06:20.130 19298 19298 I SignalClusterView: filterChina : false, result : 中国移动2G ,filter : 中国
 03-03 22:06:20.130 19298 19298 I SignalClusterView: label : 中国移动2Gnames.length : 1
 03-03 22:06:20.130 19298 19298 I SignalClusterView: mShowNetworkClass : true
-03-03 22:06:20.133 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
-03-03 22:06:20.134 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 270.0
+03-03 22:06:20.133 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:06:20.134 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 270.0
 03-03 22:06:20.317  3611  5657 W art     : Long monitor contention event with owner method=android.content.pm.ParceledListSlice com.android.server.pm.PackageManagerService.getInstalledPackages(int, int) from PackageManagerService.java:5323 waiters=0 for 243ms
 03-03 22:06:20.319  5699 10799 D PhoneInterfaceManager: [PhoneIntfMgr] getDataEnabled: subId=1 phoneId=1
 03-03 22:06:20.320  5699 10799 D PhoneInterfaceManager: [PhoneIntfMgr] getDataEnabled: subId=1 retVal=true
@@ -5608,8 +5608,8 @@
 03-03 22:06:21.805 19298 19298 D SignalClusterView: mobile: VISIBLE sig=2130838299 typ=0
 03-03 22:06:21.809 19298 19351 I QSTile.CellularTile: state : BooleanState[visible=true,icon=ResourceIcon[resId=0x7f020129],label=移动数据网络,contentDescription=移动数据连接：手机信号满格。，没有数据网络信号。，移动数据网络。,dualLabelContentDescription=null,autoMirrorDrawable=true,enableClick=true,value=false]
 03-03 22:06:21.810 19298 19298 D IconMerger: iconMegerSize : 360mIconSize : 72
-03-03 22:06:21.820 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
-03-03 22:06:21.820 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 270.0
+03-03 22:06:21.820 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:06:21.820 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 270.0
 03-03 22:06:21.825 19298 19298 I SignalClusterView: mNetworkLabelName ; 中国移动2G
 03-03 22:06:21.828  8738  8738 I ContextImpl: com.iflytek.inputmethod
 03-03 22:06:21.829  8738  8738 D ContextImpl: startServiceCommon mDisallowList: 7
@@ -5642,8 +5642,8 @@
 03-03 22:06:21.883 19298 19298 I SignalClusterView: filterChina : false, result : 中国移动2G ,filter : 中国
 03-03 22:06:21.883 19298 19298 I SignalClusterView: label : 中国移动2Gnames.length : 1
 03-03 22:06:21.884 19298 19298 I SignalClusterView: mShowNetworkClass : false
-03-03 22:06:21.888 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
-03-03 22:06:21.889 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 270.0
+03-03 22:06:21.888 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:06:21.889 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 270.0
 03-03 22:06:21.891  8628  8628 D WifiCallingStatusControl: getIntent : android.net.conn.CONNECTIVITY_CHANGE flag : false
 03-03 22:06:21.919  5699  5716 D PhoneInterfaceManager: [PhoneIntfMgr] getDataEnabled: subId=1 phoneId=1
 03-03 22:06:21.919  5699  5716 D PhoneInterfaceManager: [PhoneIntfMgr] getDataEnabled: subId=1 retVal=true
@@ -5930,36 +5930,36 @@
 03-03 22:06:23.644  8919  8919 I InCall  : StatusBarNotifier - Displaying notification for 1
 03-03 22:06:23.664  8919  8919 W InCall  : VideoCallPresenter - onUiShowing, received for non-active video call
 03-03 22:06:23.664  8919  8919 I InCall  : InCallActivity - onResume()...
-03-03 22:06:23.666  3611  3611 D NotificationService: zolen tag, Interrupting notification Notification(pri=1 contentView=null vibrate=null sound=null defaults=0x0 flags=0x2 color=0xff0288d1 actions=2 vis=PRIVATE)
+03-03 22:06:23.666  3611  3611 D NotificationService: mare tag, Interrupting notification Notification(pri=1 contentView=null vibrate=null sound=null defaults=0x0 flags=0x2 color=0xff0288d1 actions=2 vis=PRIVATE)
 03-03 22:06:23.668  8919  8919 W ContextImpl: Calling a method in the system process without a qualified user: android.app.ContextImpl.sendBroadcast:771 android.content.ContextWrapper.sendBroadcast:396 android.app.Activity.sendHideNavBarBroadcast:1322 android.app.Activity.onResume:1300 com.android.incallui.InCallActivity.onResume:334 
 03-03 22:06:23.672   775   775 I MSM-irqbalance: Decided to move IRQ166 from CPU3 to CPU0
 03-03 22:06:23.677 19298 19298 D PhoneStatusBar: disable: < EXPAND* icons alerts system_info back home recent clock search quick_settings >
-03-03 22:06:23.679 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
-03-03 22:06:23.679 19298 19298 V weiliji : com.android.systemui:id/notification_panel: onOverscrollTopChanged() amount = 0.0,  isRubberbanded = true
-03-03 22:06:23.680 19298 19298 V weiliji : com.android.systemui:id/notification_panel: weiliji show the trace info  java.lang.Throwable
-03-03 22:06:23.680 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.NotificationPanelView.onOverscrollTopChanged(Unknown Source)
-03-03 22:06:23.680 19298 19298 V weiliji : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.notifyOverscrollTopListener(Unknown Source)
-03-03 22:06:23.680 19298 19298 V weiliji : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmountInternal(Unknown Source)
-03-03 22:06:23.680 19298 19298 V weiliji : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmount(Unknown Source)
-03-03 22:06:23.680 19298 19298 V weiliji : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmount(Unknown Source)
-03-03 22:06:23.680 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.NotificationPanelView.resetViews(Unknown Source)
-03-03 22:06:23.680 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.PanelBar.collapseAllPanels(Unknown Source)
-03-03 22:06:23.680 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.PhoneStatusBar.animateCollapsePanels(Unknown Source)
-03-03 22:06:23.680 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.PhoneStatusBar.animateCollapsePanels(Unknown Source)
-03-03 22:06:23.680 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.PhoneStatusBar.animateCollapsePanels(Unknown Source)
-03-03 22:06:23.680 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.PhoneStatusBar.animateCollapsePanels(Unknown Source)
-03-03 22:06:23.680 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.PhoneStatusBar.disable(Unknown Source)
-03-03 22:06:23.680 19298 19298 V weiliji : 	at com.android.systemui.statusbar.CommandQueue$H.handleMessage(Unknown Source)
-03-03 22:06:23.680 19298 19298 V weiliji : 	at android.os.Handler.dispatchMessage(Handler.java:102)
-03-03 22:06:23.680 19298 19298 V weiliji : 	at android.os.Looper.loop(Looper.java:148)
-03-03 22:06:23.680 19298 19298 V weiliji : 	at android.app.ActivityThread.main(ActivityThread.java:5417)
-03-03 22:06:23.680 19298 19298 V weiliji : 	at java.lang.reflect.Method.invoke(Native Method)
-03-03 22:06:23.680 19298 19298 V weiliji : 	at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:726)
-03-03 22:06:23.680 19298 19298 V weiliji : 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:616)
-03-03 22:06:23.680 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
-03-03 22:06:23.681 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setExpandedHeight(0.0)
-03-03 22:06:23.682 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 0.0
-03-03 22:06:23.683 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 270.0
+03-03 22:06:23.679 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:06:23.679 19298 19298 V mare : com.android.systemui:id/notification_panel: onOverscrollTopChanged() amount = 0.0,  isRubberbanded = true
+03-03 22:06:23.680 19298 19298 V mare : com.android.systemui:id/notification_panel: mare show the trace info  java.lang.Throwable
+03-03 22:06:23.680 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.NotificationPanelView.onOverscrollTopChanged(Unknown Source)
+03-03 22:06:23.680 19298 19298 V mare : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.notifyOverscrollTopListener(Unknown Source)
+03-03 22:06:23.680 19298 19298 V mare : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmountInternal(Unknown Source)
+03-03 22:06:23.680 19298 19298 V mare : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmount(Unknown Source)
+03-03 22:06:23.680 19298 19298 V mare : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmount(Unknown Source)
+03-03 22:06:23.680 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.NotificationPanelView.resetViews(Unknown Source)
+03-03 22:06:23.680 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.PanelBar.collapseAllPanels(Unknown Source)
+03-03 22:06:23.680 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.PhoneStatusBar.animateCollapsePanels(Unknown Source)
+03-03 22:06:23.680 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.PhoneStatusBar.animateCollapsePanels(Unknown Source)
+03-03 22:06:23.680 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.PhoneStatusBar.animateCollapsePanels(Unknown Source)
+03-03 22:06:23.680 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.PhoneStatusBar.animateCollapsePanels(Unknown Source)
+03-03 22:06:23.680 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.PhoneStatusBar.disable(Unknown Source)
+03-03 22:06:23.680 19298 19298 V mare : 	at com.android.systemui.statusbar.CommandQueue$H.handleMessage(Unknown Source)
+03-03 22:06:23.680 19298 19298 V mare : 	at android.os.Handler.dispatchMessage(Handler.java:102)
+03-03 22:06:23.680 19298 19298 V mare : 	at android.os.Looper.loop(Looper.java:148)
+03-03 22:06:23.680 19298 19298 V mare : 	at android.app.ActivityThread.main(ActivityThread.java:5417)
+03-03 22:06:23.680 19298 19298 V mare : 	at java.lang.reflect.Method.invoke(Native Method)
+03-03 22:06:23.680 19298 19298 V mare : 	at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:726)
+03-03 22:06:23.680 19298 19298 V mare : 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:616)
+03-03 22:06:23.680 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:06:23.681 19298 19298 V mare : com.android.systemui:id/notification_panel: setExpandedHeight(0.0)
+03-03 22:06:23.682 19298 19298 V mare : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 0.0
+03-03 22:06:23.683 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 270.0
 03-03 22:06:23.686 19298 19298 V PanelBar: collapseAllPanels: animate=true waiting=false
 03-03 22:06:23.697  8919  8919 I InCall  : ProximitySensor - ProximitySensor{keybrd=0, dpad=0, offhook=0, hor=0, ui=1, aud=EARPIECE}
 03-03 22:06:23.698  8919  8919 I InCall  : ProximitySensor - Proximity wake lock already released
@@ -6021,19 +6021,19 @@
 03-03 22:06:23.852  8919  8919 V ConfigResourceUtil: resourceName = config_fdn_contact_search resourceId = 2130837512resourceValue = false
 03-03 22:06:23.855  8919  8919 V ConfigResourceUtil: resourceName = config_enable_displaying_sdn resourceId = 2130837510resourceValue = false
 03-03 22:06:23.856 19298 19298 D IconMerger: iconMegerSize : 360mIconSize : 72
-03-03 22:06:23.862 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
-03-03 22:06:23.862 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 270.0
+03-03 22:06:23.862 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:06:23.862 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 270.0
 03-03 22:06:23.892  5699  6172 E OperatorSimInfo: Create Res Apk Failed
 03-03 22:06:23.895  5699  6172 E OperatorSimInfo: Create Res Apk Failed
 03-03 22:06:23.956  8919  8919 I InCall  : StatusBarNotifier - Displaying notification for 1
-03-03 22:06:23.974  3611  3611 D NotificationService: zolen tag, Interrupting notification Notification(pri=1 contentView=null vibrate=null sound=null defaults=0x0 flags=0x2 color=0xff0288d1 actions=2 vis=PRIVATE)
+03-03 22:06:23.974  3611  3611 D NotificationService: mare tag, Interrupting notification Notification(pri=1 contentView=null vibrate=null sound=null defaults=0x0 flags=0x2 color=0xff0288d1 actions=2 vis=PRIVATE)
 03-03 22:06:24.007  8919  8919 I InCall  : CallCardPresenter - checkIdp phone type:1 enabled:false
 03-03 22:06:24.008  8919  8919 I InCall  : CallCardPresenter - checkIdp number: 182 2335 8067 subid:1 isIncoming:true checked number:182 2335 8067 inValid:false nameIsNumbertrue
 03-03 22:06:24.031  8919  8919 I InCall  : CallCardPresenter - checkIdp phone type:1 enabled:false
 03-03 22:06:24.032  8919  8919 I InCall  : CallCardPresenter - checkIdp number: 182 2335 8067 subid:1 isIncoming:true checked number:182 2335 8067 inValid:false nameIsNumbertrue
 03-03 22:06:24.035  8919  8919 I Choreographer: Skipped 44 frames!  The application may be doing too much work on its main thread.
-03-03 22:06:24.065 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
-03-03 22:06:24.065 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 270.0
+03-03 22:06:24.065 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:06:24.065 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 270.0
 03-03 22:06:24.165  3611  3676 I ActivityManager: Displayed com.android.dialer/com.android.incallui.InCallActivity: +1s283ms
 03-03 22:06:24.830 20442 20456 E StrictMode: A resource was acquired at attached stack trace but never released. See java.io.Closeable for information on avoiding resource leaks.
 03-03 22:06:24.830 20442 20456 E StrictMode: java.lang.Throwable: Explicit termination method 'close' not called
@@ -6159,8 +6159,8 @@
 03-03 22:06:28.671   775   775 I MSM-irqbalance: Decided to move IRQ155 from CPU2 to CPU0
 03-03 22:06:29.694 19298 19345 D NetworkController.MobileSignalController(1): mCurrentState.level : 4
 03-03 22:06:30.016 19298 19298 V PanelBar: onTouch: all panels disabled, ignoring touch at (534,15)
-03-03 22:06:30.025 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
-03-03 22:06:30.026 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 270.0
+03-03 22:06:30.025 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:06:30.026 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 270.0
 03-03 22:06:30.195  7181  7184 E ANDR-PERF-MPCTL: Invalid profile no. 0, total profiles 0 only
 03-03 22:06:30.790 18956 20438 D LBService: handle msg finished, msg=15
 03-03 22:06:30.878 20442 20491 D BGService: handle msg finished, msg=3
@@ -6256,32 +6256,32 @@
 03-03 22:06:31.659  4989  4989 D wpa_supplicant: CTRL-DEBUG: global_ctrl_sock-sendto: sock=11 sndbuf=212992 outq=0 send_len=5
 03-03 22:06:31.660  3611  4847 E WifiStateMachine:  Fail to set up pno, want true now false
 03-03 22:06:31.664 19298 19298 D PhoneStatusBar: disable: < EXPAND* icons alerts system_info back home recent clock search quick_settings >
-03-03 22:06:31.665 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
-03-03 22:06:31.665 19298 19298 V weiliji : com.android.systemui:id/notification_panel: onOverscrollTopChanged() amount = 0.0,  isRubberbanded = true
-03-03 22:06:31.666 19298 19298 V weiliji : com.android.systemui:id/notification_panel: weiliji show the trace info  java.lang.Throwable
-03-03 22:06:31.666 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.NotificationPanelView.onOverscrollTopChanged(Unknown Source)
-03-03 22:06:31.666 19298 19298 V weiliji : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.notifyOverscrollTopListener(Unknown Source)
-03-03 22:06:31.666 19298 19298 V weiliji : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmountInternal(Unknown Source)
-03-03 22:06:31.666 19298 19298 V weiliji : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmount(Unknown Source)
-03-03 22:06:31.666 19298 19298 V weiliji : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmount(Unknown Source)
-03-03 22:06:31.666 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.NotificationPanelView.resetViews(Unknown Source)
-03-03 22:06:31.666 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.PanelBar.collapseAllPanels(Unknown Source)
-03-03 22:06:31.666 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.PhoneStatusBar.animateCollapsePanels(Unknown Source)
-03-03 22:06:31.666 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.PhoneStatusBar.animateCollapsePanels(Unknown Source)
-03-03 22:06:31.666 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.PhoneStatusBar.animateCollapsePanels(Unknown Source)
-03-03 22:06:31.666 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.PhoneStatusBar.animateCollapsePanels(Unknown Source)
-03-03 22:06:31.666 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.PhoneStatusBar.disable(Unknown Source)
-03-03 22:06:31.666 19298 19298 V weiliji : 	at com.android.systemui.statusbar.CommandQueue$H.handleMessage(Unknown Source)
-03-03 22:06:31.666 19298 19298 V weiliji : 	at android.os.Handler.dispatchMessage(Handler.java:102)
-03-03 22:06:31.666 19298 19298 V weiliji : 	at android.os.Looper.loop(Looper.java:148)
-03-03 22:06:31.666 19298 19298 V weiliji : 	at android.app.ActivityThread.main(ActivityThread.java:5417)
-03-03 22:06:31.666 19298 19298 V weiliji : 	at java.lang.reflect.Method.invoke(Native Method)
-03-03 22:06:31.666 19298 19298 V weiliji : 	at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:726)
-03-03 22:06:31.666 19298 19298 V weiliji : 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:616)
-03-03 22:06:31.666 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
-03-03 22:06:31.667 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setExpandedHeight(0.0)
-03-03 22:06:31.668 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 0.0
-03-03 22:06:31.668 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 270.0
+03-03 22:06:31.665 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:06:31.665 19298 19298 V mare : com.android.systemui:id/notification_panel: onOverscrollTopChanged() amount = 0.0,  isRubberbanded = true
+03-03 22:06:31.666 19298 19298 V mare : com.android.systemui:id/notification_panel: mare show the trace info  java.lang.Throwable
+03-03 22:06:31.666 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.NotificationPanelView.onOverscrollTopChanged(Unknown Source)
+03-03 22:06:31.666 19298 19298 V mare : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.notifyOverscrollTopListener(Unknown Source)
+03-03 22:06:31.666 19298 19298 V mare : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmountInternal(Unknown Source)
+03-03 22:06:31.666 19298 19298 V mare : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmount(Unknown Source)
+03-03 22:06:31.666 19298 19298 V mare : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmount(Unknown Source)
+03-03 22:06:31.666 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.NotificationPanelView.resetViews(Unknown Source)
+03-03 22:06:31.666 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.PanelBar.collapseAllPanels(Unknown Source)
+03-03 22:06:31.666 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.PhoneStatusBar.animateCollapsePanels(Unknown Source)
+03-03 22:06:31.666 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.PhoneStatusBar.animateCollapsePanels(Unknown Source)
+03-03 22:06:31.666 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.PhoneStatusBar.animateCollapsePanels(Unknown Source)
+03-03 22:06:31.666 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.PhoneStatusBar.animateCollapsePanels(Unknown Source)
+03-03 22:06:31.666 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.PhoneStatusBar.disable(Unknown Source)
+03-03 22:06:31.666 19298 19298 V mare : 	at com.android.systemui.statusbar.CommandQueue$H.handleMessage(Unknown Source)
+03-03 22:06:31.666 19298 19298 V mare : 	at android.os.Handler.dispatchMessage(Handler.java:102)
+03-03 22:06:31.666 19298 19298 V mare : 	at android.os.Looper.loop(Looper.java:148)
+03-03 22:06:31.666 19298 19298 V mare : 	at android.app.ActivityThread.main(ActivityThread.java:5417)
+03-03 22:06:31.666 19298 19298 V mare : 	at java.lang.reflect.Method.invoke(Native Method)
+03-03 22:06:31.666 19298 19298 V mare : 	at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:726)
+03-03 22:06:31.666 19298 19298 V mare : 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:616)
+03-03 22:06:31.666 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:06:31.667 19298 19298 V mare : com.android.systemui:id/notification_panel: setExpandedHeight(0.0)
+03-03 22:06:31.668 19298 19298 V mare : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 0.0
+03-03 22:06:31.668 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 270.0
 03-03 22:06:31.668 19298 19298 V PanelBar: collapseAllPanels: animate=true waiting=false
 03-03 22:06:31.672  8919  8919 I InCall  : ProximitySensor - ProximitySensor{keybrd=0, dpad=0, offhook=0, hor=0, ui=1, aud=EARPIECE}
 03-03 22:06:31.672  8919  8919 I InCall  : ProximitySensor - Proximity wake lock already released
@@ -6292,31 +6292,31 @@
 03-03 22:06:31.707  8919  8919 I InCall  : InCallLowBatteryListener - onUiShowing showing: truecall = [Call_13, INCOMING, [Capabilities: CAPABILITY_SUPPORT_HOLD CAPABILITY_RESPOND_VIA_TEXT CAPABILITY_MUTE], children:[], parent:null, conferenceable:[], videoState:Audio Only, modifyToVideoState:Audio Only, mSessionModificationState:0, VideoSettings:(CameraDir:-1), mIsActivSub:false]
 03-03 22:06:31.707  8919  8919 I InCall  : InCallLowBatteryListener - maybeProcessLowBatteryIndication: isLowBattery : false
 03-03 22:06:31.709  8919  8919 W RCS_UI  : NameNotFoundException:android.content.pm.PackageManager$NameNotFoundException: com.cmdm.rcs
-03-03 22:06:31.723 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
-03-03 22:06:31.723 19298 19298 V weiliji : com.android.systemui:id/notification_panel: onOverscrollTopChanged() amount = 0.0,  isRubberbanded = true
-03-03 22:06:31.724 19298 19298 V weiliji : com.android.systemui:id/notification_panel: weiliji show the trace info  java.lang.Throwable
-03-03 22:06:31.724 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.NotificationPanelView.onOverscrollTopChanged(Unknown Source)
-03-03 22:06:31.724 19298 19298 V weiliji : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.notifyOverscrollTopListener(Unknown Source)
-03-03 22:06:31.724 19298 19298 V weiliji : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmountInternal(Unknown Source)
-03-03 22:06:31.724 19298 19298 V weiliji : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmount(Unknown Source)
-03-03 22:06:31.724 19298 19298 V weiliji : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmount(Unknown Source)
-03-03 22:06:31.724 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.NotificationPanelView.resetViews(Unknown Source)
-03-03 22:06:31.724 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.PhoneStatusBar.updateKeyguardState(Unknown Source)
-03-03 22:06:31.724 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.PhoneStatusBar.showKeyguard(Unknown Source)
-03-03 22:06:31.724 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.StatusBarKeyguardViewManager.showBouncerOrKeyguard(Unknown Source)
-03-03 22:06:31.724 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.StatusBarKeyguardViewManager.reset(Unknown Source)
-03-03 22:06:31.724 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.StatusBarKeyguardViewManager.show(Unknown Source)
-03-03 22:06:31.724 19298 19298 V weiliji : 	at com.android.systemui.keyguard.KeyguardViewMediator.handleShow(Unknown Source)
-03-03 22:06:31.724 19298 19298 V weiliji : 	at com.android.systemui.keyguard.KeyguardViewMediator.access$1900(Unknown Source)
-03-03 22:06:31.724 19298 19298 V weiliji : 	at com.android.systemui.keyguard.KeyguardViewMediator$4.handleMessage(Unknown Source)
-03-03 22:06:31.724 19298 19298 V weiliji : 	at android.os.Handler.dispatchMessage(Handler.java:102)
-03-03 22:06:31.724 19298 19298 V weiliji : 	at android.os.Looper.loop(Looper.java:148)
-03-03 22:06:31.724 19298 19298 V weiliji : 	at android.app.ActivityThread.main(ActivityThread.java:5417)
-03-03 22:06:31.724 19298 19298 V weiliji : 	at java.lang.reflect.Method.invoke(Native Method)
-03-03 22:06:31.724 19298 19298 V weiliji : 	at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:726)
-03-03 22:06:31.724 19298 19298 V weiliji : 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:616)
-03-03 22:06:31.724 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
-03-03 22:06:31.775 19298 19298 D wumin   :  makeExpandedVisible... 
+03-03 22:06:31.723 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:06:31.723 19298 19298 V mare : com.android.systemui:id/notification_panel: onOverscrollTopChanged() amount = 0.0,  isRubberbanded = true
+03-03 22:06:31.724 19298 19298 V mare : com.android.systemui:id/notification_panel: mare show the trace info  java.lang.Throwable
+03-03 22:06:31.724 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.NotificationPanelView.onOverscrollTopChanged(Unknown Source)
+03-03 22:06:31.724 19298 19298 V mare : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.notifyOverscrollTopListener(Unknown Source)
+03-03 22:06:31.724 19298 19298 V mare : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmountInternal(Unknown Source)
+03-03 22:06:31.724 19298 19298 V mare : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmount(Unknown Source)
+03-03 22:06:31.724 19298 19298 V mare : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmount(Unknown Source)
+03-03 22:06:31.724 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.NotificationPanelView.resetViews(Unknown Source)
+03-03 22:06:31.724 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.PhoneStatusBar.updateKeyguardState(Unknown Source)
+03-03 22:06:31.724 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.PhoneStatusBar.showKeyguard(Unknown Source)
+03-03 22:06:31.724 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.StatusBarKeyguardViewManager.showBouncerOrKeyguard(Unknown Source)
+03-03 22:06:31.724 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.StatusBarKeyguardViewManager.reset(Unknown Source)
+03-03 22:06:31.724 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.StatusBarKeyguardViewManager.show(Unknown Source)
+03-03 22:06:31.724 19298 19298 V mare : 	at com.android.systemui.keyguard.KeyguardViewMediator.handleShow(Unknown Source)
+03-03 22:06:31.724 19298 19298 V mare : 	at com.android.systemui.keyguard.KeyguardViewMediator.access$1900(Unknown Source)
+03-03 22:06:31.724 19298 19298 V mare : 	at com.android.systemui.keyguard.KeyguardViewMediator$4.handleMessage(Unknown Source)
+03-03 22:06:31.724 19298 19298 V mare : 	at android.os.Handler.dispatchMessage(Handler.java:102)
+03-03 22:06:31.724 19298 19298 V mare : 	at android.os.Looper.loop(Looper.java:148)
+03-03 22:06:31.724 19298 19298 V mare : 	at android.app.ActivityThread.main(ActivityThread.java:5417)
+03-03 22:06:31.724 19298 19298 V mare : 	at java.lang.reflect.Method.invoke(Native Method)
+03-03 22:06:31.724 19298 19298 V mare : 	at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:726)
+03-03 22:06:31.724 19298 19298 V mare : 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:616)
+03-03 22:06:31.724 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:06:31.775 19298 19298 D mare   :  makeExpandedVisible... 
 03-03 22:06:31.777 19298 19298 D PhoneStatusBar: disable: < EXPAND ICONS* alerts SYSTEM_INFO* back home recent clock search quick_settings >
 03-03 22:06:31.783 19298 19298 V PanelBar: go state: 0 -> 1
 03-03 22:06:31.783 19298 19298 V PanelBar: onPanelPeeked
@@ -6364,8 +6364,8 @@
 03-03 22:06:32.306 19298 19298 V QSPanel : curTileH : 315,tilesSumH : 315
 03-03 22:06:32.306 19298 19298 V QSPanel : curTileH : 315,tilesSumH : 630
 03-03 22:06:32.312 19298 19298 I KeyguardClockPositionAlgorithm: getClockY() : 467 , mKeyguardStatusHeight : 386
-03-03 22:06:32.314 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 0.0
-03-03 22:06:32.314 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
+03-03 22:06:32.314 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 0.0
+03-03 22:06:32.314 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
 03-03 22:06:32.314  3611  3619 E StrictMode: A resource was acquired at attached stack trace but never released. See java.io.Closeable for information on avoiding resource leaks.
 03-03 22:06:32.314  3611  3619 E StrictMode: java.lang.Throwable: Explicit termination method 'close' not called
 03-03 22:06:32.314  3611  3619 E StrictMode: 	at dalvik.system.CloseGuard.open(CloseGuard.java:180)
@@ -6386,18 +6386,18 @@
 03-03 22:06:32.314  3611  3619 E StrictMode: 	at com.android.server.telecom.TelecomServiceImpl$1.addNewIncomingCall(TelecomServiceImpl.java:780)
 03-03 22:06:32.314  3611  3619 E StrictMode: 	at com.android.internal.telecom.ITelecomService$Stub.onTransact(ITelecomService.java:488)
 03-03 22:06:32.314  3611  3619 E StrictMode: 	at android.os.Binder.execTransact(Binder.java:453)
-03-03 22:06:32.315 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
+03-03 22:06:32.315 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
 03-03 22:06:32.315  3611  3619 W CursorWrapperInner: Cursor finalized without prior close()
-03-03 22:06:32.316 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setExpandedHeight(1557.0)
-03-03 22:06:32.316 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 1557.0
+03-03 22:06:32.316 19298 19298 V mare : com.android.systemui:id/notification_panel: setExpandedHeight(1557.0)
+03-03 22:06:32.316 19298 19298 V mare : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 1557.0
 03-03 22:06:32.317 19298 19298 I KeyguardClockPositionAlgorithm: getClockY() : 467 , mKeyguardStatusHeight : 386
-03-03 22:06:32.318 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setExpandedHeight(1238.0)
-03-03 22:06:32.318 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 1238.0
+03-03 22:06:32.318 19298 19298 V mare : com.android.systemui:id/notification_panel: setExpandedHeight(1238.0)
+03-03 22:06:32.318 19298 19298 V mare : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 1238.0
 03-03 22:06:32.319 19298 19298 I KeyguardClockPositionAlgorithm: getClockY() : 467 , mKeyguardStatusHeight : 386
-03-03 22:06:32.320 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
+03-03 22:06:32.320 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
 03-03 22:06:32.321 19298 19298 V PanelBar: go state: 1 -> 2
 03-03 22:06:32.321 19298 19298 V PanelBar: onPanelFullyOpened
-03-03 22:06:32.322 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
+03-03 22:06:32.322 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
 03-03 22:06:32.323 19298 19298 V PanelBar: go state: 2 -> 2
 03-03 22:06:32.323 19298 19298 V PanelBar: onPanelFullyOpened
 03-03 22:06:32.328 19298 19298 I SignalClusterView: mNetworkLabelName ; 中国移动2G
@@ -6441,10 +6441,10 @@
 03-03 22:06:32.344 19298 19298 I SignalClusterView: mShowNetworkClass : false
 03-03 22:06:32.351 19298 19298 V PanelBar: go state: 2 -> 2
 03-03 22:06:32.351 19298 19298 V PanelBar: onPanelFullyOpened
-03-03 22:06:32.351 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setExpandedHeight(0.0)
-03-03 22:06:32.351 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 0.0
+03-03 22:06:32.351 19298 19298 V mare : com.android.systemui:id/notification_panel: setExpandedHeight(0.0)
+03-03 22:06:32.351 19298 19298 V mare : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 0.0
 03-03 22:06:32.351 19298 19298 I KeyguardClockPositionAlgorithm: getClockY() : 467 , mKeyguardStatusHeight : 386
-03-03 22:06:32.352 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
+03-03 22:06:32.352 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
 03-03 22:06:32.355 19298 19298 V PanelBar: go state: 2 -> 0
 03-03 22:06:32.355 19298 19298 V PanelBar: onAllPanelsCollapsed
 03-03 22:06:32.377 19298 19350 I QSTile.CellularTile: state : BooleanState[visible=true,icon=ResourceIcon[resId=0x7f020129],label=移动数据网络,contentDescription=移动数据连接：手机信号满格。，没有数据网络信号。，移动数据网络。,dualLabelContentDescription=null,autoMirrorDrawable=true,enableClick=true,value=false]
@@ -6800,8 +6800,8 @@
 03-03 22:06:32.945 19298 19351 I QSTile.CellularTile: enableClick : true
 03-03 22:06:32.948 19298 19351 I QSTile.CellularTile: state : BooleanState[visible=true,icon=ResourceIcon[resId=0x7f020129],label=移动数据网络,contentDescription=移动数据连接：手机信号满格。，没有数据网络信号。，移动数据网络。,dualLabelContentDescription=null,autoMirrorDrawable=true,enableClick=true,value=false]
 03-03 22:06:32.968  5699  6019 E OperatorSimInfo: Create Res Apk Failed
-03-03 22:06:32.968 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
-03-03 22:06:32.969 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 270.0
+03-03 22:06:32.968 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:06:32.969 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 270.0
 03-03 22:06:32.972  5699  6019 E OperatorSimInfo: Create Res Apk Failed
 03-03 22:06:32.975  3611  5187 W InputMethodManagerService: Window already focused, ignoring focus gain of: com.android.internal.view.IInputMethodClient$Stub$Proxy@693deff attribute=android.view.inputmethod.EditorInfo@321d4cc, token = android.os.BinderProxy@b6916a5
 03-03 22:06:32.978 19298 19298 I SignalClusterView: mNetworkLabelName ; 中国移动2G
@@ -6873,34 +6873,34 @@
 03-03 22:06:33.106 19298 19298 I SignalClusterView: filterChina : false, result : 中国移动2G ,filter : 中国
 03-03 22:06:33.106 19298 19298 I SignalClusterView: label : 中国移动2Gnames.length : 1
 03-03 22:06:33.107 19298 19298 I SignalClusterView: mShowNetworkClass : false
-03-03 22:06:33.111 19298 19298 D wumin   : makeExpandedInvisible ... 
+03-03 22:06:33.111 19298 19298 D mare   : makeExpandedInvisible ... 
 03-03 22:06:33.111  5699  6019 E OperatorSimInfo: Create Res Apk Failed
 03-03 22:06:33.114  5699  6019 E OperatorSimInfo: Create Res Apk Failed
-03-03 22:06:33.115 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
-03-03 22:06:33.116 19298 19298 V weiliji : com.android.systemui:id/notification_panel: onOverscrollTopChanged() amount = 0.0,  isRubberbanded = true
-03-03 22:06:33.117 19298 19298 V weiliji : com.android.systemui:id/notification_panel: weiliji show the trace info  java.lang.Throwable
-03-03 22:06:33.117 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.NotificationPanelView.onOverscrollTopChanged(Unknown Source)
-03-03 22:06:33.117 19298 19298 V weiliji : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.notifyOverscrollTopListener(Unknown Source)
-03-03 22:06:33.117 19298 19298 V weiliji : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmountInternal(Unknown Source)
-03-03 22:06:33.117 19298 19298 V weiliji : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmount(Unknown Source)
-03-03 22:06:33.117 19298 19298 V weiliji : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmount(Unknown Source)
-03-03 22:06:33.117 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.NotificationPanelView.resetViews(Unknown Source)
-03-03 22:06:33.117 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.PanelBar.collapseAllPanels(Unknown Source)
-03-03 22:06:33.117 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.PhoneStatusBar.makeExpandedInvisible(Unknown Source)
-03-03 22:06:33.117 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.PhoneStatusBarView$1.run(Unknown Source)
-03-03 22:06:33.117 19298 19298 V weiliji : 	at android.os.Handler.handleCallback(Handler.java:739)
-03-03 22:06:33.117 19298 19298 V weiliji : 	at android.os.Handler.dispatchMessage(Handler.java:95)
-03-03 22:06:33.117 19298 19298 V weiliji : 	at android.os.Looper.loop(Looper.java:148)
-03-03 22:06:33.117 19298 19298 V weiliji : 	at android.app.ActivityThread.main(ActivityThread.java:5417)
-03-03 22:06:33.117 19298 19298 V weiliji : 	at java.lang.reflect.Method.invoke(Native Method)
-03-03 22:06:33.117 19298 19298 V weiliji : 	at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:726)
-03-03 22:06:33.117 19298 19298 V weiliji : 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:616)
-03-03 22:06:33.117 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
-03-03 22:06:33.118 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setExpandedHeight(0.0)
-03-03 22:06:33.118 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 0.0
-03-03 22:06:33.118 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 270.0
+03-03 22:06:33.115 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:06:33.116 19298 19298 V mare : com.android.systemui:id/notification_panel: onOverscrollTopChanged() amount = 0.0,  isRubberbanded = true
+03-03 22:06:33.117 19298 19298 V mare : com.android.systemui:id/notification_panel: mare show the trace info  java.lang.Throwable
+03-03 22:06:33.117 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.NotificationPanelView.onOverscrollTopChanged(Unknown Source)
+03-03 22:06:33.117 19298 19298 V mare : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.notifyOverscrollTopListener(Unknown Source)
+03-03 22:06:33.117 19298 19298 V mare : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmountInternal(Unknown Source)
+03-03 22:06:33.117 19298 19298 V mare : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmount(Unknown Source)
+03-03 22:06:33.117 19298 19298 V mare : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmount(Unknown Source)
+03-03 22:06:33.117 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.NotificationPanelView.resetViews(Unknown Source)
+03-03 22:06:33.117 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.PanelBar.collapseAllPanels(Unknown Source)
+03-03 22:06:33.117 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.PhoneStatusBar.makeExpandedInvisible(Unknown Source)
+03-03 22:06:33.117 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.PhoneStatusBarView$1.run(Unknown Source)
+03-03 22:06:33.117 19298 19298 V mare : 	at android.os.Handler.handleCallback(Handler.java:739)
+03-03 22:06:33.117 19298 19298 V mare : 	at android.os.Handler.dispatchMessage(Handler.java:95)
+03-03 22:06:33.117 19298 19298 V mare : 	at android.os.Looper.loop(Looper.java:148)
+03-03 22:06:33.117 19298 19298 V mare : 	at android.app.ActivityThread.main(ActivityThread.java:5417)
+03-03 22:06:33.117 19298 19298 V mare : 	at java.lang.reflect.Method.invoke(Native Method)
+03-03 22:06:33.117 19298 19298 V mare : 	at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:726)
+03-03 22:06:33.117 19298 19298 V mare : 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:616)
+03-03 22:06:33.117 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:06:33.118 19298 19298 V mare : com.android.systemui:id/notification_panel: setExpandedHeight(0.0)
+03-03 22:06:33.118 19298 19298 V mare : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 0.0
+03-03 22:06:33.118 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 270.0
 03-03 22:06:33.119 19298 19298 V PanelBar: collapseAllPanels: animate=false waiting=false
-03-03 22:06:33.119 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:06:33.119 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
 03-03 22:06:33.129 19298 19298 D PhoneStatusBar: disable: < EXPAND icons* alerts system_info* back home RECENT clock SEARCH quick_settings >
 03-03 22:06:33.143  5699  5716 D PhoneInterfaceManager: [PhoneIntfMgr] getDataEnabled: subId=1 phoneId=1
 03-03 22:06:33.144  5699  5716 D PhoneInterfaceManager: [PhoneIntfMgr] getDataEnabled: subId=1 retVal=true
@@ -6921,8 +6921,8 @@
 03-03 22:06:33.191 19298 19298 V QSPanel : curTileH : 315,tilesSumH : 315
 03-03 22:06:33.192 19298 19298 V QSPanel : curTileH : 315,tilesSumH : 630
 03-03 22:06:33.192  5699  5715 E OperatorSimInfo: Create Res Apk Failed
-03-03 22:06:33.193 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
-03-03 22:06:33.193 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 270.0
+03-03 22:06:33.193 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:06:33.193 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 270.0
 03-03 22:06:33.195  5699  5715 E OperatorSimInfo: Create Res Apk Failed
 03-03 22:06:33.202  5699  6172 E OperatorSimInfo: Create Res Apk Failed
 03-03 22:06:33.204  5699  6172 E OperatorSimInfo: Create Res Apk Failed
@@ -6979,8 +6979,8 @@
 03-03 22:06:33.425 19298 19351 D TelephonyManager: getDataEnabled: retVal=true
 03-03 22:06:33.425 19298 19351 I QSTile.CellularTile: enableClick : true
 03-03 22:06:33.429 19298 19298 V PanelBar: onTouch: all panels disabled, ignoring touch at (818,29)
-03-03 22:06:33.435 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
-03-03 22:06:33.435 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 270.0
+03-03 22:06:33.435 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:06:33.435 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 270.0
 03-03 22:06:33.439  5699  6166 E OperatorSimInfo: Create Res Apk Failed
 03-03 22:06:33.445  5699  6166 E OperatorSimInfo: Create Res Apk Failed
 03-03 22:06:33.472  5699  6172 D PhoneInterfaceManager: [PhoneIntfMgr] getDataEnabled: subId=1 phoneId=1
@@ -7139,9 +7139,9 @@
 03-03 22:06:37.380   595   595 D FingerGoodix: Exit sig_handler.
 03-03 22:06:37.543  3611  4790 I Telecom : : Silence Ringer requested by android
 03-03 22:06:37.544  3611  4790 I PowerManagerService: Waking up from dozing (uid 1000)...
-03-03 22:06:37.557 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setExpandedHeight(0.0)
-03-03 22:06:37.558 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 0.0
-03-03 22:06:37.558 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 270.0
+03-03 22:06:37.557 19298 19298 V mare : com.android.systemui:id/notification_panel: setExpandedHeight(0.0)
+03-03 22:06:37.558 19298 19298 V mare : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 0.0
+03-03 22:06:37.558 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 270.0
 03-03 22:06:37.571  3611  3611 V KeyguardServiceDelegate: onStartedWakingUp()
 03-03 22:06:37.581  3611  3611 W InputMethodManagerService: Unexpected intent Intent { act=android.intent.action.SCREEN_OFF flg=0x50000010 }
 03-03 22:06:37.586 19298 19351 I QSTile.CellularTile: state : BooleanState[visible=true,icon=ResourceIcon[resId=0x7f020129],label=移动数据网络,contentDescription=移动数据连接：手机信号满格。，没有数据网络信号。，移动数据网络。,dualLabelContentDescription=null,autoMirrorDrawable=true,enableClick=true,value=false]
@@ -7173,8 +7173,8 @@
 03-03 22:06:37.632 19298 19298 I SignalClusterView: label : 中国移动2Gnames.length : 1
 03-03 22:06:37.632 19298 19298 I SignalClusterView: mShowNetworkClass : false
 03-03 22:06:37.634  5699  6019 E OperatorSimInfo: Create Res Apk Failed
-03-03 22:06:37.637 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
-03-03 22:06:37.638 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 270.0
+03-03 22:06:37.637 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:06:37.638 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 270.0
 03-03 22:06:37.640  5699  6019 E OperatorSimInfo: Create Res Apk Failed
 03-03 22:06:37.643  5699  5715 E OperatorSimInfo: Create Res Apk Failed
 03-03 22:06:37.647  5699  5715 E OperatorSimInfo: Create Res Apk Failed
@@ -7264,8 +7264,8 @@
 03-03 22:06:37.885  8919  8919 I InCall  : ProximitySensor - Proximity wake lock already released
 03-03 22:06:37.914 19298 19298 V QSPanel : curTileH : 315,tilesSumH : 315
 03-03 22:06:37.914 19298 19298 V QSPanel : curTileH : 315,tilesSumH : 630
-03-03 22:06:37.916 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
-03-03 22:06:37.916 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 270.0
+03-03 22:06:37.916 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:06:37.916 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 270.0
 03-03 22:06:37.921  8919  8919 I InCall  : InCallLowBatteryListener - onUiShowing showing: truecall = [Call_13, INCOMING, [Capabilities: CAPABILITY_SUPPORT_HOLD CAPABILITY_RESPOND_VIA_TEXT CAPABILITY_MUTE], children:[], parent:null, conferenceable:[], videoState:Audio Only, modifyToVideoState:Audio Only, mSessionModificationState:0, VideoSettings:(CameraDir:-1), mIsActivSub:false]
 03-03 22:06:37.921  8919  8919 I InCall  : InCallLowBatteryListener - maybeProcessLowBatteryIndication: isLowBattery : false
 03-03 22:06:37.923  8919  8919 W RCS_UI  : NameNotFoundException:android.content.pm.PackageManager$NameNotFoundException: com.cmdm.rcs
@@ -7525,8 +7525,8 @@
 03-03 22:06:39.916 19298 19350 I QSTile.CellularTile: state : BooleanState[visible=true,icon=ResourceIcon[resId=0x7f020129],label=移动数据网络,contentDescription=移动数据连接：手机信号满格。，没有数据网络信号。，移动数据网络。,dualLabelContentDescription=null,autoMirrorDrawable=true,enableClick=true,value=false]
 03-03 22:06:39.920 19298 19351 I QSTile.CellularTile: state : BooleanState[visible=true,icon=ResourceIcon[resId=0x7f020129],label=移动数据网络,contentDescription=移动数据连接：手机信号满格。，没有数据网络信号。，移动数据网络。,dualLabelContentDescription=null,autoMirrorDrawable=true,enableClick=true,value=false]
 03-03 22:06:39.924 19298 19298 D IconMerger: iconMegerSize : 360mIconSize : 72
-03-03 22:06:39.932 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
-03-03 22:06:39.932 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 270.0
+03-03 22:06:39.932 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:06:39.932 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 270.0
 03-03 22:06:39.938 19298 19298 I SignalClusterView: mNetworkLabelName ; 中国移动2G
 03-03 22:06:39.953 17746 17746 D GlobalSettingsHelper: USE_LEBIAN=true
 03-03 22:06:39.953 17746 17746 D BGReceiver: BGReceiver onReceive enter, action=android.net.conn.CONNECTIVITY_CHANGE
@@ -7567,8 +7567,8 @@
 03-03 22:06:40.070  5699  6019 D PhoneInterfaceManager: [PhoneIntfMgr] getDataEnabled: subId=1 phoneId=1
 03-03 22:06:40.070  5699  6019 D PhoneInterfaceManager: [PhoneIntfMgr] getDataEnabled: subId=1 retVal=true
 03-03 22:06:40.085  8738  8738 D ConnectivityManager: getMobileDataEnabled()- subId=1 retVal=true
-03-03 22:06:40.092 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
-03-03 22:06:40.093 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 270.0
+03-03 22:06:40.092 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:06:40.093 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 270.0
 03-03 22:06:40.105  8738  8738 I ContextImpl: com.iflytek.inputmethod
 03-03 22:06:40.105  8738  8738 D ContextImpl: startServiceCommon mDisallowList: 7
 03-03 22:06:40.108  8738  8738 I intercept: startService topPackname: com.android.dialer  currentPackname: com.android.mms
@@ -7636,8 +7636,8 @@
 03-03 22:06:40.344 19298 19298 I SignalClusterView: mShowNetworkClass : true
 03-03 22:06:40.355 19298 19298 D SignalClusterView: mobile: VISIBLE sig=2130838299 typ=2130837853
 03-03 22:06:40.357 19298 19351 I QSTile.CellularTile: state : BooleanState[visible=true,icon=ResourceIcon[resId=0x7f020129],label=移动数据网络,contentDescription=移动数据连接：手机信号满格。，没有数据网络信号。，移动数据网络。,dualLabelContentDescription=null,autoMirrorDrawable=true,enableClick=true,value=false]
-03-03 22:06:40.365 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
-03-03 22:06:40.365 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 270.0
+03-03 22:06:40.365 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:06:40.365 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 270.0
 03-03 22:06:40.368 19298 19350 I QSTile.CellularTile: state : BooleanState[visible=true,icon=ResourceIcon[resId=0x7f020129],label=移动数据网络,contentDescription=移动数据连接：手机信号满格。，没有数据网络信号。，移动数据网络。,dualLabelContentDescription=null,autoMirrorDrawable=true,enableClick=true,value=false]
 03-03 22:06:40.375  5699  5699 E QtiRilInterface: instance = com.qti.internal.telephony.QtiRilInterface@59ae7c8
 03-03 22:06:40.378 19298 19298 I SignalClusterView: mNetworkLabelName ; 中国移动2G
@@ -7675,8 +7675,8 @@
 03-03 22:06:40.427 19298 19298 I SignalClusterView: filterChina : false, result : 中国移动2G ,filter : 中国
 03-03 22:06:40.434 19298 19298 I SignalClusterView: label : 中国移动2Gnames.length : 1
 03-03 22:06:40.434 19298 19298 I SignalClusterView: mShowNetworkClass : true
-03-03 22:06:40.441 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
-03-03 22:06:40.441 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 270.0
+03-03 22:06:40.441 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:06:40.441 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 270.0
 03-03 22:06:40.454  5699  5699 D QC_RIL_OEM_HOOK: dds phoneId: 1
 03-03 22:06:40.454  5699  5699 V QC_RIL_OEM_HOOK: sendRilOemHookMsg: Outgoing Data is 514f454d484f4f4b270008000400000001000000
 03-03 22:06:40.460  6093  6093 D QcrilMsgTunnelIfaceManager: handleMessage what = 1
@@ -7862,30 +7862,30 @@
 03-03 22:06:40.787 20442 20510 I BGService: scheduleImplMsg nMsg=3, time = 10000
 03-03 22:06:40.796  5699 10799 E OperatorSimInfo: Create Res Apk Failed
 03-03 22:06:40.800  8919  8919 I InCall  : InCallPresenter - Phone switching state: NO_CALLS -> NO_CALLS
-03-03 22:06:40.801 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
-03-03 22:06:40.802 19298 19298 V weiliji : com.android.systemui:id/notification_panel: onOverscrollTopChanged() amount = 0.0,  isRubberbanded = true
-03-03 22:06:40.802 19298 19298 V weiliji : com.android.systemui:id/notification_panel: weiliji show the trace info  java.lang.Throwable
-03-03 22:06:40.802 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.NotificationPanelView.onOverscrollTopChanged(Unknown Source)
-03-03 22:06:40.802 19298 19298 V weiliji : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.notifyOverscrollTopListener(Unknown Source)
-03-03 22:06:40.802 19298 19298 V weiliji : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmountInternal(Unknown Source)
-03-03 22:06:40.802 19298 19298 V weiliji : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmount(Unknown Source)
-03-03 22:06:40.802 19298 19298 V weiliji : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmount(Unknown Source)
-03-03 22:06:40.802 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.NotificationPanelView.resetViews(Unknown Source)
-03-03 22:06:40.802 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.PhoneStatusBar.updateKeyguardState(Unknown Source)
-03-03 22:06:40.802 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.PhoneStatusBar.showKeyguard(Unknown Source)
-03-03 22:06:40.802 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.StatusBarKeyguardViewManager.showBouncerOrKeyguard(Unknown Source)
-03-03 22:06:40.802 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.StatusBarKeyguardViewManager.reset(Unknown Source)
-03-03 22:06:40.802 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.StatusBarKeyguardViewManager.setOccluded(Unknown Source)
-03-03 22:06:40.802 19298 19298 V weiliji : 	at com.android.systemui.keyguard.KeyguardViewMediator.handleSetOccluded(Unknown Source)
-03-03 22:06:40.802 19298 19298 V weiliji : 	at com.android.systemui.keyguard.KeyguardViewMediator.access$3100(Unknown Source)
-03-03 22:06:40.802 19298 19298 V weiliji : 	at com.android.systemui.keyguard.KeyguardViewMediator$4.handleMessage(Unknown Source)
-03-03 22:06:40.802 19298 19298 V weiliji : 	at android.os.Handler.dispatchMessage(Handler.java:102)
-03-03 22:06:40.802 19298 19298 V weiliji : 	at android.os.Looper.loop(Looper.java:148)
-03-03 22:06:40.802 19298 19298 V weiliji : 	at android.app.ActivityThread.main(ActivityThread.java:5417)
-03-03 22:06:40.802 19298 19298 V weiliji : 	at java.lang.reflect.Method.invoke(Native Method)
-03-03 22:06:40.802 19298 19298 V weiliji : 	at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:726)
-03-03 22:06:40.802 19298 19298 V weiliji : 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:616)
-03-03 22:06:40.802 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:06:40.801 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:06:40.802 19298 19298 V mare : com.android.systemui:id/notification_panel: onOverscrollTopChanged() amount = 0.0,  isRubberbanded = true
+03-03 22:06:40.802 19298 19298 V mare : com.android.systemui:id/notification_panel: mare show the trace info  java.lang.Throwable
+03-03 22:06:40.802 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.NotificationPanelView.onOverscrollTopChanged(Unknown Source)
+03-03 22:06:40.802 19298 19298 V mare : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.notifyOverscrollTopListener(Unknown Source)
+03-03 22:06:40.802 19298 19298 V mare : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmountInternal(Unknown Source)
+03-03 22:06:40.802 19298 19298 V mare : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmount(Unknown Source)
+03-03 22:06:40.802 19298 19298 V mare : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmount(Unknown Source)
+03-03 22:06:40.802 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.NotificationPanelView.resetViews(Unknown Source)
+03-03 22:06:40.802 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.PhoneStatusBar.updateKeyguardState(Unknown Source)
+03-03 22:06:40.802 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.PhoneStatusBar.showKeyguard(Unknown Source)
+03-03 22:06:40.802 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.StatusBarKeyguardViewManager.showBouncerOrKeyguard(Unknown Source)
+03-03 22:06:40.802 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.StatusBarKeyguardViewManager.reset(Unknown Source)
+03-03 22:06:40.802 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.StatusBarKeyguardViewManager.setOccluded(Unknown Source)
+03-03 22:06:40.802 19298 19298 V mare : 	at com.android.systemui.keyguard.KeyguardViewMediator.handleSetOccluded(Unknown Source)
+03-03 22:06:40.802 19298 19298 V mare : 	at com.android.systemui.keyguard.KeyguardViewMediator.access$3100(Unknown Source)
+03-03 22:06:40.802 19298 19298 V mare : 	at com.android.systemui.keyguard.KeyguardViewMediator$4.handleMessage(Unknown Source)
+03-03 22:06:40.802 19298 19298 V mare : 	at android.os.Handler.dispatchMessage(Handler.java:102)
+03-03 22:06:40.802 19298 19298 V mare : 	at android.os.Looper.loop(Looper.java:148)
+03-03 22:06:40.802 19298 19298 V mare : 	at android.app.ActivityThread.main(ActivityThread.java:5417)
+03-03 22:06:40.802 19298 19298 V mare : 	at java.lang.reflect.Method.invoke(Native Method)
+03-03 22:06:40.802 19298 19298 V mare : 	at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:726)
+03-03 22:06:40.802 19298 19298 V mare : 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:616)
+03-03 22:06:40.802 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
 03-03 22:06:40.803  5699 10799 E OperatorSimInfo: Create Res Apk Failed
 03-03 22:06:40.806  8919  8919 I InCall  : InCallPresenter - Phone switching state: NO_CALLS -> NO_CALLS
 03-03 22:06:40.806  5699  5699 E OperatorSimInfo: Create Res Apk Failed
@@ -7913,7 +7913,7 @@
 03-03 22:06:40.901 19298 19351 D TelephonyManager: getDataEnabled: retVal=true
 03-03 22:06:40.901 19298 19351 I QSTile.CellularTile: enableClick : true
 03-03 22:06:40.902  5699  5699 E OperatorSimInfo: Create Res Apk Failed
-03-03 22:06:40.920 19298 19298 D wumin   :  makeExpandedVisible... 
+03-03 22:06:40.920 19298 19298 D mare   :  makeExpandedVisible... 
 03-03 22:06:40.922  5699  5699 D ImsServiceStateReceiver: isShowHDIconSupported config showHDIcon : true
 03-03 22:06:40.922  5699  5699 D ImsViceParser: getCallPullInfo mDialogIds null
 03-03 22:06:40.926  5699  5699 D QC_RIL_OEM_HOOK: Received Broadcast Intent ACTION_UNSOL_RESPONSE_OEM_HOOK_RAW
@@ -8003,19 +8003,19 @@
 03-03 22:06:41.256 16311 16311 D CellBroadcastReceiver: Service state changed! 0 Full: 0 0 voice home data home CMCC CMCC 46000 CMCC CMCC 46000  LTE LTE CSS not supported -1 -1 RoamInd=-1 DefRoamInd=-1 EmergOnly=false IsDataRoamingFromRegistration=false Current state=1
 03-03 22:06:41.258  3611  4881 D ConnectivityService: notifyType IP_CHANGED for NetworkAgentInfo [MOBILE (LTE) - 109]
 03-03 22:06:41.258 19298 19298 I KeyguardClockPositionAlgorithm: getClockY() : 519 , mKeyguardStatusHeight : 386
-03-03 22:06:41.260 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 0.0
-03-03 22:06:41.261 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
-03-03 22:06:41.262 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
-03-03 22:06:41.263 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setExpandedHeight(1346.0)
-03-03 22:06:41.263 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 1346.0
+03-03 22:06:41.260 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 0.0
+03-03 22:06:41.261 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
+03-03 22:06:41.262 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
+03-03 22:06:41.263 19298 19298 V mare : com.android.systemui:id/notification_panel: setExpandedHeight(1346.0)
+03-03 22:06:41.263 19298 19298 V mare : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 1346.0
 03-03 22:06:41.264 19298 19298 I KeyguardClockPositionAlgorithm: getClockY() : 519 , mKeyguardStatusHeight : 386
-03-03 22:06:41.265 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setExpandedHeight(1067.0)
-03-03 22:06:41.266 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 1067.0
+03-03 22:06:41.265 19298 19298 V mare : com.android.systemui:id/notification_panel: setExpandedHeight(1067.0)
+03-03 22:06:41.266 19298 19298 V mare : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 1067.0
 03-03 22:06:41.266 19298 19298 I KeyguardClockPositionAlgorithm: getClockY() : 519 , mKeyguardStatusHeight : 386
-03-03 22:06:41.268 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
+03-03 22:06:41.268 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
 03-03 22:06:41.269 19298 19298 V PanelBar: go state: 1 -> 2
 03-03 22:06:41.270 19298 19298 V PanelBar: onPanelFullyOpened
-03-03 22:06:41.270 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
+03-03 22:06:41.270 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
 03-03 22:06:41.271 19298 19298 V PanelBar: go state: 2 -> 2
 03-03 22:06:41.271 19298 19298 V PanelBar: onPanelFullyOpened
 03-03 22:06:41.274 16311 16311 I ContextImpl: com.iflytek.inputmethod
@@ -8243,9 +8243,9 @@
 03-03 22:06:41.590 19298 19298 D IconMerger: iconMegerSize : 360mIconSize : 72
 03-03 22:06:41.591 16311 16321 W CursorWrapperInner: Cursor finalized without prior close()
 03-03 22:06:41.596 19298 19298 I KeyguardClockPositionAlgorithm: getClockY() : 519 , mKeyguardStatusHeight : 386
-03-03 22:06:41.597 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 0.0
-03-03 22:06:41.597 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
-03-03 22:06:41.598 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
+03-03 22:06:41.597 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 0.0
+03-03 22:06:41.597 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
+03-03 22:06:41.598 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
 03-03 22:06:41.600  5699  7556 D PhoneInterfaceManager: [PhoneIntfMgr] getDataEnabled: subId=1 phoneId=1
 03-03 22:06:41.601  5699  7556 D PhoneInterfaceManager: [PhoneIntfMgr] getDataEnabled: subId=1 retVal=true
 03-03 22:06:41.603 16311 16321 W CursorWrapperInner: Cursor finalized without prior close()
@@ -8395,10 +8395,10 @@
 03-03 22:06:41.932 19298 19298 I SignalClusterView: label : 中国移动4Gnames.length : 1
 03-03 22:06:41.933 19298 19298 I SignalClusterView: mShowNetworkClass : true
 03-03 22:06:41.936 19298 19298 I KeyguardClockPositionAlgorithm: getClockY() : 519 , mKeyguardStatusHeight : 386
-03-03 22:06:41.936 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 0.0
+03-03 22:06:41.936 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 0.0
 03-03 22:06:41.936  5699  7556 D IccSmsInterfaceManager: [IccSmsInterfaceManager] Failed to add cdma broadcast subscription for MID range 4098 to 4098 from client com.android.cellbroadcastreceiver
-03-03 22:06:41.937 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
-03-03 22:06:41.937 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
+03-03 22:06:41.937 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
+03-03 22:06:41.937 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
 03-03 22:06:41.947 19298 19298 I SignalClusterView: mNetworkLabelName ; 中国移动4G
 03-03 22:06:41.951 19298 19298 I SignalClusterView: filterChina : false, result : 中国移动4G ,filter : 中国
 03-03 22:06:41.951 19298 19298 I SignalClusterView: label : 中国移动4Gnames.length : 1
@@ -8429,9 +8429,9 @@
 03-03 22:06:41.984 19298 19298 I SignalClusterView: label : 中国移动4Gnames.length : 1
 03-03 22:06:41.985 19298 19298 I SignalClusterView: mShowNetworkClass : true
 03-03 22:06:41.989 19298 19298 I KeyguardClockPositionAlgorithm: getClockY() : 519 , mKeyguardStatusHeight : 386
-03-03 22:06:41.990 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 0.0
-03-03 22:06:41.991 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
-03-03 22:06:41.991 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
+03-03 22:06:41.990 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 0.0
+03-03 22:06:41.991 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
+03-03 22:06:41.991 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
 03-03 22:06:41.999  5699  7556 E OperatorSimInfo: Create Res Apk Failed
 03-03 22:06:42.000  5699  7556 E OperatorSimInfo: Create Res Apk Failed
 03-03 22:06:42.011  5699  7018 D IccSmsInterfaceManager: [IccSmsInterfaceManager] enableCdmaBroadcastRange
@@ -8474,7 +8474,7 @@
 03-03 22:06:42.261  5699  6172 D IccSmsInterfaceManager: [IccSmsInterfaceManager] enableGsmBroadcastRange
 03-03 22:06:42.264  5699  6172 D IccSmsInterfaceManager: [IccSmsInterfaceManager] Added GSM cell broadcast subscription for MID range 50 to 50 from client com.android.cellbroadcastreceiver
 03-03 22:06:42.264  5699  6172 D IccSmsInterfaceManager: [IccSmsInterfaceManager] Calling setCellBroadcastActivation(true)
-03-03 22:06:42.272 19298 19298 V weiliji : com.android.systemui:id/notification_panel: isInSettings() mQsExpanded = false
+03-03 22:06:42.272 19298 19298 V mare : com.android.systemui:id/notification_panel: isInSettings() mQsExpanded = false
 03-03 22:06:42.274 16311 20717 D CellBroadcastConfigService: enabling cell broadcast channel 60
 03-03 22:06:42.281 19298 19298 I NotificationsViewPager: isTrackingHeadsUp() : false
 03-03 22:06:42.288  5699 10799 E OperatorSimInfo: Create Res Apk Failed
@@ -8482,33 +8482,33 @@
 03-03 22:06:42.303  5699 10799 D IccSmsInterfaceManager: [IccSmsInterfaceManager] enableGsmBroadcastRange
 03-03 22:06:42.306  5699 10799 D IccSmsInterfaceManager: [IccSmsInterfaceManager] Added GSM cell broadcast subscription for MID range 60 to 60 from client com.android.cellbroadcastreceiver
 03-03 22:06:42.306  5699 10799 D IccSmsInterfaceManager: [IccSmsInterfaceManager] Calling setCellBroadcastActivation(true)
-03-03 22:06:42.313 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 1067.0
+03-03 22:06:42.313 19298 19298 V mare : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 1067.0
 03-03 22:06:42.314 19298 19298 I KeyguardClockPositionAlgorithm: getClockY() : 519 , mKeyguardStatusHeight : 386
-03-03 22:06:42.315 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
+03-03 22:06:42.315 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
 03-03 22:06:42.322 16311 20717 D CellBroadcastConfigService: enabled cell broadcast channel 60
-03-03 22:06:42.331 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 1018.9828
+03-03 22:06:42.331 19298 19298 V mare : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 1018.9828
 03-03 22:06:42.332 19298 19298 I KeyguardClockPositionAlgorithm: getClockY() : 519 , mKeyguardStatusHeight : 386
-03-03 22:06:42.333 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
+03-03 22:06:42.333 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
 03-03 22:06:42.340 16311 20717 D CellBroadcastConfigService: disabling channels 919-928
-03-03 22:06:42.346 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 948.42834
+03-03 22:06:42.346 19298 19298 V mare : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 948.42834
 03-03 22:06:42.346 19298 19298 I KeyguardClockPositionAlgorithm: getClockY() : 519 , mKeyguardStatusHeight : 386
-03-03 22:06:42.348 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
+03-03 22:06:42.348 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
 03-03 22:06:42.358  5699  6166 E OperatorSimInfo: Create Res Apk Failed
 03-03 22:06:42.359  5699  6166 E OperatorSimInfo: Create Res Apk Failed
-03-03 22:06:42.363 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 853.615
+03-03 22:06:42.363 19298 19298 V mare : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 853.615
 03-03 22:06:42.363 19298 19298 I KeyguardClockPositionAlgorithm: getClockY() : 519 , mKeyguardStatusHeight : 386
-03-03 22:06:42.364 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
+03-03 22:06:42.364 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
 03-03 22:06:42.378  5699  5715 D IccSmsInterfaceManager: [IccSmsInterfaceManager] disableGsmBroadcastRange
-03-03 22:06:42.381 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 738.527
+03-03 22:06:42.381 19298 19298 V mare : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 738.527
 03-03 22:06:42.381 19298 19298 I KeyguardClockPositionAlgorithm: getClockY() : 519 , mKeyguardStatusHeight : 386
-03-03 22:06:42.382 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
+03-03 22:06:42.382 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
 03-03 22:06:42.383  5699  5715 D IccSmsInterfaceManager: [IccSmsInterfaceManager] Failed to remove GSM cell broadcast subscription for MID range 919 to 928 from client com.android.cellbroadcastreceiver
 03-03 22:06:42.384 16311 20717 D CellBroadcastConfigService: disabling cell broadcast ETWS test messages
 03-03 22:06:42.390 19298 19345 I NetworkController.MobileSignalController(1): getCurrentIconId level : 4
 03-03 22:06:42.391 19298 19345 I NetworkController.MobileSignalController(1):  MobileSignalController >> networkLabelName : 中国移动4G
-03-03 22:06:42.398 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 584.30615
+03-03 22:06:42.398 19298 19298 V mare : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 584.30615
 03-03 22:06:42.398 19298 19298 I KeyguardClockPositionAlgorithm: getClockY() : 519 , mKeyguardStatusHeight : 386
-03-03 22:06:42.399 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
+03-03 22:06:42.399 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
 03-03 22:06:42.401  5699  5716 E OperatorSimInfo: Create Res Apk Failed
 03-03 22:06:42.403  5699  5716 E OperatorSimInfo: Create Res Apk Failed
 03-03 22:06:42.405 19298 19298 D SignalClusterView: vpn: GONE
@@ -8538,21 +8538,21 @@
 03-03 22:06:42.434 19298 19298 I SignalClusterView: mShowNetworkClass : true
 03-03 22:06:42.442 19298 19298 D SignalClusterView: mobile: VISIBLE sig=2130838299 typ=2130837849
 03-03 22:06:42.443 19298 19350 I QSTile.CellularTile: state : BooleanState[visible=true,icon=ResourceIcon[resId=0x7f020129],label=移动数据网络,contentDescription=移动数据连接：手机信号满格。，没有数据网络信号。，移动数据网络。,dualLabelContentDescription=null,autoMirrorDrawable=true,enableClick=true,value=false]
-03-03 22:06:42.444 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 32.936768
+03-03 22:06:42.444 19298 19298 V mare : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 32.936768
 03-03 22:06:42.445 19298 19298 I KeyguardClockPositionAlgorithm: getClockY() : 519 , mKeyguardStatusHeight : 386
 03-03 22:06:42.446 19298 19351 I QSTile.CellularTile: state : BooleanState[visible=true,icon=ResourceIcon[resId=0x7f020129],label=移动数据网络,contentDescription=移动数据连接：手机信号满格。，没有数据网络信号。，移动数据网络。,dualLabelContentDescription=null,autoMirrorDrawable=true,enableClick=true,value=false]
-03-03 22:06:42.447 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
-03-03 22:06:42.451 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 32.936768
+03-03 22:06:42.447 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
+03-03 22:06:42.451 19298 19298 V mare : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 32.936768
 03-03 22:06:42.451 19298 19298 I KeyguardClockPositionAlgorithm: getClockY() : 519 , mKeyguardStatusHeight : 386
-03-03 22:06:42.452 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
+03-03 22:06:42.452 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
 03-03 22:06:42.455  7181  7184 E ANDR-PERF-MPCTL: Invalid profile no. 0, total profiles 0 only
-03-03 22:06:42.458 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 32.936768
+03-03 22:06:42.458 19298 19298 V mare : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 32.936768
 03-03 22:06:42.458 19298 19298 I KeyguardClockPositionAlgorithm: getClockY() : 519 , mKeyguardStatusHeight : 386
-03-03 22:06:42.459 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
+03-03 22:06:42.459 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
 03-03 22:06:42.463 19298 19298 I KeyguardClockPositionAlgorithm: getClockY() : 519 , mKeyguardStatusHeight : 386
-03-03 22:06:42.464 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 0.0
-03-03 22:06:42.464 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
-03-03 22:06:42.465 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
+03-03 22:06:42.464 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 0.0
+03-03 22:06:42.464 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
+03-03 22:06:42.465 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
 03-03 22:06:42.469  5699 10799 E OperatorSimInfo: Create Res Apk Failed
 03-03 22:06:42.470  5699 10799 E OperatorSimInfo: Create Res Apk Failed
 03-03 22:06:42.474 19298 19298 I SignalClusterView: mNetworkLabelName ; 中国移动4G
@@ -8586,11 +8586,11 @@
 03-03 22:06:42.514 19298 19298 I SignalClusterView: mShowNetworkClass : true
 03-03 22:06:42.515  5699  5716 D PhoneInterfaceManager: [PhoneIntfMgr] getDataEnabled: subId=1 phoneId=1
 03-03 22:06:42.515  5699  5716 D PhoneInterfaceManager: [PhoneIntfMgr] getDataEnabled: subId=1 retVal=true
-03-03 22:06:42.515 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 0.0
+03-03 22:06:42.515 19298 19298 V mare : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 0.0
 03-03 22:06:42.516 19298 19298 I KeyguardClockPositionAlgorithm: getClockY() : 519 , mKeyguardStatusHeight : 386
 03-03 22:06:42.516 19298 19351 D TelephonyManager: getDataEnabled: retVal=true
 03-03 22:06:42.516 19298 19351 I QSTile.CellularTile: enableClick : true
-03-03 22:06:42.517 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
+03-03 22:06:42.517 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
 03-03 22:06:42.519 19298 19298 V PanelBar: onExpandingFinished
 03-03 22:06:42.520  5699 10799 D PhoneInterfaceManager: [PhoneIntfMgr] getDataEnabled: subId=1 phoneId=1
 03-03 22:06:42.520  5699 10799 D PhoneInterfaceManager: [PhoneIntfMgr] getDataEnabled: subId=1 retVal=true
@@ -8602,49 +8602,49 @@
 03-03 22:06:42.528 19298 19298 I KeyguardClockPositionAlgorithm: getClockY() : 519 , mKeyguardStatusHeight : 386
 03-03 22:06:42.528 19298 19350 D TelephonyManager: getDataEnabled: retVal=true
 03-03 22:06:42.528 19298 19350 I QSTile.CellularTile: enableClick : true
-03-03 22:06:42.530 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 0.0
-03-03 22:06:42.530 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
-03-03 22:06:42.531 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
-03-03 22:06:42.546 19298 19298 D wumin   : makeExpandedInvisible ... 
-03-03 22:06:42.550 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 0.0
-03-03 22:06:42.550 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
-03-03 22:06:42.551 19298 19298 V weiliji : com.android.systemui:id/notification_panel: onOverscrollTopChanged() amount = 0.0,  isRubberbanded = true
-03-03 22:06:42.552 19298 19298 V weiliji : com.android.systemui:id/notification_panel: weiliji show the trace info  java.lang.Throwable
-03-03 22:06:42.552 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.NotificationPanelView.onOverscrollTopChanged(Unknown Source)
-03-03 22:06:42.552 19298 19298 V weiliji : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.notifyOverscrollTopListener(Unknown Source)
-03-03 22:06:42.552 19298 19298 V weiliji : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmountInternal(Unknown Source)
-03-03 22:06:42.552 19298 19298 V weiliji : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmount(Unknown Source)
-03-03 22:06:42.552 19298 19298 V weiliji : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmount(Unknown Source)
-03-03 22:06:42.552 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.NotificationPanelView.resetViews(Unknown Source)
-03-03 22:06:42.552 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.PanelBar.collapseAllPanels(Unknown Source)
-03-03 22:06:42.552 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.PhoneStatusBar.makeExpandedInvisible(Unknown Source)
-03-03 22:06:42.552 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.PhoneStatusBarView$1.run(Unknown Source)
-03-03 22:06:42.552 19298 19298 V weiliji : 	at android.os.Handler.handleCallback(Handler.java:739)
-03-03 22:06:42.552 19298 19298 V weiliji : 	at android.os.Handler.dispatchMessage(Handler.java:95)
-03-03 22:06:42.552 19298 19298 V weiliji : 	at android.os.Looper.loop(Looper.java:148)
-03-03 22:06:42.552 19298 19298 V weiliji : 	at android.app.ActivityThread.main(ActivityThread.java:5417)
-03-03 22:06:42.552 19298 19298 V weiliji : 	at java.lang.reflect.Method.invoke(Native Method)
-03-03 22:06:42.552 19298 19298 V weiliji : 	at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:726)
-03-03 22:06:42.552 19298 19298 V weiliji : 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:616)
-03-03 22:06:42.552 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 0.0
-03-03 22:06:42.553 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
-03-03 22:06:42.553 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setExpandedHeight(0.0)
-03-03 22:06:42.553 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 0.0
+03-03 22:06:42.530 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 0.0
+03-03 22:06:42.530 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
+03-03 22:06:42.531 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
+03-03 22:06:42.546 19298 19298 D mare   : makeExpandedInvisible ... 
+03-03 22:06:42.550 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 0.0
+03-03 22:06:42.550 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
+03-03 22:06:42.551 19298 19298 V mare : com.android.systemui:id/notification_panel: onOverscrollTopChanged() amount = 0.0,  isRubberbanded = true
+03-03 22:06:42.552 19298 19298 V mare : com.android.systemui:id/notification_panel: mare show the trace info  java.lang.Throwable
+03-03 22:06:42.552 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.NotificationPanelView.onOverscrollTopChanged(Unknown Source)
+03-03 22:06:42.552 19298 19298 V mare : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.notifyOverscrollTopListener(Unknown Source)
+03-03 22:06:42.552 19298 19298 V mare : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmountInternal(Unknown Source)
+03-03 22:06:42.552 19298 19298 V mare : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmount(Unknown Source)
+03-03 22:06:42.552 19298 19298 V mare : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmount(Unknown Source)
+03-03 22:06:42.552 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.NotificationPanelView.resetViews(Unknown Source)
+03-03 22:06:42.552 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.PanelBar.collapseAllPanels(Unknown Source)
+03-03 22:06:42.552 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.PhoneStatusBar.makeExpandedInvisible(Unknown Source)
+03-03 22:06:42.552 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.PhoneStatusBarView$1.run(Unknown Source)
+03-03 22:06:42.552 19298 19298 V mare : 	at android.os.Handler.handleCallback(Handler.java:739)
+03-03 22:06:42.552 19298 19298 V mare : 	at android.os.Handler.dispatchMessage(Handler.java:95)
+03-03 22:06:42.552 19298 19298 V mare : 	at android.os.Looper.loop(Looper.java:148)
+03-03 22:06:42.552 19298 19298 V mare : 	at android.app.ActivityThread.main(ActivityThread.java:5417)
+03-03 22:06:42.552 19298 19298 V mare : 	at java.lang.reflect.Method.invoke(Native Method)
+03-03 22:06:42.552 19298 19298 V mare : 	at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:726)
+03-03 22:06:42.552 19298 19298 V mare : 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:616)
+03-03 22:06:42.552 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 0.0
+03-03 22:06:42.553 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
+03-03 22:06:42.553 19298 19298 V mare : com.android.systemui:id/notification_panel: setExpandedHeight(0.0)
+03-03 22:06:42.553 19298 19298 V mare : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 0.0
 03-03 22:06:42.554 19298 19298 I KeyguardClockPositionAlgorithm: getClockY() : 519 , mKeyguardStatusHeight : 386
-03-03 22:06:42.554 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
+03-03 22:06:42.554 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
 03-03 22:06:42.555 19298 19298 V PanelBar: collapseAllPanels: animate=false waiting=false
-03-03 22:06:42.555 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 0.0
-03-03 22:06:42.555 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
+03-03 22:06:42.555 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 0.0
+03-03 22:06:42.555 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
 03-03 22:06:42.567 19298 19298 D PhoneStatusBar: disable: < expand ICONS alerts SYSTEM_INFO back HOME RECENT clock SEARCH quick_settings >
 03-03 22:06:42.619   540  4940 D compress_voip: voice_extn_compress_voip_out_get_parameters: enter
 03-03 22:06:42.621 19298 19298 W AudioTrack: AUDIO_OUTPUT_FLAG_FAST denied by client; transfer 4, track 44100 Hz, output 48000 Hz
 03-03 22:06:42.638   540  3572 D audio_hw_primary: out_set_parameters: enter: usecase(1: low-latency-playback) mode(0) kvpairs: routing=2
 03-03 22:06:42.638   540  3572 D audio_hw_extn: audio_extn_set_anc_parameters: anc_enabled:0
 03-03 22:06:42.645 19298 19298 D PhoneStatusBar: disable: < expand icons* alerts system_info* back HOME RECENT clock SEARCH quick_settings >
-03-03 22:06:42.663 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setExpandedHeight(0.0)
-03-03 22:06:42.663 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 0.0
+03-03 22:06:42.663 19298 19298 V mare : com.android.systemui:id/notification_panel: setExpandedHeight(0.0)
+03-03 22:06:42.663 19298 19298 V mare : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 0.0
 03-03 22:06:42.664 19298 19298 I KeyguardClockPositionAlgorithm: getClockY() : 519 , mKeyguardStatusHeight : 386
-03-03 22:06:42.664 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 0.0
+03-03 22:06:42.664 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 0.0
 03-03 22:06:42.674   540  3572 D AudioFlinger: mixer(0xf4333008) throttle end: throttle time(5)
 03-03 22:06:42.694  7977  7977 I cc      : invalidateMissedCallCount mMisseCallCount:0
 03-03 22:06:42.699 19298 19350 I QSTile.CellularTile: state : BooleanState[visible=true,icon=ResourceIcon[resId=0x7f020129],label=移动数据网络,contentDescription=移动数据连接：手机信号满格。，没有数据网络信号。，移动数据网络。,dualLabelContentDescription=null,autoMirrorDrawable=true,enableClick=true,value=false]
@@ -8654,8 +8654,8 @@
 03-03 22:06:42.741  5699  5715 E OperatorSimInfo: Create Res Apk Failed
 03-03 22:06:42.748  5699  6571 E OperatorSimInfo: Create Res Apk Failed
 03-03 22:06:42.751  5699  6571 E OperatorSimInfo: Create Res Apk Failed
-03-03 22:06:42.758 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
-03-03 22:06:42.759 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 270.0
+03-03 22:06:42.758 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:06:42.759 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 270.0
 03-03 22:06:42.771 19298 19298 I SignalClusterView: mNetworkLabelName ; 中国移动4G
 03-03 22:06:42.786 19298 19298 I SignalClusterView: filterChina : false, result : 中国移动4G ,filter : 中国
 03-03 22:06:42.786 19298 19298 I SignalClusterView: label : 中国移动4Gnames.length : 1
@@ -8683,15 +8683,15 @@
 03-03 22:06:42.822  5699  6571 D PhoneInterfaceManager: [PhoneIntfMgr] getDataEnabled: subId=1 retVal=true
 03-03 22:06:42.825 19298 19351 D TelephonyManager: getDataEnabled: retVal=true
 03-03 22:06:42.826 19298 19351 I QSTile.CellularTile: enableClick : true
-03-03 22:06:42.829 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
-03-03 22:06:42.830 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 270.0
+03-03 22:06:42.829 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:06:42.830 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 270.0
 03-03 22:06:42.836 19298 19350 E QSTile.ProfileTile: ringMode : 2
 03-03 22:06:42.848  7977  7977 I cc      : invalidateUnreadSmsCount mUnreadSmsCount:0
 03-03 22:06:42.858 19298 19351 E QSTile.ProfileTile: ringMode : 2
 03-03 22:06:42.900 19298 19298 V QSPanel : curTileH : 315,tilesSumH : 315
 03-03 22:06:42.900 19298 19298 V QSPanel : curTileH : 315,tilesSumH : 630
-03-03 22:06:42.901 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
-03-03 22:06:42.901 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 270.0
+03-03 22:06:42.901 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:06:42.901 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 270.0
 03-03 22:06:43.122 19298 19345 D NetworkController.MobileSignalController(1): mCurrentState.level : 4
 03-03 22:06:43.689   775   775 I MSM-irqbalance: Decided to move IRQ104 from CPU2 to CPU3
 03-03 22:06:45.823 20442 20491 D BGService: send unbind req
@@ -8779,8 +8779,8 @@
 03-03 22:06:51.660 19298 19298 I SignalClusterView: mShowNetworkClass : true
 03-03 22:06:51.665 19298 19298 D SignalClusterView: mobile: VISIBLE sig=2130838299 typ=2130837849
 03-03 22:06:51.668 19298 19351 I QSTile.CellularTile: state : BooleanState[visible=true,icon=ResourceIcon[resId=0x7f020129],label=移动数据网络,contentDescription=移动数据连接：手机信号满格。，没有数据网络信号。，移动数据网络。,dualLabelContentDescription=null,autoMirrorDrawable=true,enableClick=true,value=false]
-03-03 22:06:51.674 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
-03-03 22:06:51.675 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 270.0
+03-03 22:06:51.674 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:06:51.675 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 270.0
 03-03 22:06:51.679 19298 19298 I SignalClusterView: mNetworkLabelName ; 中国移动4G
 03-03 22:06:51.688 19298 19345 I NetworkController.MobileSignalController(1): getCurrentIconId level : 4
 03-03 22:06:51.688 19298 19345 I NetworkController.MobileSignalController(1):  MobileSignalController >> networkLabelName : 中国移动4G
@@ -8841,8 +8841,8 @@
 03-03 22:06:51.746 19298 19298 I SignalClusterView: mShowNetworkClass : true
 03-03 22:06:51.751 19298 19298 D SignalClusterView: mobile: VISIBLE sig=2130838299 typ=2130837849
 03-03 22:06:51.752 19298 19351 I QSTile.CellularTile: state : BooleanState[visible=true,icon=ResourceIcon[resId=0x7f020129],label=移动数据网络,contentDescription=移动数据连接：手机信号满格。，没有数据网络信号。，移动数据网络。,dualLabelContentDescription=null,autoMirrorDrawable=true,enableClick=true,value=false]
-03-03 22:06:51.758 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
-03-03 22:06:51.758 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 270.0
+03-03 22:06:51.758 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:06:51.758 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 270.0
 03-03 22:06:51.762 19298 19298 I SignalClusterView: mNetworkLabelName ; 中国移动4G
 03-03 22:06:51.768 19298 19298 I SignalClusterView: filterChina : false, result : 中国移动4G ,filter : 中国
 03-03 22:06:51.768 19298 19298 I SignalClusterView: label : 中国移动4Gnames.length : 1
@@ -8869,8 +8869,8 @@
 03-03 22:06:51.798 19298 19298 I SignalClusterView: filterChina : false, result : 中国移动4G ,filter : 中国
 03-03 22:06:51.798 19298 19298 I SignalClusterView: label : 中国移动4Gnames.length : 1
 03-03 22:06:51.798 19298 19298 I SignalClusterView: mShowNetworkClass : true
-03-03 22:06:51.803 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
-03-03 22:06:51.803 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 270.0
+03-03 22:06:51.803 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:06:51.803 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 270.0
 03-03 22:06:51.803  5699 10799 D PhoneInterfaceManager: [PhoneIntfMgr] getDataEnabled: subId=1 phoneId=1
 03-03 22:06:51.804  5699 10799 D PhoneInterfaceManager: [PhoneIntfMgr] getDataEnabled: subId=1 retVal=true
 03-03 22:06:51.804 19298 19351 D TelephonyManager: getDataEnabled: retVal=true
@@ -9118,8 +9118,8 @@
 03-03 22:06:53.455  5699  6166 E OperatorSimInfo: Create Res Apk Failed
 03-03 22:06:53.458  5699  6166 E OperatorSimInfo: Create Res Apk Failed
 03-03 22:06:53.461 19298 19298 D IconMerger: iconMegerSize : 360mIconSize : 72
-03-03 22:06:53.462 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
-03-03 22:06:53.462 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 270.0
+03-03 22:06:53.462 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:06:53.462 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 270.0
 03-03 22:06:53.463  5699  5715 D IccSmsInterfaceManager: [IccSmsInterfaceManager] enableGsmBroadcastRange
 03-03 22:06:53.467 19298 19298 I SignalClusterView: mNetworkLabelName ; 中国移动2G
 03-03 22:06:53.467  5699  5715 D IccSmsInterfaceManager: [IccSmsInterfaceManager] Added GSM cell broadcast subscription for MID range 4373 to 4378 from client com.android.cellbroadcastreceiver
@@ -9193,8 +9193,8 @@
 03-03 22:06:53.539 19298 19298 I SignalClusterView: filterChina : false, result : 中国移动2G ,filter : 中国
 03-03 22:06:53.539 19298 19298 I SignalClusterView: label : 中国移动2Gnames.length : 1
 03-03 22:06:53.540 19298 19298 I SignalClusterView: mShowNetworkClass : true
-03-03 22:06:53.543 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
-03-03 22:06:53.543 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 270.0
+03-03 22:06:53.543 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:06:53.543 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 270.0
 03-03 22:06:53.550  5699  5716 E OperatorSimInfo: Create Res Apk Failed
 03-03 22:06:53.553  5699  5716 E OperatorSimInfo: Create Res Apk Failed
 03-03 22:06:53.554  5699  6571 E OperatorSimInfo: Create Res Apk Failed
@@ -9455,8 +9455,8 @@
 03-03 22:06:55.041 19298 19298 D SignalClusterView: mobile: VISIBLE sig=2130838299 typ=0
 03-03 22:06:55.045 19298 19351 I QSTile.CellularTile: state : BooleanState[visible=true,icon=ResourceIcon[resId=0x7f020129],label=移动数据网络,contentDescription=移动数据连接：手机信号满格。，没有数据网络信号。，移动数据网络。,dualLabelContentDescription=null,autoMirrorDrawable=true,enableClick=true,value=false]
 03-03 22:06:55.049 19298 19298 D IconMerger: iconMegerSize : 360mIconSize : 72
-03-03 22:06:55.052 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
-03-03 22:06:55.052 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 270.0
+03-03 22:06:55.052 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:06:55.052 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 270.0
 03-03 22:06:55.057 19298 19298 I SignalClusterView: mNetworkLabelName ; 中国移动2G
 03-03 22:06:55.064 19298 19298 I SignalClusterView: filterChina : false, result : 中国移动2G ,filter : 中国
 03-03 22:06:55.065 19298 19298 I SignalClusterView: label : 中国移动2Gnames.length : 1
@@ -9484,8 +9484,8 @@
 03-03 22:06:55.119 19298 19298 I SignalClusterView: label : 中国移动2Gnames.length : 1
 03-03 22:06:55.120  5699  6166 E OperatorSimInfo: Create Res Apk Failed
 03-03 22:06:55.120 19298 19298 I SignalClusterView: mShowNetworkClass : false
-03-03 22:06:55.124 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
-03-03 22:06:55.124 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 270.0
+03-03 22:06:55.124 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:06:55.124 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 270.0
 03-03 22:06:55.171  5699  7556 D PhoneInterfaceManager: [PhoneIntfMgr] getDataEnabled: subId=1 phoneId=1
 03-03 22:06:55.171  5699  7556 D PhoneInterfaceManager: [PhoneIntfMgr] getDataEnabled: subId=1 retVal=true
 03-03 22:06:55.173 19298 19351 D TelephonyManager: getDataEnabled: retVal=true
@@ -9766,39 +9766,39 @@
 03-03 22:06:56.782  5699  6571 E OperatorSimInfo: Create Res Apk Failed
 03-03 22:06:56.831  8919  8919 I InCall  : StatusBarNotifier - Previous notification already showing - cancelling 0
 03-03 22:06:56.833  8919  8919 I InCall  : StatusBarNotifier - Displaying notification for 1
-03-03 22:06:56.851  3611  3611 D NotificationService: zolen tag, Interrupting notification Notification(pri=1 contentView=null vibrate=null sound=null defaults=0x0 flags=0x2 color=0xff0288d1 actions=2 vis=PRIVATE)
+03-03 22:06:56.851  3611  3611 D NotificationService: mare tag, Interrupting notification Notification(pri=1 contentView=null vibrate=null sound=null defaults=0x0 flags=0x2 color=0xff0288d1 actions=2 vis=PRIVATE)
 03-03 22:06:56.907  8919  8919 W InCall  : VideoCallPresenter - onUiShowing, received for non-active video call
 03-03 22:06:56.909  8919  8919 I InCall  : InCallActivity - onResume()...
 03-03 22:06:56.912  8919  8919 W ContextImpl: Calling a method in the system process without a qualified user: android.app.ContextImpl.sendBroadcast:771 android.content.ContextWrapper.sendBroadcast:396 android.app.Activity.sendHideNavBarBroadcast:1322 android.app.Activity.onResume:1300 com.android.incallui.InCallActivity.onResume:334 
 03-03 22:06:56.934  8919  8919 I InCall  : ProximitySensor - ProximitySensor{keybrd=0, dpad=0, offhook=0, hor=0, ui=1, aud=EARPIECE}
 03-03 22:06:56.934  8919  8919 I InCall  : ProximitySensor - Proximity wake lock already released
 03-03 22:06:57.012 19298 19298 D PhoneStatusBar: disable: < EXPAND* icons alerts system_info back home recent clock search quick_settings >
-03-03 22:06:57.012 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
-03-03 22:06:57.013 19298 19298 V weiliji : com.android.systemui:id/notification_panel: onOverscrollTopChanged() amount = 0.0,  isRubberbanded = true
-03-03 22:06:57.013 19298 19298 V weiliji : com.android.systemui:id/notification_panel: weiliji show the trace info  java.lang.Throwable
-03-03 22:06:57.013 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.NotificationPanelView.onOverscrollTopChanged(Unknown Source)
-03-03 22:06:57.013 19298 19298 V weiliji : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.notifyOverscrollTopListener(Unknown Source)
-03-03 22:06:57.013 19298 19298 V weiliji : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmountInternal(Unknown Source)
-03-03 22:06:57.013 19298 19298 V weiliji : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmount(Unknown Source)
-03-03 22:06:57.013 19298 19298 V weiliji : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmount(Unknown Source)
-03-03 22:06:57.013 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.NotificationPanelView.resetViews(Unknown Source)
-03-03 22:06:57.013 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.PanelBar.collapseAllPanels(Unknown Source)
-03-03 22:06:57.013 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.PhoneStatusBar.animateCollapsePanels(Unknown Source)
-03-03 22:06:57.013 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.PhoneStatusBar.animateCollapsePanels(Unknown Source)
-03-03 22:06:57.013 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.PhoneStatusBar.animateCollapsePanels(Unknown Source)
-03-03 22:06:57.013 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.PhoneStatusBar.animateCollapsePanels(Unknown Source)
-03-03 22:06:57.013 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.PhoneStatusBar.disable(Unknown Source)
-03-03 22:06:57.013 19298 19298 V weiliji : 	at com.android.systemui.statusbar.CommandQueue$H.handleMessage(Unknown Source)
-03-03 22:06:57.013 19298 19298 V weiliji : 	at android.os.Handler.dispatchMessage(Handler.java:102)
-03-03 22:06:57.013 19298 19298 V weiliji : 	at android.os.Looper.loop(Looper.java:148)
-03-03 22:06:57.013 19298 19298 V weiliji : 	at android.app.ActivityThread.main(ActivityThread.java:5417)
-03-03 22:06:57.013 19298 19298 V weiliji : 	at java.lang.reflect.Method.invoke(Native Method)
-03-03 22:06:57.013 19298 19298 V weiliji : 	at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:726)
-03-03 22:06:57.013 19298 19298 V weiliji : 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:616)
-03-03 22:06:57.014 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
-03-03 22:06:57.014 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setExpandedHeight(0.0)
-03-03 22:06:57.014 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 0.0
-03-03 22:06:57.014 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 270.0
+03-03 22:06:57.012 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:06:57.013 19298 19298 V mare : com.android.systemui:id/notification_panel: onOverscrollTopChanged() amount = 0.0,  isRubberbanded = true
+03-03 22:06:57.013 19298 19298 V mare : com.android.systemui:id/notification_panel: mare show the trace info  java.lang.Throwable
+03-03 22:06:57.013 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.NotificationPanelView.onOverscrollTopChanged(Unknown Source)
+03-03 22:06:57.013 19298 19298 V mare : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.notifyOverscrollTopListener(Unknown Source)
+03-03 22:06:57.013 19298 19298 V mare : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmountInternal(Unknown Source)
+03-03 22:06:57.013 19298 19298 V mare : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmount(Unknown Source)
+03-03 22:06:57.013 19298 19298 V mare : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmount(Unknown Source)
+03-03 22:06:57.013 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.NotificationPanelView.resetViews(Unknown Source)
+03-03 22:06:57.013 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.PanelBar.collapseAllPanels(Unknown Source)
+03-03 22:06:57.013 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.PhoneStatusBar.animateCollapsePanels(Unknown Source)
+03-03 22:06:57.013 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.PhoneStatusBar.animateCollapsePanels(Unknown Source)
+03-03 22:06:57.013 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.PhoneStatusBar.animateCollapsePanels(Unknown Source)
+03-03 22:06:57.013 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.PhoneStatusBar.animateCollapsePanels(Unknown Source)
+03-03 22:06:57.013 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.PhoneStatusBar.disable(Unknown Source)
+03-03 22:06:57.013 19298 19298 V mare : 	at com.android.systemui.statusbar.CommandQueue$H.handleMessage(Unknown Source)
+03-03 22:06:57.013 19298 19298 V mare : 	at android.os.Handler.dispatchMessage(Handler.java:102)
+03-03 22:06:57.013 19298 19298 V mare : 	at android.os.Looper.loop(Looper.java:148)
+03-03 22:06:57.013 19298 19298 V mare : 	at android.app.ActivityThread.main(ActivityThread.java:5417)
+03-03 22:06:57.013 19298 19298 V mare : 	at java.lang.reflect.Method.invoke(Native Method)
+03-03 22:06:57.013 19298 19298 V mare : 	at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:726)
+03-03 22:06:57.013 19298 19298 V mare : 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:616)
+03-03 22:06:57.014 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:06:57.014 19298 19298 V mare : com.android.systemui:id/notification_panel: setExpandedHeight(0.0)
+03-03 22:06:57.014 19298 19298 V mare : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 0.0
+03-03 22:06:57.014 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 270.0
 03-03 22:06:57.015 19298 19298 V PanelBar: collapseAllPanels: animate=true waiting=false
 03-03 22:06:57.019  8919  8928 E StrictMode: A resource was acquired at attached stack trace but never released. See java.io.Closeable for information on avoiding resource leaks.
 03-03 22:06:57.019  8919  8928 E StrictMode: java.lang.Throwable: Explicit termination method 'close' not called
@@ -9853,8 +9853,8 @@
 03-03 22:06:57.023  8919  8928 E StrictMode: 	at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:726)
 03-03 22:06:57.023  8919  8928 E StrictMode: 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:616)
 03-03 22:06:57.024 19298 19298 D IconMerger: iconMegerSize : 360mIconSize : 72
-03-03 22:06:57.029 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
-03-03 22:06:57.029 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 270.0
+03-03 22:06:57.029 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:06:57.029 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 270.0
 03-03 22:06:57.069  8919  8919 I InCall  : InCallLowBatteryListener - onUiShowing showing: truecall = [Call_14, INCOMING, [Capabilities: CAPABILITY_SUPPORT_HOLD CAPABILITY_RESPOND_VIA_TEXT CAPABILITY_MUTE], children:[], parent:null, conferenceable:[], videoState:Audio Only, modifyToVideoState:Audio Only, mSessionModificationState:0, VideoSettings:(CameraDir:-1), mIsActivSub:false]
 03-03 22:06:57.070  8919  8919 I InCall  : InCallLowBatteryListener - maybeProcessLowBatteryIndication: isLowBattery : false
 03-03 22:06:57.072  8919  8919 W RCS_UI  : NameNotFoundException:android.content.pm.PackageManager$NameNotFoundException: com.cmdm.rcs
@@ -9863,18 +9863,18 @@
 03-03 22:06:57.140  5699  5715 E OperatorSimInfo: Create Res Apk Failed
 03-03 22:06:57.141  5699  5715 E OperatorSimInfo: Create Res Apk Failed
 03-03 22:06:57.185  8919  8919 I InCall  : StatusBarNotifier - Displaying notification for 1
-03-03 22:06:57.202  3611  3611 D NotificationService: zolen tag, Interrupting notification Notification(pri=1 contentView=null vibrate=null sound=null defaults=0x0 flags=0x2 color=0xff0288d1 actions=2 vis=PRIVATE)
+03-03 22:06:57.202  3611  3611 D NotificationService: mare tag, Interrupting notification Notification(pri=1 contentView=null vibrate=null sound=null defaults=0x0 flags=0x2 color=0xff0288d1 actions=2 vis=PRIVATE)
 03-03 22:06:57.230  8919  8919 I InCall  : CallCardPresenter - checkIdp phone type:1 enabled:false
 03-03 22:06:57.231  8919  8919 I InCall  : CallCardPresenter - checkIdp number: 182 2335 8067 subid:1 isIncoming:true checked number:182 2335 8067 inValid:false nameIsNumbertrue
 03-03 22:06:57.252  8919  8919 I InCall  : CallCardPresenter - checkIdp phone type:1 enabled:false
 03-03 22:06:57.252  8919  8919 I InCall  : CallCardPresenter - checkIdp number: 182 2335 8067 subid:1 isIncoming:true checked number:182 2335 8067 inValid:false nameIsNumbertrue
 03-03 22:06:57.256  8919  8919 I Choreographer: Skipped 42 frames!  The application may be doing too much work on its main thread.
-03-03 22:06:57.294 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
-03-03 22:06:57.294 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 270.0
+03-03 22:06:57.294 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:06:57.294 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 270.0
 03-03 22:06:57.389  3611  3676 I ActivityManager: Displayed com.android.dialer/com.android.incallui.InCallActivity: +1s277ms
 03-03 22:06:58.411 19298 19298 V PanelBar: onTouch: all panels disabled, ignoring touch at (729,18)
-03-03 22:06:58.418 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
-03-03 22:06:58.418 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 270.0
+03-03 22:06:58.418 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:06:58.418 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 270.0
 03-03 22:06:58.532  7181  7184 E ANDR-PERF-MPCTL: Invalid profile no. 0, total profiles 0 only
 03-03 22:06:58.720   775   775 I MSM-irqbalance: Decided to move IRQ130 from CPU0 to CPU3
 03-03 22:06:58.965   595   595 D FingerGoodix: Enter sig_handler.
@@ -9992,34 +9992,34 @@
 03-03 22:06:59.630  3611  3611 W InputMethodManagerService: Unexpected intent Intent { act=android.intent.action.SCREEN_OFF flg=0x50000010 }
 03-03 22:06:59.634  8919  8919 I InCall  : ProximitySensor - isDisplayOn: false
 03-03 22:06:59.634  8919  8919 D AccelerometerListener: enable(false)
-03-03 22:06:59.644 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:06:59.644 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
 03-03 22:06:59.644   540  4797 V SRS_Proc: ParamSet string: screen_state=off
 03-03 22:06:59.644   540  4797 D audio_hw_primary: adev_set_parameters: enter: screen_state=off
-03-03 22:06:59.644 19298 19298 V weiliji : com.android.systemui:id/notification_panel: onOverscrollTopChanged() amount = 0.0,  isRubberbanded = true
+03-03 22:06:59.644 19298 19298 V mare : com.android.systemui:id/notification_panel: onOverscrollTopChanged() amount = 0.0,  isRubberbanded = true
 03-03 22:06:59.644   540  4797 D audio_hw_extn: audio_extn_set_anc_parameters: anc_enabled:0
 03-03 22:06:59.644   540  4797 E bt_a2dp_hw: adev_set_parameters: ERROR: set param called even when stream out is null
-03-03 22:06:59.644 19298 19298 V weiliji : com.android.systemui:id/notification_panel: weiliji show the trace info  java.lang.Throwable
-03-03 22:06:59.644 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.NotificationPanelView.onOverscrollTopChanged(Unknown Source)
-03-03 22:06:59.644 19298 19298 V weiliji : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.notifyOverscrollTopListener(Unknown Source)
-03-03 22:06:59.644 19298 19298 V weiliji : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmountInternal(Unknown Source)
-03-03 22:06:59.644 19298 19298 V weiliji : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmount(Unknown Source)
-03-03 22:06:59.644 19298 19298 V weiliji : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmount(Unknown Source)
-03-03 22:06:59.644 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.NotificationPanelView.resetViews(Unknown Source)
-03-03 22:06:59.644 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.PhoneStatusBar.updateKeyguardState(Unknown Source)
-03-03 22:06:59.644 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.PhoneStatusBar.showKeyguard(Unknown Source)
-03-03 22:06:59.644 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.StatusBarKeyguardViewManager.showBouncerOrKeyguard(Unknown Source)
-03-03 22:06:59.644 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.StatusBarKeyguardViewManager.reset(Unknown Source)
-03-03 22:06:59.644 19298 19298 V weiliji : 	at com.android.systemui.statusbar.phone.StatusBarKeyguardViewManager.show(Unknown Source)
-03-03 22:06:59.644 19298 19298 V weiliji : 	at com.android.systemui.keyguard.KeyguardViewMediator.handleShow(Unknown Source)
-03-03 22:06:59.644 19298 19298 V weiliji : 	at com.android.systemui.keyguard.KeyguardViewMediator.access$1900(Unknown Source)
-03-03 22:06:59.644 19298 19298 V weiliji : 	at com.android.systemui.keyguard.KeyguardViewMediator$4.handleMessage(Unknown Source)
-03-03 22:06:59.644 19298 19298 V weiliji : 	at android.os.Handler.dispatchMessage(Handler.java:102)
-03-03 22:06:59.644 19298 19298 V weiliji : 	at android.os.Looper.loop(Looper.java:148)
-03-03 22:06:59.644 19298 19298 V weiliji : 	at android.app.ActivityThread.main(ActivityThread.java:5417)
-03-03 22:06:59.644 19298 19298 V weiliji : 	at java.lang.reflect.Method.invoke(Native Method)
-03-03 22:06:59.644 19298 19298 V weiliji : 	at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:726)
-03-03 22:06:59.644 19298 19298 V weiliji : 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:616)
-03-03 22:06:59.645 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:06:59.644 19298 19298 V mare : com.android.systemui:id/notification_panel: mare show the trace info  java.lang.Throwable
+03-03 22:06:59.644 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.NotificationPanelView.onOverscrollTopChanged(Unknown Source)
+03-03 22:06:59.644 19298 19298 V mare : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.notifyOverscrollTopListener(Unknown Source)
+03-03 22:06:59.644 19298 19298 V mare : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmountInternal(Unknown Source)
+03-03 22:06:59.644 19298 19298 V mare : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmount(Unknown Source)
+03-03 22:06:59.644 19298 19298 V mare : 	at com.android.systemui.statusbar.stack.NotificationStackScrollLayout.setOverScrollAmount(Unknown Source)
+03-03 22:06:59.644 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.NotificationPanelView.resetViews(Unknown Source)
+03-03 22:06:59.644 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.PhoneStatusBar.updateKeyguardState(Unknown Source)
+03-03 22:06:59.644 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.PhoneStatusBar.showKeyguard(Unknown Source)
+03-03 22:06:59.644 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.StatusBarKeyguardViewManager.showBouncerOrKeyguard(Unknown Source)
+03-03 22:06:59.644 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.StatusBarKeyguardViewManager.reset(Unknown Source)
+03-03 22:06:59.644 19298 19298 V mare : 	at com.android.systemui.statusbar.phone.StatusBarKeyguardViewManager.show(Unknown Source)
+03-03 22:06:59.644 19298 19298 V mare : 	at com.android.systemui.keyguard.KeyguardViewMediator.handleShow(Unknown Source)
+03-03 22:06:59.644 19298 19298 V mare : 	at com.android.systemui.keyguard.KeyguardViewMediator.access$1900(Unknown Source)
+03-03 22:06:59.644 19298 19298 V mare : 	at com.android.systemui.keyguard.KeyguardViewMediator$4.handleMessage(Unknown Source)
+03-03 22:06:59.644 19298 19298 V mare : 	at android.os.Handler.dispatchMessage(Handler.java:102)
+03-03 22:06:59.644 19298 19298 V mare : 	at android.os.Looper.loop(Looper.java:148)
+03-03 22:06:59.644 19298 19298 V mare : 	at android.app.ActivityThread.main(ActivityThread.java:5417)
+03-03 22:06:59.644 19298 19298 V mare : 	at java.lang.reflect.Method.invoke(Native Method)
+03-03 22:06:59.644 19298 19298 V mare : 	at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:726)
+03-03 22:06:59.644 19298 19298 V mare : 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:616)
+03-03 22:06:59.645 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
 03-03 22:06:59.646  4989  4989 D wpa_supplicant: wlan0: Control interface command 'SET pno 1'
 03-03 22:06:59.646  4989  4989 D wpa_supplicant: CTRL_IFACE SET 'pno'='1'
 03-03 22:06:59.646  4989  4989 D wpa_supplicant: wlan0: Cancelling scan request
@@ -10072,7 +10072,7 @@
 03-03 22:06:59.696  4989  4989 D wpa_supplicant: wlan0: Control interface command 'DRIVER SETSUSPENDMODE 1'
 03-03 22:06:59.696  4989  4989 D wpa_supplicant: wpa_driver_nl80211_driver_cmd SETSUSPENDMODE 1 len = 0, 4096
 03-03 22:06:59.696  4989  4989 D wpa_supplicant: CTRL-DEBUG: global_ctrl_sock-sendto: sock=11 sndbuf=212992 outq=0 send_len=3
-03-03 22:06:59.704 19298 19298 D wumin   :  makeExpandedVisible... 
+03-03 22:06:59.704 19298 19298 D mare   :  makeExpandedVisible... 
 03-03 22:06:59.706 19298 19298 D PhoneStatusBar: disable: < EXPAND ICONS* alerts SYSTEM_INFO* back home recent clock search quick_settings >
 03-03 22:06:59.709 19298 19298 V PanelBar: go state: 0 -> 1
 03-03 22:06:59.709 19298 19298 V PanelBar: onPanelPeeked
@@ -10127,10 +10127,10 @@
 03-03 22:07:00.315  8919  8919 W ContextImpl: Calling a method in the system process without a qualified user: android.app.ContextImpl.sendBroadcast:771 android.content.ContextWrapper.sendBroadcast:396 com.android.incallui.InCallActivity.openNB:286 com.android.incallui.InCallActivity.onStop:401 android.app.Instrumentation.callActivityOnStop:1279 
 03-03 22:07:00.322  8919  8919 W InCall  : VideoCallPresenter - onUiShowing, received for non-active video call
 03-03 22:07:00.332  3611  3668 V KeyguardServiceDelegate: **** SHOWN CALLED ****
-03-03 22:07:00.351 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setExpandedHeight(0.0)
-03-03 22:07:00.352 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 0.0
+03-03 22:07:00.351 19298 19298 V mare : com.android.systemui:id/notification_panel: setExpandedHeight(0.0)
+03-03 22:07:00.352 19298 19298 V mare : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 0.0
 03-03 22:07:00.352 19298 19298 I KeyguardClockPositionAlgorithm: getClockY() : 17 , mKeyguardStatusHeight : 386
-03-03 22:07:00.353 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 270.0
+03-03 22:07:00.353 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 270.0
 03-03 22:07:00.380  3611  3619 E StrictMode: A resource was acquired at attached stack trace but never released. See java.io.Closeable for information on avoiding resource leaks.
 03-03 22:07:00.380  3611  3619 E StrictMode: java.lang.Throwable: Explicit termination method 'close' not called
 03-03 22:07:00.380  3611  3619 E StrictMode: 	at dalvik.system.CloseGuard.open(CloseGuard.java:180)
@@ -10208,11 +10208,11 @@
 03-03 22:07:00.519 19298 19351 I QSTile.CellularTile: enableClick : true
 03-03 22:07:00.523 19298 19298 V QSPanel : curTileH : 315,tilesSumH : 315
 03-03 22:07:00.523 19298 19298 V QSPanel : curTileH : 315,tilesSumH : 630
-03-03 22:07:00.526 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
-03-03 22:07:00.527 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 270.0
-03-03 22:07:00.528 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setExpandedHeight(1143.0)
-03-03 22:07:00.528 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 1143.0
-03-03 22:07:00.529 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 270.0
+03-03 22:07:00.526 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:07:00.527 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 270.0
+03-03 22:07:00.528 19298 19298 V mare : com.android.systemui:id/notification_panel: setExpandedHeight(1143.0)
+03-03 22:07:00.528 19298 19298 V mare : com.android.systemui:id/notification_panel: setExpandedHeightInternal() h = 1143.0
+03-03 22:07:00.529 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 270.0
 03-03 22:07:00.532 19298 19298 V PanelBar: go state: 1 -> 2
 03-03 22:07:00.532 19298 19298 V PanelBar: onPanelFullyOpened
 03-03 22:07:00.536 19298 19350 E QSTile.ProfileTile: ringMode : 2
@@ -10619,8 +10619,8 @@
 03-03 22:07:01.188 19298 19350 D TelephonyManager: getDataEnabled: retVal=true
 03-03 22:07:01.189 19298 19298 V QSPanel : curTileH : 315,tilesSumH : 315
 03-03 22:07:01.189 19298 19298 V QSPanel : curTileH : 315,tilesSumH : 630
-03-03 22:07:01.191 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
-03-03 22:07:01.191 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 270.0
+03-03 22:07:01.191 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:07:01.191 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 270.0
 03-03 22:07:01.197  5699  6571 D PhoneInterfaceManager: [PhoneIntfMgr] getDataEnabled: subId=1 phoneId=1
 03-03 22:07:01.199  5699  6571 D PhoneInterfaceManager: [PhoneIntfMgr] getDataEnabled: subId=1 retVal=true
 03-03 22:07:01.202 19298 19350 D TelephonyManager: getDataEnabled: retVal=true
@@ -10699,8 +10699,8 @@
 03-03 22:07:01.379  5699  7018 E OperatorSimInfo: Create Res Apk Failed
 03-03 22:07:01.383 19298 19298 V QSPanel : curTileH : 315,tilesSumH : 315
 03-03 22:07:01.383 19298 19298 V QSPanel : curTileH : 315,tilesSumH : 630
-03-03 22:07:01.385 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
-03-03 22:07:01.385 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 270.0
+03-03 22:07:01.385 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:07:01.385 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 270.0
 03-03 22:07:01.392  5699  5715 D PhoneInterfaceManager: [PhoneIntfMgr] getDataEnabled: subId=1 phoneId=1
 03-03 22:07:01.392  5699  5715 D PhoneInterfaceManager: [PhoneIntfMgr] getDataEnabled: subId=1 retVal=true
 03-03 22:07:01.394 19298 19350 D TelephonyManager: getDataEnabled: retVal=true
@@ -10757,12 +10757,12 @@
 03-03 22:07:01.567  3611  5553 E IzatSvc_OSObserver: I/LocTech-Label :: OSOBSERVER :: Data Items In
 03-03 22:07:01.567  3611  5553 E IzatSvc_OSObserver: I/LocTech-Value :: Data Item Value: IS_SCREEN_ON: true
 03-03 22:07:01.569  3611  5834 E LocSvc_libulp: W/Loc HAL handshake did not happen yet...
-03-03 22:07:01.744 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
-03-03 22:07:01.744 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 270.0
-03-03 22:07:01.761 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
-03-03 22:07:01.762 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 270.0
-03-03 22:07:01.794 19298 19298 V weiliji : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
-03-03 22:07:01.794 19298 19298 V weiliji : com.android.systemui:id/notification_panel:  weiliji  setQsTranslation() height    = 270.0
+03-03 22:07:01.744 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:07:01.744 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 270.0
+03-03 22:07:01.761 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:07:01.762 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 270.0
+03-03 22:07:01.794 19298 19298 V mare : com.android.systemui:id/notification_panel: setQsExpansion() height = 294.0
+03-03 22:07:01.794 19298 19298 V mare : com.android.systemui:id/notification_panel:  mare  setQsTranslation() height    = 270.0
 03-03 22:07:02.023   540  3575 D audio_hw_primary: out_standby: enter: stream (0xab588b88) usecase(0: deep-buffer-playback)
 03-03 22:07:02.028  4989  4989 D wpa_supplicant: wlan0: Control interface command 'SET pno 0'
 03-03 22:07:02.029  4989  4989 D wpa_supplicant: CTRL_IFACE SET 'pno'='0'

@@ -1,0 +1,45 @@
+From 62bdc5862577a34ab43970129baa3ffbbc5bd108 Mon Sep 17 00:00:00 2001
+From: LRH <yangfan@qucci.com>
+Date: Thu, 23 Mar 2017 09:43:19 +0800
+Subject: [PATCH 164/185] =?UTF-8?q?=E3=80=90=E6=95=85=E9=9A=9C=E3=80=91?=
+ =?UTF-8?q?=E3=80=90=E7=8A=B6=E6=80=81=E6=A0=8F=E3=80=91=E5=BC=80=E5=90=AF?=
+ =?UTF-8?q?=E4=BD=8E=E7=94=B5=E6=A8=A1=E5=BC=8F=EF=BC=8C=E8=A7=82=E5=AF=9F?=
+ =?UTF-8?q?=E7=94=B5=E9=87=8F=E6=98=BE=E7=A4=BA=E7=99=BD=E8=89=B2=EF=BC=8C?=
+ =?UTF-8?q?=E8=BF=94=E5=9B=9E=E5=90=8E=E5=86=8D=E6=AC=A1=E8=BF=9B=E5=85=A5?=
+ =?UTF-8?q?=E8=AE=BE=E7=BD=AE=EF=BC=8C=E6=A1=8C=E9=9D=A2=E6=98=BE=E7=A4=BA?=
+ =?UTF-8?q?=E7=81=B0=E5=BA=95=E7=99=BD=E5=AD=97?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../src/com/android/systemui/statusbar/phone/PhoneStatusBar.java    | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
+index 9853de3..8ac609f 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
+@@ -4796,7 +4796,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
+         //add by zqs 2017/3/9 begin
+         //========================>
+         //收回绿条时，设置状态栏背景
+-        mStatusBarView.setBackgroundColor(Color.TRANSPARENT);
++         //mStatusBarView.setBackgroundColor(Color.TRANSPARENT);
+         //add by zqs 2017/3/9 end
+     }
+ 
+@@ -4810,8 +4810,8 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
+         //add by zqs 2017/3/9 begin
+         //========================>
+         //收回绿条时，设置状态栏背景和图标颜色
+-        mStatusBarView.setBackgroundColor(Color.TRANSPARENT);
+-        mIconController.setIconsDark(false, false);
++        //mStatusBarView.setBackgroundColor(Color.TRANSPARENT);
++        //mIconController.setIconsDark(false, false);
+         //add by zqs 2017/3/9 end
+     }
+ 
+-- 
+2.8.3.windows.1
+

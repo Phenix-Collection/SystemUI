@@ -228,15 +228,25 @@ public class HeadsUpManager implements ViewTreeObserver.OnComputeInternalInsetsL
     }
 
     private void removeHeadsUpEntry(NotificationData.Entry entry) {
-        HeadsUpEntry remove = mHeadsUpEntries.remove(entry.key);
-        mSortedEntries.remove(remove);
-        entry.row.sendAccessibilityEvent(AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED);
-        entry.row.setHeadsUp(false);
-        setEntryPinned(remove, false /* isPinned */);
-        for (OnHeadsUpChangedListener listener : mListeners) {
-            listener.onHeadsUpStateChanged(entry, false);
-        }
-        mEntryPool.release(remove);
+		//modify by mare 2017/3/22 begin
+        //========================>
+        //空指针
+        try {
+			
+
+			HeadsUpEntry remove = mHeadsUpEntries.remove(entry.key);
+			mSortedEntries.remove(remove);
+			entry.row.sendAccessibilityEvent(AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED);
+			entry.row.setHeadsUp(false);
+			setEntryPinned(remove, false /* isPinned */);
+			for (OnHeadsUpChangedListener listener : mListeners) {
+			    listener.onHeadsUpStateChanged(entry, false);
+			}
+			mEntryPool.release(remove);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		//modify by mare 2017/3/22 end
     }
 
     private void updatePinnedMode() {

@@ -1,0 +1,211 @@
+From 216d8fa6995679b50fbd86aea66bc6761205b568 Mon Sep 17 00:00:00 2001
+From: mare <yangfan@qucii.com>
+Date: Thu, 23 Mar 2017 11:45:57 +0800
+Subject: [PATCH 174/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E4=BF=AE=E6=94=B9=E6=B5=AE=E5=8A=A8=E9=80=9A=E7=9F=A5=E4=B8=8B?=
+ =?UTF-8?q?=E5=9D=A0=E5=8A=A8=E7=94=BB=E6=97=B6=E9=97=B4=EF=BC=8C=E4=BF=AE?=
+ =?UTF-8?q?=E6=94=B9=E6=B5=AE=E5=8A=A8=E9=80=9A=E7=9F=A5=E4=B8=8B=E6=8B=89?=
+ =?UTF-8?q?=E9=80=BB=E8=BE=91=EF=BC=8C=E8=BF=99=E9=87=8C=E5=9B=BA=E5=AE=9A?=
+ =?UTF-8?q?=E6=9C=80=E4=BD=8E=E9=AB=98=E5=BA=A6?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../android/systemui/statusbar/BaseStatusBar.java  |  6 ++---
+ .../statusbar/phone/NotificationPanelView.java     |  6 ++++-
+ .../systemui/statusbar/phone/PanelView.java        | 29 +++++++++++++++++-----
+ .../systemui/statusbar/policy/HeadsUpManager.java  |  2 +-
+ .../stack/NotificationStackScrollLayout.java       | 13 ++--------
+ .../statusbar/stack/StackStateAnimator.java        |  3 ++-
+ 6 files changed, 36 insertions(+), 23 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/BaseStatusBar.java b/SystemUI/src/com/android/systemui/statusbar/BaseStatusBar.java
+index 5415278..fa9ce11 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/BaseStatusBar.java
++++ b/SystemUI/src/com/android/systemui/statusbar/BaseStatusBar.java
+@@ -2129,9 +2129,9 @@ public abstract class BaseStatusBar extends SystemUI implements
+             return false;
+         }
+         
+-        if (isSnoozedPackage(sbn)) {
+-            return false;
+-        }
++//        if (isSnoozedPackage(sbn)) {
++//            return false;
++//        }
+         
+         Notification notification = sbn.getNotification();
+         // some predicates to make the boolean logic legible
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+index 197b5f7..225466b 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+@@ -389,7 +389,6 @@ public class NotificationPanelView extends PanelView implements
+         }
+         int mIndictorBottom=mNotificationContainerParent.getMeasuredHeight()-marginIndicatorBottom;
+         mIndicator.layout(left, mIndictorBottom-mIndicator.getMeasuredHeight(), right, mIndictorBottom);
+-        Log.e("=========mIndicatorBottom========", "mIndicatorBottom"+mIndictorBottom);
+  	   	//add by zqs 2017/3/21 end
+         // Update Clock Pivot
+         mKeyguardStatusView.setPivotX(getWidth() / 2);
+@@ -2519,6 +2518,11 @@ public class NotificationPanelView extends PanelView implements
+     @Override
+     public void onHeadsUpStateChanged(NotificationData.Entry entry, boolean isHeadsUp) {
+         mNotificationStackScroller.generateHeadsUpAnimation(entry.row, isHeadsUp);
++    	//add by zqs 2017/3/22 begin
++        //========================>
++        //浮动通知高度
++        mHeadUpLayoutHeight=entry.row.getIntrinsicHeight();
++      //add by zqs 2017/3/22 end
+     }
+ 
+     @Override
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/PanelView.java b/SystemUI/src/com/android/systemui/statusbar/phone/PanelView.java
+index 7c82f8e..8102417 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/PanelView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/PanelView.java
+@@ -125,6 +125,10 @@ public abstract class PanelView extends FrameLayout {
+     
+     protected boolean mExpandingFromHeadsUp;
+     
++    protected int mHeadUpLayoutHeight;
++    protected int mArrowHeight;
++    protected int mNotificationTopPadding;
++    
+     private Runnable mPeekRunnable = new Runnable() {
+         @Override
+         public void run() {
+@@ -221,6 +225,10 @@ public abstract class PanelView extends FrameLayout {
+         mHintDistance = res.getDimension(R.dimen.hint_move_distance);
+         mEdgeTapAreaWidth = res.getDimensionPixelSize(R.dimen.edge_tap_area_width);
+         mUnlockFalsingThreshold = res.getDimensionPixelSize(R.dimen.unlock_falsing_threshold);
++        mArrowHeight = getResources().getDimensionPixelSize(
++        		R.dimen.qucii_arrow_height);
++        mNotificationTopPadding = getResources().getDimensionPixelSize(
++                R.dimen.notifications_top_padding);
+     }
+ 
+     private void trackMovement(MotionEvent event) {
+@@ -443,9 +451,9 @@ public abstract class PanelView extends FrameLayout {
+ 			// ========================>
+ 			//在浮动通知时不论手指在哪都回滚通知
+ 			if (is_Qucii_Headup()) {
+-				isTouch = false;
++//				isTouch = false;
+ 				expand = false;
+-				qucii_flingTop(0);
++//				qucii_flingTop(0);
+ 				// if(y<260){
+ 				// }else{
+ 				//// mBar.startOpeningPanel(this);
+@@ -453,10 +461,10 @@ public abstract class PanelView extends FrameLayout {
+ 				//// fling(0, true /* expand */);
+ 				// qucii_flingTop(0);
+ 				// }
+-			} else {
++			} /*else {
+ 
+-				fling(vel, expand, isFalseTouch(x, y));
+-			}
++			}*/
++			fling(vel, expand, isFalseTouch(x, y));
+ 			// modify by zqs 2017/3/22 end
+            
+             onTrackingStopped(expand);
+@@ -758,7 +766,6 @@ public abstract class PanelView extends FrameLayout {
+ 
+     protected void flingToHeight(float vel, boolean expand, float target,
+             float collapseSpeedUpFactor, boolean expandBecauseOfFalsing) {
+-    	Log.e("========flingToHeight=======", "flingToHeight:"+expand+",vel"+vel);
+         // Hack to make the expand transition look nice when clear all button is visible - we make
+         // the animation only to the last notification, and then jump to the maximum panel height so
+         // clear all just fades in and the decelerating motion is towards the last notification.
+@@ -892,9 +899,19 @@ public abstract class PanelView extends FrameLayout {
+ 
+     public void setExpandedHeightInternal(float h) {
+         logf("setExpandedHeightInternal() h = " + h );
++//        Log.e("==========setExpandedHeightInternal==========","setExpandedHeightInternal() h = " + h );
+         //add by zqs 2017/3/15 begin
+         //========================>
+         //状态栏滑动时显示部分界面（滑动移动状态栏）的方法
++        
++        //add by zqs 2017/3/23 begin
++        //========================>
++        //状态栏浮动通知固定最低位置
++        if(is_Qucii_Headup()){
++        	int headUpLayout=mHeadUpLayoutHeight+mArrowHeight+mNotificationTopPadding;
++        	h=Math.min(h,headUpLayout);
++        }
++      //add by zqs 2017/3/23 end
+         qucii_TouchMove_resetLayout(h);
+         //add by zqs 2017/3/15 end
+         float fhWithoutOverExpansion = getMaxPanelHeight() - getOverExpansionAmount();
+diff --git a/SystemUI/src/com/android/systemui/statusbar/policy/HeadsUpManager.java b/SystemUI/src/com/android/systemui/statusbar/policy/HeadsUpManager.java
+index 55cf876..29bff59 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/policy/HeadsUpManager.java
++++ b/SystemUI/src/com/android/systemui/statusbar/policy/HeadsUpManager.java
+@@ -230,7 +230,7 @@ public class HeadsUpManager implements ViewTreeObserver.OnComputeInternalInsetsL
+     private void removeHeadsUpEntry(NotificationData.Entry entry) {
+ 		//modify by zqs 2017/3/22 begin
+         //========================>
+-        //��ָ��
++        //空指针
+         try {
+ 			
+ 
+diff --git a/SystemUI/src/com/android/systemui/statusbar/stack/NotificationStackScrollLayout.java b/SystemUI/src/com/android/systemui/statusbar/stack/NotificationStackScrollLayout.java
+index cf8e7ed..a901483 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/stack/NotificationStackScrollLayout.java
++++ b/SystemUI/src/com/android/systemui/statusbar/stack/NotificationStackScrollLayout.java
+@@ -505,15 +505,7 @@ public class NotificationStackScrollLayout extends ViewGroup
+     		height=height-mArrowHeight;
+     	}
+     	boolean trackingHeadsUp = mTrackingHeadsUp || mHeadsUpManager.hasPinnedHeadsUp();
+-    	//add by zqs 2017/3/21 begin
+-        //========================>
+-        //浮动通知时，这个值固定
+-    	if(trackingHeadsUp){
+-//    		Log.e("==setStackHeight====", "height:"+height+"mLastSetStackHeight"+mLastSetStackHeight+",getScrollY()"+getScrollY()+"mHeadsUpManager.getTopHeadsUpHeight()"+h);
+-    		height=0;
+-    	}
+-    	//add by zqs 2017/3/21 end
+-    	//add by zqs 2017/3/16 end
++
+         mLastSetStackHeight = height;
+         setIsExpanded(height > 0.0f);
+         int newStackHeight = (int) height;
+@@ -560,8 +552,7 @@ public class NotificationStackScrollLayout extends ViewGroup
+         if(!panelView.isNotificationView()&&!trackingHeadsUp){
+         	setStackTranslation(0);//
+         }else{
+-//        	Log.e("=======paddingOffset======", "paddingOffset:"+paddingOffset);
+-        		setStackTranslation(paddingOffset);//
++        	setStackTranslation(paddingOffset);//
+         }
+         //<=============================
+         //modify by zqs 2017/02/28 end
+diff --git a/SystemUI/src/com/android/systemui/statusbar/stack/StackStateAnimator.java b/SystemUI/src/com/android/systemui/statusbar/stack/StackStateAnimator.java
+index 302856e..e8aa19a 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/stack/StackStateAnimator.java
++++ b/SystemUI/src/com/android/systemui/statusbar/stack/StackStateAnimator.java
+@@ -21,6 +21,7 @@ import android.animation.AnimatorListenerAdapter;
+ import android.animation.ObjectAnimator;
+ import android.animation.PropertyValuesHolder;
+ import android.animation.ValueAnimator;
++import android.util.Log;
+ import android.view.View;
+ import android.view.animation.AnimationUtils;
+ import android.view.animation.Interpolator;
+@@ -669,7 +670,7 @@ public class StackStateAnimator {
+     	//modify by zqs 2017/3/22 begin
+         //========================>
+         //减少浮动通知出现的动画持续时间
+-        long newDuration = mHeadsUpAppearChildren.contains(child)?200:cancelAnimatorAndGetNewDuration(duration, previousAnimator);
++        long newDuration = mHeadsUpAppearChildren.contains(child)?500:cancelAnimatorAndGetNewDuration(duration, previousAnimator);
+         //modify by zqs 2017/3/22 end
+         animator.setDuration(newDuration);
+         if (delay > 0 && (previousAnimator == null || !previousAnimator.isRunning())) {
+-- 
+2.8.3.windows.1
+

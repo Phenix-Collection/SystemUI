@@ -145,10 +145,10 @@
     <string name="accessibility_data_connection_roaming" msgid="5977362333466556094">"漫遊"</string>
     <string name="accessibility_data_connection_edge" msgid="4477457051631979278">"Edge"</string>
     <string name="accessibility_data_connection_wifi" msgid="2324496756590645221">"Wi-Fi"</string>
-    <string name="accessibility_no_sim" msgid="8274017118472455155">"無 SIM 卡。"</string>
+    <string name="accessibility_no_sim" msgid="8274017118472455155">"無SIM"</string>
     <string name="accessibility_bluetooth_tether" msgid="4102784498140271969">"藍牙網絡共享。"</string>
     <string name="accessibility_airplane_mode" msgid="834748999790763092">"飛航模式。"</string>
-    <string name="accessibility_no_sims" msgid="3957997018324995781">"沒有 SIM 卡。"</string>
+    <string name="accessibility_no_sims" msgid="3957997018324995781">"無 SIM"</string>
     <string name="accessibility_carrier_network_change_mode" msgid="4017301580441304305">"流動網絡供應商網絡正在變更。"</string>
     <!-- String.format failed for translation -->
     <!-- no translation found for accessibility_battery_level (7451474187113371965) -->
@@ -434,4 +434,19 @@
     <string name="enable_bluetooth_message" msgid="9106595990708985385">"如要將鍵盤連接至平板電腦，請先開啟藍牙。"</string>
     <string name="enable_bluetooth_confirmation_ok" msgid="6258074250948309715">"開啟"</string>
     <string name="hotspot_apm_message">"飛行模式開啟的情況下不能夠鏈接到移動網絡,請關閉飛行模式後重試。"</string>
+    <string name="mobile_network_namae_filter">中國</string>
+    
+                <!-- add by mare -->
+    <string name="confirm_password_title">確認密碼</string>
+    <string name="confirm_password_input_clear">清除</string>
+    <string name="confirm_password_header_title1">確認應用鎖密碼</string>
+    <string name="confirm_password_header_title2">確認應用鎖密碼（指紋識別）</string>
+    <string name="confirm_password_header_errorstring1">密碼不匹配，請重試</string>
+    <string name="confirm_password_header_errorstring2">指紋不匹配，請重試</string>
+    <string name="confirm_password_header_errorstring3">嘗試使用指紋次數過多，請輸入密碼</string>
+    <string name="confirm_password_header_errorstring4">嘗試次數過多，請在<xliff:g id="NUMBER_S">%d</xliff:g>秒後重試</string>
+    <string name="confirm_password_cancel">取消</string>
+    <string name="confirm_password_noteheader_title">多次指紋不匹配後需要輸入密碼才能使用指紋識別</string>
+    <string name="gotocalling">輕觸此處返回通話</string>
+     <string name="notification_manager" >通知管理</string>
 </resources>

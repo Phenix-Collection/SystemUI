@@ -1,0 +1,39 @@
+From 8f4ce712fcaf4cb429edfe728563f2a1223532eb Mon Sep 17 00:00:00 2001
+From: zengqingshuai <yangfan@qucii.com>
+Date: Tue, 28 Feb 2017 17:25:57 +0800
+Subject: [PATCH 076/185] =?UTF-8?q?=E3=80=90=E6=95=85=E9=9A=9C=E3=80=91?=
+ =?UTF-8?q?=E5=9B=BE=E6=A0=87=E9=94=99=E4=B9=B1=EF=BC=8C=E8=8E=B7=E5=BE=97?=
+ =?UTF-8?q?=E5=9B=BE=E6=A0=87=E6=96=B9=E6=B3=95=E5=8A=A0=E9=94=81?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/src/com/android/systemui/qs/QSTile.java | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/SystemUI/src/com/android/systemui/qs/QSTile.java b/SystemUI/src/com/android/systemui/qs/QSTile.java
+index 63ba918..e185cb5 100644
+--- a/SystemUI/src/com/android/systemui/qs/QSTile.java
++++ b/SystemUI/src/com/android/systemui/qs/QSTile.java
+@@ -376,9 +376,16 @@ public abstract class QSTile<TState extends State> implements Listenable {
+         	if(ICONS!=null&&ICONS.size()>0)
+         		ICONS.clear();
+         }
++        //<================
+         //add by zqs 2017/2/24 end
++        
++        
++        //add by zqs 2017/2/28 begin
++        //================>
++        //由于是静态类这里加锁
++        public synchronized static Icon get(int resId) {
+         //<================
+-        public static Icon get(int resId) {
++        //add by zqs 2017/2/28 end
+             Icon icon = ICONS.get(resId);
+             Log.e("====ResourceIcon.get==zqs==", "icon!=null:"+String.valueOf(icon!=null)+",resId:"+resId);
+             if (icon == null) {
+-- 
+2.8.3.windows.1
+

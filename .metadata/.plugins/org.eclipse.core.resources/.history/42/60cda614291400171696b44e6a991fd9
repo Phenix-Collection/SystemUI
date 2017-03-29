@@ -1,0 +1,140 @@
+From a4785c4b661389c7e641c2d9379a05dddecaa93a Mon Sep 17 00:00:00 2001
+From: zengqingshuai <yangfan@qucii.com>
+Date: Fri, 24 Feb 2017 17:55:51 +0800
+Subject: [PATCH 067/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E4=BF=AE=E8=AE=A2=E9=80=9A=E7=9F=A5=E6=A0=8F=E6=98=BE=E7=A4=BA?=
+ =?UTF-8?q?=E5=8D=8A=E5=B1=8F=E7=9A=84=E7=8A=B6=E6=80=81=EF=BC=8C=E4=BF=AE?=
+ =?UTF-8?q?=E8=AE=A2=E9=80=89=E6=8B=A9page1=E6=97=B6=E6=82=AC=E6=B5=AE?=
+ =?UTF-8?q?=E6=A1=86=E5=87=BA=E7=8E=B0=E6=98=BE=E7=A4=BA=E9=94=99=E8=AF=AF?=
+ =?UTF-8?q?bug?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../statusbar/phone/NotificationPanelView.java     | 29 +++++++++++++---------
+ .../stack/NotificationStackScrollLayout.java       |  8 ++++++
+ 2 files changed, 25 insertions(+), 12 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+index 5196aac..fc795a9 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+@@ -1364,13 +1364,22 @@ public class NotificationPanelView extends PanelView implements
+             }
+         }
+         mQsExpansionHeight = height;
++        
+         if(mQsExpansionEnabled){
+         	 mHeader.setExpansion(getHeaderExpansionFraction());
+              setQsTranslation(height);
+              requestScrollerTopPaddingUpdate(false /* animate */);
+              updateNotificationScrim(height);
+         }
+-       
++        
++        //add by zqs 2017/2/24 begin
++        //=========================>
++        //加入设置通知栏page1位置解决显示半屏问题
++        mQsContainer_Qucii.setY(getHeaderTranslation());
++        //<=========================
++        //add by zqs 2017/2/24 end 
++        
++        
+         if (mKeyguardShowing) {
+             updateHeaderKeyguard();
+         }
+@@ -1422,9 +1431,12 @@ public class NotificationPanelView extends PanelView implements
+         if (!mHeaderAnimating) {
+             mQsContainer.setY(height - mQsContainer.getDesiredHeight() + getHeaderTranslation());
+         }
+-        if(mCurPage==QUICKSETTINGS_PAGE_INDEX&&!mQsExpansionEnabled){
+-        	 mQsContainer_Qucii.setY(getHeaderTranslation());
+-        }
++        //delete by zqs 2017/2/24 begin
++        //这里判断有冲突，不可能执行移到了上层
++//        if(mCurPage==QUICKSETTINGS_PAGE_INDEX&&!mQsExpansionEnabled){
++//        	 mQsContainer_Qucii.setY(getHeaderTranslation());
++//        }
++        //delete by zqs 2017/2/24 end 
+         if (mKeyguardShowing && !mHeaderAnimating) {
+             mHeader.setY(interpolate(getQsExpansionFraction(), -mHeader.getHeight(), 0));
+         }
+@@ -2407,14 +2419,13 @@ public class NotificationPanelView extends PanelView implements
+ 
+     @Override
+     public void onHeadsUpPinnedModeChanged(final boolean inPinnedMode) {
+-        Log.d("TAG","NotificationPanelView===>onHeadsUpPinnedModeChanged()");
+         if (inPinnedMode) {
+         	setBackground(null);// clear bg by yangfan
+         	updateIndicatorVisibility(GONE);// gone indicator by yangfan
+             mHeadsUpExistenceChangedRunnable.run();
+             updateNotificationTranslucency();
+         } else {
+-        	//mStatusBar.blurPanelBg();// blurred bg by yangfan
++        	mStatusBar.blurPanelBg();// blurred bg by yangfan
+         	updateIndicatorVisibility(VISIBLE);// visible indicator by yangfan
+             mHeadsUpAnimatingAway = true;
+             mNotificationStackScroller.runAfterAnimationFinished(
+@@ -2424,32 +2435,26 @@ public class NotificationPanelView extends PanelView implements
+ 
+     @Override
+     public void onHeadsUpPinned(ExpandableNotificationRow headsUp) {
+-        Log.d("TAG","NotificationPanelView===>onHeadsUpPinned()");
+         mNotificationStackScroller.generateHeadsUpAnimation(headsUp, true);
+     }
+ 
+     @Override
+     public void onHeadsUpUnPinned(ExpandableNotificationRow headsUp) {
+-        Log.d("TAG","NotificationPanelView===>onHeadsUpUnPinned()");
+     }
+ 
+     @Override
+     public void onHeadsUpStateChanged(NotificationData.Entry entry, boolean isHeadsUp) {
+-        Log.d("TAG","NotificationPanelView===>onHeadsUpStateChanged()");
+         mNotificationStackScroller.generateHeadsUpAnimation(entry.row, isHeadsUp);
+     }
+ 
+     @Override
+     public void setHeadsUpManager(HeadsUpManager headsUpManager) {
+-        Log.d("TAG","NotificationPanelView===>setHeadsUpManager()");
+         super.setHeadsUpManager(headsUpManager);
+         mHeadsUpTouchHelper = new HeadsUpTouchHelper(headsUpManager, mNotificationStackScroller,
+                 this);
+     }
+ 
+     public void setTrackingHeadsUp(boolean tracking) {
+-       Log.d("TAG","NotificationPanelView===>setTrackingHeadsUp()");
+-	 mStatusBar.blurPanelBg();// blurred bg by yangfan
+         if (tracking) {
+             mNotificationStackScroller.setTrackingHeadsUp(true);
+             mExpandingFromHeadsUp = true;
+diff --git a/SystemUI/src/com/android/systemui/statusbar/stack/NotificationStackScrollLayout.java b/SystemUI/src/com/android/systemui/statusbar/stack/NotificationStackScrollLayout.java
+index ce56f19..367c380 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/stack/NotificationStackScrollLayout.java
++++ b/SystemUI/src/com/android/systemui/statusbar/stack/NotificationStackScrollLayout.java
+@@ -516,6 +516,12 @@ public class NotificationStackScrollLayout extends ViewGroup
+                 translationY += (1 - partiallyThere) * (mBottomStackPeekSize +
+                         mCollapseSecondCardPadding);
+             } else {
++            	//add by zqs 2017/2/24 begin
++            	//弹出悬浮框时选择page 0
++            	//===================>
++            	panelView.showPage(0);
++            	//《===================
++            	//add by zqs 2017/2/24 end
+                 translationY = (int) (height - mHeadsUpManager.getTopHeadsUpHeight());
+             }
+             paddingOffset = translationY - mTopPadding;
+@@ -527,6 +533,8 @@ public class NotificationStackScrollLayout extends ViewGroup
+             requestChildrenUpdate();//禁止通知在当前container内滚动
+         }
+         setStackTranslation(paddingOffset);//允许通知和头部一起滚动
++        
++        
+     }
+ 
+     public float getStackTranslation() {
+-- 
+2.8.3.windows.1
+

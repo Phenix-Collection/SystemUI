@@ -1,0 +1,80 @@
+From b1bd8826f21e6afb34960a4c9e62d1e789369752 Mon Sep 17 00:00:00 2001
+From: mare <yangfan@qucci.com>
+Date: Wed, 15 Mar 2017 15:18:55 +0800
+Subject: [PATCH 147/185] =?UTF-8?q?=E3=80=90=E6=95=85=E9=9A=9C=E3=80=91?=
+ =?UTF-8?q?=E4=BF=AE=E6=94=B9=E6=9C=8D=E5=8A=A1=E5=90=AF=E5=8A=A8=E4=BC=A0?=
+ =?UTF-8?q?=E6=84=9F=E5=99=A8=E5=BD=B1=E5=93=8D=E7=94=B5=E6=B5=81=E9=97=AE?=
+ =?UTF-8?q?=E9=A2=98?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../src/com/android/systemui/SystemUIService.java  | 38 ++++++++++++++++++++--
+ 1 file changed, 35 insertions(+), 3 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/SystemUIService.java b/SystemUI/src/com/android/systemui/SystemUIService.java
+index 9a442ed..fd10837 100644
+--- a/SystemUI/src/com/android/systemui/SystemUIService.java
++++ b/SystemUI/src/com/android/systemui/SystemUIService.java
+@@ -16,13 +16,18 @@
+ 
+ package com.android.systemui;
+ 
+-import android.annotation.SuppressLint;
++import java.io.FileDescriptor;
++import java.io.PrintWriter;
++
+ import android.app.Service;
++import android.content.BroadcastReceiver;
++import android.content.Context;
+ import android.content.Intent;
++import android.content.IntentFilter;
+ import android.os.IBinder;
++import android.util.Log;
+ import android.view.OrientationEventListener;
+-import java.io.FileDescriptor;
+-import java.io.PrintWriter;
++
+ import com.android.systemui.statusbar.phone.PhoneStatusBarView;
+ 
+ public class SystemUIService extends Service {
+@@ -86,8 +91,35 @@ public class SystemUIService extends Service {
+ 				}
+ 			}
+ 		};
++                 
+ 		mOrientationListener.enable();
++		IntentFilter filter = new IntentFilter();
++	        filter.addAction(Intent.ACTION_SCREEN_ON);
++	        filter.addAction(Intent.ACTION_SCREEN_OFF);
++	        this.registerReceiver(mReceiver, filter);
+ 	}
++	
++	
++	BroadcastReceiver mReceiver = new BroadcastReceiver() {
++        @Override
++        public void onReceive(Context context, Intent i) {
++            String action = i.getAction();
++            if (action.equals(Intent.ACTION_SCREEN_ON)) {
++            	Log.e("qucii", "onOrientationChanged ACTION_SCREEN_ON");
++        		mOrientationListener.enable();
++            }
++            else if (action.equals(Intent.ACTION_SCREEN_OFF)) {
++            	Log.e("qucii", "onOrientationChanged ACTION_SCREEN_OFF");
++            	mOrientationListener.disable();
++            }
++        }
++    };
+ 	//add by mare end
++
++	@Override
++	public void onDestroy() {
++		unregisterReceiver(mReceiver);
++		super.onDestroy();
++	}
+ }
+ 
+-- 
+2.8.3.windows.1
+

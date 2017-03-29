@@ -1,0 +1,32 @@
+From 0424e5e3efee979c487f788307f3a7d04b3ada49 Mon Sep 17 00:00:00 2001
+From: mare <yangfan@qucci.com>
+Date: Tue, 14 Feb 2017 11:15:40 +0800
+Subject: [PATCH 037/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E9=94=81=E5=B1=8F=E7=A6=81=E6=AD=A2=E5=B1=8F=E5=B9=95=E6=97=8B?=
+ =?UTF-8?q?=E8=BD=AC?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../com/android/systemui/statusbar/phone/StatusBarWindowManager.java  | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/StatusBarWindowManager.java b/SystemUI/src/com/android/systemui/statusbar/phone/StatusBarWindowManager.java
+index ccfa0dd..6bec54d 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/StatusBarWindowManager.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/StatusBarWindowManager.java
+@@ -61,8 +61,8 @@ public class StatusBarWindowManager {
+ 
+     private boolean shouldEnableKeyguardScreenRotation() {
+         Resources res = mContext.getResources();
+-        return SystemProperties.getBoolean("lockscreen.rot_override", false)
+-                || res.getBoolean(R.bool.config_enableLockScreenRotation);
++        return false/*SystemProperties.getBoolean("lockscreen.rot_override", false)
++                || res.getBoolean(R.bool.config_enableLockScreenRotation)*/;
+     }
+ 
+     /**
+-- 
+2.8.3.windows.1
+

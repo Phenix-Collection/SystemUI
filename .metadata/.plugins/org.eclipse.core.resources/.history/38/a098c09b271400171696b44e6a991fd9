@@ -1,0 +1,137 @@
+From 3c274aec8c2431dd0b273110cd2b4a677ef2c2b4 Mon Sep 17 00:00:00 2001
+From: LRH <yangfan@qucci.com>
+Date: Mon, 6 Feb 2017 15:54:35 +0800
+Subject: [PATCH 008/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E7=8A=B6=E6=80=81=E6=A0=8F=E5=88=9D=E6=AD=A5=E4=BF=AE=E6=94=B9?=
+ =?UTF-8?q?=EF=BC=8C=E9=9A=90=E8=97=8FQS=EF=BC=8C=E8=AE=BE=E7=BD=AEHeader?=
+ =?UTF-8?q?=E8=83=8C=E6=99=AF=E9=80=8F=E6=98=8E?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/AndroidManifest.xml                                   |  4 +++-
+ SystemUI/res/drawable/qs_background_primary.xml                |  2 +-
+ SystemUI/res/values/colors.xml                                 |  3 ++-
+ SystemUI/res/values/dimens.xml                                 |  9 ++++++---
+ .../systemui/statusbar/phone/NotificationPanelView.java        | 10 +++++++---
+ SystemUI/src/com/android/systemui/volume/VolumeDialog.java     |  4 +++-
+ 6 files changed, 22 insertions(+), 10 deletions(-)
+
+diff --git a/SystemUI/AndroidManifest.xml b/SystemUI/AndroidManifest.xml
+index a069e4d..fcd89dc 100644
+--- a/SystemUI/AndroidManifest.xml
++++ b/SystemUI/AndroidManifest.xml
+@@ -21,7 +21,9 @@
+         package="com.android.systemui"
+         android:sharedUserId="android.uid.systemui"
+         coreApp="true">
+-
++    <uses-sdk
++        android:minSdkVersion="23"
++        android:targetSdkVersion="23" />
+     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+diff --git a/SystemUI/res/drawable/qs_background_primary.xml b/SystemUI/res/drawable/qs_background_primary.xml
+index 686df2c..51ed0b5 100644
+--- a/SystemUI/res/drawable/qs_background_primary.xml
++++ b/SystemUI/res/drawable/qs_background_primary.xml
+@@ -16,7 +16,7 @@
+ <inset xmlns:android="http://schemas.android.com/apk/res/android"
+     android:insetTop="@dimen/notification_material_rounded_rect_radius_negative">
+     <shape>
+-        <solid android:color="@color/system_primary_color"/>
++        <solid android:color="@color/qs_primary_color"/>
+         <corners android:radius="@dimen/notification_material_rounded_rect_radius"/>
+     </shape>
+ </inset>
+diff --git a/SystemUI/res/values/colors.xml b/SystemUI/res/values/colors.xml
+index 0dcbe88..ef9d63f 100644
+--- a/SystemUI/res/values/colors.xml
++++ b/SystemUI/res/values/colors.xml
+@@ -35,7 +35,8 @@
+     <color name="batterymeter_bolt_color">#FFFFFFFF</color>
+     <color name="qs_batterymeter_frame_color">#FF404040</color>
+     <color name="system_primary_color">#ff263238</color><!-- blue grey 900 -->
+-    <color name="system_secondary_color">#ff384248</color>
++     <color name="qs_primary_color">#00ffffff</color>
++    <color name="system_secondary_color">#00ffffff</color>
+     <color name="system_accent_color">#ff80CBC4</color><!-- deep teal 200 -->
+     <color name="system_warning_color">#fff4511e</color><!-- deep orange 600 -->
+     <color name="qs_text">#FFFFFFFF</color>
+diff --git a/SystemUI/res/values/dimens.xml b/SystemUI/res/values/dimens.xml
+index cb4bb02..c47be8e 100644
+--- a/SystemUI/res/values/dimens.xml
++++ b/SystemUI/res/values/dimens.xml
+@@ -131,7 +131,7 @@
+     <dimen name="close_handle_underlap">32dp</dimen>
+ 
+     <!-- Height of the status bar header bar -->
+-    <dimen name="status_bar_header_height">60dp</dimen>
++    <dimen name="status_bar_header_height">90dp</dimen>
+ 
+     <!-- Height of the status bar header bar when expanded -->
+     <dimen name="status_bar_header_height_expanded">116dp</dimen>
+@@ -141,9 +141,12 @@
+ 
+     <!-- Width for the notification panel and related windows -->
+     <dimen name="match_parent">-1px</dimen>
+-    <dimen name="standard_notification_panel_width">416dp</dimen><!-- includes notification_side_padding on each side -->
++    
++    <!-- modify the with of statusbar begin -->
++    <dimen name="standard_notification_panel_width">@dimen/match_parent</dimen><!-- includes notification_side_padding on each side -->
++    <dimen name="volumedialog_panel_width">416dp</dimen>
++    <!-- modify the with of statusbar end -->
+     <dimen name="notification_panel_width">@dimen/match_parent</dimen>
+-
+     <!-- Gravity for the notification panel -->
+     <integer name="standard_notification_panel_layout_gravity">0x31</integer><!-- top|center_horizontal -->
+     <integer name="notification_panel_layout_gravity">0x37</integer><!-- fill_horizontal|top -->
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+index 7e11361..0d2adc4 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+@@ -143,7 +143,8 @@ public class NotificationPanelView extends PanelView implements
+     private boolean mStackScrollerOverscrolling;
+     private boolean mQsExpansionFromOverscroll;
+     private float mLastOverscroll;
+-    private boolean mQsExpansionEnabled = true;
++    //modify by lrh 设置初始值为false，表示不显示QS
++    private boolean mQsExpansionEnabled = false;
+     private ValueAnimator mQsExpansionAnimator;
+     private FlingAnimationUtils mFlingAnimationUtils;
+     private int mStatusBarMinHeight;
+@@ -1270,8 +1271,11 @@ public class NotificationPanelView extends PanelView implements
+                 mStatusBarState != StatusBarState.KEYGUARD && (!mQsExpanded
+                         || mQsExpansionFromOverscroll));
+         mQsPanel.setVisibility(expandVisually ? View.VISIBLE : View.INVISIBLE);
+-        mQsContainer.setVisibility(
+-                mKeyguardShowing && !expandVisually ? View.INVISIBLE : View.VISIBLE);
++        /*mQsContainer.setVisibility(
++                mKeyguardShowing && !expandVisually ? View.INVISIBLE : View.VISIBLE);*/
++        //modify by lrh begin 这里不需要显示mQsContainer
++        mQsContainer.setVisibility(mQsExpansionEnabled ? View.VISIBLE : View.INVISIBLE);
++        //modify by lrh end
+         mScrollView.setTouchEnabled(mQsExpanded);
+         updateEmptyShadeView();
+         mQsNavbarScrim.setVisibility(mStatusBarState == StatusBarState.SHADE && mQsExpanded
+diff --git a/SystemUI/src/com/android/systemui/volume/VolumeDialog.java b/SystemUI/src/com/android/systemui/volume/VolumeDialog.java
+index e9f1095..502379b 100644
+--- a/SystemUI/src/com/android/systemui/volume/VolumeDialog.java
++++ b/SystemUI/src/com/android/systemui/volume/VolumeDialog.java
+@@ -225,8 +225,10 @@ public class VolumeDialog {
+         final DisplayMetrics dm = mContext.getResources().getDisplayMetrics();
+         if (D.BUG) Log.d(TAG, "updateWindowWidth dm.w=" + dm.widthPixels);
+         int w = dm.widthPixels;
++        //modify the volumedialog panel width as 416dp begin
+         final int max = mContext.getResources()
+-                .getDimensionPixelSize(R.dimen.standard_notification_panel_width);
++                .getDimensionPixelSize(R.dimen.volumedialog_panel_width);
++       //modify the volumedialog panel width as 416dp end
+         if (w > max) {
+             w = max;
+         }
+-- 
+2.8.3.windows.1
+

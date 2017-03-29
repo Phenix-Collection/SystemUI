@@ -1,0 +1,111 @@
+From 2e8e2709a52593dee5cd5eac5fd5d557f3121f74 Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Sat, 4 Mar 2017 11:26:44 +0800
+Subject: [PATCH 102/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E4=BF=AE=E6=94=B9=E6=9D=A5=E7=94=B5=E7=95=8C=E9=9D=A2=E5=88=A4?=
+ =?UTF-8?q?=E6=96=AD=E4=BB=A3=E7=A0=81?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../src/com/android/systemui/statusbar/phone/PanelBar.java  |  9 ++++-----
+ .../android/systemui/statusbar/phone/PhoneStatusBar.java    | 13 ++++++++-----
+ .../systemui/statusbar/phone/PhoneStatusBarView.java        | 10 ++++++++--
+ 3 files changed, 20 insertions(+), 12 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/PanelBar.java b/SystemUI/src/com/android/systemui/statusbar/phone/PanelBar.java
+index e0e1dfc..ba79e24 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/PanelBar.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/PanelBar.java
+@@ -108,12 +108,11 @@ public abstract class PanelBar extends FrameLayout {
+         return true;
+     }
+     
++    /***
++     * 判断 top Activity 是否是来电界面  by yangfan 
++     */
+     protected boolean isInCallUIActivity(){
+-    	if(activityManager == null)
+-    		activityManager = (ActivityManager)getContext().getSystemService(Context.ACTIVITY_SERVICE);
+-    	String runningActivity=activityManager.getRunningTasks(1).get(0).topActivity.getClassName();
+-    	android.util.Log.e("chengrq","runningActivity:" + runningActivity + "  packageName:" + getContext().getPackageName());
+-    	return "com.android.incallui.InCallActivity".equals(runningActivity);
++    	return false;
+     }
+ 
+     @Override
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
+index 9f347d0..a828c3d 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
+@@ -222,6 +222,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
+     // mare 2016-08-11 : Add button to show or hide navigatin bar @{
+     private static final String PERSIST_NAVIGATION_BAR = "persist.sys.navg_bar_visible";
+     private static final String ACTION_NAVIGATION_BAR_VISIBLE = "action_navigation_bar_visible";
++    private static final String INCALL_UI_ACTIVITY = "com.android.incallui.InCallActivity";
+     // @}
+     //add by wumin
+     private boolean showNavBar = true;
+@@ -3227,7 +3228,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
+                   //  System.out.println("=======sss============>" + className+"======getCallState============"+(tm.getCallState() == TelephonyManager.CALL_STATE_IDLE));
+ 
+                   if ("shows".equals(intent.getStringExtra("callbar"))) {
+-                      if (tm.getCallState() != TelephonyManager.CALL_STATE_IDLE && !className.equals("com.android.incallui.InCallActivity")) {
++                      if (tm.getCallState() != TelephonyManager.CALL_STATE_IDLE && !className.equals(INCALL_UI_ACTIVITY)) {
+                           showCallBar();
+                       }
+                   } else if ("hides".equals(intent.getStringExtra("callbar"))) {
+@@ -4087,11 +4088,13 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
+         mNotificationPanel.instantExpand();
+     }
+ 
+-    private boolean isInCallUIActivity() {
++    /***
++     * 判断 top Activity 是否是来电界面  by yangfan 
++     */
++    public boolean isInCallUIActivity() {
+     	ActivityManager	activityManager = (ActivityManager)mContext.getSystemService(Context.ACTIVITY_SERVICE);
+     	String runningActivity=activityManager.getRunningTasks(1).get(0).topActivity.getClassName();
+-    	android.util.Log.e("chengrq","runningActivity:" + runningActivity + "  packageName:" + mContext.getPackageName());
+-    	return "com.android.incallui.InCallActivity".equals(runningActivity);
++    	return INCALL_UI_ACTIVITY.equals(runningActivity);
+ 	}
+ 
+ 	private void instantCollapseNotificationPanel() {
+@@ -4768,7 +4771,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
+ 
+                     final Intent intent = new Intent(Intent.ACTION_MAIN);
+                     intent.addCategory(Intent.CATEGORY_LAUNCHER);
+-                    ComponentName cn = new ComponentName("com.android.dialer", "com.android.incallui.InCallActivity");
++                    ComponentName cn = new ComponentName("com.android.dialer", INCALL_UI_ACTIVITY);
+                     intent.setComponent(cn);
+                      intent.setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION | Intent.FLAG_ACTIVITY_NEW_TASK);
+                     mContext.startActivity(intent);
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarView.java b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarView.java
+index 45ae4e8..12de27d 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarView.java
+@@ -326,11 +326,17 @@ public class PhoneStatusBarView extends PanelBar {
+         mScrimController.setPanelExpansion(scrimFraction);
+     }
+     
+-    // show QS page when pull down by yangfan begin   
++// show QS page when pull down by yangfan begin   
+     @Override
+     public void showPage(int target) {
+     	super.showPage(target);
+     	mBar.mNotificationPanel.showPage(target);
+     }
+-    // show QS page when pull down by yangfan end  
++ // show QS page when pull down by yangfan end  
++
++    @Override
++    protected boolean isInCallUIActivity() {
++    	 return mBar.isInCallUIActivity();
++    }
++    
+ }
+-- 
+2.8.3.windows.1
+

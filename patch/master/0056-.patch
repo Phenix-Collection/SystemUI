@@ -1,0 +1,125 @@
+From f0d2302902b180e9affbf9d35ce223e4935a0183 Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Wed, 22 Feb 2017 20:23:34 +0800
+Subject: [PATCH 056/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E6=98=BE=E7=A4=BA=E6=B5=AE=E5=8A=A8=E9=80=9A=E7=9F=A5?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../statusbar/phone/NotificationPanelView.java        |  5 +++++
+ .../systemui/statusbar/phone/PhoneStatusBar.java      | 15 ++++++++++-----
+ .../stack/NotificationStackScrollLayout.java          | 19 ++++++++++++++++---
+ .../statusbar/phone/NotificationsViewPager.java       |  2 +-
+ 4 files changed, 32 insertions(+), 9 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+index e046143..19be2b3 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+@@ -2609,6 +2609,11 @@ public class NotificationPanelView extends PanelView implements
+ 	public boolean isQsExpansionEnabled(){
+ 		return mQsExpansionEnabled;
+ 	}
++	
++	public void showPage(int page){
++		mNotificationsViewPager.setCurrentItem(page);
++		onPageSelected(page);
++	}
+ //added by yangfan end
+ }
+ 
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
+index be1cc4f..8942792 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
+@@ -1388,6 +1388,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
+         }
+         boolean isHeadsUped = mUseHeadsUp && shouldInterrupt(shadeEntry);
+         if (isHeadsUped) {
++        	mNotificationPanel.showPage(0);// show Notification by yangfan 
+             mHeadsUpManager.showNotification(shadeEntry);
+             // Mark as seen immediately
+             setNotificationShown(notification);
+@@ -2452,6 +2453,13 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
+          * add by mare 滑动桌面弹出状态栏，此时需要更新状态栏背景
+          * 
+          */
++		blurPanelBg();
++		//add by mare end
++        mNotificationPanel.expand();
++        if (false) postStartTracing();
++    }
++
++    public void blurPanelBg() {
+         final Context context = mContext;
+         Resources res = context.getResources();
+         BitmapDrawable mBitmapDrawable;
+@@ -2465,12 +2473,9 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
+ 		}
+ 		mBitmapDrawable.setTileModeXY(TileMode.REPEAT, TileMode.REPEAT);
+ 		mNotificationPanel.setBackground(mBitmapDrawable);
+-		//add by mare end
+-        mNotificationPanel.expand();
+-        if (false) postStartTracing();
+-    }
++	}
+ 
+-    @Override
++	@Override
+     public void animateExpandSettingsPanel() {
+         if (SPEW) Log.d(TAG, "animateExpand: mExpandedVisible=" + mExpandedVisible);
+         if (!panelsEnabled()) {
+diff --git a/SystemUI/src/com/android/systemui/statusbar/stack/NotificationStackScrollLayout.java b/SystemUI/src/com/android/systemui/statusbar/stack/NotificationStackScrollLayout.java
+index b0f75c6..35aef25 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/stack/NotificationStackScrollLayout.java
++++ b/SystemUI/src/com/android/systemui/statusbar/stack/NotificationStackScrollLayout.java
+@@ -524,9 +524,18 @@ public class NotificationStackScrollLayout extends ViewGroup
+         if (stackHeight != mCurrentStackHeight) {
+             mCurrentStackHeight = stackHeight;
+             updateAlgorithmHeightAndPadding();
+-            //requestChildrenUpdate();//
++            requestChildrenUpdate();//禁止通知在当前container内滚动
+         }
+-        //setStackTranslation(paddingOffset);
++        if (trackingHeadsUp) {
++        	panelView.updateIndicatorVisibility(INVISIBLE);
++		}else {
++			//加模糊
++			//mPhoneStatusBar.blurPanelBg();
++			panelView.updateIndicatorVisibility(mPhoneStatusBar.getBarState()==StatusBarState.KEYGUARD?View.INVISIBLE:View.VISIBLE);
++		}
++        if (trackingHeadsUp) {
++        	setStackTranslation(paddingOffset);//允许通知和头部一起滚动
++		}
+     }
+ 
+     public float getStackTranslation() {
+@@ -3200,5 +3209,9 @@ public class NotificationStackScrollLayout extends ViewGroup
+     public void setNotificationPanelView(NotificationPanelView view){
+     	panelView = view;
+     }
+-
++//added by yangfan 
++    public boolean isTrackingHeadsUp(){
++    	return mTrackingHeadsUp;
++    }
++//added by yangfan  end
+ }
+diff --git a/SystemUI/src/com/qucii/systemui/statusbar/phone/NotificationsViewPager.java b/SystemUI/src/com/qucii/systemui/statusbar/phone/NotificationsViewPager.java
+index 3dfa902..3b7ec08 100644
+--- a/SystemUI/src/com/qucii/systemui/statusbar/phone/NotificationsViewPager.java
++++ b/SystemUI/src/com/qucii/systemui/statusbar/phone/NotificationsViewPager.java
+@@ -87,7 +87,7 @@ public class NotificationsViewPager extends ViewPager {
+ 					mPagerWantsIntercept = super.onInterceptTouchEvent(ev);//force intercept when 1 --> 0
+ 				}
+ 			} else if (deltaX <= -mSwipTheshold) {// left flip
+-				if (isNotificationView) {
++				if (isNotificationView && !mNotificationStackScroller.isTrackingHeadsUp()) {// don`t allow intercept when isTrackingHeadsUp
+ 					mPagerWantsIntercept = super.onInterceptTouchEvent(ev);//force intercept when 0 --> 1
+ 				} else {
+ 					mPagerWantsIntercept = false;//don`t intercept when 0 --> 1
+-- 
+2.8.3.windows.1
+

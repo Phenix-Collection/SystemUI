@@ -1,18 +1,18 @@
-#weiliji add begin
+#mare add begin
 
-1.Ê¹ÓÃeclipse µ¼ÈëÈý¸ö¹¤³ÌSystemUI£¬SettingsLib£¬Keyguard
-   a.Ê¹ÓÃimportÖÐµÄ existing project into workspace
-   b.SettingsLib£¬Keyguard±ØÐëµ¼Èë£¬ÔÚSystemUIÖÐ¹ØÁªÒýÈëµÄ×ÊÔ´£¬ÆäÏà¹Øsrc´úÂëÒÑ¾­·ÅÈëµ½systemUIµÄsrcÄ¿Â¼ÖÐ
-   c.ÒýÈëµÄÏµÍ³¿âÎÄ¼þÈ«²¿ÔÚext_libsÖÐ£¬Èç¹ûapk pushµ½ÏµÍ³ÖÐÓöµ½Ïà¹Ø´íÎó£¬¿ÉÄÜÊÇÓÉÓÚµ±Ç°ÏµÍ³ÉÕÂ¼µÄÈí¼þ°æ±¾
-   ºÍµ±Ç°¹¤³ÌµÄ°ü²»Ò»ÖÂµ¼ÖÂ£¬Ö´ÐÐcopy×Ô¼ºoutÄ¿Â¼µÄjar°üÌæ»»¼´¿É¡£
+1.Ê¹ï¿½ï¿½eclipse ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½SystemUIï¿½ï¿½SettingsLibï¿½ï¿½Keyguard
+   a.Ê¹ï¿½ï¿½importï¿½Ðµï¿½ existing project into workspace
+   b.SettingsLibï¿½ï¿½Keyguardï¿½ï¿½ï¿½ëµ¼ï¿½ë£¬ï¿½ï¿½SystemUIï¿½Ð¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½srcï¿½ï¿½ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ëµ½systemUIï¿½ï¿½srcÄ¿Â¼ï¿½ï¿½
+   c.ï¿½ï¿½ï¿½ï¿½ï¿½ÏµÍ³ï¿½ï¿½ï¿½Ä¼ï¿½È«ï¿½ï¿½ï¿½ï¿½ext_libsï¿½Ð£ï¿½ï¿½ï¿½ï¿½apk pushï¿½ï¿½ÏµÍ³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø´ï¿½ï¿½ó£¬¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Úµï¿½Ç°ÏµÍ³ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ±¾
+   ï¿½Íµï¿½Ç°ï¿½ï¿½ï¿½ÌµÄ°ï¿½ï¿½ï¿½Ò»ï¿½Âµï¿½ï¿½Â£ï¿½Ö´ï¿½ï¿½copyï¿½Ô¼ï¿½outÄ¿Â¼ï¿½ï¿½jarï¿½ï¿½ï¿½æ»»ï¿½ï¿½ï¿½É¡ï¿½
 
-2.±àÒë£¨Ê¹ÓÃ ant ±àÒë£©
-   a.build_windows--Í¨ÖªÀ¸.xml =¡· ÓÒ¼ü  =¡· run as ¡°ant build¡±
-   b.¿ÉÄÜ²¿·ÖÏµÍ³ <property name="sdk-folder" value="${env.Android_SDK_HOME}" />²ÎÊýÓëµ±Ç°eclipse²»Ò»ÖÂ£¬»á±àÒë±¨´í£¬
-   ×ÔÐÐÐÞ¸Ä¼´¿É£¨as£º <property name="sdk-folder" value="D:/Tools/Android/adt-bundle-windows-x86_64-20140702/sdk" />  £©
-   c.¹¤³ÌÒ²¿ÉÒÔÖ±½ÓÓÒ¼ü run as ¡°Android Application¡±,²¿·Öeclipse»·¾³»áÒòÎªjdk»·¾³ÎÊÌâ³öÏÖ
-   erro£ºcom/android/dx/command/dexer/Main : Unsupported major.minor version 52.0 ¡¾¿ÉÒÔÖ±½ÓºöÂÔ£¬Ê¹ÓÃANT±àÒë¼´¿É¡¿
+2.ï¿½ï¿½ï¿½ë£¨Ê¹ï¿½ï¿½ ant ï¿½ï¿½ï¿½ë£©
+   a.build_windows--Í¨Öªï¿½ï¿½.xml =ï¿½ï¿½ ï¿½Ò¼ï¿½  =ï¿½ï¿½ run as ï¿½ï¿½ant buildï¿½ï¿½
+   b.ï¿½ï¿½ï¿½Ü²ï¿½ï¿½ï¿½ÏµÍ³ <property name="sdk-folder" value="${env.Android_SDK_HOME}" />ï¿½ï¿½ï¿½ï¿½ï¿½ëµ±Ç°eclipseï¿½ï¿½Ò»ï¿½Â£ï¿½ï¿½ï¿½ï¿½ï¿½ë±¨ï¿½ï¿½
+   ï¿½ï¿½ï¿½ï¿½ï¿½Þ¸Ä¼ï¿½ï¿½É£ï¿½asï¿½ï¿½ <property name="sdk-folder" value="D:/Tools/Android/adt-bundle-windows-x86_64-20140702/sdk" />  ï¿½ï¿½
+   c.ï¿½ï¿½ï¿½ï¿½Ò²ï¿½ï¿½ï¿½ï¿½Ö±ï¿½ï¿½ï¿½Ò¼ï¿½ run as ï¿½ï¿½Android Applicationï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½eclipseï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªjdkï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+   erroï¿½ï¿½com/android/dx/command/dexer/Main : Unsupported major.minor version 52.0 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö±ï¿½Óºï¿½ï¿½Ô£ï¿½Ê¹ï¿½ï¿½ANTï¿½ï¿½ï¿½ë¼´ï¿½É¡ï¿½
 
-3.¸½¼Ó£ºeclipseÒ»°ãÄ¬ÈÏ¼¯³Éant»·¾³£¬Èç¹ûÃ»ÓÐµÄ»°×ÔÐÐÌí¼Óant»·¾³¼´¿É¡£
+3.ï¿½ï¿½ï¿½Ó£ï¿½eclipseÒ»ï¿½ï¿½Ä¬ï¿½Ï¼ï¿½ï¿½ï¿½antï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ÐµÄ»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½antï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¡ï¿½
 
-#weiliji add end
+#mare add end

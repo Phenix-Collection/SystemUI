@@ -1,0 +1,209 @@
+From c97505ee620ff1e95f09910de628be1859721ee1 Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Sat, 4 Mar 2017 13:21:36 +0800
+Subject: [PATCH 103/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E4=BF=AE=E6=94=B9=E8=A7=A3=E9=94=81PIN=E7=A0=81=E6=8F=90?=
+ =?UTF-8?q?=E7=A4=BA=E8=AF=AD?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ Keyguard/res/values-zh-rCN/strings.xml                   | 14 ++++++++------
+ Keyguard/res/values/strings.xml                          |  2 ++
+ .../com/android/keyguard/KeyguardAbsKeyInputView.java    | 16 ++++++++++++++--
+ SystemUI/src/com/android/keyguard/KeyguardPINView.java   |  4 +++-
+ .../com/android/keyguard/KeyguardPinBasedInputView.java  | 10 +++-------
+ SystemUI/src/com/android/keyguard/PasswordTextView.java  | 13 ++++++++-----
+ 6 files changed, 38 insertions(+), 21 deletions(-)
+
+diff --git a/Keyguard/res/values-zh-rCN/strings.xml b/Keyguard/res/values-zh-rCN/strings.xml
+index 03c42ad..615e593 100644
+--- a/Keyguard/res/values-zh-rCN/strings.xml
++++ b/Keyguard/res/values-zh-rCN/strings.xml
+@@ -61,7 +61,7 @@
+     <string name="kg_wrong_pattern" msgid="1850806070801358830">"图案错误"</string>
+     <string name="kg_wrong_password" msgid="2333281762128113157">"密码错误"</string>
+     <string name="kg_wrong_pin" msgid="1131306510833563801">"PIN码有误"</string>
+-    <string name="kg_too_many_failed_attempts_countdown" msgid="6358110221603297548">"请在 <xliff:g id="NUMBER">%d</xliff:g> 秒后重试。"</string>
++    <string name="kg_too_many_failed_attempts_countdown" msgid="6358110221603297548">"请在 <xliff:g id="NUMBER">%d</xliff:g> 秒后重试"</string>
+     <string name="kg_pattern_instructions" msgid="398978611683075868">"绘制您的图案"</string>
+     <string name="kg_sim_pin_instructions" msgid="2319508550934557331">"输入SIM卡PIN码"</string>
+     <string name="kg_sim_pin_instructions_multi" msgid="7818515973197201434">"输入“<xliff:g id="CARRIER">%1$s</xliff:g>”的 SIM 卡 PIN 码"</string>
+@@ -77,9 +77,9 @@
+     <string name="kg_invalid_puk" msgid="3638289409676051243">"请重新输入正确的PUK码。如果尝试错误次数过多，SIM卡将永久停用。"</string>
+     <string name="kg_invalid_confirm_pin_hint" product="default" msgid="7003469261464593516">"PIN码不匹配"</string>
+     <string name="kg_login_too_many_attempts" msgid="6486842094005698475">"图案尝试次数过多"</string>
+-    <string name="kg_too_many_failed_pin_attempts_dialog_message" msgid="8276745642049502550">"您已经<xliff:g id="NUMBER_0">%d</xliff:g>次输错了PIN码。\n\n请在<xliff:g id="NUMBER_1">%d</xliff:g>秒后重试。"</string>
+-    <string name="kg_too_many_failed_password_attempts_dialog_message" msgid="7813713389422226531">"您已连续 <xliff:g id="NUMBER_0">%d</xliff:g> 次输错密码。\n\n请在 <xliff:g id="NUMBER_1">%d</xliff:g> 秒后重试。"</string>
+-    <string name="kg_too_many_failed_pattern_attempts_dialog_message" msgid="74089475965050805">"您已连续 <xliff:g id="NUMBER_0">%d</xliff:g> 次画错解锁图案。\n\n请在 <xliff:g id="NUMBER_1">%d</xliff:g> 秒后重试。"</string>
++    <string name="kg_too_many_failed_pin_attempts_dialog_message" msgid="8276745642049502550">"您已经<xliff:g id="NUMBER_0">%d</xliff:g>次输错了PIN码。\n\n请在<xliff:g id="NUMBER_1">%d</xliff:g>秒后重试"</string>
++    <string name="kg_too_many_failed_password_attempts_dialog_message" msgid="7813713389422226531">"您已连续 <xliff:g id="NUMBER_0">%d</xliff:g> 次输错密码。\n\n请在 <xliff:g id="NUMBER_1">%d</xliff:g> 秒后重试"</string>
++    <string name="kg_too_many_failed_pattern_attempts_dialog_message" msgid="74089475965050805">"您已连续 <xliff:g id="NUMBER_0">%d</xliff:g> 次画错解锁图案。\n\n请在 <xliff:g id="NUMBER_1">%d</xliff:g> 秒后重试"</string>
+     <string name="kg_failed_attempts_almost_at_wipe" product="tablet" msgid="8774056606869646621">"您已经 <xliff:g id="NUMBER_0">%d</xliff:g> 次错误地尝试解锁平板电脑。如果再尝试 <xliff:g id="NUMBER_1">%d</xliff:g> 次后仍不成功，平板电脑将会被重置，这会删除其中的所有数据。"</string>
+     <string name="kg_failed_attempts_almost_at_wipe" product="default" msgid="1843331751334128428">"您已经 <xliff:g id="NUMBER_0">%d</xliff:g> 次错误地尝试解锁手机。如果再尝试 <xliff:g id="NUMBER_1">%d</xliff:g> 次后仍不成功，手机将会被重置，这会删除其中的所有数据。"</string>
+     <string name="kg_failed_attempts_now_wiping" product="tablet" msgid="258925501999698032">"您已经 <xliff:g id="NUMBER">%d</xliff:g> 次错误地尝试解锁平板电脑。平板电脑将会被重置，这会删除其中的所有数据。"</string>
+@@ -92,8 +92,8 @@
+     <string name="kg_failed_attempts_almost_at_erase_profile" product="default" msgid="6853071165802933545">"您已经 <xliff:g id="NUMBER_0">%d</xliff:g> 次错误地尝试解锁手机。如果再尝试 <xliff:g id="NUMBER_1">%d</xliff:g> 次后仍不成功，系统将移除此工作资料，这会删除所有的工作资料数据。"</string>
+     <string name="kg_failed_attempts_now_erasing_profile" product="tablet" msgid="4686386497449912146">"您已经 <xliff:g id="NUMBER">%d</xliff:g> 次错误地尝试解锁平板电脑。系统将移除此工作资料，这会删除所有的工作资料数据。"</string>
+     <string name="kg_failed_attempts_now_erasing_profile" product="default" msgid="4951507352869831265">"您已经 <xliff:g id="NUMBER">%d</xliff:g> 次错误地尝试解锁手机。系统将移除此工作资料，这会删除所有的工作资料数据。"</string>
+-    <string name="kg_failed_attempts_almost_at_login" product="tablet" msgid="3253575572118914370">"您已连续 <xliff:g id="NUMBER_0">%d</xliff:g> 次画错解锁图案。如果再尝试 <xliff:g id="NUMBER_1">%d</xliff:g> 次后仍不成功，系统就会要求您使用自己的电子邮件帐户解锁平板电脑。\n\n请在 <xliff:g id="NUMBER_2">%d</xliff:g> 秒后重试。"</string>
+-    <string name="kg_failed_attempts_almost_at_login" product="default" msgid="1437638152015574839">"您已连续 <xliff:g id="NUMBER_0">%d</xliff:g> 次画错解锁图案。如果再尝试 <xliff:g id="NUMBER_1">%d</xliff:g> 次后仍不成功，系统就会要求您使用自己的电子邮件帐户解锁手机。\n\n请在 <xliff:g id="NUMBER_2">%d</xliff:g> 秒后重试。"</string>
++    <string name="kg_failed_attempts_almost_at_login" product="tablet" msgid="3253575572118914370">"您已连续 <xliff:g id="NUMBER_0">%d</xliff:g> 次画错解锁图案。如果再尝试 <xliff:g id="NUMBER_1">%d</xliff:g> 次后仍不成功，系统就会要求您使用自己的电子邮件帐户解锁平板电脑。\n\n请在 <xliff:g id="NUMBER_2">%d</xliff:g> 秒后重试"</string>
++    <string name="kg_failed_attempts_almost_at_login" product="default" msgid="1437638152015574839">"您已连续 <xliff:g id="NUMBER_0">%d</xliff:g> 次画错解锁图案。如果再尝试 <xliff:g id="NUMBER_1">%d</xliff:g> 次后仍不成功，系统就会要求您使用自己的电子邮件帐户解锁手机。\n\n请在 <xliff:g id="NUMBER_2">%d</xliff:g> 秒后重试"</string>
+     <string name="kg_password_wrong_pin_code_pukked" msgid="30531039455764924">"SIM卡PIN码不正确，您现在必须联系运营商为您解锁设备。"</string>
+     <plurals name="kg_password_wrong_pin_code" formatted="false" msgid="6721575017538162249">
+       <item quantity="other">SIM 卡 PIN 码不正确，您还可尝试 <xliff:g id="NUMBER_1">%d</xliff:g> 次。</item>
+@@ -142,4 +142,6 @@
+     </plurals>
+     <string name="fingerprint_not_recognized" msgid="2690661881608146617">"无法识别"</string>
+     <string name="pattern_cancel">取消</string>
++    
++    <string name="kg_pin_bits_limit" >PIN码必须6位</string><!-- added by yangfan  -->
+ </resources>
+diff --git a/Keyguard/res/values/strings.xml b/Keyguard/res/values/strings.xml
+index 9c6b6c0..f11e891 100644
+--- a/Keyguard/res/values/strings.xml
++++ b/Keyguard/res/values/strings.xml
+@@ -383,4 +383,6 @@
+     </plurals>
+ 
+     <string name="pattern_cancel">Cancle</string>
++    
++    <string name="kg_pin_bits_limit" >must be 6 bits</string>
+ </resources>
+diff --git a/SystemUI/src/com/android/keyguard/KeyguardAbsKeyInputView.java b/SystemUI/src/com/android/keyguard/KeyguardAbsKeyInputView.java
+index d8b3798..ba82ecd 100644
+--- a/SystemUI/src/com/android/keyguard/KeyguardAbsKeyInputView.java
++++ b/SystemUI/src/com/android/keyguard/KeyguardAbsKeyInputView.java
+@@ -21,6 +21,7 @@ import android.os.AsyncTask;
+ import android.os.CountDownTimer;
+ import android.os.SystemClock;
+ import android.util.AttributeSet;
++import android.util.Log;
+ import android.view.HapticFeedbackConstants;
+ import android.view.KeyEvent;
+ import android.view.View;
+@@ -190,7 +191,8 @@ public abstract class KeyguardAbsKeyInputView extends LinearLayout
+ 
+             @Override
+             public void onFinish() {
+-                mSecurityMessageDisplay.setMessage("", false);
++            	 //mSecurityMessageDisplay.setMessage("", false);
++            	mSecurityMessageDisplay.setMessage(isPinView() ? getResources().getString(R.string.kg_pin_bits_limit) : "", isPinView());// 显示至少六位 by yangfan
+                 resetState();
+             }
+         }.start();
+@@ -216,7 +218,9 @@ public abstract class KeyguardAbsKeyInputView extends LinearLayout
+         if (mCallback != null) {
+             mCallback.userActivity();
+         }
+-        mSecurityMessageDisplay.setMessage("", false);
++        //mSecurityMessageDisplay.setMessage("", false);
++        mSecurityMessageDisplay.setMessage(isPinView() ? getResources().getString(R.string.kg_pin_bits_limit) : "", isPinView());// 显示至少六位 by yangfan 
++        
+     }
+ 
+     @Override
+@@ -280,5 +284,13 @@ public abstract class KeyguardAbsKeyInputView extends LinearLayout
+     public boolean startDisappearAnimation(Runnable finishRunnable) {
+         return false;
+     }
++    
++    /**
++     * 判断当前密码解锁界面是否是PIN码解锁 by yangfan 
++     * @return
++     */
++    protected boolean isPinView(){
++    	return false;
++    }
+ }
+ 
+diff --git a/SystemUI/src/com/android/keyguard/KeyguardPINView.java b/SystemUI/src/com/android/keyguard/KeyguardPINView.java
+index c07f375..c20e50a 100644
+--- a/SystemUI/src/com/android/keyguard/KeyguardPINView.java
++++ b/SystemUI/src/com/android/keyguard/KeyguardPINView.java
+@@ -20,6 +20,7 @@ import android.animation.Animator;
+ import android.animation.ObjectAnimator;
+ import android.content.Context;
+ import android.util.AttributeSet;
++import android.util.Log;
+ import android.view.RenderNode;
+ import android.view.RenderNodeAnimator;
+ import android.view.View;
+@@ -30,6 +31,7 @@ import com.android.settingslib.animation.AppearAnimationUtils;
+ import com.android.settingslib.animation.DisappearAnimationUtils;
+ 
+ 
++
+ //add by mare
+ import android.hardware.input.InputManager;
+ import android.view.InputDevice;
+@@ -211,5 +213,5 @@ public class KeyguardPINView extends KeyguardPinBasedInputView {
+     @Override
+     public boolean isPinView() {
+     	return true;
+-    }// added by yangfan 
++    }
+ }
+diff --git a/SystemUI/src/com/android/keyguard/KeyguardPinBasedInputView.java b/SystemUI/src/com/android/keyguard/KeyguardPinBasedInputView.java
+index 0f5d0f6..9ce51c7 100644
+--- a/SystemUI/src/com/android/keyguard/KeyguardPinBasedInputView.java
++++ b/SystemUI/src/com/android/keyguard/KeyguardPinBasedInputView.java
+@@ -21,6 +21,7 @@ import com.android.keyguard.PasswordTextView.OnFinishedListener;
+ import android.content.Context;
+ import android.graphics.Rect;
+ import android.util.AttributeSet;
++import android.util.Log;
+ import android.view.KeyEvent;
+ import android.view.View;
+ 
+@@ -255,12 +256,7 @@ public abstract class KeyguardPinBasedInputView extends KeyguardAbsKeyInputView
+     }
+     
+     @Override
+-    public void OnUnFinished() {
+-    	//提示不足6位
++    protected boolean isPinView() {
++    	return super.isPinView();
+     }
+-    
+- // added by yangfan 
+-    public boolean isPinView(){
+-    	return false;
+-    }// added by yangfan 
+ }
+diff --git a/SystemUI/src/com/android/keyguard/PasswordTextView.java b/SystemUI/src/com/android/keyguard/PasswordTextView.java
+index d7737f4..408123a 100644
+--- a/SystemUI/src/com/android/keyguard/PasswordTextView.java
++++ b/SystemUI/src/com/android/keyguard/PasswordTextView.java
+@@ -216,10 +216,14 @@ public class PasswordTextView extends TextView  {
+         }
+         userActivity();
+         sendAccessibilityEventTypeViewTextChanged(textbefore, textbefore.length(), 0, 1);
+-    	//added by yangfan
+-    	if (mText.length() >= MAXLENGTH && null != mFinishedListener ) {
+-    		mFinishedListener.OnFinished();
+-		}//added by yangfan
++        
++    	//added by yangfan 
++        if (null != mFinishedListener) {
++			if (mText.length() >= MAXLENGTH) {
++				mFinishedListener.OnFinished();
++			}
++		}
++      //added by yangfan end
+     }
+ 
+     public void setUserActivityListener(UserActivityListener userActivitiListener) {
+@@ -700,7 +704,6 @@ public class PasswordTextView extends TextView  {
+ 	
+ 	public static interface OnFinishedListener{
+ 		public void OnFinished();
+-		public void OnUnFinished();
+ 	}
+     //added by yangfan end
+ }
+-- 
+2.8.3.windows.1
+

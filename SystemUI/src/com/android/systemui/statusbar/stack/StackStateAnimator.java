@@ -21,6 +21,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
@@ -665,7 +666,12 @@ public class StackStateAnimator {
         Interpolator interpolator = mHeadsUpAppearChildren.contains(child) ?
                 mHeadsUpAppearInterpolator :mFastOutSlowInInterpolator;
         animator.setInterpolator(interpolator);
-        long newDuration = cancelAnimatorAndGetNewDuration(duration, previousAnimator);
+        
+    	//modify by mare 2017/3/22 begin
+        //========================>
+        //减少浮动通知出现的动画持续时间
+        long newDuration = mHeadsUpAppearChildren.contains(child)?500:cancelAnimatorAndGetNewDuration(duration, previousAnimator);
+        //modify by mare 2017/3/22 end
         animator.setDuration(newDuration);
         if (delay > 0 && (previousAnimator == null || !previousAnimator.isRunning())) {
             animator.setStartDelay(delay);

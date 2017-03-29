@@ -1,0 +1,1055 @@
+From c0e9ff59837a025bff1466f42a1345483ff12a1a Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Mon, 13 Feb 2017 14:15:22 +0800
+Subject: [PATCH 024/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E6=B7=BB=E5=8A=A0=E5=8B=BF=E6=89=B0=E5=92=8C=E6=83=85=E6=99=AF?=
+ =?UTF-8?q?=E6=A8=A1=E5=BC=8F=E5=BF=AB=E6=8D=B7=E5=9D=97?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/res/drawable/ic_qs_profile_ring.xml       |  59 ++++++++
+ SystemUI/res/drawable/ic_qs_profile_ringing.xml    |  47 ++++++
+ SystemUI/res/drawable/ic_qs_profile_silent.xml     |  39 +++++
+ SystemUI/res/drawable/ic_qs_profile_vibrate.xml    |  56 +++++++
+ SystemUI/res/values-zh-rCN/strings.xml             |   4 +
+ SystemUI/res/values/config.xml                     |   2 +-
+ SystemUI/res/values/strings.xml                    |   4 +
+ SystemUI/src/com/android/systemui/qs/QSTile.java   |   2 +
+ .../src/com/android/systemui/qs/tiles/DndTile.java |  79 +++++++++-
+ .../com/android/systemui/qs/tiles/ProfileTile.java | 163 +++++++++++++++++++++
+ .../systemui/statusbar/phone/PhoneStatusBar.java   |  11 +-
+ .../statusbar/phone/PhoneStatusBarPolicy.java      |  66 ++++++++-
+ .../systemui/statusbar/phone/QSTileHost.java       |  26 +++-
+ .../statusbar/policy/ProfilesController.java       | 104 +++++++++++++
+ .../src/com/android/systemui/tuner/QsTuner.java    |   4 +-
+ 15 files changed, 646 insertions(+), 20 deletions(-)
+ create mode 100644 SystemUI/res/drawable/ic_qs_profile_ring.xml
+ create mode 100644 SystemUI/res/drawable/ic_qs_profile_ringing.xml
+ create mode 100644 SystemUI/res/drawable/ic_qs_profile_silent.xml
+ create mode 100644 SystemUI/res/drawable/ic_qs_profile_vibrate.xml
+ create mode 100644 SystemUI/src/com/android/systemui/qs/tiles/ProfileTile.java
+ create mode 100644 SystemUI/src/com/android/systemui/statusbar/policy/ProfilesController.java
+
+diff --git a/SystemUI/res/drawable/ic_qs_profile_ring.xml b/SystemUI/res/drawable/ic_qs_profile_ring.xml
+new file mode 100644
+index 0000000..ff7adf5
+--- /dev/null
++++ b/SystemUI/res/drawable/ic_qs_profile_ring.xml
+@@ -0,0 +1,59 @@
++<?xml version="1.0" encoding="utf-8"?>
++<vector xmlns:android="http://schemas.android.com/apk/res/android"
++    android:width="128dp"
++    android:height="128dp"
++    android:viewportWidth="128"
++    android:viewportHeight="128">
++
++    <path
++        android:fillColor="#5696e7"
++        android:fillAlpha="0.97"
++        android:strokeAlpha="0.97"
++        android:strokeWidth="1"
++        android:pathData="M 60.53 0.00 L 67.36 0.00 C 81.56 0.91 95.47 6.36 106.14 15.84 C 119.07 27.00
++126.99 43.52 128.00 60.54 L 128.00 67.37 C 126.99 85.60 117.93 103.22 103.45
++114.40 C 93.42 122.42 80.92 126.87 68.19 128.00 L 60.11 128.00 C 45.88 126.90
++31.96 121.36 21.36 111.73 C 8.71 100.57 0.99 84.25 0.00 67.44 L 0.00 60.62 C
++0.98 43.57 8.91 27.03 21.85 15.84 C 32.49 6.38 46.37 0.94 60.53 0.00 M 54.53
++2.75 C 41.14 4.78 28.53 11.40 19.22 21.21 C 9.67 31.12 3.61 44.29 2.31 57.99 C
++0.61 74.48 5.98 91.54 16.79 104.11 C 25.73 114.67 38.29 122.13 51.88 124.78 C
++64.97 127.43 78.92 125.67 90.93 119.81 C 105.05 113.03 116.39 100.69 121.93
++86.04 C 127.33 72.02 127.33 56.02 121.94 42.00 C 116.49 27.57 105.43 15.39 91.62
++8.53 C 80.26 2.81 67.09 0.78 54.53 2.75 Z" />
++    <path
++        android:fillColor="#5696e7"
++        android:fillAlpha="0.97"
++        android:strokeAlpha="0.97"
++        android:strokeWidth="1"
++        android:pathData="M 60.01 41.91 C 61.91 40.29 63.44 37.88 66.21 37.82 C 66.83 39.14 67.73 40.44
++67.58 41.98 C 67.63 47.27 67.50 52.56 67.62 57.85 C 69.58 59.30 71.56 61.33
++71.23 63.99 C 71.18 66.36 69.25 67.89 67.62 69.29 C 67.50 74.87 67.63 80.45
++67.58 86.03 C 67.73 87.56 66.80 88.84 66.19 90.15 C 64.81 89.93 63.38 89.65
++62.48 88.48 C 58.12 84.42 53.63 80.49 49.10 76.63 C 43.95 75.54 38.28 77.65
++33.39 75.06 C 32.74 68.26 33.16 61.42 33.14 54.60 C 37.33 50.98 43.16 53.07
++48.17 52.48 C 52.01 48.85 56.05 45.42 60.01 41.91 M 49.86 54.76 C 45.52 55.75
++40.89 54.94 36.44 55.15 C 36.48 61.36 36.40 67.58 36.49 73.79 C 40.66 73.73
++44.84 73.57 49.01 73.79 C 50.65 73.76 51.91 74.94 53.06 75.95 C 56.97 79.61
++60.92 83.24 64.85 86.88 C 64.88 71.63 64.87 56.37 64.85 41.12 C 59.81 45.61
++55.13 50.55 49.86 54.76 M 67.52 61.04 C 67.46 62.73 67.48 64.42 67.58 66.11 C
++69.26 65.00 69.35 62.05 67.52 61.04 Z" />
++    <path
++        android:fillColor="#5696e7"
++        android:fillAlpha="0.97"
++        android:strokeAlpha="0.97"
++        android:strokeWidth="1"
++        android:pathData="M 82.23 40.85 C 82.87 40.64 84.15 40.20 84.79 39.99 C 89.29 45.26 92.93 51.51
++93.75 58.51 C 93.99 58.42 94.47 58.24 94.71 58.15 C 94.96 62.03 94.92 65.92
++94.54 69.78 L 93.62 69.24 C 92.67 75.92 89.33 82.10 84.75 86.98 C 84.16 86.73
++83.00 86.22 82.42 85.97 C 88.11 79.72 92.15 71.56 91.66 62.93 C 91.83 54.59
++87.63 46.93 82.23 40.85 Z" />
++    <path
++        android:fillColor="#5696e7"
++        android:fillAlpha="0.97"
++        android:strokeAlpha="0.97"
++        android:strokeWidth="1"
++        android:pathData="M 73.29 48.79 C 73.91 48.64 75.13 48.34 75.75 48.19 C 79.00 52.45 81.65 57.52
++81.64 63.00 C 81.94 68.85 79.28 74.38 75.76 78.90 C 75.14 78.71 73.91 78.34
++73.30 78.16 C 76.99 73.26 80.05 67.28 78.93 60.95 C 78.48 56.35 75.69 52.56
++73.29 48.79 Z" />
++</vector>
+\ No newline at end of file
+diff --git a/SystemUI/res/drawable/ic_qs_profile_ringing.xml b/SystemUI/res/drawable/ic_qs_profile_ringing.xml
+new file mode 100644
+index 0000000..ec38109
+--- /dev/null
++++ b/SystemUI/res/drawable/ic_qs_profile_ringing.xml
+@@ -0,0 +1,47 @@
++<?xml version="1.0" encoding="utf-8"?>
++<vector xmlns:android="http://schemas.android.com/apk/res/android"
++    android:width="124dp"
++    android:height="124dp"
++    android:viewportWidth="124"
++    android:viewportHeight="124">
++
++    <path
++        android:fillColor="#d9d9d9"
++        android:fillAlpha="0.85"
++        android:strokeAlpha="0.85"
++        android:strokeWidth="1"
++        android:pathData="M 52.55 1.78 C 66.48 -0.43 81.17 2.38 93.25 9.69 C 107.70 18.26 118.31 33.07
++121.68 49.54 C 124.34 62.43 122.84 76.22 117.07 88.09 C 109.66 103.98 94.98
++116.28 78.04 120.81 C 64.40 124.58 49.46 123.37 36.61 117.44 C 23.20 111.34
++12.15 100.19 6.22 86.69 C -0.98 70.77 -0.76 51.65 6.87 35.92 C 15.25 17.95 32.91
++4.66 52.55 1.78 M 61.01 33.90 C 55.27 38.85 49.69 43.99 44.01 49.00 C 39.97
++49.05 35.94 48.88 31.90 49.06 C 29.83 48.95 27.98 50.78 28.07 52.86 C 27.92
++59.25 27.99 65.66 28.03 72.06 C 27.83 73.79 29.01 75.58 30.78 75.83 C 35.50
++76.23 40.26 75.89 44.99 76.00 C 50.32 80.67 55.55 85.47 60.93 90.08 C 62.56
++91.97 66.14 90.68 65.95 88.12 C 66.10 81.35 65.93 74.57 66.02 67.79 C 68.01
++66.45 70.03 64.68 70.09 62.07 C 70.50 59.06 68.38 56.68 66.02 55.21 C 65.93
++48.76 66.10 42.32 65.95 35.87 C 66.13 33.31 62.67 32.04 61.01 33.90 M 82.74
++36.82 C 96.64 49.23 96.63 73.77 82.75 86.19 C 83.24 87.22 84.26 88.90 85.54
++87.68 C 90.94 82.09 94.41 74.70 95.57 67.03 C 97.30 55.68 93.50 43.61 85.55
++35.34 C 84.17 34.07 83.34 35.80 82.74 36.82 M 73.38 44.34 C 73.29 44.72 73.11
++45.49 73.02 45.88 C 74.92 48.75 77.03 51.56 78.01 54.93 C 80.36 62.04 78.53
++70.11 73.83 75.86 C 72.45 76.95 73.00 79.39 75.00 79.08 C 79.36 73.75 82.32
++66.97 81.75 59.97 C 81.50 54.03 78.68 48.58 75.07 43.99 C 74.65 44.08 73.80
++44.25 73.38 44.34 Z" />
++    <path
++        android:fillColor="#d9d9d9"
++        android:fillAlpha="0.85"
++        android:strokeAlpha="0.85"
++        android:strokeWidth="1"
++        android:pathData="M 45.93 51.59 C 52.00 46.88 57.25 41.12 63.00 36.01 C 63.00 53.34 63.00 70.67
++63.00 88.00 C 58.31 83.64 53.65 79.26 48.96 74.90 C 47.96 73.88 46.65 73.20
++45.21 73.15 C 40.48 72.80 35.73 73.09 31.00 73.00 C 31.00 66.00 31.00 59.00
++31.00 52.00 C 35.97 51.77 41.04 52.50 45.93 51.59 Z" />
++    <path
++        android:fillColor="#d9d9d9"
++        android:fillAlpha="0.85"
++        android:strokeAlpha="0.85"
++        android:strokeWidth="1"
++        android:pathData="M 66.13 58.29 C 67.60 60.23 67.61 62.76 66.14 64.71 C 65.98 62.57 65.97 60.43
++66.13 58.29 Z" />
++</vector>
+\ No newline at end of file
+diff --git a/SystemUI/res/drawable/ic_qs_profile_silent.xml b/SystemUI/res/drawable/ic_qs_profile_silent.xml
+new file mode 100644
+index 0000000..26009d1
+--- /dev/null
++++ b/SystemUI/res/drawable/ic_qs_profile_silent.xml
+@@ -0,0 +1,39 @@
++<?xml version="1.0" encoding="utf-8"?>
++<vector xmlns:android="http://schemas.android.com/apk/res/android"
++    android:width="124dp"
++    android:height="124dp"
++    android:viewportWidth="124"
++    android:viewportHeight="124">
++
++    <path
++        android:fillColor="#d9d9d9"
++        android:fillAlpha="0.85"
++        android:strokeAlpha="0.85"
++        android:strokeWidth="1"
++        android:pathData="M 52.51 1.79 C 66.48 -0.44 81.20 2.38 93.30 9.72 C 106.41 17.52 116.33 30.42
++120.58 45.06 C 124.56 58.94 123.56 74.29 117.40 87.39 C 110.72 102.16 97.82
++113.98 82.53 119.39 C 69.35 124.16 54.51 124.15 41.34 119.37 C 26.07 113.94
++13.20 102.12 6.52 87.35 C -0.12 73.17 -0.78 56.37 4.47 41.64 C 11.69 20.94 30.77
++4.94 52.51 1.79 M 60.99 33.92 C 55.26 38.86 49.69 43.99 44.01 49.00 C 39.98
++49.05 35.95 48.88 31.93 49.06 C 29.80 48.93 27.94 50.83 28.06 52.95 C 27.93
++59.32 27.99 65.70 28.03 72.07 C 27.84 73.80 29.02 75.59 30.79 75.83 C 35.52
++76.23 40.27 75.89 45.01 76.00 C 50.31 80.68 55.54 85.45 60.90 90.06 C 62.54
++91.97 66.13 90.70 65.95 88.12 C 66.03 70.70 66.04 53.26 65.95 35.84 C 66.10
++33.29 62.63 32.05 60.99 33.92 M 68.51 47.76 C 73.07 52.33 77.63 56.91 82.21
++61.47 C 77.30 66.42 72.34 71.31 67.44 76.27 C 68.17 77.17 69.34 79.03 70.51
++77.44 C 75.20 72.92 79.73 68.22 84.36 63.64 C 89.10 68.27 93.64 73.12 98.47
++77.65 C 99.66 79.14 101.96 76.55 100.44 75.48 C 95.89 70.73 91.14 66.17 86.51
++61.50 C 91.08 56.93 95.64 52.36 100.21 47.80 C 99.54 47.05 98.52 45.06 97.39
++46.40 C 92.93 50.58 88.73 55.04 84.36 59.33 C 80.04 55.08 75.85 50.69 71.47
++46.50 C 70.34 44.99 69.22 46.99 68.51 47.76 Z" />
++    <path
++        android:fillColor="#d9d9d9"
++        android:fillAlpha="0.85"
++        android:strokeAlpha="0.85"
++        android:strokeWidth="1"
++        android:pathData="M 48.52 49.61 C 53.33 45.05 58.18 40.54 63.00 36.00 C 63.00 53.34 63.00 70.67
++63.00 88.00 C 58.31 83.64 53.64 79.25 48.95 74.88 C 47.93 73.83 46.56 73.18
++45.08 73.13 C 40.39 72.81 35.69 73.09 31.00 73.00 C 31.00 66.00 31.00 59.00
++31.00 52.00 C 35.37 51.95 39.74 52.11 44.11 51.95 C 45.93 52.05 47.29 50.73
++48.52 49.61 Z" />
++</vector>
+\ No newline at end of file
+diff --git a/SystemUI/res/drawable/ic_qs_profile_vibrate.xml b/SystemUI/res/drawable/ic_qs_profile_vibrate.xml
+new file mode 100644
+index 0000000..09c8845
+--- /dev/null
++++ b/SystemUI/res/drawable/ic_qs_profile_vibrate.xml
+@@ -0,0 +1,56 @@
++<?xml version="1.0" encoding="utf-8"?>
++<vector xmlns:android="http://schemas.android.com/apk/res/android"
++    android:width="124dp"
++    android:height="124dp"
++    android:viewportWidth="124"
++    android:viewportHeight="124">
++
++    <path
++        android:fillColor="#d9d9d9"
++        android:fillAlpha="0.85"
++        android:strokeAlpha="0.85"
++        android:strokeWidth="1"
++        android:pathData="M 52.57 1.78 C 66.54 -0.43 81.26 2.40 93.36 9.75 C 107.76 18.34 118.33 33.13
++121.69 49.58 C 124.28 62.19 122.90 75.68 117.41 87.37 C 110.63 102.36 97.46
++114.31 81.89 119.62 C 67.79 124.56 51.87 124.00 38.13 118.12 C 24.30 112.27
++12.78 101.12 6.56 87.44 C -0.98 71.38 -0.88 51.93 6.85 35.96 C 15.23 17.96 32.91
++4.66 52.57 1.78 M 45.12 28.27 C 43.11 28.77 41.86 30.84 42.02 32.86 C 41.98
++52.29 41.98 71.71 42.02 91.14 C 41.71 93.86 44.18 96.21 46.87 95.97 C 56.61
++96.02 66.36 96.02 76.10 95.98 C 78.80 96.22 81.31 93.87 80.98 91.12 C 81.05
++72.40 80.96 53.68 81.02 34.96 C 80.94 33.05 81.26 30.75 79.69 29.30 C 77.61
++27.40 74.55 28.15 72.00 27.98 C 63.04 28.20 54.04 27.62 45.12 28.27 M 30.18
++49.54 C 32.13 51.68 34.26 53.63 36.29 55.70 C 33.85 58.11 31.39 60.52 29.06
++63.04 C 31.24 65.83 33.85 68.22 36.34 70.71 C 33.89 73.15 31.42 75.57 29.05
++78.09 C 29.52 78.57 30.47 79.54 30.94 80.02 C 34.37 77.29 37.23 73.95 40.35
++70.88 C 38.18 68.06 35.53 65.69 33.04 63.18 C 35.36 60.77 37.91 58.58 40.05
++56.00 C 38.26 52.48 34.60 49.97 31.80 47.14 C 30.03 45.63 28.51 48.47 30.18
++49.54 M 91.30 47.20 C 88.20 49.84 85.36 52.79 82.72 55.88 C 85.22 58.29 87.69
++60.73 90.07 63.25 C 87.55 65.68 84.98 68.08 82.78 70.83 C 85.80 74.02 88.90
++77.13 92.11 80.13 C 92.75 79.45 93.39 78.77 94.03 78.09 C 91.69 75.57 89.23
++73.15 86.79 70.72 C 88.98 68.07 92.39 66.07 93.72 62.92 C 91.78 60.18 89.05
++58.12 86.85 55.60 C 89.15 53.29 91.73 51.20 93.66 48.55 C 94.15 47.34 92.10
++46.00 91.30 47.20 Z" />
++    <path
++        android:fillColor="#d9d9d9"
++        android:fillAlpha="0.85"
++        android:strokeAlpha="0.85"
++        android:strokeWidth="1"
++        android:pathData="M 52.82 34.74 C 53.21 33.72 53.14 31.56 54.88 32.01 C 59.58 32.04 64.29 31.82
++68.98 32.14 C 70.27 32.04 70.51 35.21 68.94 34.87 C 63.58 35.11 58.18 35.15
++52.82 34.74 Z" />
++    <path
++        android:fillColor="#d9d9d9"
++        android:fillAlpha="0.85"
++        android:strokeAlpha="0.85"
++        android:strokeWidth="1"
++        android:pathData="M 45.00 39.00 C 56.00 39.00 67.00 39.00 78.00 39.00 C 78.00 55.00 78.00 71.00
++78.00 87.00 C 67.00 87.00 56.00 87.00 45.00 87.00 C 45.00 71.00 45.00 55.00
++45.00 39.00 Z" />
++    <path
++        android:fillColor="#d9d9d9"
++        android:fillAlpha="0.85"
++        android:strokeAlpha="0.85"
++        android:strokeWidth="1"
++        android:pathData="M 60.43 90.44 C 61.22 89.17 63.91 90.67 62.84 91.92 C 62.36 94.35 58.54 92.20
++60.43 90.44 Z" />
++</vector>
+\ No newline at end of file
+diff --git a/SystemUI/res/values-zh-rCN/strings.xml b/SystemUI/res/values-zh-rCN/strings.xml
+index 4c5d834..3fddac4 100644
+--- a/SystemUI/res/values-zh-rCN/strings.xml
++++ b/SystemUI/res/values-zh-rCN/strings.xml
+@@ -436,5 +436,9 @@
+     <string name="enable_bluetooth_confirmation_ok" msgid="6258074250948309715">"开启"</string>
+     <string name="hotspot_apm_message">"飞行模式开启的情况下不能够链接到移动网络,请关闭飞行模式后重试。"</string>
+ 
++    <string name="qs_tile_ringing">响铃</string>
++    <string name="qs_tile_vibrate">震动</string>
++    <string name="qs_tile_silent">静音</string>
++    <string name="gotocalling">轻触此处返回通话</string>
+     <string name="mobile_network_namae_filter">中国</string>
+ </resources>
+diff --git a/SystemUI/res/values/config.xml b/SystemUI/res/values/config.xml
+index bdcbe9d..86a9ef5 100644
+--- a/SystemUI/res/values/config.xml
++++ b/SystemUI/res/values/config.xml
+@@ -121,7 +121,7 @@
+ 
+     <!-- The default tiles to display in QuickSettings -->
+     <string name="quick_settings_tiles_default" translatable="false">
+-        wifi,bt,inversion,dnd,cell,airplane,rotation,flashlight,location,cast,hotspot
++        cell,wifi,bt<!-- ,inversion -->,dnd,airplane,rotation,flashlight,profile,location
+     </string>
+ 
+     <!-- The tiles to display in QuickSettings -->
+diff --git a/SystemUI/res/values/strings.xml b/SystemUI/res/values/strings.xml
+index 7fa440d..31c778b 100644
+--- a/SystemUI/res/values/strings.xml
++++ b/SystemUI/res/values/strings.xml
+@@ -1156,6 +1156,10 @@
+     <string name="sim1">SIM 1</string>
+     <string name="sim2">SIM 2</string>
+     <string name="notification_manager" >Notification Manager</string>
++    <!-- add by yangfan-->
++    <string name="qs_tile_ringing">Ringing</string>
++    <string name="qs_tile_vibrate">Vibrate</string>
++    <string name="qs_tile_silent">Silent</string>
+     <!-- Path data for portrait battery -->
+     <string name="battery_portrait_path_full" translatable="false">M 5 2 H 19 V 21 H 5 V 2 Z</string>
+     <string name="battery_portrait_path_empty" translatable="false">M 5 21 H 19 V 21 H 5 V 21 Z</string>
+diff --git a/SystemUI/src/com/android/systemui/qs/QSTile.java b/SystemUI/src/com/android/systemui/qs/QSTile.java
+index 97bad6b..d6e09e7 100644
+--- a/SystemUI/src/com/android/systemui/qs/QSTile.java
++++ b/SystemUI/src/com/android/systemui/qs/QSTile.java
+@@ -39,6 +39,7 @@ import com.android.systemui.statusbar.policy.KeyguardMonitor;
+ import com.android.systemui.statusbar.policy.Listenable;
+ import com.android.systemui.statusbar.policy.LocationController;
+ import com.android.systemui.statusbar.policy.NetworkController;
++import com.android.systemui.statusbar.policy.ProfilesController;
+ import com.android.systemui.statusbar.policy.RotationLockController;
+ import com.android.systemui.statusbar.policy.ZenModeController;
+ 
+@@ -336,6 +337,7 @@ public abstract class QSTile<TState extends State> implements Listenable {
+         HotspotController getHotspotController();
+         CastController getCastController();
+         FlashlightController getFlashlightController();
++        ProfilesController getProfilesController();//added by yangfan 
+         KeyguardMonitor getKeyguardMonitor();
+ 
+         public interface Callback {
+diff --git a/SystemUI/src/com/android/systemui/qs/tiles/DndTile.java b/SystemUI/src/com/android/systemui/qs/tiles/DndTile.java
+index ae0db02..8580d63 100644
+--- a/SystemUI/src/com/android/systemui/qs/tiles/DndTile.java
++++ b/SystemUI/src/com/android/systemui/qs/tiles/DndTile.java
+@@ -23,7 +23,9 @@ import android.content.IntentFilter;
+ import android.content.SharedPreferences;
+ import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+ import android.provider.Settings;
++import android.media.AudioManager;
+ import android.provider.Settings.Global;
++import android.util.Log;
+ import android.view.LayoutInflater;
+ import android.view.View;
+ import android.view.View.OnAttachStateChangeListener;
+@@ -35,6 +37,7 @@ import com.android.systemui.Prefs;
+ import com.android.systemui.R;
+ import com.android.systemui.SysUIToast;
+ import com.android.systemui.qs.QSTile;
++import com.android.systemui.statusbar.policy.ProfilesController;
+ import com.android.systemui.statusbar.policy.ZenModeController;
+ import com.android.systemui.volume.ZenModePanel;
+ import android.util.Log;
+@@ -60,6 +63,7 @@ public class DndTile extends QSTile<QSTile.BooleanState> {
+             new AnimationIcon(R.drawable.ic_dnd_total_silence_disable_animation);
+ 
+     private final ZenModeController mController;
++    private final ProfilesController mProfilesController;// added by yangfan 
+     private final DndDetailAdapter mDetailAdapter;
+ 
+     private boolean mListening;
+@@ -67,12 +71,32 @@ public class DndTile extends QSTile<QSTile.BooleanState> {
+ 
+     public DndTile(Host host) {
+         super(host);
+-	 Log.d("mare" , "yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy mare show the trace info  "+ Log.getStackTraceString(new Throwable()));     
+         mController = host.getZenModeController();
++        mProfilesController = host.getProfilesController();// added by yangfan 
+         mDetailAdapter = new DndDetailAdapter();
+         mContext.registerReceiver(mReceiver, new IntentFilter(ACTION_SET_VISIBLE));
++
++        //mare add
++        switchSlientByProfile();
+     }
+ 
++    //mare add for switch slient by customer begin
++    private void switchSlientByProfile(){
++        mContext.registerReceiver(mReceiverSlient, new IntentFilter("com.qucci.switch_slient"));
++    }
++
++    private final BroadcastReceiver mReceiverSlient = new BroadcastReceiver() {
++        @Override
++        public void onReceive(Context context, Intent intent) {
++            final boolean visible = intent.getBooleanExtra("qucci_switch_slient", false);
++            Log.d("mare", TAG + "BroadcastReceiver () visible = " + visible);
++            if(visible){
++                 mController.setZen(Global.ZEN_MODE_OFF, null, TAG);
++            }
++        }
++    };
++    //mare add for switch slient by customer end
++
+     public static void setVisible(Context context, boolean visible) {
+         Prefs.putBoolean(context, Prefs.Key.DND_TILE_VISIBLE, visible);
+     }
+@@ -113,20 +137,61 @@ public class DndTile extends QSTile<QSTile.BooleanState> {
+         mDisable.setAllowAnimation(true);
+         mDisableTotalSilence.setAllowAnimation(true);
+         MetricsLogger.action(mContext, getMetricsCategory(), !mState.value);
++        // added by hsp
++        boolean oldState = mState.value; 
++        mState.value = !oldState;
+         if (mState.value) {
+             mController.setZen(Global.ZEN_MODE_OFF, null, TAG);
+         } else {
+-            int zen = Prefs.getInt(mContext, Prefs.Key.DND_FAVORITE_ZEN, Global.ZEN_MODE_ALARMS);
++            //hsp : Don't need to show detail
++            //int zen = Prefs.getInt(mContext, Prefs.Key.DND_FAVORITE_ZEN, Global.ZEN_MODE_ALARMS);  //mare modify the defualt value
++            int zen = Prefs.getInt(mContext, Prefs.Key.DND_FAVORITE_ZEN, Global.ZEN_MODE_IMPORTANT_INTERRUPTIONS);
+             mController.setZen(zen, null, TAG);
+-            showDetail(true);
++            //showDetail(true);
++            // mController.setZen(Global.ZEN_MODE_IMPORTANT_INTERRUPTIONS, null, TAG);
+         }
++
++        Intent i = new Intent("action_dnd_update");
++        // i.putExtra("off", zenOff);
++        mContext.sendBroadcast(i);
++		// added by hsp end
++    }
++
++// added by yangfan 
++    @Override
++    protected void handleSecondaryClick() {
++        handleClick();
++    }
++
++    @Override
++    public void handleLongClick() {
++        mHost.startActivityDismissingKeyguard(ZEN_SETTINGS);
+     }
++// added by yangfan 
+ 
+     @Override
+     protected void handleUpdateState(BooleanState state, Object arg) {
+         final int zen = arg instanceof Integer ? (Integer) arg : mController.getZen();
+-        final boolean newValue = zen != Global.ZEN_MODE_OFF;
+-        final boolean valueChanged = state.value != newValue;
++        state.visible = /*isVisible(mContext)*/ true;
++        final boolean newValue = zen == Global.ZEN_MODE_OFF;
++        final boolean oldValue = state.value;
++        // modified by mare
++        boolean valueChanged = oldValue != newValue;
++        state.value = newValue;
++        
++        if (newValue) {
++            state.icon = ResourceIcon.get(R.drawable.ic_qs_dnd_off);
++            state.contentDescription = mContext.getString(R.string.accessibility_quick_settings_dnd_off);
++        }else {
++            state.icon = ResourceIcon.get(R.drawable.ic_qs_dnd_on);
++            state.contentDescription = mContext.getString(R.string.accessibility_quick_settings_dnd_priority_on);
++        }
++        state.label = mContext.getString(R.string.quick_settings_dnd_label);
++		// modified by mare
++		
++		// modified by 
++        /**final boolean newValue = zen != Global.ZEN_MODE_OFF;
++		final boolean valueChanged = state.value != newValue;
+         state.value = newValue;
+         state.visible = isVisible(mContext);
+         switch (zen) {
+@@ -154,7 +219,9 @@ public class DndTile extends QSTile<QSTile.BooleanState> {
+                 state.contentDescription =  mContext.getString(
+                         R.string.accessibility_quick_settings_dnd_off);
+                 break;
+-        }
++        }**/ // modified by yangfan 
++		
++		
+         if (mShowingDetail && !state.value) {
+             showDetail(false);
+         }
+diff --git a/SystemUI/src/com/android/systemui/qs/tiles/ProfileTile.java b/SystemUI/src/com/android/systemui/qs/tiles/ProfileTile.java
+new file mode 100644
+index 0000000..5fbb5b3
+--- /dev/null
++++ b/SystemUI/src/com/android/systemui/qs/tiles/ProfileTile.java
+@@ -0,0 +1,163 @@
++/*
++ * Copyright (C) 2014 The Android Open Source Project
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ *      http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License
++ */
++
++package com.android.systemui.qs.tiles;
++
++import android.content.BroadcastReceiver;
++import android.content.Context;
++import android.content.Intent;
++import android.content.IntentFilter;
++import android.media.AudioManager;
++import android.os.Handler;
++import android.util.Log;
++
++import com.android.systemui.R;
++import com.android.systemui.qs.QSTile;
++import com.android.systemui.statusbar.policy.ProfilesController;
++
++/** Quick settings tile: Control Audio Mode **/
++public class ProfileTile extends QSTile<QSTile.BooleanState> {
++
++    private AudioManager mAudioManager;
++    private ProfilesController mController;
++    private boolean mListening;
++
++    public ProfileTile(Host host) {
++        super(host);
++        mController = mHost.getProfilesController();
++        mAudioManager = (AudioManager) mContext
++                .getSystemService(Context.AUDIO_SERVICE);
++        IntentFilter filter = new IntentFilter("action_dnd_update");
++        mContext.registerReceiver(mReceiver, filter);
++    }
++
++    BroadcastReceiver mReceiver = new BroadcastReceiver() {
++        @Override
++        public void onReceive(Context context, Intent intent) {
++            new Handler().postDelayed(new Runnable() {
++                @Override
++                public void run() {
++                    refreshState();
++
++                }
++            }, 500);
++
++        }
++    };
++
++    @Override
++    protected void handleDestroy() {
++        super.handleDestroy();
++    }
++
++    @Override
++    protected BooleanState newTileState() {
++        return new BooleanState();
++    }
++
++    @Override
++    protected void handleUserSwitch(int newUserId) {
++    }
++
++    @Override
++    protected void handleClick() {
++        int ringMode = mAudioManager.getRingerMode();
++        int nextMode;
++        if (ringMode == AudioManager.RINGER_MODE_NORMAL) {
++            nextMode = AudioManager.RINGER_MODE_VIBRATE;
++        } else if (ringMode == AudioManager.RINGER_MODE_VIBRATE) {
++            nextMode = AudioManager.RINGER_MODE_SILENT;
++        } else if (ringMode == AudioManager.RINGER_MODE_SILENT) {
++            nextMode = AudioManager.RINGER_MODE_NORMAL;
++            //mare add begin    
++            Intent i = new Intent("com.qucci.switch_slient");
++            i.putExtra("qucci_switch_slient", true);
++            mContext.sendBroadcast(i);
++            //mare add end
++        } else {    
++            nextMode = AudioManager.RINGER_MODE_NORMAL;
++        }
++        updateRingerMode(nextMode);
++        refreshState();
++    }
++
++    void updateRingerMode(int mode) {
++        //mAudioManager.setRingerMode(mode , true);
++    }
++
++    @Override
++    public int getMetricsCategory() {
++        return 240;
++    }
++
++    @Override
++    protected void handleUpdateState(BooleanState state, Object arg) {
++        state.visible = true;
++        int ringMode = mAudioManager.getRingerMode();
++        if (ringMode == AudioManager.RINGER_MODE_NORMAL) {
++            state.label = mHost.getContext()
++                    .getString(R.string.qs_tile_ringing);
++            state.icon = ResourceIcon.get(R.drawable.ic_qs_profile_ringing);
++        } else if (ringMode == AudioManager.RINGER_MODE_VIBRATE) {
++            state.label = mHost.getContext()
++                    .getString(R.string.qs_tile_vibrate);
++            state.icon = ResourceIcon.get(R.drawable.ic_qs_profile_vibrate);
++        } else if (ringMode == AudioManager.RINGER_MODE_SILENT) {
++            state.label = mHost.getContext().getString(R.string.qs_tile_silent);
++            state.icon = ResourceIcon.get(R.drawable.ic_qs_profile_silent);
++        } else {
++            state.label = mHost.getContext()
++                    .getString(R.string.qs_tile_ringing);
++            state.icon = ResourceIcon.get(R.drawable.ic_qs_profile_ringing);
++        }
++        mController.updateRingerMode(ringMode);
++        Log.e(TAG, "ringMode : "+ ringMode);
++        int onOrOffId = state.value ? R.string.qs_tile_ringing
++                : R.string.qs_tile_ringing;
++        state.contentDescription = mContext.getString(onOrOffId);
++    }
++
++    @Override
++    protected String composeChangeAnnouncement() {
++        if (mState.value) {
++            return mContext
++                    .getString(R.string.accessibility_quick_settings_flashlight_changed_on);
++        } else {
++            return mContext
++                    .getString(R.string.accessibility_quick_settings_flashlight_changed_off);
++        }
++    }
++
++    @Override
++    public void setListening(boolean listening) {
++        if (mListening == listening)
++            return;
++        mListening = listening;
++        if (mListening) {
++            mController.addCallback(mRingerCallback);
++        } else {
++            mController.removeCallback(mRingerCallback);
++        }
++    }
++
++    private final ProfilesController.Callback mRingerCallback = new ProfilesController.Callback() {
++        @Override
++        public void ringerModeChanged(int mode) {
++            refreshState(mode);
++        }
++    };
++
++}
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
+index 5b3a89b..e2b0a7c 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
+@@ -152,6 +152,7 @@ import com.android.systemui.statusbar.policy.LocationControllerImpl;
+ import com.android.systemui.statusbar.policy.NetworkControllerImpl;
+ import com.android.systemui.statusbar.policy.NextAlarmController;
+ import com.android.systemui.statusbar.policy.PreviewInflater;
++import com.android.systemui.statusbar.policy.ProfilesController;
+ import com.android.systemui.statusbar.policy.RotationLockControllerImpl;
+ import com.android.systemui.statusbar.policy.SecurityControllerImpl;
+ import com.android.systemui.statusbar.policy.UserInfoController;
+@@ -302,6 +303,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
+     FlashlightController mFlashlightController;
+     UserSwitcherController mUserSwitcherController;
+     NextAlarmController mNextAlarmController;
++    ProfilesController mProfilesController;// added by yangfan
+     KeyguardMonitor mKeyguardMonitor;
+     BrightnessMirrorController mBrightnessMirrorController;
+     AccessibilityController mAccessibilityController;
+@@ -690,7 +692,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
+ 
+         // Lastly, call to the icon policy to install/update all the icons.
+         mIconPolicy = new PhoneStatusBarPolicy(mContext, mCastController, mHotspotController,
+-                mUserInfoController, mBluetoothController, mRotationLockController);
++                mUserInfoController, mBluetoothController, mRotationLockController, mProfilesController);// add 'mProfilesController' by yangfan
+         mIconPolicy.setCurrentUserSetup(mUserSetup);
+         mSettingsObserver.onChange(false); // set up
+ 
+@@ -718,6 +720,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
+ 
+         mScreenPinningRequest = new ScreenPinningRequest(mContext);
+     }
++
+     // hsp 2016-08-11 : Add button to show or hide navigatin bar @{
+     private void hideNavigationBar() {
+         if (mNavigationBarView == null) {
+@@ -942,6 +945,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
+         mHotspotController = new HotspotControllerImpl(mContext);
+         mBluetoothController = new BluetoothControllerImpl(mContext, mHandlerThread.getLooper());
+         mSecurityController = new SecurityControllerImpl(mContext);
++        mProfilesController = new ProfilesController(context, mHandler);// init 'mProfilesController' by yangfan
+         if (mContext.getResources().getBoolean(R.bool.config_showRotationLock)) {
+             mRotationLockController = new RotationLockControllerImpl(mContext);
+         }
+@@ -1016,7 +1020,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
+                     mNetworkController, mZenModeController, mHotspotController,
+                     mCastController, mFlashlightController,
+                     mUserSwitcherController, mKeyguardMonitor,
+-                    mSecurityController);
++                    mSecurityController, mProfilesController);// add 'mProfilesController' in QSTileHost constructor by yangfan
+             mQSPanel.setHost(qsh);
+             mQSPanel.setTiles(qsh.getTiles());
+             mBrightnessMirrorController = new BrightnessMirrorController(mStatusBarWindow);
+@@ -1038,7 +1042,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
+                     mNetworkController, mZenModeController, mHotspotController,
+                     mCastController, mFlashlightController,
+                     mUserSwitcherController, mKeyguardMonitor,
+-                    mSecurityController);
++                    mSecurityController,mProfilesController);// add 'mProfilesController' in QSTileHost constructor by yangfan
+             mQSPanel_qucii.setHost(qsh1);
+             mQSPanel_qucii.setTiles(qsh1.getTiles());
+             mBrightnessMirrorController = new BrightnessMirrorController(mStatusBarWindow);
+@@ -4135,6 +4139,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
+         } else {
+ 
+             // No notifications - abort gesture.
++            goToLockedShade(startingChild);// goToLockedShade by yangfan
+             return false;
+         }
+     }
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarPolicy.java b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarPolicy.java
+index 98c22c0..9944e22 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarPolicy.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarPolicy.java
+@@ -46,6 +46,7 @@ import com.android.systemui.statusbar.policy.BluetoothController.Callback;
+ import com.android.systemui.statusbar.policy.CastController;
+ import com.android.systemui.statusbar.policy.CastController.CastDevice;
+ import com.android.systemui.statusbar.policy.HotspotController;
++import com.android.systemui.statusbar.policy.ProfilesController;
+ import com.android.systemui.statusbar.policy.RotationLockController;
+ import com.android.systemui.statusbar.policy.RotationLockController.RotationLockControllerCallback;
+ import com.android.systemui.statusbar.policy.UserInfoController;
+@@ -78,6 +79,7 @@ public class PhoneStatusBarPolicy implements Callback {
+     private final AlarmManager mAlarmManager;
+     private final UserInfoController mUserInfoController;
+     private final RotationLockController mRotationLockController;
++    private final ProfilesController mProfilesController;// added by yangfan
+ 
+     // Assume it's all good unless we hear otherwise.  We don't always seem
+     // to get broadcasts that it *is* there.
+@@ -125,7 +127,7 @@ public class PhoneStatusBarPolicy implements Callback {
+     };
+ 
+     public PhoneStatusBarPolicy(Context context, CastController cast, HotspotController hotspot,
+-            UserInfoController userInfoController, BluetoothController bluetooth ,RotationLockController rotationLockController) {
++            UserInfoController userInfoController, BluetoothController bluetooth ,RotationLockController rotationLockController, ProfilesController profilesController) {// add 'profilesController' by yangfan
+         mContext = context;
+         mCast = cast;
+         mHotspot = hotspot;
+@@ -135,6 +137,7 @@ public class PhoneStatusBarPolicy implements Callback {
+         mService = (StatusBarManager) context.getSystemService(Context.STATUS_BAR_SERVICE);
+         mAlarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+         mUserInfoController = userInfoController;
++        mProfilesController = profilesController;// added by yangfan
+ 
+         // listen for broadcasts
+         IntentFilter filter = new IntentFilter();
+@@ -180,6 +183,7 @@ public class PhoneStatusBarPolicy implements Callback {
+         mService.setIconVisibility(SLOT_SILENT_MODE, false);
+ // added by yangfan 
+         updateVolumeZen();
++        updateProfile();// added by yangfan
+ 
+         // cast
+         mService.setIcon(SLOT_CAST, R.drawable.stat_sys_cast, 0, null);
+@@ -249,7 +253,8 @@ public class PhoneStatusBarPolicy implements Callback {
+         }
+     }
+ 
+-    private final void updateVolumeZen() {
++//modified by yangfan
++    /**private final void updateVolumeZen() {
+         AudioManager audioManager = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
+ 
+         boolean zenVisible = false;
+@@ -303,7 +308,64 @@ public class PhoneStatusBarPolicy implements Callback {
+             mVolumeVisible = volumeVisible;
+         }
+         updateAlarm();
++    }**/
++	
++	    private final void updateVolumeZen() {
++        boolean zenVisible = false;
++        int zenIconId = 0;
++        String zenDescription = null;
++        
++        zenVisible = mZen != Global.ZEN_MODE_OFF /*&& mProfilesController.getRingerMode() == ProfilesController.RINGER_MODE_UNKNOWN*/;
++        if (mZen == Global.ZEN_MODE_NO_INTERRUPTIONS) {
++            zenIconId = R.drawable.stat_sys_dnd;
++            //zenIconId = R.drawable.stat_sys_dnd_total_silence;
++            //zenIconId = R.drawable.stat_sys_zen_none;
++            zenDescription = mContext.getString(R.string.quick_settings_dnd_label);
++        } else if (mZen == Global.ZEN_MODE_IMPORTANT_INTERRUPTIONS) {
++            zenIconId = R.drawable.stat_sys_dnd;
++            //zenIconId = R.drawable.stat_sys_dnd_priority;
++            //zenIconId = R.drawable.stat_sys_zen_important;
++            zenDescription = mContext.getString(R.string.interruption_level_priority);
++        } else if (mZen == Global.ZEN_MODE_ALARMS) {
++            zenIconId = R.drawable.stat_sys_dnd;
++            zenDescription = mContext.getString(R.string.interruption_level_alarms);
++        }
++        if (zenVisible) {
++            mService.setIcon(SLOT_ZEN, zenIconId, 0, zenDescription);
++        }
++        if (zenVisible != mZenVisible) {
++            mService.setIconVisibility(SLOT_ZEN, zenVisible);
++            mZenVisible = zenVisible;
++        }
++        updateAlarm();
++    }
++
++    protected void updateProfile() {
++        boolean volumeVisible = false;
++        boolean silentVisible = false;
++        AudioManager audioManager = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
++        if (audioManager.getRingerModeInternal() == AudioManager.RINGER_MODE_VIBRATE) {
++            volumeVisible = true;
++            silentVisible = false;
++        }else if (audioManager.getRingerModeInternal() == AudioManager.RINGER_MODE_SILENT) {
++            volumeVisible = false;
++            silentVisible = true;
++        }else if (audioManager.getRingerModeInternal() == AudioManager.RINGER_MODE_NORMAL) {
++            volumeVisible = false;
++            silentVisible = false;
++        }
++        
++        if (silentVisible != mSilentVisible) {
++            mService.setIconVisibility(SLOT_SILENT_MODE, silentVisible);
++            mSilentVisible = silentVisible;
++        }
++        if (volumeVisible != mVolumeVisible) {
++            mService.setIconVisibility(SLOT_VOLUME, volumeVisible);
++            mVolumeVisible = volumeVisible;
++        }
++        Log.e(TAG, "mSilentVisible : "+ mSilentVisible + " ,mVolumeVisible : "+mVolumeVisible);
+     }
++//modified by yangfan end 
+ 
+     @Override
+     public void onBluetoothDevicesChanged() {
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/QSTileHost.java b/SystemUI/src/com/android/systemui/statusbar/phone/QSTileHost.java
+index e93b0d0..87c8e5f 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/QSTileHost.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/QSTileHost.java
+@@ -37,6 +37,7 @@ import com.android.systemui.qs.tiles.FlashlightTile;
+ import com.android.systemui.qs.tiles.HotspotTile;
+ import com.android.systemui.qs.tiles.IntentTile;
+ import com.android.systemui.qs.tiles.LocationTile;
++import com.android.systemui.qs.tiles.ProfileTile;
+ import com.android.systemui.qs.tiles.RotationLockTile;
+ import com.android.systemui.qs.tiles.WifiTile;
+ import com.android.systemui.statusbar.policy.BluetoothController;
+@@ -46,6 +47,7 @@ import com.android.systemui.statusbar.policy.HotspotController;
+ import com.android.systemui.statusbar.policy.KeyguardMonitor;
+ import com.android.systemui.statusbar.policy.LocationController;
+ import com.android.systemui.statusbar.policy.NetworkController;
++import com.android.systemui.statusbar.policy.ProfilesController;
+ import com.android.systemui.statusbar.policy.RotationLockController;
+ import com.android.systemui.statusbar.policy.SecurityController;
+ import com.android.systemui.statusbar.policy.UserSwitcherController;
+@@ -83,7 +85,8 @@ public class QSTileHost implements QSTile.Host, Tunable {
+     private final UserSwitcherController mUserSwitcherController;
+     private final KeyguardMonitor mKeyguard;
+     private final SecurityController mSecurity;
+-
++    private final ProfilesController mProfiles;
++    
+     private Callback mCallback;
+ 
+     public QSTileHost(Context context, PhoneStatusBar statusBar,
+@@ -92,7 +95,7 @@ public class QSTileHost implements QSTile.Host, Tunable {
+             ZenModeController zen, HotspotController hotspot,
+             CastController cast, FlashlightController flashlight,
+             UserSwitcherController userSwitcher, KeyguardMonitor keyguard,
+-            SecurityController security) {
++            SecurityController security,ProfilesController profiles) {// add profiles by yangfan 
+         mContext = context;
+         mStatusBar = statusBar;
+         mBluetooth = bluetooth;
+@@ -106,6 +109,7 @@ public class QSTileHost implements QSTile.Host, Tunable {
+         mUserSwitcherController = userSwitcher;
+         mKeyguard = keyguard;
+         mSecurity = security;
++        mProfiles = profiles;// add profiles by yangfan 
+ 
+         final HandlerThread ht = new HandlerThread(QSTileHost.class.getSimpleName(),
+                 Process.THREAD_PRIORITY_BACKGROUND);
+@@ -211,7 +215,13 @@ public class QSTileHost implements QSTile.Host, Tunable {
+     public SecurityController getSecurityController() {
+         return mSecurity;
+     }
+-    
++
++// added by yangfan 
++    public ProfilesController getProfilesController(){
++        return mProfiles;
++    }
++ // added by yangfan end 
++      
+     @Override
+     public void onTuningChanged(String key, String newValue) {
+         if (!TILES_SETTING.equals(key)) {
+@@ -249,18 +259,20 @@ public class QSTileHost implements QSTile.Host, Tunable {
+     }
+ 
+     protected QSTile<?> createTile(String tileSpec) {
+-        Log.d("mare", "createTile(String tileSpec)  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx " );
+         if (tileSpec.equals("wifi")) return new WifiTile(this);
+         else if (tileSpec.equals("bt")) return new BluetoothTile(this);
+-        else if (tileSpec.equals("inversion")) return new ColorInversionTile(this);
++        // else if (tileSpec.equals("inversion")) return new ColorInversionTile(this);// remove 'inversion' by yangfan 
+         else if (tileSpec.equals("cell")) return new CellularTile(this);
+         else if (tileSpec.equals("airplane")) return new AirplaneModeTile(this);
+         else if (tileSpec.equals("dnd")) return new DndTile(this);
+         else if (tileSpec.equals("rotation")) return new RotationLockTile(this);
+         else if (tileSpec.equals("flashlight")) return new FlashlightTile(this);
+         else if (tileSpec.equals("location")) return new LocationTile(this);
+-        else if (tileSpec.equals("cast")) return new CastTile(this);
+-        else if (tileSpec.equals("hotspot")) return new HotspotTile(this);
++// remove 'cast,hotspot' add 'profile' by yangfan 
++        else if (tileSpec.equals("profile")) return new ProfileTile(this);
++//        else if (tileSpec.equals("cast")) return new CastTile(this);
++//        else if (tileSpec.equals("hotspot")) return new HotspotTile(this);
++// remove 'cast,hotspot' add 'profile' by yangfan 
+         else if (tileSpec.startsWith(IntentTile.PREFIX)) return IntentTile.create(this,tileSpec);
+         else throw new IllegalArgumentException("Bad tile spec: " + tileSpec);
+     }
+diff --git a/SystemUI/src/com/android/systemui/statusbar/policy/ProfilesController.java b/SystemUI/src/com/android/systemui/statusbar/policy/ProfilesController.java
+new file mode 100644
+index 0000000..7e9fd93
+--- /dev/null
++++ b/SystemUI/src/com/android/systemui/statusbar/policy/ProfilesController.java
+@@ -0,0 +1,104 @@
++/*
++ * Copyright (C) 2014 The Android Open Source Project
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ *      http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++package com.android.systemui.statusbar.policy;
++
++import android.app.ActivityManager;
++import android.app.AlarmManager;
++import android.app.NotificationManager;
++import android.content.BroadcastReceiver;
++import android.content.ComponentName;
++import android.content.ContentResolver;
++import android.content.Context;
++import android.content.Intent;
++import android.content.IntentFilter;
++import android.database.ContentObserver;
++import android.media.AudioManager;
++import android.net.Uri;
++import android.os.Handler;
++import android.os.UserHandle;
++import android.os.UserManager;
++import android.provider.Settings;
++import android.provider.Settings.Global;
++import android.provider.Settings.Secure;
++import android.util.Log;
++
++import com.android.systemui.qs.GlobalSetting;
++import com.android.systemui.statusbar.policy.ZenModeController.Callback;
++
++import java.util.ArrayList;
++import java.util.LinkedHashMap;
++import java.util.Objects;
++
++/**
++ * @Description:
++ * @csdnblog   http://blog.csdn.net/mare_blue
++ * @author  mare
++ * @date 2016-11-21
++ * @time  ÏÂÎç4:59:17
++ */
++public class ProfilesController {
++	private static final String TAG = "ProfilesController";
++	private static final boolean DEBUG = Log.isLoggable(TAG, Log.DEBUG);
++	public static final int RINGER_MODE_UNKNOWN = -1;
++	
++	private final ArrayList<Callback> mCallbacks = new ArrayList<Callback>();
++	private final Context mContext;
++	private final GlobalSetting mModeSetting;
++	
++
++	public ProfilesController(Context context, Handler handler) {
++		mContext = context;
++		mModeSetting = new GlobalSetting(mContext, handler,
++				Global.QS_PROFILE_MODE) {
++			@Override
++			protected void handleValueChanged(int value) {
++				fireRingerChanged(value);
++			}
++		};
++	}
++
++	public void updateRingerMode(int value) {
++		mModeSetting.setValue(value);
++	}
++	
++	public int getRingerMode(){
++		return mModeSetting.getValue();
++	}
++	
++	public boolean isRingerSilent(){
++		return mModeSetting.getValue() == AudioManager.RINGER_MODE_SILENT;
++	}
++	
++	public static interface Callback{
++		void ringerModeChanged(int mode);
++	}
++	
++    public void addCallback(Callback callback) {
++        mCallbacks.add(callback);
++    }
++
++    public void removeCallback(Callback callback) {
++        mCallbacks.remove(callback);
++    }
++    
++    private void fireRingerChanged(int mode) {
++        for (Callback cb : mCallbacks) {
++            cb.ringerModeChanged(mode);
++        }
++    }
++	
++}
+diff --git a/SystemUI/src/com/android/systemui/tuner/QsTuner.java b/SystemUI/src/com/android/systemui/tuner/QsTuner.java
+index d77f552..cdd0e7a 100644
+--- a/SystemUI/src/com/android/systemui/tuner/QsTuner.java
++++ b/SystemUI/src/com/android/systemui/tuner/QsTuner.java
+@@ -208,6 +208,7 @@ public class QsTuner extends Fragment implements Callback {
+         else if (spec.equals("location")) return R.string.quick_settings_location_label;
+         else if (spec.equals("cast")) return R.string.quick_settings_cast_title;
+         else if (spec.equals("hotspot")) return R.string.quick_settings_hotspot_label;
++        else if (spec.equals("profile")) return R.string.qs_tile_ringing;//add'profile' by yangfan
+         return 0;
+     }
+ 
+@@ -215,7 +216,7 @@ public class QsTuner extends Fragment implements Callback {
+ 
+         public CustomHost(Context context) {
+             super(context, null, null, null, null, null, null, null, null, null,
+-                    null, null, new BlankSecurityController());
++                    null, null, new BlankSecurityController(),null);//add'profile' by yangfan
+         }
+ 
+         @Override
+@@ -470,6 +471,7 @@ public class QsTuner extends Fragment implements Callback {
+             else if (mSpec.equals("location")) return R.drawable.ic_signal_location_enable;
+             else if (mSpec.equals("cast")) return R.drawable.ic_qs_cast_on;
+             else if (mSpec.equals("hotspot")) return R.drawable.ic_hotspot_enable;
++            else if (mSpec.equals("profile")) return R.drawable.ic_qs_profile_ring;// add 'profile' by yangfan
+             return R.drawable.android;
+         }
+ 
+-- 
+2.8.3.windows.1
+

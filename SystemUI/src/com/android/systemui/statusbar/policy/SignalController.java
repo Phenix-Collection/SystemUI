@@ -134,6 +134,7 @@ public abstract class SignalController<T extends SignalController.State,
      */
     public int getCurrentIconId() {
         if (mCurrentState.connected) {
+            Log.i(mTag,"getCurrentIconId level : " + mCurrentState.level );// added by yangfan 
             return getIcons().mSbIcons[mCurrentState.inetCondition][mCurrentState.level];
         } else if (mCurrentState.enabled) {
             return getIcons().mSbDiscState;
@@ -253,6 +254,8 @@ public abstract class SignalController<T extends SignalController.State,
         boolean activityIn;
         boolean activityOut;
         int level;
+        /**是否是无服务状态**/
+        boolean isNoService;
         IconGroup iconGroup;
         int inetCondition;
         int rssi; // Only for logging.
@@ -264,6 +267,7 @@ public abstract class SignalController<T extends SignalController.State,
             connected = state.connected;
             enabled = state.enabled;
             level = state.level;
+            isNoService = state.isNoService;
             iconGroup = state.iconGroup;
             inetCondition = state.inetCondition;
             activityIn = state.activityIn;
@@ -287,6 +291,7 @@ public abstract class SignalController<T extends SignalController.State,
             builder.append("connected=").append(connected).append(',')
                     .append("enabled=").append(enabled).append(',')
                     .append("level=").append(level).append(',')
+                    .append("isNoService=").append(isNoService).append(',')
                     .append("inetCondition=").append(inetCondition).append(',')
                     .append("iconGroup=").append(iconGroup).append(',')
                     .append("activityIn=").append(activityIn).append(',')
@@ -304,6 +309,7 @@ public abstract class SignalController<T extends SignalController.State,
             return other.connected == connected
                     && other.enabled == enabled
                     && other.level == level
+                    && other.isNoService == isNoService
                     && other.inetCondition == inetCondition
                     && other.iconGroup == iconGroup
                     && other.activityIn == activityIn

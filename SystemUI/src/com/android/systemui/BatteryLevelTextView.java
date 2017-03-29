@@ -62,8 +62,8 @@ public class BatteryLevelTextView extends TextView implements
         super.onConfigurationChanged(newConfig);
 
         // Respect font size setting.
-        setTextSize(TypedValue.COMPLEX_UNIT_PX,
-                getResources().getDimensionPixelSize(R.dimen.battery_level_text_size));
+       //setTextSize(TypedValue.COMPLEX_UNIT_PX,
+       //         getResources().getDimensionPixelSize(R.dimen.battery_level_text_size));
     }
 
     @Override

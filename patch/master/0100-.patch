@@ -1,0 +1,117 @@
+From c8aed82a1ffa48847a07b275ea23c6c505692ce2 Mon Sep 17 00:00:00 2001
+From: mare <yangfan@qucii.com>
+Date: Sat, 4 Mar 2017 10:20:24 +0800
+Subject: [PATCH 100/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E4=BF=AE=E8=AE=A2=E9=94=81=E5=B1=8F=E7=8A=B6=E6=80=81=E9=A1=B6?=
+ =?UTF-8?q?=E9=83=A8=E4=B8=8B=E6=BB=91=E7=9B=B8=E6=9C=BA=E5=9B=BE=E7=89=87?=
+ =?UTF-8?q?=E9=80=8F=E6=98=8E=E5=BA=A6=E6=94=B9=E5=8F=98=E9=97=AE=E9=A2=98?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../systemui/statusbar/KeyguardAffordanceView.java | 25 +++++++++++++++++++++-
+ .../statusbar/phone/KeyguardBottomAreaView.java    | 23 +++++++++++++-------
+ 2 files changed, 39 insertions(+), 9 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/KeyguardAffordanceView.java b/SystemUI/src/com/android/systemui/statusbar/KeyguardAffordanceView.java
+index 8058933..289d902 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/KeyguardAffordanceView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/KeyguardAffordanceView.java
+@@ -421,6 +421,13 @@ public class KeyguardAffordanceView extends ImageView {
+      */
+     public void setImageScale(float imageScale, boolean animate, long duration,
+             Interpolator interpolator) {
++    	//add by mare 2017/3/4 begin
++        //========================>
++        //让锁屏相机图片不能改变
++    	if(!changeEnable)
++    		return;
++    	//<========================
++        //add by mare 2017/3/4 end
+         cancelAnimator(mScaleAnimator);
+         if (!animate) {
+             mImageScale = imageScale;
+@@ -467,7 +474,16 @@ public class KeyguardAffordanceView extends ImageView {
+     public void setImageAlpha(float alpha, boolean animate) {
+         setImageAlpha(alpha, animate, -1, null, null);
+     }
+-
++    //add by mare 2017/3/4 begin
++    //========================>
++    //让锁屏相机图片不能改变
++    private boolean changeEnable=true;
++    public void setImageChangeEnable(boolean alpha){
++    	changeEnable=alpha;
++    }
++    //<========================
++    //add by mare 2017/3/4 end
++    
+     /**
+      * Sets the alpha of the containing image
+      *
+@@ -479,6 +495,13 @@ public class KeyguardAffordanceView extends ImageView {
+      */
+     public void setImageAlpha(float alpha, boolean animate, long duration,
+             Interpolator interpolator, Runnable runnable) {
++    	//add by mare 2017/3/4 begin
++        //========================>
++        //让锁屏相机图片不能改变
++    	if(!changeEnable)
++    		return;
++    	//<========================
++        //add by mare 2017/3/4 end
+         cancelAnimator(mAlphaAnimator);
+         alpha = mLaunchingAffordance ? 0 : alpha;
+         int endAlpha = (int) (alpha * 255);
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/KeyguardBottomAreaView.java b/SystemUI/src/com/android/systemui/statusbar/phone/KeyguardBottomAreaView.java
+index bdd3664..ba63936 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/KeyguardBottomAreaView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/KeyguardBottomAreaView.java
+@@ -198,6 +198,12 @@ public class KeyguardBottomAreaView extends FrameLayout implements View.OnClickL
+         mPreviewContainer = (ViewGroup) findViewById(R.id.preview_container);
+         mEmergencyButton = (EmergencyButton) findViewById(R.id.emergency_call_button);
+         mCameraImageView = (KeyguardAffordanceView) findViewById(R.id.camera_button);
++        //add by mare 2017/3/4 begin
++        //========================>
++        //让锁屏相机图片不能改变
++        mCameraImageView.setImageChangeEnable(false);
++        //<========================
++        //add by mare 2017/3/4 end
+         mLeftAffordanceView = (KeyguardAffordanceView) findViewById(R.id.left_button);
+         mLockIcon = (LockIcon) findViewById(R.id.lock_icon);
+         mIndicationText = (TextView) findViewById(R.id.keyguard_indication_text);
+@@ -537,6 +543,7 @@ public class KeyguardBottomAreaView extends FrameLayout implements View.OnClickL
+     }
+ 
+     public KeyguardAffordanceView getRightView() {
++    	Log.e("====getRightView=====", "",new Throwable());
+         return mCameraImageView;
+     }
+ 
+@@ -611,14 +618,14 @@ public class KeyguardBottomAreaView extends FrameLayout implements View.OnClickL
+     }
+ 
+     private void startFinishDozeAnimationElement(View element, long delay) {
+-        element.setAlpha(0f);
+-        element.setTranslationY(element.getHeight() / 2);
+-        element.animate()
+-                .alpha(1f)
+-                .translationY(0f)
+-                .setInterpolator(mLinearOutSlowInInterpolator)
+-                .setStartDelay(delay)
+-                .setDuration(DOZE_ANIMATION_ELEMENT_DURATION);
++//        element.setAlpha(0f);
++//        element.setTranslationY(element.getHeight() / 2);
++//        element.animate()
++//                .alpha(1f)
++//                .translationY(0f)
++//                .setInterpolator(mLinearOutSlowInInterpolator)
++//                .setStartDelay(delay)
++//                .setDuration(DOZE_ANIMATION_ELEMENT_DURATION);
+     }
+ 
+     private final BroadcastReceiver mDevicePolicyReceiver = new BroadcastReceiver() {
+-- 
+2.8.3.windows.1
+

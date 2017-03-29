@@ -49,7 +49,7 @@ public class CirclePageIndicator extends View implements PageIndicator {
     private int mActivePointerId = INVALID_POINTER;
     private boolean mIsDragging;
 
-    private Bitmap mSettingsIcon;
+//    private Bitmap mSettingsIcon;
     private boolean mEditing;
 
     public CirclePageIndicator(Context context) {
@@ -99,7 +99,7 @@ public class CirclePageIndicator extends View implements PageIndicator {
 
         final ViewConfiguration configuration = ViewConfiguration.get(context);
         mTouchSlop = ViewConfigurationCompat.getScaledPagingTouchSlop(configuration);
-        mSettingsIcon = BitmapFactory.decodeResource(res, R.drawable.circle_dot_indicator);
+//        mSettingsIcon = BitmapFactory.decodeResource(res, R.drawable.circle_dot_indicator);
     }
 
     @Override
@@ -248,12 +248,17 @@ public class CirclePageIndicator extends View implements PageIndicator {
             // Only paint fill if not completely transparent
             if (mPaintPageFill.getAlpha() > 0) {
                 if (mEditing && iLoop == 0) {
-                    canvas.drawBitmap(mSettingsIcon,
-                            (int) (dX - mRadius),
-                            (int) (dY - mRadius),
-                            mPaintPageFill);
+                	//modify by mare 2017/3/24 begin
+                	//========================>
+                	//这里直接画圆不用图片并在values/vpi___defaults.xml中default_circle_indicator_radius修改圆半径
+                	canvas.drawCircle(dX, dY, mRadius, mPaintPageFill);
+//                    canvas.drawBitmap(mSettingsIcon,
+//                            (int) (dX - mRadius),
+//                            (int) (dY - mRadius),
+//                            mPaintPageFill);
+                	//modify by mare 2017/3/24 end
                 } else {
-                    canvas.drawCircle(dX, dY, (float) (pageFillRadius / 1.5f), mPaintPageFill);
+                    canvas.drawCircle(dX, dY, (float) (pageFillRadius / 1.2f), mPaintPageFill);
                 }
             }
 

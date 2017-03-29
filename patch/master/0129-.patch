@@ -1,0 +1,58 @@
+From bd52290d2ff4a492aae6b4f452c6ffe13a05729c Mon Sep 17 00:00:00 2001
+From: mare <yangfan@qucii.com>
+Date: Thu, 9 Mar 2017 17:39:25 +0800
+Subject: [PATCH 129/185] =?UTF-8?q?=E3=80=90=E6=95=85=E9=9A=9C=E3=80=91?=
+ =?UTF-8?q?=E9=80=9A=E8=AF=9D=E7=95=8C=E9=9D=A2=E7=8A=B6=E6=80=81=E6=A0=8F?=
+ =?UTF-8?q?=E5=9B=BE=E6=A0=87=E9=A2=9C=E8=89=B2=E9=97=AE=E9=A2=98=EF=BC=8C?=
+ =?UTF-8?q?=E6=9C=AA=E8=A7=A3=E5=86=B3=E5=AE=8C=E5=96=84=EF=BC=8C=E8=BF=99?=
+ =?UTF-8?q?=E9=87=8C=E9=80=80=E5=87=BA=E9=80=9A=E8=AF=9D=E7=95=8C=E9=9D=A2?=
+ =?UTF-8?q?=E4=BE=9D=E6=97=A7=E6=B2=A1=E6=B3=95=E6=94=B9=E5=8F=98=E7=8A=B6?=
+ =?UTF-8?q?=E6=80=81?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../com/android/systemui/statusbar/phone/PhoneStatusBar.java | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
+index 7d9d353..4b64d58 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
+@@ -37,6 +37,7 @@ import android.content.res.Resources;
+ import android.database.ContentObserver;
+ import android.graphics.Bitmap;
+ import android.graphics.Canvas;
++import android.graphics.Color;
+ import android.graphics.ColorFilter;
+ import android.graphics.PixelFormat;
+ import android.graphics.Point;
+@@ -4783,6 +4784,11 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
+         if (!isadd)
+             mWM.addView(view, params);
+         isadd = true;
++        //add by mare 2017/3/9 begin
++        //========================>
++        //收回绿条时，设置状态栏背景
++        mStatusBarView.setBackgroundColor(Color.TRANSPARENT);
++        //add by mare 2017/3/9 end
+     }
+ 
+     public void hideCallBar() {
+@@ -4792,6 +4798,12 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
+             mWM = null;
+ 
+         }
++        //add by mare 2017/3/9 begin
++        //========================>
++        //收回绿条时，设置状态栏背景和图标颜色
++        mStatusBarView.setBackgroundColor(Color.TRANSPARENT);
++        mIconController.setIconsDark(false, false);
++        //add by mare 2017/3/9 end
+     }
+ 
+     public class MyPhoneCallListener extends PhoneStateListener {
+-- 
+2.8.3.windows.1
+

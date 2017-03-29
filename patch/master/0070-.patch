@@ -1,0 +1,59 @@
+From 49fa38830b3f18d6b98cb35b74d8bc0ead2692e3 Mon Sep 17 00:00:00 2001
+From: mare <yangfan@qucci.com>
+Date: Mon, 27 Feb 2017 16:29:11 +0800
+Subject: [PATCH 070/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E8=B0=83=E6=95=B4=E9=80=9A=E7=9F=A5=E7=AE=A1=E7=90=86=E5=AD=97?=
+ =?UTF-8?q?=E4=BD=93=E5=92=8C=E5=B8=83=E5=B1=80?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/res/layout/status_bar_expanded_header.xml | 5 +++--
+ SystemUI/res/values/styles.xml                     | 6 ++++++
+ 2 files changed, 9 insertions(+), 2 deletions(-)
+
+diff --git a/SystemUI/res/layout/status_bar_expanded_header.xml b/SystemUI/res/layout/status_bar_expanded_header.xml
+index 4ec093d..e396c1d 100644
+--- a/SystemUI/res/layout/status_bar_expanded_header.xml
++++ b/SystemUI/res/layout/status_bar_expanded_header.xml
+@@ -34,8 +34,9 @@
+         android:id="@+id/qucii_settings_button_container"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+-        android:layout_alignParentEnd="true"
++        android:layout_alignParentBottom="true"
+         android:background="@drawable/ripple_drawable"
++        android:layout_marginBottom="@dimen/clock_collapsed_bottom_margin"
+         android:orientation="vertical" >
+ 
+         <com.android.systemui.statusbar.phone.SettingsButton
+@@ -57,7 +58,7 @@
+             android:background="@drawable/qucii_notification_manager_title_bg"
+             android:gravity="center"
+             android:text="@string/notification_manager"
+-            android:textAppearance="@style/TextAppearance.StatusBar.Expanded.Date" />
++            android:textAppearance="@style/TextAppearance.StatusBar.Expanded.NotificationManager" />
+     </RelativeLayout>
+ 
+     <com.android.systemui.statusbar.AlphaOptimizedFrameLayout
+diff --git a/SystemUI/res/values/styles.xml b/SystemUI/res/values/styles.xml
+index e8fc1c5..a561402 100644
+--- a/SystemUI/res/values/styles.xml
++++ b/SystemUI/res/values/styles.xml
+@@ -96,6 +96,12 @@
+         <item name="android:textStyle">normal</item>
+         <item name="android:textColor">#ffffff</item>
+     </style>
++    
++    <style name="TextAppearance.StatusBar.Expanded.NotificationManager">
++        <item name="android:textSize">15sp</item>
++        <item name="android:textStyle">normal</item>
++        <item name="android:textColor">#ffffff</item>
++    </style>
+ 
+     <style name="TextAppearance.StatusBar.Expanded.AboveDateTime">
+         <item name="android:textSize">@dimen/qs_emergency_calls_only_text_size</item>
+-- 
+2.8.3.windows.1
+

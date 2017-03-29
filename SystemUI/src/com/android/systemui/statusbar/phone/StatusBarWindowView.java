@@ -27,6 +27,7 @@ import android.graphics.Rect;
 import android.media.session.MediaSessionLegacyHelper;
 import android.os.IBinder;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -126,9 +127,10 @@ public class StatusBarWindowView extends FrameLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        mStackScrollLayout = (NotificationStackScrollLayout) findViewById(
-                R.id.notification_stack_scroller);
+        //mStackScrollLayout = (NotificationStackScrollLayout) findViewById(
+        //        R.id.notification_stack_scroller);
         mNotificationPanel = (NotificationPanelView) findViewById(R.id.notification_panel);
+		mStackScrollLayout = mNotificationPanel.getNotificationStackScrollLayout();
         mBrightnessMirror = findViewById(R.id.brightness_mirror);
     }
 
@@ -197,6 +199,18 @@ public class StatusBarWindowView extends FrameLayout {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
+    	//modify by mare 2017/3/24 begin
+        //========================>
+        //mNotificationPanel触摸状态放到最顶层
+    	if (ev.getActionMasked() == MotionEvent.ACTION_DOWN) {
+    		mNotificationPanel.setIsTouch(true);
+        }
+        if(ev.getActionMasked() == MotionEvent.ACTION_CANCEL||ev.getActionMasked() == MotionEvent.ACTION_UP){
+        	mNotificationPanel.setIsTouch(false);
+        }
+        //modify by mare 2017/3/24 end
+        
+        
         if (mBrightnessMirror != null && mBrightnessMirror.getVisibility() == VISIBLE) {
             // Disallow new pointers while the brightness mirror is visible. This is so that you
             // can't touch anything other than the brightness slider while the mirror is showing

@@ -24,7 +24,7 @@
 
     <integer name="default_circle_indicator_orientation">0</integer>
 
-    <dimen name="default_circle_indicator_radius">3dp</dimen>
+    <dimen name="default_circle_indicator_radius">2.6dp</dimen>
 
     <bool name="default_circle_indicator_snap">false</bool>
 

@@ -1,0 +1,382 @@
+From ee87fe1709c1a4706cf77ef90cc39cc80807a267 Mon Sep 17 00:00:00 2001
+From: zengqingshuai <yangfan@qucii.com>
+Date: Tue, 21 Mar 2017 10:11:30 +0800
+Subject: [PATCH 170/185] =?UTF-8?q?=E3=80=90bug=E3=80=91=E5=AE=9E=E7=8E=B0?=
+ =?UTF-8?q?=E6=B5=AE=E5=8A=A8=E9=80=9A=E7=9F=A5=E6=A0=8F=E4=B8=8D=E8=83=BD?=
+ =?UTF-8?q?=E4=B8=8B=E6=8B=89=EF=BC=8C=E8=BF=99=E9=87=8C=E4=BB=BB=E6=9C=89?=
+ =?UTF-8?q?=E5=81=B6=E7=8E=B0=E4=B8=8B=E6=8B=89=E9=97=AE=E9=A2=98=EF=BC=8C?=
+ =?UTF-8?q?=E7=A6=81=E6=AD=A2=E9=94=81=E5=B1=8F=E4=B8=8B=E6=8B=89=EF=BC=8C?=
+ =?UTF-8?q?=E8=B0=83=E6=95=B4=E4=B8=A4=E7=82=B9=E4=BD=8D=E7=BD=AE?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/res/layout/status_bar_expanded.xml        |  8 +++---
+ .../statusbar/phone/HeadsUpTouchHelper.java        | 22 +++++++--------
+ .../statusbar/phone/NotificationPanelView.java     | 21 ++++++++------
+ .../android/systemui/statusbar/phone/PanelBar.java |  7 +++++
+ .../systemui/statusbar/phone/PanelHolder.java      | 11 +++++---
+ .../systemui/statusbar/phone/PanelView.java        | 32 +++++++++++++++++++---
+ .../systemui/statusbar/phone/PhoneStatusBar.java   | 32 +++++++++++++++++++---
+ .../stack/NotificationStackScrollLayout.java       | 11 +++++++-
+ 8 files changed, 108 insertions(+), 36 deletions(-)
+
+diff --git a/SystemUI/res/layout/status_bar_expanded.xml b/SystemUI/res/layout/status_bar_expanded.xml
+index 8bebdbf..0593b1b 100644
+--- a/SystemUI/res/layout/status_bar_expanded.xml
++++ b/SystemUI/res/layout/status_bar_expanded.xml
+@@ -70,16 +70,16 @@
+             layout="@layout/keyguard_status_bar"
+             android:visibility="invisible" />
+ 
+-        <com.qucii.systemui.statusbar.phone.CirclePageIndicator
++        
++    </com.android.systemui.statusbar.phone.NotificationsQuickSettingsContainer>
++	
++    <com.qucii.systemui.statusbar.phone.CirclePageIndicator
+             android:id="@+id/qucii_indicator"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_gravity="bottom|center_horizontal"
+             android:layout_marginBottom="@dimen/pager_indicator_bottom" />
+         <include layout="@layout/status_bar_expanded_header" />
+-    </com.android.systemui.statusbar.phone.NotificationsQuickSettingsContainer>
+-	
+-    
+     
+     <LinearLayout
+             android:id="@+id/qucii_arrow_layout"
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/HeadsUpTouchHelper.java b/SystemUI/src/com/android/systemui/statusbar/phone/HeadsUpTouchHelper.java
+index e4b09f7..bc35e95 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/HeadsUpTouchHelper.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/HeadsUpTouchHelper.java
+@@ -107,19 +107,19 @@ public class HeadsUpTouchHelper implements Gefingerpoken {
+                 final float h = y - mInitialTouchY;
+                 if (mTouchingHeadsUpView && Math.abs(h) > mTouchSlop
+                         && Math.abs(h) > Math.abs(x - mInitialTouchX)) {
+-                	//add by zqs 2017/3/1 begin
++                	//delete by zqs 2017/3/21 begin
+                 	//========================>
+-                	//在悬浮框出现下滑时才加入模糊背景
+-                	if(h>0){
+-                		if (mPanel.mStatusBarState != StatusBarState.KEYGUARD&&mPanel.getBackground()==null) {
+-                			mPanel.mStatusBar.blurPanelBg();
+-                			//=========>
+-                			mPanel.updateIndicatorVisibility(View.VISIBLE);
+-                			//<=========
+-                		}
+-                	}
++                	//这里禁止悬浮通知下拉
++//                	if(h>0){
++//                		if (mPanel.mStatusBarState != StatusBarState.KEYGUARD&&mPanel.getBackground()==null) {
++//                			mPanel.mStatusBar.blurPanelBg();
++//                			//=========>
++//                			mPanel.updateIndicatorVisibility(View.VISIBLE);
++//                			//<=========
++//                		}
++//                	}
+                 	//<========================
+-                	//add by zqs 2017/3/1 end
++                	//delete by zqs 2017/3/21 end
+                     setTrackingHeadsUp(true);
+                     mCollapseSnoozes = h < 0;
+                     mInitialTouchX = x;
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+index 2388762..f414b96 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+@@ -208,7 +208,7 @@ public class NotificationPanelView extends PanelView implements
+     private boolean mIsExpansionFromHeadsUp;
+     private boolean mListenForHeadsUp;
+     private int mNavigationBarBottomHeight;
+-    private boolean mExpandingFromHeadsUp;
++    
+     private boolean mCollapsedOnDown;
+     private int mPositionMinSideMargin;
+     private int mLastOrientation = -1;
+@@ -273,7 +273,7 @@ public class NotificationPanelView extends PanelView implements
+ 
+         mNotificationsViewPager=(NotificationsViewPager)mNotificationContainerParent.findViewById(R.id.notification_viewpager);
+         NotificationPagerAdapter mAdapter = (NotificationPagerAdapter) mNotificationsViewPager.getAdapter();
+-		mIndicator = (CirclePageIndicator) mNotificationContainerParent.findViewById(R.id.qucii_indicator);
++		mIndicator = (CirclePageIndicator) findViewById(R.id.qucii_indicator);
+ 		mArrow = (ImageView)findViewById(R.id.qucii_arrow);
+ 		mArrowLayout =  findViewById(R.id.qucii_arrow_layout);
+ 		mIndicator.setViewPager(mNotificationsViewPager);
+@@ -375,15 +375,20 @@ public class NotificationPanelView extends PanelView implements
+     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+         super.onLayout(changed, left, top, right, bottom);
+ //        Log.e("=======onLayout======", "onLayout:mChangedBottom"+mChangedBottom);
+-        //add by zqs 2017/3/15 begin
++        //add by zqs 2017/3/21 begin
+         //========================>
+-        //这两个界面在layout时不重新刷新位置
+-        if(getIsTouchOrAnimation()){
+-        	mNotificationContainerParent.layout(left, top, right, noBottom);
+-        	mArrowLayout.layout(left, noBottom, right, mChangedBottom);
++        //这两个界面在layout时不重新刷新位置,加入条件判断是否时悬浮通知
++        if(is_Qucii_Headup()){
++        	mNotificationContainerParent.layout(left, top, right, bottom);
++    	}else{
++    		if(getIsTouchOrAnimation()){
++    			mNotificationContainerParent.layout(left, top, right, noBottom);
++    			mArrowLayout.layout(left, noBottom, right, mChangedBottom);
++    		}
++    		
+         }
+         mIndicator.layout(left, bottom-marginIndicatorBottom-mIndicator.getMeasuredHeight(), right, bottom-marginIndicatorBottom);
+- 	   	//add by zqs 2017/3/15 end
++ 	   	//add by zqs 2017/3/21 end
+         // Update Clock Pivot
+         mKeyguardStatusView.setPivotX(getWidth() / 2);
+         mKeyguardStatusView.setPivotY((FONT_HEIGHT - CAP_HEIGHT) / 2048f * mClockView.getTextSize());
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/PanelBar.java b/SystemUI/src/com/android/systemui/statusbar/phone/PanelBar.java
+index 21efa3c..1e0ccc3 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/PanelBar.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/PanelBar.java
+@@ -26,6 +26,8 @@ import android.widget.FrameLayout;
+ 
+ import java.util.ArrayList;
+ 
++import com.android.systemui.statusbar.StatusBarState;
++
+ public abstract class PanelBar extends FrameLayout {
+     public static final boolean DEBUG = false;
+     public static final String TAG = PanelBar.class.getSimpleName();
+@@ -192,6 +194,11 @@ public abstract class PanelBar extends FrameLayout {
+         mPanelExpandedFractionSum = 0f;
+         for (PanelView pv : mPanels) {
+             pv.setVisibility(expanded ? View.VISIBLE : View.INVISIBLE);
++        	//modify by zqs 2017/3/17 begin
++            //========================>
++            //在打开时判断显示两个点
++            pv.updateIndicatorVisibility(pv.mStatusBar.getBarState() == StatusBarState.KEYGUARD||pv.is_Qucii_Headup() ? INVISIBLE : VISIBLE);
++        	//modify by zqs 2017/3/17 end
+             // adjust any other panels that may be partially visible
+             if (expanded) {
+                 if (mState == STATE_CLOSED) {
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/PanelHolder.java b/SystemUI/src/com/android/systemui/statusbar/phone/PanelHolder.java
+index 4d0b47c..c535299 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/PanelHolder.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/PanelHolder.java
+@@ -89,14 +89,17 @@ public class PanelHolder extends FrameLayout {
+     public void setBar(PanelBar panelBar) {
+         mBar = panelBar;
+     }
+-    //add by zqs 2017/3/15 begin
++    //add by zqs 2017/3/21 begin
+     //========================>
+-    //这里刷新layout时不改变mNotificationPanel的位置
++    //这里刷新layout时不改变mNotificationPanel的位置，加入悬浮通知状况
+     @Override
+     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+     	super.onLayout(changed, left, top, right, bottom);
+-    	if(mNotificationPanel!=null&&mNotificationPanel.getIsTouchOrAnimation())
++    	if(mNotificationPanel!=null&&mNotificationPanel.is_Qucii_Headup()){
++    		mNotificationPanel.layout(left, top, right, bottom);
++    	}else if(mNotificationPanel!=null&&mNotificationPanel.getIsTouchOrAnimation()){
+     		mNotificationPanel.layout(left, top, right, mNotificationPanel.getChangedBottom());
++    	}
+     }
+-    //add by zqs 2017/3/15 end
++    //add by zqs 2017/3/21 end
+ }
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/PanelView.java b/SystemUI/src/com/android/systemui/statusbar/phone/PanelView.java
+index 5d926dd..7237380 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/PanelView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/PanelView.java
+@@ -123,6 +123,9 @@ public abstract class PanelView extends FrameLayout {
+     protected boolean mExpanding;
+     private boolean mGestureWaitForTouchSlop;
+     private boolean mIgnoreXTouchSlop;
++    
++    protected boolean mExpandingFromHeadsUp;
++    
+     private Runnable mPeekRunnable = new Runnable() {
+         @Override
+         public void run() {
+@@ -263,7 +266,12 @@ public abstract class PanelView extends FrameLayout {
+             mTrackingPointer = event.getPointerId(pointerIndex);
+         }
+         final float x = event.getX(pointerIndex);
+-        final float y = event.getY(pointerIndex);
++        final float y ;
++        if(mHeadsUpManager.hasPinnedHeadsUp()){
++        	y=Math.min(100, event.getY(pointerIndex));
++        }else{
++        	y = event.getY(pointerIndex);
++        }
+ 
+         if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
+             mGestureWaitForTouchSlop = isFullyCollapsed() || hasConflictingGestures();
+@@ -321,7 +329,6 @@ public abstract class PanelView extends FrameLayout {
+                 break;
+             case MotionEvent.ACTION_MOVE:
+                 float h = y - mInitialTouchY;
+-
+                 // If the panel was collapsed when touching, we only need to check for the
+                 // y-component of the gesture, as we have no conflicting horizontal gesture.
+                 if (Math.abs(h) > mTouchSlop
+@@ -367,6 +374,15 @@ public abstract class PanelView extends FrameLayout {
+         return !mGestureWaitForTouchSlop || mTracking;
+     }
+ 
++    
++	//modify by zqs 2017/3/21 begin
++    //========================>
++    //判断是否是悬浮通知状态
++    public boolean is_Qucii_Headup(){
++    	return mExpandingFromHeadsUp||mHeadsUpManager.hasPinnedHeadsUp();
++    }
++    //modify by zqs 2017/3/21 end
++    
+     /**
+      * @return whether the swiping direction is upwards and above a 45 degree angle compared to the
+      * horizontal direction
+@@ -409,6 +425,7 @@ public abstract class PanelView extends FrameLayout {
+             boolean expand = flingExpands(vel, vectorVel, x, y)
+                     || event.getActionMasked() == MotionEvent.ACTION_CANCEL
+                     || forceCancel;
++            
+             DozeLog.traceFling(expand, mTouchAboveFalsingThreshold,
+                     mStatusBar.isFalsingThresholdNeeded(),
+                     mStatusBar.isWakeUpComingFromTouch());
+@@ -421,7 +438,13 @@ public abstract class PanelView extends FrameLayout {
+                                 EventLogConstants.SYSUI_LOCKSCREEN_GESTURE_SWIPE_UP_UNLOCK,
+                                 heightDp, velocityDp);
+                     }
++           if(is_Qucii_Headup()){
++                 isTouch=false;
++                 expand=false;
++            }
+             fling(vel, expand, isFalseTouch(x, y));
++            	
++           
+             onTrackingStopped(expand);
+             mUpdateFlingOnLayout = expand && mPanelClosedOnDown && !mHasLayoutedSinceDown;
+             if (mUpdateFlingOnLayout) {
+@@ -654,6 +677,7 @@ public abstract class PanelView extends FrameLayout {
+ 
+     protected void flingToHeight(float vel, boolean expand, float target,
+             float collapseSpeedUpFactor, boolean expandBecauseOfFalsing) {
++    	Log.e("========flingToHeight=======", "flingToHeight:"+expand+",vel"+vel);
+         // Hack to make the expand transition look nice when clear all button is visible - we make
+         // the animation only to the last notification, and then jump to the maximum panel height so
+         // clear all just fades in and the decelerating motion is towards the last notification.
+@@ -675,7 +699,7 @@ public abstract class PanelView extends FrameLayout {
+ //            }
+             mFlingAnimationUtils.apply(animator, mExpandedHeight, target, vel, getHeight());
+ //            if (expandBecauseOfFalsing) {
+-                animator.setDuration(250);
++                animator.setDuration(350);
+ //            }
+         } else {
+             mFlingAnimationUtils.applyDismissing(animator, mExpandedHeight, target, vel,
+@@ -689,7 +713,7 @@ public abstract class PanelView extends FrameLayout {
+                         (animator.getDuration() * getCannedFlingDurationFactor()
+                                 / collapseSpeedUpFactor));
+             }else{
+-            	animator.setDuration(250);
++            	animator.setDuration(350);
+             }
+              //delete by zqs 2017/3/15 end
+         }
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
+index 8ac609f..7ff630a 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
+@@ -4217,7 +4217,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
+     @Override
+     public boolean onDraggedDown(View startingChild, int dragLengthY) {
+     	// 下拉显示通知by yangfan begin
+-    	mNotificationPanel.showPage(NotificationPanelView.NOTIFICATION_PAGE_INDEX);
++//    	mNotificationPanel.showPage(NotificationPanelView.NOTIFICATION_PAGE_INDEX);
+     	// 下拉显示通知 by yangfan end
+         if (hasActiveNotifications()) {
+             EventLogTags.writeSysuiLockscreenGesture(
+@@ -4225,12 +4225,36 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
+                     (int) (dragLengthY / mDisplayMetrics.density),
+                     0 /* velocityDp - N/A */);
+             // We have notifications, go to locked shade.
+-            goToLockedShade(startingChild);
++        	//delete by zqs 2017/3/17 begin
++            //========================>
++            //锁屏禁止下拉
++//            goToLockedShade(startingChild);
++            mHandler.postDelayed(new Runnable() {
++				
++				@Override
++				public void run() {
++					updateKeyguardState(false /* goingToFullShade */, true /* fromShadeLocked*/);
++					
++				}
++			},150);
++            //delete by zqs 2017/3/17 end
+             return true;
+         } else {
+-
++        	// We have notifications, go to locked shade.
++        	//modify by zqs 2017/3/17 begin
++            //========================>
++            //锁屏禁止下拉
++        	mHandler.postDelayed(new Runnable() {
++				
++				@Override
++				public void run() {
++					updateKeyguardState(false /* goingToFullShade */, true /* fromShadeLocked*/);
++					
++				}
++			},150);
++        	//modify by zqs 2017/3/17 end
+             // No notifications - abort gesture.
+-            goToLockedShade(startingChild);// goToLockedShade by yangfan
++//            goToLockedShade(startingChild);// goToLockedShade by yangfan
+             return false;
+         }
+     }
+diff --git a/SystemUI/src/com/android/systemui/statusbar/stack/NotificationStackScrollLayout.java b/SystemUI/src/com/android/systemui/statusbar/stack/NotificationStackScrollLayout.java
+index 4f7e717..4c0973d 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/stack/NotificationStackScrollLayout.java
++++ b/SystemUI/src/com/android/systemui/statusbar/stack/NotificationStackScrollLayout.java
+@@ -492,12 +492,21 @@ public class NotificationStackScrollLayout extends ViewGroup
+      * @param height the new height of the stack
+      */
+     public void setStackHeight(float height) {
++//    	Log.e("==setStackHeight====", "height"+height,new Throwable());
+     	//add by zqs 2017/3/16 begin
+         //========================>
+         //通知组的滑动效果上升高度多一个底部箭头高度
+     	if(mPhoneStatusBar.getBarState()!=StatusBarState.KEYGUARD){
+     		height=height-mArrowHeight;
+     	}
++    	boolean trackingHeadsUp = mTrackingHeadsUp || mHeadsUpManager.hasPinnedHeadsUp();
++    	//add by zqs 2017/3/21 begin
++        //========================>
++        //浮动通知时，这个值固定
++    	if(trackingHeadsUp){
++    		height=0;
++    	}
++    	//add by zqs 2017/3/21 end
+     	//add by zqs 2017/3/16 end
+         mLastSetStackHeight = height;
+         setIsExpanded(height > 0.0f);
+@@ -505,7 +514,6 @@ public class NotificationStackScrollLayout extends ViewGroup
+         int minStackHeight = getMinStackHeight();
+         int stackHeight;
+         float paddingOffset;
+-        boolean trackingHeadsUp = mTrackingHeadsUp || mHeadsUpManager.hasPinnedHeadsUp();
+         int normalUnfoldPositionStart = trackingHeadsUp ? mHeadsUpManager.getTopHeadsUpHeight()
+                 : minStackHeight;
+         if (newStackHeight - mTopPadding - mTopPaddingOverflow >= normalUnfoldPositionStart
+@@ -546,6 +554,7 @@ public class NotificationStackScrollLayout extends ViewGroup
+         if(!panelView.isNotificationView()&&!trackingHeadsUp){
+         	setStackTranslation(0);//
+         }else{
++//        	Log.e("=======paddingOffset======", "trackingHeadsUp"+trackingHeadsUp+"paddingOffset:"+paddingOffset+"height:"+height+",mHeadsUpManager.getTopHeadsUpHeight()"+mHeadsUpManager.getTopHeadsUpHeight());
+         	setStackTranslation(paddingOffset);//
+         }
+         //<=============================
+-- 
+2.8.3.windows.1
+

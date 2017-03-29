@@ -1,0 +1,134 @@
+From e4e0ac88bc756e407fc00e418403f6d70fe2a772 Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Fri, 3 Mar 2017 23:53:29 +0800
+Subject: [PATCH 099/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E4=BA=AE=E5=B1=8F=E6=9D=A5=E7=94=B5=E7=A6=81=E6=AD=A2=E7=8A=B6?=
+ =?UTF-8?q?=E6=80=81=E6=A0=8F=E4=B8=8B=E6=8B=89=E5=92=8C=E8=A7=A6=E6=91=B8?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../com/android/systemui/statusbar/phone/PanelBar.java  | 15 ++++++++++++++-
+ .../systemui/statusbar/phone/PhoneStatusBar.java        | 17 ++++++++++++++++-
+ 2 files changed, 30 insertions(+), 2 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/PanelBar.java b/SystemUI/src/com/android/systemui/statusbar/phone/PanelBar.java
+index 29c2ea8..e0e1dfc 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/PanelBar.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/PanelBar.java
+@@ -16,6 +16,7 @@
+ 
+ package com.android.systemui.statusbar.phone;
+ 
++import android.app.ActivityManager;
+ import android.content.Context;
+ import android.util.AttributeSet;
+ import android.util.Log;
+@@ -26,9 +27,10 @@ import android.widget.FrameLayout;
+ import java.util.ArrayList;
+ 
+ public abstract class PanelBar extends FrameLayout {
+-    public static final boolean DEBUG = false;
++    public static final boolean DEBUG = true;
+     public static final String TAG = PanelBar.class.getSimpleName();
+     private static final boolean SPEW = false;
++    private ActivityManager activityManager = null;
+ 
+     public static final void LOG(String fmt, Object... args) {
+         if (!DEBUG) return;
+@@ -105,6 +107,14 @@ public abstract class PanelBar extends FrameLayout {
+     public boolean panelsEnabled() {
+         return true;
+     }
++    
++    protected boolean isInCallUIActivity(){
++    	if(activityManager == null)
++    		activityManager = (ActivityManager)getContext().getSystemService(Context.ACTIVITY_SERVICE);
++    	String runningActivity=activityManager.getRunningTasks(1).get(0).topActivity.getClassName();
++    	android.util.Log.e("chengrq","runningActivity:" + runningActivity + "  packageName:" + getContext().getPackageName());
++    	return "com.android.incallui.InCallActivity".equals(runningActivity);
++    }
+ 
+     @Override
+     public boolean onTouchEvent(MotionEvent event) {
+@@ -116,6 +126,9 @@ public abstract class PanelBar extends FrameLayout {
+             }
+             return false;
+         }
++        if (isInCallUIActivity()) {
++			return false;
++		}// added by yangfan
+ 
+         // figure out which panel needs to be talked to here
+         if (event.getAction() == MotionEvent.ACTION_DOWN) {
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
+index 6500158..9f347d0 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
+@@ -98,6 +98,7 @@ import android.view.animation.LinearInterpolator;
+ import android.view.animation.PathInterpolator;
+ import android.widget.ImageView;
+ import android.widget.TextView;
++
+ import com.android.internal.logging.MetricsLogger;
+ import com.android.internal.statusbar.NotificationVisibility;
+ import com.android.internal.statusbar.StatusBarIcon;
+@@ -163,6 +164,7 @@ import com.android.systemui.statusbar.stack.NotificationStackScrollLayout.OnChil
+ import com.android.systemui.statusbar.stack.StackStateAnimator;
+ import com.android.systemui.statusbar.stack.StackViewState;
+ import com.android.systemui.volume.VolumeComponent;
++
+ import java.io.FileDescriptor;
+ import java.io.PrintWriter;
+ import java.util.ArrayList;
+@@ -173,6 +175,7 @@ import java.util.HashSet;
+ import java.util.List;
+ import java.util.Map;
+ import java.util.TreeSet;
++
+ import static android.app.StatusBarManager.NAVIGATION_HINT_BACK_ALT;
+ import static android.app.StatusBarManager.NAVIGATION_HINT_IME_SHOWN;
+ import static android.app.StatusBarManager.WINDOW_STATE_HIDDEN;
+@@ -185,6 +188,7 @@ import static com.android.systemui.statusbar.phone.BarTransitions.MODE_SEMI_TRAN
+ import static com.android.systemui.statusbar.phone.BarTransitions.MODE_TRANSLUCENT;
+ import static com.android.systemui.statusbar.phone.BarTransitions.MODE_TRANSPARENT;
+ import static com.android.systemui.statusbar.phone.BarTransitions.MODE_WARNING;
++
+ //add by mare
+ import java.io.FileOutputStream;
+ import java.io.FileInputStream;
+@@ -3726,6 +3730,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
+             // Keyguard.
+             mNotificationPanel.setTouchDisabled(true);
+         }
++        
+         instantExpandNotificationsPanel();
+         mLeaveOpenOnKeyguardHide = false;
+         if (mDraggedDownRow != null) {
+@@ -4075,11 +4080,21 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
+     private void instantExpandNotificationsPanel() {
+ 
+         // Make our window larger and the panel expanded.
++        if (isInCallUIActivity()) {
++			return ;
++		}// added by yangfan
+         makeExpandedVisible(true);
+         mNotificationPanel.instantExpand();
+     }
+ 
+-    private void instantCollapseNotificationPanel() {
++    private boolean isInCallUIActivity() {
++    	ActivityManager	activityManager = (ActivityManager)mContext.getSystemService(Context.ACTIVITY_SERVICE);
++    	String runningActivity=activityManager.getRunningTasks(1).get(0).topActivity.getClassName();
++    	android.util.Log.e("chengrq","runningActivity:" + runningActivity + "  packageName:" + mContext.getPackageName());
++    	return "com.android.incallui.InCallActivity".equals(runningActivity);
++	}
++
++	private void instantCollapseNotificationPanel() {
+         mNotificationPanel.instantCollapse();
+     }
+ 
+-- 
+2.8.3.windows.1
+

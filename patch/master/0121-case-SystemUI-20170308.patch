@@ -1,0 +1,134 @@
+From 94b2c7acdcba61b7fac0896daddd92c37eb1aa2d Mon Sep 17 00:00:00 2001
+From: mare <yangfan@qucci.com>
+Date: Wed, 8 Mar 2017 20:20:01 +0800
+Subject: [PATCH 121/185] =?UTF-8?q?=E3=80=90case=E3=80=91=E6=8F=90?=
+ =?UTF-8?q?=E4=BA=A4=E5=85=B6=E4=BB=96=E4=BA=BA=E4=BF=AE=E6=94=B9SystemUI?=
+ =?UTF-8?q?=E9=83=A8=E5=88=86=E4=BB=A3=E7=A0=8120170308?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/src/com/android/keyguard/KeyguardUpdateMonitor.java | 12 ++++++++++--
+ .../src/com/android/systemui/recents/RecentsActivity.java    |  9 +++++++++
+ .../src/com/android/systemui/statusbar/phone/PanelBar.java   |  2 +-
+ .../statusbar/stack/NotificationStackScrollLayout.java       | 10 ++++------
+ 4 files changed, 24 insertions(+), 9 deletions(-)
+
+diff --git a/SystemUI/src/com/android/keyguard/KeyguardUpdateMonitor.java b/SystemUI/src/com/android/keyguard/KeyguardUpdateMonitor.java
+index f4432ee..acbe290 100644
+--- a/SystemUI/src/com/android/keyguard/KeyguardUpdateMonitor.java
++++ b/SystemUI/src/com/android/keyguard/KeyguardUpdateMonitor.java
+@@ -983,11 +983,15 @@ public class KeyguardUpdateMonitor implements TrustManager.TrustListener {
+         public void onUEvent(UEvent event) {
+ 	    String status = event.get("STATUS");
+ 	    if(status.equals("down")){
++		Log.d("mare","key down");
+                isFingerUp = false;
+ 	    }else if(status.equals("up")){
++		Log.d("mare","key up");
+                isFingerUp = true;
+ 	    }
+-            //mHandler.post(Delay_Listening);
++	    if((!mScreenOn && isFpUnlockScreenOnSleepEnable()) || (mScreenOn && mDeviceInteractive)){
++            	mHandler.post(Delay_Listening);
++	    }
+         }
+     };
+ 
+@@ -1197,7 +1201,7 @@ public class KeyguardUpdateMonitor implements TrustManager.TrustListener {
+     private boolean shouldListenForFingerprint() {
+         //return (mKeyguardIsVisible || !mDeviceInteractive || mBouncer || mGoingToSleep)
+ 	FingerprintUnlockEnable = SystemProperties.getBoolean(FINGERPRINT_UNLOCK_SCREEN, false) ? true : false;
+-	if(SystemProperties.getBoolean(FINGERPRINT_UNLOCK_SCREEN_ONSLEEP, false)){
++	if(isFpUnlockScreenOnSleepEnable()){
+ 	    //if((!mKeyguardIsVisible) && (!mBouncer)){
+ 		//keyguardOrBouncerIsReady = false;
+ 	    //}else{
+@@ -1249,6 +1253,10 @@ public class KeyguardUpdateMonitor implements TrustManager.TrustListener {
+     }
+ 
+     //add by mare
++    private boolean isFpUnlockScreenOnSleepEnable(){
++	return SystemProperties.getBoolean(FINGERPRINT_UNLOCK_SCREEN_ONSLEEP, false);
++    }
++
+     private Runnable Delay_Listening = new Runnable() {
+         @Override
+         public void run() {
+diff --git a/SystemUI/src/com/android/systemui/recents/RecentsActivity.java b/SystemUI/src/com/android/systemui/recents/RecentsActivity.java
+index e58c831..083d82b 100644
+--- a/SystemUI/src/com/android/systemui/recents/RecentsActivity.java
++++ b/SystemUI/src/com/android/systemui/recents/RecentsActivity.java
+@@ -633,6 +633,7 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
+             mRecentsView.post(mAfterPauseRunnable);
+             mAfterPauseRunnable = null;
+         }
++	killFishJoy();
+     }
+ 
+     @Override
+@@ -874,4 +875,12 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
+     public void onSecondarySeekBarChanged(float progress) {
+         // Do nothing
+     }
++    
++    //add by chenshen
++    private void killFishJoy(){
++         String fishingPackName = "org.cocos2d.fishingjoy3.qihu";
++         mAM.forceStopPackage(fishingPackName);
++         Log.v("chenshen","kill fishingj0y3");
++    }
++
+ }
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/PanelBar.java b/SystemUI/src/com/android/systemui/statusbar/phone/PanelBar.java
+index ba79e24..21efa3c 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/PanelBar.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/PanelBar.java
+@@ -27,7 +27,7 @@ import android.widget.FrameLayout;
+ import java.util.ArrayList;
+ 
+ public abstract class PanelBar extends FrameLayout {
+-    public static final boolean DEBUG = true;
++    public static final boolean DEBUG = false;
+     public static final String TAG = PanelBar.class.getSimpleName();
+     private static final boolean SPEW = false;
+     private ActivityManager activityManager = null;
+diff --git a/SystemUI/src/com/android/systemui/statusbar/stack/NotificationStackScrollLayout.java b/SystemUI/src/com/android/systemui/statusbar/stack/NotificationStackScrollLayout.java
+index 7051ad4..838311e 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/stack/NotificationStackScrollLayout.java
++++ b/SystemUI/src/com/android/systemui/statusbar/stack/NotificationStackScrollLayout.java
+@@ -517,10 +517,8 @@ public class NotificationStackScrollLayout extends ViewGroup
+                         mCollapseSecondCardPadding);
+             } else {
+             	//add by mare 2017/2/24 begin
+-            	//弹出悬浮框时选择page 0
+             	//===================>
+             	panelView.showPage(0);
+-            	//《===================
+             	//add by mare 2017/2/24 end
+                 translationY = (int) (height - mHeadsUpManager.getTopHeadsUpHeight());
+             }
+@@ -530,15 +528,15 @@ public class NotificationStackScrollLayout extends ViewGroup
+         if (stackHeight != mCurrentStackHeight) {
+             mCurrentStackHeight = stackHeight;
+             updateAlgorithmHeightAndPadding();
+-            requestChildrenUpdate();//禁止通知在当前container内滚动
++            requestChildrenUpdate();//add by mare
+         }
+         //modify by mare 2017/02/28 begin
+         //=============================>
+-        //这里修改快捷图标面板显示半屏可以滑动问题
++        //
+         if(!panelView.isNotificationView()&&!trackingHeadsUp){
+-        	setStackTranslation(0);//不允许通知和头部一起滚动
++        	setStackTranslation(0);//
+         }else{
+-        	setStackTranslation(paddingOffset);//允许通知和头部一起滚动
++        	setStackTranslation(paddingOffset);//
+         }
+         //<=============================
+         //modify by mare 2017/02/28 end
+-- 
+2.8.3.windows.1
+

@@ -88,11 +88,11 @@ public class ProfileTile extends QSTile<QSTile.BooleanState> {
             nextMode = AudioManager.RINGER_MODE_SILENT;
         } else if (ringMode == AudioManager.RINGER_MODE_SILENT) {
             nextMode = AudioManager.RINGER_MODE_NORMAL;
-            //weiliji add begin    
+            //mare add begin    
             Intent i = new Intent("com.qucci.switch_slient");
             i.putExtra("qucci_switch_slient", true);
             mContext.sendBroadcast(i);
-            //weiliji add end
+            //mare add end
         } else {    
             nextMode = AudioManager.RINGER_MODE_NORMAL;
         }

@@ -1,0 +1,65 @@
+From 1e94183b284e7cfb38175a17a78a41c983ebbb97 Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Tue, 14 Mar 2017 14:05:30 +0800
+Subject: [PATCH 141/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E9=80=9A=E7=9F=A5=E5=8C=BA=E5=9F=9F=E5=8F=AA=E6=98=BE=E7=A4=BA?=
+ =?UTF-8?q?=E4=B8=80=E4=B8=AAUSB=E5=9B=BE=E6=A0=87?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../systemui/statusbar/phone/IconMerger.java        | 21 +++++++++++++--------
+ 1 file changed, 13 insertions(+), 8 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/IconMerger.java b/SystemUI/src/com/android/systemui/statusbar/phone/IconMerger.java
+index 6a245a2..9ef027c 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/IconMerger.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/IconMerger.java
+@@ -18,6 +18,7 @@ package com.android.systemui.statusbar.phone;
+ 
+ import android.content.Context;
+ import android.util.AttributeSet;
++import android.util.Log;
+ import android.view.View;
+ import android.widget.LinearLayout;
+ 
+@@ -53,23 +54,27 @@ public class IconMerger extends LinearLayout implements SignalStateChangeListene
+     //delete by mare 2017/3/6 begin
+     //=======================>
+     //这里改回原来的宽度判断
+-//    @Override
+-//    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+-//        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
++    @Override
++    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
++        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+         
+         
+-        // we need to constrain this to an integral multiple of our children
+-//        int width = getMeasuredWidth();
+-//		//modified  by yangfan
++         //we need to constrain this to an integral multiple of our children
++        int width = getMeasuredWidth();
++		//modified  by yangfan
+ //        if (mClockLocation == ClockController.STYLE_CLOCK_CENTER) {
+ //            int totalWidth = getResources().getDisplayMetrics().widthPixels;
+ //            width = totalWidth / 2 - mIconSize * 2;
+ //        }
+ //        int iconMegerSize = width - (width % mIconSize);
+ //        Log.d(TAG, "iconMegerSize : " + iconMegerSize + "mIconSize : " + mIconSize);
+-//        setMeasuredDimension(getMeasuredWidth()/*iconMegerSize*/, getMeasuredHeight());
++        View firstChild = getChildAt(0);
++        if (null != firstChild) {
++        	width = firstChild.getMeasuredWidth();
++		}
++        setMeasuredDimension(width/*iconMegerSize*/, getMeasuredHeight());
+ 		//modified  by yangfan
+-//    }
++    }
+     //delete by mare 2017/3/6 end
+ 
+     @Override
+-- 
+2.8.3.windows.1
+

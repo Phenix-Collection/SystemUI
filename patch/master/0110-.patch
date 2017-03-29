@@ -1,0 +1,39 @@
+From c1b51033b868ede7bfff4cf6887f526826cc22e4 Mon Sep 17 00:00:00 2001
+From: mare <yangfan@qucii.com>
+Date: Tue, 7 Mar 2017 14:36:30 +0800
+Subject: [PATCH 110/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E9=94=81=E5=B1=8F=E6=BB=91=E5=8A=A8=E8=A7=A3=E9=94=81=EF=BC=8C?=
+ =?UTF-8?q?=E5=8E=BB=E6=8E=89=E6=BB=91=E5=8A=A8=E6=97=B6=E7=9A=84=E4=BA=AE?=
+ =?UTF-8?q?=E5=BA=A6=E5=8F=98=E5=8C=96?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../com/android/systemui/statusbar/phone/PhoneStatusBarView.java | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarView.java b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarView.java
+index 30467c9..2243949 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarView.java
+@@ -368,9 +368,14 @@ public class PhoneStatusBarView extends PanelBar {
+     public void panelExpansionChanged(PanelView panel, float frac, boolean expanded) {
+         super.panelExpansionChanged(panel, frac, expanded);
+         mPanelFraction = frac;
+-        updateScrimFraction();
++        //remove by mare 2017/3/7 begin
++        //===========================>
++        //这里去掉作用是不改变锁屏滑动解锁时的亮度变化
++//        updateScrimFraction();
++        //remove by mare 2017/3/7 end
+     }
+-
++    //Note by mare 2017/3/7
++    //通知前的蒙层画布
+     private void updateScrimFraction() {
+         float scrimFraction = Math.max(mPanelFraction - mMinFraction / (1.0f - mMinFraction), 0);
+         mScrimController.setPanelExpansion(scrimFraction);
+-- 
+2.8.3.windows.1
+

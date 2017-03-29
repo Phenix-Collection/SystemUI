@@ -1,0 +1,76 @@
+From 9d567899d6ae9289003f1ef53b292acc7bfa8b73 Mon Sep 17 00:00:00 2001
+From: weiliji <yangfan@qucii.com>
+Date: Mon, 6 Feb 2017 09:04:47 +0800
+Subject: [PATCH 005/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E6=B7=BB=E5=8A=A0=E7=8A=B6=E6=80=81=E6=A0=8F=E7=A6=81=E7=94=A8?=
+ =?UTF-8?q?qs=20pannel=E5=BF=AB=E9=80=9F=E8=AE=BE=E7=BD=AE=E6=98=BE?=
+ =?UTF-8?q?=E7=A4=BA=E5=BC=80=E5=85=B3=EF=BC=8C=E9=BB=98=E8=AE=A4=E4=B8=8D?=
+ =?UTF-8?q?=E6=98=BE=E7=A4=BA?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ "SystemUI/build_windows--\351\200\232\347\237\245\346\240\217.xml"    | 3 +--
+ .../com/android/systemui/statusbar/phone/NotificationPanelView.java   | 4 ++--
+ SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java | 4 +++-
+ 3 files changed, 6 insertions(+), 5 deletions(-)
+
+diff --git "a/SystemUI/build_windows--\351\200\232\347\237\245\346\240\217.xml" "b/SystemUI/build_windows--\351\200\232\347\237\245\346\240\217.xml"
+index 6a350e9..18f5e63 100644
+--- "a/SystemUI/build_windows--\351\200\232\347\237\245\346\240\217.xml"
++++ "b/SystemUI/build_windows--\351\200\232\347\237\245\346\240\217.xml"
+@@ -90,8 +90,7 @@
+ <!-- 应用名称 -->  
+     <property name="appName" value="${ant.project.name}"/>  
+     <!-- SDK目录(获取操作系统环境变量ANDROID_SDK_HOME的便 -->  
+-    <property name="sdk-folder" value="D:/Tools/Android/adt-bundle-windows-x86_64-20140702/sdk" />  
+-    <!--  <property name="sdk-folder" value="${env.Android_SDK_HOME}" />   -->    
++    <property name="sdk-folder" value="${env.Android_SDK_HOME}" />     
+     <!-- SDK指定平台目录 -->  
+     <property name="sdk-platform-folder" value="${sdk-folder}/platforms/android-23"/>  
+     <!-- SDK中tools目录 -->  
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+index c7d96de..2f097cf 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+@@ -75,7 +75,7 @@ public class NotificationPanelView extends PanelView implements
+ 
+     private static final boolean DEBUG = true;  //weiliji modify
+     public static final String TAG = NotificationPanelView.class.getSimpleName();
+- 
++    public static final boolean QUCII_DISABLE_QS_PANNEL = true ;  //weiliji add
+     // Cap and total height of Roboto font. Needs to be adjusted when font for the big clock is
+     // changed.
+     private static final int CAP_HEIGHT = 1456;
+@@ -470,7 +470,7 @@ public class NotificationPanelView extends PanelView implements
+     }
+ 
+     public void setQsExpansionEnabled(boolean qsExpansionEnabled) {
+-        //mQsExpansionEnabled = qsExpansionEnabled;   //weiliji remove temp
++        mQsExpansionEnabled = qsExpansionEnabled;  
+         mHeader.setClickable(qsExpansionEnabled);
+     }
+ 
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
+index 070a66f..0d554ca 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
+@@ -1456,11 +1456,13 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
+      * the user intends to use the lock screen user switcher, QS in not needed.
+      */
+     private void updateQsExpansionEnabled() {
++        Log.d(TAG, "weiliji updateQsExpansionEnabled()" );
++        Log.d(TAG, "weiliji show the trace info  "+ Log.getStackTraceString(new Throwable()));     
+         mNotificationPanel.setQsExpansionEnabled(isDeviceProvisioned()
+                 && (mUserSetup || mUserSwitcherController == null
+                         || !mUserSwitcherController.isSimpleUserSwitcher())
+                 && ((mDisabled2 & StatusBarManager.DISABLE2_QUICK_SETTINGS) == 0)
+-                && !ONLY_CORE_APPS);
++                && !ONLY_CORE_APPS && !NotificationPanelView.QUCII_DISABLE_QS_PANNEL);
+     }
+ 
+     private void updateNotificationShadeForChildren() {
+-- 
+2.8.3.windows.1
+

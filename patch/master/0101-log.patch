@@ -1,0 +1,52 @@
+From 2cf682cc144c5ee0f82895eea4861265a5e4e672 Mon Sep 17 00:00:00 2001
+From: mare <yangfan@qucii.com>
+Date: Sat, 4 Mar 2017 11:32:45 +0800
+Subject: [PATCH 101/185] =?UTF-8?q?=E3=80=90=E9=81=97=E6=BC=8F=E3=80=91?=
+ =?UTF-8?q?=E5=8E=BB=E6=8E=89log=EF=BC=8C=E5=8A=A0=E5=85=A5=E4=B8=8D?=
+ =?UTF-8?q?=E5=B0=8F=E5=BF=83=E5=8E=BB=E6=8E=89=E7=9A=84=E4=BB=A3=E7=A0=81?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../statusbar/phone/KeyguardBottomAreaView.java         | 17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/KeyguardBottomAreaView.java b/SystemUI/src/com/android/systemui/statusbar/phone/KeyguardBottomAreaView.java
+index ba63936..5381f27 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/KeyguardBottomAreaView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/KeyguardBottomAreaView.java
+@@ -543,7 +543,6 @@ public class KeyguardBottomAreaView extends FrameLayout implements View.OnClickL
+     }
+ 
+     public KeyguardAffordanceView getRightView() {
+-    	Log.e("====getRightView=====", "",new Throwable());
+         return mCameraImageView;
+     }
+ 
+@@ -618,14 +617,14 @@ public class KeyguardBottomAreaView extends FrameLayout implements View.OnClickL
+     }
+ 
+     private void startFinishDozeAnimationElement(View element, long delay) {
+-//        element.setAlpha(0f);
+-//        element.setTranslationY(element.getHeight() / 2);
+-//        element.animate()
+-//                .alpha(1f)
+-//                .translationY(0f)
+-//                .setInterpolator(mLinearOutSlowInInterpolator)
+-//                .setStartDelay(delay)
+-//                .setDuration(DOZE_ANIMATION_ELEMENT_DURATION);
++        element.setAlpha(0f);
++        element.setTranslationY(element.getHeight() / 2);
++        element.animate()
++                .alpha(1f)
++                .translationY(0f)
++                .setInterpolator(mLinearOutSlowInInterpolator)
++                .setStartDelay(delay)
++                .setDuration(DOZE_ANIMATION_ELEMENT_DURATION);
+     }
+ 
+     private final BroadcastReceiver mDevicePolicyReceiver = new BroadcastReceiver() {
+-- 
+2.8.3.windows.1
+

@@ -1,0 +1,66 @@
+From a265e96e987b4de0dd4c8a9c52ceb039f0756f13 Mon Sep 17 00:00:00 2001
+From: zengqingshuai <yangfan@qucii.com>
+Date: Thu, 9 Mar 2017 20:10:29 +0800
+Subject: [PATCH 130/185] =?UTF-8?q?=E3=80=90=E6=95=85=E9=9A=9C=E3=80=91?=
+ =?UTF-8?q?=E4=BF=AE=E5=A4=8D=E5=8F=B3=E4=BE=A7=E5=9B=BE=E6=A0=87=E5=A4=AA?=
+ =?UTF-8?q?=E5=A4=9A=E5=AF=BC=E8=87=B4=E5=92=8C=E6=97=B6=E9=97=B4=E9=87=8D?=
+ =?UTF-8?q?=E5=8F=A0=E9=97=AE=E9=A2=98?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../systemui/statusbar/phone/PhoneStatusBarView.java   | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarView.java b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarView.java
+index 2243949..0f5c61e 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarView.java
+@@ -99,9 +99,10 @@ public class PhoneStatusBarView extends PanelBar {
+     //add by zqs 2017/3/6 begin
+     //=======================>
+     //这里判断左侧大于时钟左边，然后截取部分显示
+-    private View mNotificationIconsParent;
++    private View mNotificationIconsParent,mSystemIcons;
+     private View centerClock;
+     Rect outRect=new Rect();
++    Rect outRectSys=new Rect();
+     //add by zqs 2017/3/6 end
+     @Override
+     public void onFinishInflate() {
+@@ -110,6 +111,7 @@ public class PhoneStatusBarView extends PanelBar {
+         //=======================>
+         //这里判断左侧大于时钟左边，然后截取部分显示
+         mNotificationIconsParent=findViewById(R.id.notification_icon_area_inner);
++        mSystemIcons=findViewById(R.id.statusIcons);
+         centerClock=findViewById(R.id.center_clock);
+         //add by zqs 2017/3/6 end
+         
+@@ -131,9 +133,23 @@ public class PhoneStatusBarView extends PanelBar {
+ 				mNotificationIconsParent.layout(mNotificationIconsParent.getLeft(), mNotificationIconsParent.getTop(),
+ 						mNotificationIconsParent.getLeft() + width, mNotificationIconsParent.getBottom());
+ 			}
++			//add by zqs 2017/3/9 begin
++	        //=======================>
++	        //这里判断右边部分左侧小于时钟右侧边，就截取部分显示
++			mSystemIcons.getBoundsOnScreen(outRectSys);
++			
++			int totalRight=centerClock.getRight();
++			if(totalRight>outRectSys.left){
++				int width=outRectSys.right-totalRight-10;
++				mSystemIcons.layout(mSystemIcons.getRight()-width, mSystemIcons.getTop(),
++						mSystemIcons.getRight(), mSystemIcons.getBottom());
++			}
++			//add by zqs 2017/3/9 end
+ 		}else{
+ 			mNotificationIconsParent.layout(mNotificationIconsParent.getLeft(), mNotificationIconsParent.getTop(),
+ 					mNotificationIconsParent.getLeft() + mNotificationIconsParent.getMeasuredWidth(), mNotificationIconsParent.getBottom());
++			mSystemIcons.layout(mSystemIcons.getRight() - mSystemIcons.getMeasuredWidth(), mSystemIcons.getTop(),
++					mSystemIcons.getRight(), mSystemIcons.getBottom());
+ 		}
+ 	}
+     //add by zqs 2017/3/6 end
+-- 
+2.8.3.windows.1
+

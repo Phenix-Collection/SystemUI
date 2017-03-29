@@ -1,0 +1,29 @@
+From 982ac9e307d795df607b12ad4a4eb54daae18d87 Mon Sep 17 00:00:00 2001
+From: mare <yangfan@qucii.com>
+Date: Sat, 25 Feb 2017 09:42:22 +0800
+Subject: [PATCH 068/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E5=8A=A0=E5=85=A5=E9=81=97=E6=BC=8F=E7=9A=84=E5=88=B7=E6=96=B0?=
+ =?UTF-8?q?=E4=BB=A3=E7=A0=81?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../src/com/android/systemui/statusbar/phone/NotificationPanelView.java  | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+index fc795a9..aca1960 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+@@ -1376,6 +1376,7 @@ public class NotificationPanelView extends PanelView implements
+         //=========================>
+         //加入设置通知栏page1位置解决显示半屏问题
+         mQsContainer_Qucii.setY(getHeaderTranslation());
++        mQsContainer_Qucii.invalidate();
+         //<=========================
+         //add by zqs 2017/2/24 end 
+         
+-- 
+2.8.3.windows.1
+

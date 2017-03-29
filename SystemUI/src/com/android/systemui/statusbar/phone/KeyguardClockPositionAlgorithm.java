@@ -18,6 +18,7 @@ package com.android.systemui.statusbar.phone;
 
 import android.content.res.Resources;
 import android.graphics.Path;
+import android.util.Log;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.PathInterpolator;
 
@@ -97,7 +98,14 @@ public class KeyguardClockPositionAlgorithm {
     }
 
     public void run(Result result) {
-        int y = getClockY() - mKeyguardStatusHeight / 2;
+    	//modify by mare 2017/3/4 begin
+        //========================>
+        //固定锁屏界面时间高度为120
+//        int y = (int) (getClockY() - /*mKeyguardStatusHeight / 2*/mKeyguardStatusHeight);
+//        y = y <= 120 ? 120 : y;
+        int y = 160;
+        //modify by mare 2017/3/4 end
+        Log.i(this.getClass().getSimpleName(), "getClockY() : " + getClockY() + " , mKeyguardStatusHeight : " + mKeyguardStatusHeight );
         float clockAdjustment = getClockYExpansionAdjustment();
         float topPaddingAdjMultiplier = getTopPaddingAdjMultiplier();
         result.stackScrollerPaddingAdjustment = (int) (clockAdjustment*topPaddingAdjMultiplier);

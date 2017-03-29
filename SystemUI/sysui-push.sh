@@ -1,6 +1,7 @@
 #!/bin/sh
 adb remount
-adb push F:/code/qucii/qucii/SystemUI/bin/SystemUI.apk system/priv-app/SystemUI/
+cur_dir=$(cd "$(dirname "$0")"; pwd)
+adb push $cur_dir/bin/SystemUI.apk system/priv-app/SystemUI/
 #adb shell am force-stop com.android.systemui
 PROCESS=`adb shell ps |grep $com.android.systemui|grep -v grep|grep -v PPID |awk '{ print $2}'`
 # com.android.systemui

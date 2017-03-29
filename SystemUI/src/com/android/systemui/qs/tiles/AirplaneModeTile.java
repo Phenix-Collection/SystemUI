@@ -16,12 +16,15 @@
 
 package com.android.systemui.qs.tiles;
 
+import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
+import android.provider.Settings;
 import android.provider.Settings.Global;
+
 
 import com.android.internal.logging.MetricsLogger;
 import com.android.systemui.R;
@@ -30,17 +33,22 @@ import com.android.systemui.qs.QSTile;
 
 /** Quick settings tile: Airplane mode **/
 public class AirplaneModeTile extends QSTile<QSTile.BooleanState> {
+    private static final Intent WIRELESS_SETTINGS = new Intent(Settings.ACTION_SETTINGS);// modified by yangfan
     private final AnimationIcon mEnable =
             new AnimationIcon(R.drawable.ic_signal_airplane_enable_animation);
     private final AnimationIcon mDisable =
             new AnimationIcon(R.drawable.ic_signal_airplane_disable_animation);
     private final GlobalSetting mSetting;
+    
+    private final int mAirDisable = R.drawable.ic_qs_airplane_disable;
+    private final int mAirEnable = R.drawable.ic_qs_airplane_enable;
 
     private boolean mListening;
-
+    private BluetoothAdapter bluetoothAdapter;
+    
     public AirplaneModeTile(Host host) {
         super(host);
-
+        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         mSetting = new GlobalSetting(mContext, mHandler, Global.AIRPLANE_MODE_ON) {
             @Override
             protected void handleValueChanged(int value) {
@@ -62,6 +70,11 @@ public class AirplaneModeTile extends QSTile<QSTile.BooleanState> {
         mDisable.setAllowAnimation(true);
     }
 
+    @Override
+    public void handleLongClick() {
+        mHost.startActivityDismissingKeyguard(WIRELESS_SETTINGS);
+    }// added by yangfan
+
     private void setEnabled(boolean enabled) {
         final ConnectivityManager mgr =
                 (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -75,16 +88,38 @@ public class AirplaneModeTile extends QSTile<QSTile.BooleanState> {
         state.value = airplaneMode;
         state.visible = true;
         state.label = mContext.getString(R.string.airplane_mode);
+
         if (airplaneMode) {
-            state.icon = mEnable;
+            state.icon = ResourceIcon.get(mAirEnable);
             state.contentDescription =  mContext.getString(
                     R.string.accessibility_quick_settings_airplane_on);
         } else {
-            state.icon = mDisable;
+            state.icon = ResourceIcon.get(mAirDisable);
             state.contentDescription =  mContext.getString(
-                    R.string.accessibility_quick_settings_airplane_off);
+                    R.string.accessibility_quick_settings_airplane_off); 
         }
     }
+
+	public boolean turnOffBluetooth() {
+		if (bluetoothAdapter != null) {
+			return bluetoothAdapter.disable();
+		}
+		return false;
+	}
+
+	public boolean turnOnBluetooth() {
+		if (bluetoothAdapter != null) {
+			return bluetoothAdapter.enable();
+		}
+		return false;
+	}
+
+	public boolean isBluetoothEnabled() {
+		if (bluetoothAdapter != null) {
+			return bluetoothAdapter.isEnabled();
+		}
+		return false;
+	}
 
     @Override
     public int getMetricsCategory() {

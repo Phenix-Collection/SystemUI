@@ -1,0 +1,32 @@
+From 91a2b64310a92604735d942e7ac0f35b21eb6b90 Mon Sep 17 00:00:00 2001
+From: mare <yangfan@qucci.com>
+Date: Thu, 2 Mar 2017 14:45:14 +0800
+Subject: [PATCH 091/185] =?UTF-8?q?=E3=80=90=E6=95=85=E9=9A=9C=E3=80=91?=
+ =?UTF-8?q?=E5=8D=95=E5=87=BB=E7=8A=B6=E6=80=81=E6=A0=8F=EF=BC=8C=E8=87=AA?=
+ =?UTF-8?q?=E5=8A=A8=E4=B8=8B=E6=8B=89=E6=98=BE=E7=A4=BA=E9=80=9A=E7=9F=A5?=
+ =?UTF-8?q?=E4=B8=AD=E5=BF=83=E5=90=8E=E5=8F=88=E8=87=AA=E5=8A=A8=E5=9B=9E?=
+ =?UTF-8?q?=E6=94=B6?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/src/com/android/systemui/statusbar/phone/PanelView.java | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/PanelView.java b/SystemUI/src/com/android/systemui/statusbar/phone/PanelView.java
+index 39559ae..1b1f6bc 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/PanelView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/PanelView.java
+@@ -285,7 +285,7 @@ public abstract class PanelView extends FrameLayout {
+                     onTrackingStarted();
+                 }
+                 if (isFullyCollapsed() && !mHeadsUpManager.hasPinnedHeadsUp()) {
+-                    schedulePeek();
++                    //schedulePeek();
+                 }
+                 break;
+ 
+-- 
+2.8.3.windows.1
+

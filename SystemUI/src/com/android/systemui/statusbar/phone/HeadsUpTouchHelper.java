@@ -18,12 +18,14 @@ package com.android.systemui.statusbar.phone;
 
 import android.content.Context;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewConfiguration;
 
 import com.android.systemui.Gefingerpoken;
 import com.android.systemui.R;
 import com.android.systemui.statusbar.ExpandableNotificationRow;
 import com.android.systemui.statusbar.ExpandableView;
+import com.android.systemui.statusbar.StatusBarState;
 import com.android.systemui.statusbar.policy.HeadsUpManager;
 import com.android.systemui.statusbar.stack.NotificationStackScrollLayout;
 
@@ -105,6 +107,19 @@ public class HeadsUpTouchHelper implements Gefingerpoken {
                 final float h = y - mInitialTouchY;
                 if (mTouchingHeadsUpView && Math.abs(h) > mTouchSlop
                         && Math.abs(h) > Math.abs(x - mInitialTouchX)) {
+                	//delete by mare 2017/3/21 begin
+                	//========================>
+                	//这里禁止悬浮通知下拉
+//                	if(h>0){
+//                		if (mPanel.mStatusBarState != StatusBarState.KEYGUARD&&mPanel.getBackground()==null) {
+//                			mPanel.mStatusBar.blurPanelBg();
+//                			//=========>
+//                			mPanel.updateIndicatorVisibility(View.VISIBLE);
+//                			//<=========
+//                		}
+//                	}
+                	//<========================
+                	//delete by mare 2017/3/21 end
                     setTrackingHeadsUp(true);
                     mCollapseSnoozes = h < 0;
                     mInitialTouchX = x;

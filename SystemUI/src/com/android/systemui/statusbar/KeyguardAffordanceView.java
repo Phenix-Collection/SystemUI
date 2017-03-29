@@ -421,6 +421,13 @@ public class KeyguardAffordanceView extends ImageView {
      */
     public void setImageScale(float imageScale, boolean animate, long duration,
             Interpolator interpolator) {
+    	//add by mare 2017/3/4 begin
+        //========================>
+        //让锁屏相机图片不能改变
+    	if(!changeEnable)
+    		return;
+    	//<========================
+        //add by mare 2017/3/4 end
         cancelAnimator(mScaleAnimator);
         if (!animate) {
             mImageScale = imageScale;
@@ -467,7 +474,16 @@ public class KeyguardAffordanceView extends ImageView {
     public void setImageAlpha(float alpha, boolean animate) {
         setImageAlpha(alpha, animate, -1, null, null);
     }
-
+    //add by mare 2017/3/4 begin
+    //========================>
+    //让锁屏相机图片不能改变
+    private boolean changeEnable=true;
+    public void setImageChangeEnable(boolean alpha){
+    	changeEnable=alpha;
+    }
+    //<========================
+    //add by mare 2017/3/4 end
+    
     /**
      * Sets the alpha of the containing image
      *
@@ -479,6 +495,13 @@ public class KeyguardAffordanceView extends ImageView {
      */
     public void setImageAlpha(float alpha, boolean animate, long duration,
             Interpolator interpolator, Runnable runnable) {
+    	//add by mare 2017/3/4 begin
+        //========================>
+        //让锁屏相机图片不能改变
+    	if(!changeEnable)
+    		return;
+    	//<========================
+        //add by mare 2017/3/4 end
         cancelAnimator(mAlphaAnimator);
         alpha = mLaunchingAffordance ? 0 : alpha;
         int endAlpha = (int) (alpha * 255);

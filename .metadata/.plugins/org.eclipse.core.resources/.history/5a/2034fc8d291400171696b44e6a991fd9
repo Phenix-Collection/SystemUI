@@ -1,0 +1,156 @@
+From ed499e19a74de45f974012f376e23e08d9d000b8 Mon Sep 17 00:00:00 2001
+From: mare <yangfan@qucci.com>
+Date: Tue, 14 Mar 2017 20:26:38 +0800
+Subject: [PATCH 143/185] =?UTF-8?q?[case]=E6=B7=BB=E5=8A=A0=E5=90=B4?=
+ =?UTF-8?q?=E6=95=8F=E7=9A=84=E6=8C=87=E7=BA=B9=E7=9B=B8=E5=85=B3=E4=BF=AE?=
+ =?UTF-8?q?=E6=94=B9=E5=92=8C=E9=99=88=E6=B7=B1=E7=9A=84=E5=BA=94=E7=94=A8?=
+ =?UTF-8?q?=E9=94=81=E4=BF=AE=E6=94=B9?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ Keyguard/res/values-zh-rCN/strings.xml             |  2 +-
+ Keyguard/res/values/strings.xml                    |  2 +-
+ .../android/keyguard/KeyguardUpdateMonitor.java    | 11 +++++++++-
+ .../applock/ConfirmAppLockPasswordActivity.java    |  5 ++++-
+ .../phone/FingerprintUnlockController.java         | 25 ++++++++++++++++++++++
+ 5 files changed, 41 insertions(+), 4 deletions(-)
+
+diff --git a/Keyguard/res/values-zh-rCN/strings.xml b/Keyguard/res/values-zh-rCN/strings.xml
+index 615e593..b14f0be 100644
+--- a/Keyguard/res/values-zh-rCN/strings.xml
++++ b/Keyguard/res/values-zh-rCN/strings.xml
+@@ -140,7 +140,7 @@
+       <item quantity="other">设备已保持锁定状态达 <xliff:g id="NUMBER_1">%d</xliff:g> 小时。请确认密码。</item>
+       <item quantity="one">设备已保持锁定状态达 <xliff:g id="NUMBER_0">%d</xliff:g> 小时。请确认密码。</item>
+     </plurals>
+-    <string name="fingerprint_not_recognized" msgid="2690661881608146617">"无法识别"</string>
++    <string name="fingerprint_not_recognized" msgid="2690661881608146617">"无法识别指纹，还可尝试 %d 次 "</string>
+     <string name="pattern_cancel">取消</string>
+     
+     <string name="kg_pin_bits_limit" >PIN码必须6位</string><!-- added by yangfan  -->
+diff --git a/Keyguard/res/values/strings.xml b/Keyguard/res/values/strings.xml
+index f11e891..4c246e4 100644
+--- a/Keyguard/res/values/strings.xml
++++ b/Keyguard/res/values/strings.xml
+@@ -374,7 +374,7 @@
+     </plurals>
+ 
+     <!-- Fingerprint hint message when finger was not recognized.-->
+-    <string name="fingerprint_not_recognized">Not recognized</string>
++    <string name="fingerprint_not_recognized">Not recognized, you can also try %d times.</string>
+ 
+     <!-- Instructions telling the user remaining times when enter SIM PIN view.  -->
+     <plurals name="kg_password_default_pin_message">
+diff --git a/SystemUI/src/com/android/keyguard/KeyguardUpdateMonitor.java b/SystemUI/src/com/android/keyguard/KeyguardUpdateMonitor.java
+index acbe290..4b324d7 100644
+--- a/SystemUI/src/com/android/keyguard/KeyguardUpdateMonitor.java
++++ b/SystemUI/src/com/android/keyguard/KeyguardUpdateMonitor.java
+@@ -444,6 +444,13 @@ public class KeyguardUpdateMonitor implements TrustManager.TrustListener {
+             }
+         }
+     }
++    //add by wumin
++    private Runnable mHandleFpHelpRunnable = new Runnable() {
++        @Override
++        public void run() {
++            handleFingerprintHelp(-1, String.format(mContext.getString(R.string.fingerprint_not_recognized),5-mFpm.getAttemptTimes()));
++        }
++    };
+ 
+     private void handleFingerprintAuthFailed() {
+         for (int i = 0; i < mCallbacks.size(); i++) {
+@@ -452,7 +459,9 @@ public class KeyguardUpdateMonitor implements TrustManager.TrustListener {
+                 cb.onFingerprintAuthFailed();
+             }
+         }
+-        handleFingerprintHelp(-1, mContext.getString(R.string.fingerprint_not_recognized));
++	//add by wumin
++        mHandler.removeCallbacks(mHandleFpHelpRunnable);
++        mHandler.postDelayed(mHandleFpHelpRunnable,10);
+     }
+ 
+     private void handleFingerprintAcquired(int acquireInfo) {
+diff --git a/SystemUI/src/com/android/systemui/applock/ConfirmAppLockPasswordActivity.java b/SystemUI/src/com/android/systemui/applock/ConfirmAppLockPasswordActivity.java
+index 2771d6a..0e12a5c 100644
+--- a/SystemUI/src/com/android/systemui/applock/ConfirmAppLockPasswordActivity.java
++++ b/SystemUI/src/com/android/systemui/applock/ConfirmAppLockPasswordActivity.java
+@@ -258,11 +258,14 @@ public class ConfirmAppLockPasswordActivity extends Activity implements OnClickL
+             
+             @Override
+             public void onClick(View arg0) {
++		// modify by chenshen
++		/**
+ 		if(resumefromUS){
+                     startLauncher();
+ 		}else {
+ 		    removeActivity();
+-		}
++		}*/
++		startLauncher();
+                 finish();
+             }
+         });
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/FingerprintUnlockController.java b/SystemUI/src/com/android/systemui/statusbar/phone/FingerprintUnlockController.java
+index 39a995c..f2c220f 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/FingerprintUnlockController.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/FingerprintUnlockController.java
+@@ -27,6 +27,9 @@ import com.android.keyguard.KeyguardUpdateMonitor;
+ import com.android.keyguard.KeyguardUpdateMonitorCallback;
+ import com.android.systemui.keyguard.KeyguardViewMediator;
+ 
++//add by wumin
++import android.hardware.fingerprint.FingerprintManager;
++
+ /**
+  * Controller which coordinates all the fingerprint unlocking actions with the UI.
+  */
+@@ -96,6 +99,9 @@ public class FingerprintUnlockController extends KeyguardUpdateMonitorCallback {
+     private boolean mGoingToSleep;
+     private int mPendingAuthenticatedUserId = -1;
+ 
++    //add by wumin
++    private FingerprintManager mFingerprintManager;
++
+     public FingerprintUnlockController(Context context,
+             StatusBarWindowManager statusBarWindowManager,
+             DozeScrimController dozeScrimController,
+@@ -110,6 +116,9 @@ public class FingerprintUnlockController extends KeyguardUpdateMonitorCallback {
+         mKeyguardViewMediator = keyguardViewMediator;
+         mScrimController = scrimController;
+         mPhoneStatusBar = phoneStatusBar;
++
++	//add by wumin
++	mFingerprintManager = (FingerprintManager) context.getSystemService(Context.FINGERPRINT_SERVICE);
+     }
+ 
+     public void setStatusBarKeyguardViewManager(
+@@ -264,8 +273,24 @@ public class FingerprintUnlockController extends KeyguardUpdateMonitorCallback {
+         return MODE_NONE;
+     }
+ 
++    //add by wumin
++    private Runnable mKeyguardGoneAwayRunnable = new Runnable() {
++
++        @Override
++        public void run() {
++            if(mFingerprintManager.getAttemptTimes() == 5 && mStatusBarKeyguardViewManager.isShowing()){
++                mStatusBarKeyguardViewManager.animateCollapsePanels(
++                    FINGERPRINT_COLLAPSE_SPEEDUP_FACTOR,false);
++            }
++        }
++    };
++
+     @Override
+     public void onFingerprintAuthFailed() {
++	//add by wumin
++        mHandler.removeCallbacks(mKeyguardGoneAwayRunnable);
++        mHandler.postDelayed(mKeyguardGoneAwayRunnable,10);
++
+         cleanup();
+     }
+ 
+-- 
+2.8.3.windows.1
+

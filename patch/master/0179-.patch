@@ -1,0 +1,112 @@
+From 809eca4f22248c1ea41a3b782244277fc5e4cf39 Mon Sep 17 00:00:00 2001
+From: mare <yangfan@qucci.com>
+Date: Fri, 24 Mar 2017 18:06:32 +0800
+Subject: [PATCH 179/185] =?UTF-8?q?=E3=80=90=E6=95=85=E9=9A=9C=E3=80=91?=
+ =?UTF-8?q?=E3=80=90=E9=94=81=E5=B1=8F=E3=80=91=E9=94=81=E5=B1=8F=E7=95=8C?=
+ =?UTF-8?q?=E9=9D=A2=E6=9C=89=E9=80=9A=E7=9F=A5=EF=BC=8C=E8=AE=BE=E7=BD=AE?=
+ =?UTF-8?q?=E6=9C=89=E5=AE=89=E5=85=A8=E9=94=81=EF=BC=8C=E5=BC=80=E5=90=AF?=
+ =?UTF-8?q?=E9=BB=91=E5=B1=8F=E6=89=8B=E5=8A=BF=EF=BC=8C=E7=81=AD=E5=B1=8F?=
+ =?UTF-8?q?=E4=B8=8B=E6=BB=91=E5=8A=A8=E4=BB=BB=E6=84=8F=E5=BC=80=E5=A7=8B?=
+ =?UTF-8?q?=E7=9A=84=E6=89=8B=E5=8A=BF=EF=BC=8C=E5=BC=B9=E5=87=BA=E8=A7=A3?=
+ =?UTF-8?q?=E9=94=81=E7=95=8C=E9=9D=A2=EF=BC=8C=E8=A7=A3=E9=94=81=E5=AF=86?=
+ =?UTF-8?q?=E7=A0=81=E5=AD=97=E6=A0=B7=E6=98=BE=E7=A4=BA=E7=99=BD=E5=BA=95?=
+ =?UTF-8?q?=E7=99=BD=E8=89=B2?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../com/android/systemui/statusbar/CommandQueue.java    | 17 +++++++++++++++++
+ .../systemui/statusbar/phone/PhoneStatusBar.java        |  6 ++++++
+ .../com/android/systemui/statusbar/tv/TvStatusBar.java  |  4 ++++
+ 3 files changed, 27 insertions(+)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/CommandQueue.java b/SystemUI/src/com/android/systemui/statusbar/CommandQueue.java
+index bd1caeb..5f9f2d4 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/CommandQueue.java
++++ b/SystemUI/src/com/android/systemui/statusbar/CommandQueue.java
+@@ -67,6 +67,9 @@ public class CommandQueue extends IStatusBar.Stub {
+     private static final int MSG_CAMERA_LAUNCH_GESTURE      = 24 << MSG_SHIFT;
+     //this line add by mare
+     private static final int MSG_DISPATCH_FP_BACK           = 25 << MSG_SHIFT;
++    
++    //this line add by mare
++    private static final int MSG_COLLAPSE_PANELS_SMART      = 26 << MSG_SHIFT;
+ 
+     public static final int FLAG_EXCLUDE_NONE = 0;
+     public static final int FLAG_EXCLUDE_SEARCH_PANEL = 1 << 0;
+@@ -115,6 +118,8 @@ public class CommandQueue extends IStatusBar.Stub {
+         public void onCameraLaunchGestureDetected(int source);
+         //this method add by mare
+         public void dispatchFingerprintBack();
++        //this method add by mare
++        public void collapsePanelsAnimation(boolean animate);
+     }
+ 
+     public CommandQueue(Callbacks callbacks, StatusBarIconList list) {
+@@ -158,6 +163,14 @@ public class CommandQueue extends IStatusBar.Stub {
+             mHandler.sendEmptyMessage(MSG_COLLAPSE_PANELS);
+         }
+     }
++    
++    public void collapsePanelsAnimation(boolean animate) {
++        synchronized (mList) {
++            mHandler.removeMessages(MSG_COLLAPSE_PANELS_SMART);
++            mHandler.sendEmptyMessage(MSG_COLLAPSE_PANELS_SMART);
++        }
++    }
++
+ 
+     public void animateExpandSettingsPanel() {
+         synchronized (mList) {
+@@ -358,6 +371,10 @@ public class CommandQueue extends IStatusBar.Stub {
+                 case MSG_COLLAPSE_PANELS:
+                     mCallbacks.animateCollapsePanels(0);
+                     break;
++                    
++                case MSG_COLLAPSE_PANELS_SMART:
++                    mCallbacks.collapsePanelsAnimation(false);
++                    break;   
+                 case MSG_EXPAND_SETTINGS:
+                     mCallbacks.animateExpandSettingsPanel();
+                     break;
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
+index f9e8ff6..c88adc7 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
+@@ -3315,6 +3315,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
+         if (mStatusBarKeyguardViewManager.isShowing()) {
+             //this line add by mare
+             //makeExpandedInvisible();
++        	mStatusBarView.collapseAllPanels(false /* animate */, false, 1f);
+             mStatusBarKeyguardViewManager.dismissWithAction(action, cancelAction,
+                     afterKeyguardGone);
+         } else {
+@@ -4884,4 +4885,9 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
+     	 */
+     	public void onSignalStateChanged(boolean isNoSimOrAirPlaneMode);
+     }
++
++	@Override
++	public void collapsePanelsAnimation(boolean animate) {
++		mStatusBarView.collapseAllPanels(animate /* animate */, animate, 1f);
++	}
+ }
+diff --git a/SystemUI/src/com/android/systemui/statusbar/tv/TvStatusBar.java b/SystemUI/src/com/android/systemui/statusbar/tv/TvStatusBar.java
+index bbe5dd9..34f03c6 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/tv/TvStatusBar.java
++++ b/SystemUI/src/com/android/systemui/statusbar/tv/TvStatusBar.java
+@@ -71,6 +71,10 @@ public class TvStatusBar extends BaseStatusBar {
+     }
+ 
+     @Override
++    public void collapsePanelsAnimation(boolean flags) {
++    }
++
++    @Override
+     public void setSystemUiVisibility(int vis, int mask) {
+     }
+ 
+-- 
+2.8.3.windows.1
+

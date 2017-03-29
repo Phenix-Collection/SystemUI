@@ -3,7 +3,7 @@ package com.qucii.systemui.utils;
 import android.graphics.Bitmap;
 /****
  * 
- * @author lrh
+ * @author mare
  * 这个类是处理状态栏下拉截图高斯模糊工具类
  *
  */

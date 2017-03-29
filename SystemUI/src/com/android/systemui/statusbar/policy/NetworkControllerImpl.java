@@ -120,7 +120,7 @@ public class NetworkControllerImpl extends BroadcastReceiver
     // The current user ID.
     private int mCurrentUserId;
 
-    private TextView mNetWorkNameLabelView;
+    /**private TextView mNetWorkNameLabelView;**/ // modified by yangfan 
 
     private OnSubscriptionsChangedListener mSubscriptionListener;
 
@@ -281,7 +281,7 @@ public class NetworkControllerImpl extends BroadcastReceiver
 
     public String getMobileDataNetworkName() {
         MobileSignalController controller = getDataController();
-        return controller != null ? controller.getState().networkNameData : "";
+        return controller != null ? controller.getState().networkNameData.replaceAll(" ",""): "";// modified by yangfan 
     }
 
     public boolean isEmergencyOnly() {
@@ -368,10 +368,10 @@ public class NetworkControllerImpl extends BroadcastReceiver
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (CHATTY) {
-            Log.d(TAG, "onReceive: intent=" + intent);
-        }
         final String action = intent.getAction();
+        if (CHATTY) {
+            Log.d(TAG, "onReceive: intent=" + intent + ", action : " + action);// modified by yangfan 
+        }
         if (action.equals(ConnectivityManager.CONNECTIVITY_ACTION) ||
                 action.equals(ConnectivityManager.INET_CONDITION_ACTION)) {
             updateConnectivity();
@@ -507,6 +507,29 @@ public class NetworkControllerImpl extends BroadcastReceiver
                         mHasMobileDataFeature, mPhone, mCallbackHandler,
                         this, subscriptions.get(i), mSubDefaults, mReceiverHandler.getLooper());
                 mMobileSignalControllers.put(subId, controller);
+
+/*
+                String iccId = subscriptions.get(i).getIccId();
+                Log.d(TAG, "machao---BROCAST_SPN_FORCE---IccId:"+iccId);
+
+                if(iccId != null) {
+                    Log.d(TAG, "machao---BROCAST_SPN_FORCE---$$$$");
+                    String iccIdFirst = iccId.substring(0, 4); 
+                    String iccIdSec = iccId.substring(4, 6); 
+                    if (iccIdFirst.contains("8986") && ((iccIdSec.contains("03")) || (iccIdSec.contains("05")) || (iccIdSec.contains("11")))) {
+                        Log.d(TAG, "machao---BROCAST_SPN_FORCE_CDMA---set 1 !!");
+                        Settings.Global.putInt(mContext.getContentResolver(), Settings.Global.BROCAST_SPN_FORCE_CDMA, 1); 
+                    } else if (iccIdFirst.contains("8986")) {
+                        Log.d(TAG, "machao---BROCAST_SPN_FORCE_GSM---set 1 !!");
+                        Settings.Global.putInt(mContext.getContentResolver(), Settings.Global.BROCAST_SPN_FORCE_GSM, 1); 
+                    } else {
+                        Log.e(TAG, "@@@ERROR: iccId invalid !");
+                    }
+                } else {
+                    Log.e(TAG, "@@@ERROR: iccId is NULL !!!");
+                }
+*/
+
                 if (subscriptions.get(i).getSimSlotIndex() == 0) {
                     mDefaultSignalController = controller;
                 }
@@ -627,7 +650,15 @@ public class NetworkControllerImpl extends BroadcastReceiver
         mEthernetSignalController.updateConnectivity(mConnectedTransports, mValidatedTransports);
     }
 
-    private void setTextViewVisibility(TextView v) {
+ // modified by yangfan  begin
+    public void setNetworkLabelViewVisibility(boolean enable,boolean noServiceEnable) {
+        String networkName = getMobileDataNetworkName();
+        boolean disable = networkName.contains(mContext.getString(com.android.internal.R.string.lockscreen_carrier_default))
+                || networkName.contains(mContext.getString(com.android.internal.R.string.emergency_calls_only));
+        mCallbackHandler.setNetworkLabelEnable(enable ,noServiceEnable && disable);
+    }
+
+/*    private void setTextViewVisibility(TextView v) {
         String networkName = getMobileDataNetworkName();
         if (networkName.equals(mContext.getString(
                 com.android.internal.R.string.lockscreen_carrier_default))
@@ -658,8 +689,9 @@ public class NetworkControllerImpl extends BroadcastReceiver
             mNetWorkNameLabelView.setText(getMobileDataNetworkName());
             setTextViewVisibility(mNetWorkNameLabelView);
         }
-    }
-
+    }*/
+ // modified by yangfan  end
+    
     public void dump(FileDescriptor fd, PrintWriter pw, String[] args) {
         pw.println("NetworkController state:");
 

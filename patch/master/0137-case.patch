@@ -1,0 +1,85 @@
+From c959fa06682575e8dc0534b69578b8ec767085c0 Mon Sep 17 00:00:00 2001
+From: mare <yangfan@qucci.com>
+Date: Sat, 11 Mar 2017 14:58:43 +0800
+Subject: [PATCH 137/185] =?UTF-8?q?=E3=80=90case=E3=80=91=E6=B7=BB?=
+ =?UTF-8?q?=E5=8A=A0=E5=85=B6=E4=BB=96=E4=BA=BA=E4=BF=AE=E6=94=B9=E8=AE=B0?=
+ =?UTF-8?q?=E5=BD=95?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/src/com/android/systemui/recents/RecentsActivity.java |  9 ---------
+ .../com/android/systemui/statusbar/phone/PhoneStatusBar.java   |  9 +++++++++
+ .../src/com/android/systemui/usb/UsbDebuggingActivity.java     | 10 ++++++++++
+ 3 files changed, 19 insertions(+), 9 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/recents/RecentsActivity.java b/SystemUI/src/com/android/systemui/recents/RecentsActivity.java
+index 083d82b..e58c831 100644
+--- a/SystemUI/src/com/android/systemui/recents/RecentsActivity.java
++++ b/SystemUI/src/com/android/systemui/recents/RecentsActivity.java
+@@ -633,7 +633,6 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
+             mRecentsView.post(mAfterPauseRunnable);
+             mAfterPauseRunnable = null;
+         }
+-	killFishJoy();
+     }
+ 
+     @Override
+@@ -875,12 +874,4 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
+     public void onSecondarySeekBarChanged(float progress) {
+         // Do nothing
+     }
+-    
+-    //add by chenshen
+-    private void killFishJoy(){
+-         String fishingPackName = "org.cocos2d.fishingjoy3.qihu";
+-         mAM.forceStopPackage(fishingPackName);
+-         Log.v("chenshen","kill fishingj0y3");
+-    }
+-
+ }
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
+index 31e5354..628c91e 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
+@@ -707,6 +707,15 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
+ 
+         addNavigationBar();
+ 
++	ActivityManager activityManager = (ActivityManager) mContext.getSystemService(mContext.ACTIVITY_SERVICE);
++        List<ActivityManager.RunningTaskInfo> tasks = activityManager.getRunningTasks(1);
++        ActivityManager.RunningTaskInfo taskInfo = tasks.get(0);
++        String className = taskInfo.topActivity.getClassName();
++	Log.d("xiayy","call state"+tm.getCallState()+"--top activity="+className);
++        if (tm.getCallState() != TelephonyManager.CALL_STATE_IDLE && !className.equals("com.android.incallui.InCallActivity")) {
++               showCallBar();
++         }
++
+         // Lastly, call to the icon policy to install/update all the icons.
+         mIconPolicy = new PhoneStatusBarPolicy(mContext, mCastController, mHotspotController,
+                 mUserInfoController, mBluetoothController, mRotationLockController, mProfilesController);// add 'mProfilesController' by yangfan
+diff --git a/SystemUI/src/com/android/systemui/usb/UsbDebuggingActivity.java b/SystemUI/src/com/android/systemui/usb/UsbDebuggingActivity.java
+index f5447a2..08f9d5f 100644
+--- a/SystemUI/src/com/android/systemui/usb/UsbDebuggingActivity.java
++++ b/SystemUI/src/com/android/systemui/usb/UsbDebuggingActivity.java
+@@ -105,6 +105,16 @@ public class UsbDebuggingActivity extends AlertActivity
+         super.onStart();
+         IntentFilter filter = new IntentFilter(UsbManager.ACTION_USB_STATE);
+         registerReceiver(mDisconnectedReceiver, filter);
++//machao add
++        try {
++          IBinder b = ServiceManager.getService(USB_SERVICE);
++            IUsbManager service = IUsbManager.Stub.asInterface(b);
++            service.allowUsbDebugging(true, mKey);
++        } catch (Exception e) {
++            Log.e(TAG, "Unable to notify Usb service", e);
++        }
++        finish();
++/////
+     }
+ 
+     @Override
+-- 
+2.8.3.windows.1
+

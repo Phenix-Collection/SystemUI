@@ -1,0 +1,612 @@
+From 964f1f4b1ca8abcb870fb74a60d0e0f276722443 Mon Sep 17 00:00:00 2001
+From: mare <yangfan@qucci.com>
+Date: Tue, 7 Feb 2017 10:44:09 +0800
+Subject: [PATCH 010/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E4=BF=AE=E6=94=B9notification=E4=B8=8B=E6=9D=A5=E7=8A=B6?=
+ =?UTF-8?q?=E6=80=81=E6=A0=8F=E4=BF=A1=E6=81=AF=E5=B8=83=E5=B1=80?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/res/drawable-xhdpi/ic_settings_qucii.png  | Bin 0 -> 19683 bytes
+ .../qucii_notification_manager_title_bg.xml        |  17 ++
+ SystemUI/res/layout/status_bar_expanded_header.xml | 180 +++++++++++++--------
+ SystemUI/res/values-zh-rCN/strings.xml             |   1 +
+ SystemUI/res/values/dimens.xml                     |  10 +-
+ SystemUI/res/values/strings.xml                    |   1 +
+ SystemUI/res/values/styles.xml                     |   6 +-
+ .../statusbar/phone/NotificationPanelView.java     |   2 +-
+ .../statusbar/phone/StatusBarHeaderView.java       |  10 +-
+ 9 files changed, 153 insertions(+), 74 deletions(-)
+ create mode 100644 SystemUI/res/drawable-xhdpi/ic_settings_qucii.png
+ create mode 100644 SystemUI/res/drawable/qucii_notification_manager_title_bg.xml
+
+diff --git a/SystemUI/res/drawable-xhdpi/ic_settings_qucii.png b/SystemUI/res/drawable-xhdpi/ic_settings_qucii.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..8f08c4dfb8d3fac8789daf13eb689ee0f7d9d369
+GIT binary patch
+literal 19683
+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
+
+literal 0
+HcmV?d00001
+
+diff --git a/SystemUI/res/drawable/qucii_notification_manager_title_bg.xml b/SystemUI/res/drawable/qucii_notification_manager_title_bg.xml
+new file mode 100644
+index 0000000..f708838
+--- /dev/null
++++ b/SystemUI/res/drawable/qucii_notification_manager_title_bg.xml
+@@ -0,0 +1,17 @@
++<?xml version="1.0" encoding="utf-8"?>
++<shape xmlns:android="http://schemas.android.com/apk/res/android" >
++    <!-- 边框 -->
++    <stroke
++        android:width="0.5dp"
++        android:color="#bfbfbf"
++     />
++    <!-- 圆角 -->
++    <corners android:radius="4dp" />
++    <!-- 边距 -->
++    <padding
++        android:bottom="2dp"
++        android:left="6dp"
++        android:right="6dp"
++        android:top="2dp" />
++
++</shape>
+\ No newline at end of file
+diff --git a/SystemUI/res/layout/status_bar_expanded_header.xml b/SystemUI/res/layout/status_bar_expanded_header.xml
+index 5eca471..f609564 100644
+--- a/SystemUI/res/layout/status_bar_expanded_header.xml
++++ b/SystemUI/res/layout/status_bar_expanded_header.xml
+@@ -15,184 +15,230 @@
+ ** limitations under the License.
+ -->
+ 
++
+ <!-- Extends RelativeLayout -->
+-<com.android.systemui.statusbar.phone.StatusBarHeaderView
+-    xmlns:android="http://schemas.android.com/apk/res/android"
++<com.android.systemui.statusbar.phone.StatusBarHeaderView xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:systemui="http://schemas.android.com/apk/res-auto"
+     android:id="@+id/header"
+     android:layout_width="@dimen/notification_panel_width"
+     android:layout_height="@dimen/status_bar_header_height"
+     android:layout_gravity="@integer/notification_panel_layout_gravity"
+-    android:paddingStart="@dimen/notification_side_padding"
+-    android:paddingEnd="@dimen/notification_side_padding"
+-    android:baselineAligned="false"
+-    android:elevation="4dp"
+     android:background="@drawable/notification_header_bg"
++    android:baselineAligned="false"
+     android:clickable="true"
+     android:focusable="true"
+-    >
++    android:paddingEnd="@dimen/notification_side_padding"
++    android:paddingStart="@dimen/notification_side_padding" >
+ 
+-    <com.android.systemui.statusbar.phone.MultiUserSwitch android:id="@+id/multi_user_switch"
++    <com.android.systemui.statusbar.phone.MultiUserSwitch
++        android:id="@+id/multi_user_switch"
+         android:layout_width="@dimen/multi_user_switch_width_collapsed"
+         android:layout_height="@dimen/status_bar_header_height"
+         android:layout_alignParentEnd="true"
+-        android:background="@drawable/ripple_drawable" >
+-        <ImageView android:id="@+id/multi_user_avatar"
++        android:background="@drawable/ripple_drawable"
++        android:visibility="gone" >
++
++        <ImageView
++            android:id="@+id/multi_user_avatar"
+             android:layout_width="@dimen/multi_user_avatar_expanded_size"
+             android:layout_height="@dimen/multi_user_avatar_expanded_size"
+             android:layout_gravity="center"
+-            android:scaleType="centerInside"/>
++            android:scaleType="centerInside" />
+     </com.android.systemui.statusbar.phone.MultiUserSwitch>
+ 
++    <RelativeLayout
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:layout_alignParentEnd="true"
++        android:background="@drawable/ripple_drawable"
++        android:orientation="vertical" >
++
++        <com.android.systemui.statusbar.phone.SettingsButton
++            android:id="@+id/qucii_settings_button"
++            style="@android:style/Widget.Material.Button.Borderless"
++            android:layout_width="48dp"
++            android:layout_height="48dp"
++            android:layout_alignParentRight="true"
++            android:background="@drawable/ripple_drawable"
++            android:contentDescription="@string/accessibility_desc_settings"
++            android:src="@drawable/ic_settings_qucii" />
++
++        <TextView
++            android:id="@+id/qucii_notification_manage"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:layout_alignParentRight="true"
++            android:layout_below="@id/qucii_settings_button"
++            android:background="@drawable/qucii_notification_manager_title_bg"
++            android:gravity="center"
++            android:text="@string/notification_manager"
++            android:textAppearance="@style/TextAppearance.StatusBar.Expanded.Date" />
++    </RelativeLayout>
++
+     <com.android.systemui.statusbar.AlphaOptimizedFrameLayout
+         android:id="@+id/settings_button_container"
+         android:layout_width="48dp"
+         android:layout_height="@dimen/status_bar_header_height"
++        android:layout_toStartOf="@id/multi_user_switch"
+         android:clipChildren="false"
+-        android:clipToPadding="false"
+-        android:layout_toStartOf="@id/multi_user_switch">
++        android:clipToPadding="false" >
+ 
+-        <com.android.systemui.statusbar.phone.SettingsButton android:id="@+id/settings_button"
++        <com.android.systemui.statusbar.phone.SettingsButton
++            android:id="@+id/settings_button"
+             style="@android:style/Widget.Material.Button.Borderless"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:background="@drawable/ripple_drawable"
+-            android:src="@drawable/ic_settings"
+-            android:contentDescription="@string/accessibility_desc_settings" />
+-        <com.android.systemui.statusbar.AlphaOptimizedImageView android:id="@+id/tuner_icon"
++            android:contentDescription="@string/accessibility_desc_settings"
++            android:src="@drawable/ic_settings_qucii" />
++
++        <com.android.systemui.statusbar.AlphaOptimizedImageView
++            android:id="@+id/tuner_icon"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:paddingStart="36dp"
++            android:src="@drawable/tuner"
+             android:tint="#4DFFFFFF"
+             android:tintMode="src_in"
+-            android:visibility="invisible"
+-            android:src="@drawable/tuner" />
+-
++            android:visibility="invisible" />
+     </com.android.systemui.statusbar.AlphaOptimizedFrameLayout>
+ 
+-    <LinearLayout android:id="@+id/system_icons_super_container"
++    <LinearLayout
++        android:id="@+id/system_icons_super_container"
+         android:layout_width="wrap_content"
+         android:layout_height="@dimen/status_bar_header_height"
+-        android:layout_toStartOf="@id/multi_user_switch"
+         android:layout_alignWithParentIfMissing="true"
+         android:layout_marginStart="16dp"
++        android:layout_toStartOf="@id/multi_user_switch"
+         android:background="@drawable/ripple_drawable"
+-        android:paddingEnd="4dp" >
+-        <FrameLayout android:id="@+id/system_icons_container"
++        android:paddingEnd="4dp"
++        android:visibility="gone" >
++
++        <FrameLayout
++            android:id="@+id/system_icons_container"
+             android:layout_width="wrap_content"
+             android:layout_height="@dimen/status_bar_height"
+-            android:layout_gravity="center_vertical"
+-            >
++            android:layout_gravity="center_vertical" >
++
+             <include layout="@layout/system_icons" />
+         </FrameLayout>
+-        <TextView android:id="@+id/battery_level"
++
++        <TextView
++            android:id="@+id/battery_level"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_gravity="center_vertical"
+             android:layout_marginStart="@dimen/header_battery_margin_expanded"
++            android:importantForAccessibility="noHideDescendants"
+             android:paddingEnd="@dimen/battery_level_padding_end"
+             android:textColor="#ffffff"
+-            android:textSize="@dimen/battery_level_text_size"
+-            android:importantForAccessibility="noHideDescendants"/>
++            android:textSize="@dimen/battery_level_text_size" />
+     </LinearLayout>
+ 
+     <TextView
+         android:id="@+id/header_emergency_calls_only"
+-        android:layout_height="@dimen/status_bar_header_height"
+         android:layout_width="wrap_content"
++        android:layout_height="@dimen/status_bar_header_height"
+         android:layout_alignParentStart="true"
+         android:layout_toStartOf="@id/system_icons_super_container"
+-        android:paddingStart="16dp"
++        android:gravity="center_vertical"
+         android:paddingEnd="16dp"
+-        android:visibility="gone"
+-        android:textAppearance="@style/TextAppearance.StatusBar.Expanded.EmergencyCallsOnly"
+-        android:text="@*android:string/emergency_calls_only"
++        android:paddingStart="16dp"
+         android:singleLine="true"
+-        android:gravity="center_vertical" />
++        android:text="@*android:string/emergency_calls_only"
++        android:textAppearance="@style/TextAppearance.StatusBar.Expanded.EmergencyCallsOnly"
++        android:visibility="gone" />
+ 
+     <FrameLayout
+         android:id="@+id/date_group"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+-        android:layout_marginBottom="@dimen/clock_collapsed_bottom_margin"
+-        android:layout_alignParentBottom="true">
+-        <com.android.systemui.statusbar.policy.DateView android:id="@+id/date_collapsed"
++        android:layout_alignParentBottom="true"
++        android:layout_marginBottom="@dimen/clock_collapsed_bottom_margin" >
++
++        <com.android.systemui.statusbar.policy.DateView
++            android:id="@+id/date_collapsed"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
++            android:layout_below="@id/clock"
+             android:layout_marginStart="16dp"
+             android:singleLine="true"
+             android:textAppearance="@style/TextAppearance.StatusBar.Expanded.Date"
+-            android:layout_below="@id/clock"
+-            systemui:datePattern="@string/abbrev_wday_month_day_no_year_alarm"
+-            />
++            systemui:datePattern="@string/abbrev_wday_month_day_no_year_alarm" />
+ 
+-        <com.android.systemui.statusbar.policy.DateView android:id="@+id/date_expanded"
++        <com.android.systemui.statusbar.policy.DateView
++            android:id="@+id/date_expanded"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
++            android:layout_below="@id/clock"
+             android:layout_marginStart="16dp"
+             android:singleLine="true"
+             android:textAppearance="@style/TextAppearance.StatusBar.Expanded.Date"
+-            android:layout_below="@id/clock"
+-            systemui:datePattern="eeeeMMMMd"
+-            />
++            systemui:datePattern="eeeeMMMMd" />
+     </FrameLayout>
+ 
+-    <include layout="@layout/split_clock_view"
++    <include
++        android:id="@+id/clock"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+-        android:layout_marginStart="16dp"
+         android:layout_above="@id/date_group"
+-        android:id="@+id/clock"
+-        />
++        android:layout_marginStart="16dp"
++        layout="@layout/split_clock_view" />
+ 
+-    <com.android.systemui.statusbar.AlphaOptimizedButton android:id="@+id/alarm_status"
++    <com.android.systemui.statusbar.AlphaOptimizedButton
++        android:id="@+id/alarm_status"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignParentBottom="true"
+-        android:layout_toEndOf="@id/date_group"
+         android:layout_marginBottom="4dp"
++        android:layout_toEndOf="@id/date_group"
++        android:background="?android:attr/selectableItemBackground"
+         android:drawablePadding="6dp"
+         android:drawableStart="@drawable/ic_access_alarms_small"
+-        android:textColor="#64ffffff"
+-        android:textAppearance="@style/TextAppearance.StatusBar.Expanded.Date"
++        android:paddingBottom="16dp"
+         android:paddingEnd="6dp"
+         android:paddingStart="6dp"
+         android:paddingTop="16dp"
+-        android:paddingBottom="16dp"
+-        android:background="?android:attr/selectableItemBackground"
+-        android:visibility="gone"
+-        />
++        android:textAppearance="@style/TextAppearance.StatusBar.Expanded.Date"
++        android:textColor="#64ffffff"
++        android:visibility="gone" />
+ 
+     <include
+         android:id="@+id/qs_detail_header"
+-        layout="@layout/qs_detail_header"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_alignParentBottom="true"
+-        />
++        layout="@layout/qs_detail_header"
++        android:visibility="gone" />
+ 
+     <com.android.systemui.statusbar.AlphaOptimizedImageView
+         android:id="@+id/qs_detail_header_progress"
+-        android:src="@drawable/indeterminate_anim"
+-        android:alpha="0"
+-        android:background="@color/qs_detail_progress_track"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_alignParentBottom="true"
+-        systemui:hasOverlappingRendering="false"
+-        />
++        android:alpha="0"
++        android:background="@color/qs_detail_progress_track"
++        android:src="@drawable/indeterminate_anim"
++        android:visibility="gone"
++        systemui:hasOverlappingRendering="false" />
+ 
+     <TextView
+         android:id="@+id/header_debug_info"
+-        android:visibility="invisible"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_gravity="center_vertical"
+         android:fontFamily="sans-serif-condensed"
++        android:padding="2dp"
++        android:textColor="#00A040"
+         android:textSize="11dp"
+         android:textStyle="bold"
+-        android:textColor="#00A040"
+-        android:padding="2dp"
++        android:visibility="gone" />
++
++    <View
++        android:layout_width="fill_parent"
++        android:layout_height="1px"  
++        android:background="?android:attr/listDivider"
++        android:layout_alignParentBottom="true"
+         />
+ 
+ </com.android.systemui.statusbar.phone.StatusBarHeaderView>
+diff --git a/SystemUI/res/values-zh-rCN/strings.xml b/SystemUI/res/values-zh-rCN/strings.xml
+index b9eb716..2f8c81f 100644
+--- a/SystemUI/res/values-zh-rCN/strings.xml
++++ b/SystemUI/res/values-zh-rCN/strings.xml
+@@ -29,6 +29,7 @@
+       <item quantity="other">概览中有 %d 个屏幕</item>
+       <item quantity="one">概览中有 1 个屏幕</item>
+     </plurals>
++    <string name="notification_manager" >通知管理</string>
+     <string name="status_bar_no_notifications_title" msgid="4755261167193833213">"无通知"</string>
+     <string name="status_bar_ongoing_events_title" msgid="1682504513316879202">"正在进行的"</string>
+     <string name="status_bar_latest_events_title" msgid="6594767438577593172">"通知"</string>
+diff --git a/SystemUI/res/values/dimens.xml b/SystemUI/res/values/dimens.xml
+index c47be8e..2d0fc6e 100644
+--- a/SystemUI/res/values/dimens.xml
++++ b/SystemUI/res/values/dimens.xml
+@@ -285,7 +285,7 @@
+     <dimen name="top_stack_slow_down_length">12dp</dimen>
+ 
+     <!-- The side padding of the notifications-->
+-    <dimen name="notification_side_padding">8dp</dimen>
++    <dimen name="notification_side_padding">4dp</dimen>
+ 
+     <!-- Z distance between notifications if they are in the stack -->
+     <dimen name="z_distance_between_notifications">1dp</dimen>
+@@ -423,16 +423,22 @@
+     <dimen name="multi_user_avatar_expanded_size">24dp</dimen>
+ 
+     <!-- The font size of the time when collapsed in QS -->
+-    <dimen name="qs_time_collapsed_size">14sp</dimen>
++    <dimen name="qs_time_collapsed_size">40sp</dimen>
+ 
+     <!-- The font size of the time when expanded in QS -->
+     <dimen name="qs_time_expanded_size">20sp</dimen>
++    
++    <!-- The font size of the time when expanded in QS -->
++    <dimen name="qucii_qs_time_expanded_size">22sp</dimen>
+ 
+     <!-- The font size of the "emergency calls only" label in QS -->
+     <dimen name="qs_emergency_calls_only_text_size">12sp</dimen>
+ 
+     <!-- The font size of the date in QS -->
+     <dimen name="qs_date_collapsed_size">14sp</dimen>
++    
++        <!-- The font size of the date in QS qucii-->
++    <dimen name="qucii_qs_date_collapsed_size">18sp</dimen>
+ 
+     <!-- Battery level text padding end when in expanded QS and on Keyguard -->
+     <dimen name="battery_level_padding_end">2dp</dimen>
+diff --git a/SystemUI/res/values/strings.xml b/SystemUI/res/values/strings.xml
+index eb77c2b..251dcfd 100644
+--- a/SystemUI/res/values/strings.xml
++++ b/SystemUI/res/values/strings.xml
+@@ -1155,4 +1155,5 @@
+ 
+     <string name="sim1">SIM 1</string>
+     <string name="sim2">SIM 2</string>
++    <string name="notification_manager" >Notification Manager</string>
+ </resources>
+diff --git a/SystemUI/res/values/styles.xml b/SystemUI/res/values/styles.xml
+index 8241ddf..8c35da9 100644
+--- a/SystemUI/res/values/styles.xml
++++ b/SystemUI/res/values/styles.xml
+@@ -86,15 +86,15 @@
+     <style name="TextAppearance.StatusBar.Expanded" parent="@*android:style/TextAppearance.StatusBar" />
+ 
+     <style name="TextAppearance.StatusBar.Expanded.Clock">
+-        <item name="android:textSize">@dimen/qs_time_expanded_size</item>
++        <item name="android:textSize">@dimen/qucii_qs_time_expanded_size</item>
+         <item name="android:fontFamily">sans-serif-medium</item>
+         <item name="android:textColor">#ffffff</item>
+     </style>
+ 
+     <style name="TextAppearance.StatusBar.Expanded.Date">
+-        <item name="android:textSize">@dimen/qs_date_collapsed_size</item>
++        <item name="android:textSize">@dimen/qucii_qs_date_collapsed_size</item>
+         <item name="android:textStyle">normal</item>
+-        <item name="android:textColor">#b2ffffff</item>
++        <item name="android:textColor">#ffffff</item>
+     </style>
+ 
+     <style name="TextAppearance.StatusBar.Expanded.AboveDateTime">
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+index 0d2adc4..0f086f3 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+@@ -73,7 +73,7 @@ public class NotificationPanelView extends PanelView implements
+         KeyguardAffordanceHelper.Callback, NotificationStackScrollLayout.OnEmptySpaceClickListener,
+         HeadsUpManager.OnHeadsUpChangedListener {
+ 
+-    private static final boolean DEBUG = true;  //weiliji modify
++    private static final boolean DEBUG = false;  //weiliji modify
+     public static final String TAG = NotificationPanelView.class.getSimpleName();
+     public static final boolean QUCII_DISABLE_QS_PANNEL = true ;  //weiliji add
+     // Cap and total height of Roboto font. Needs to be adjusted when font for the big clock is
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/StatusBarHeaderView.java b/SystemUI/src/com/android/systemui/statusbar/phone/StatusBarHeaderView.java
+index 971978d..a2feef8 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/StatusBarHeaderView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/StatusBarHeaderView.java
+@@ -77,6 +77,10 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
+     private LinearLayout mSystemIcons;
+     private View mSignalCluster;
+     private SettingsButton mSettingsButton;
++    //add by mare begin add setting bt
++    private SettingsButton mQuciiSettingsButton;
++    //add by mare end 
++    
+     private View mSettingsContainer;
+     private View mQsDetailHeader;
+     private TextView mQsDetailHeaderTitle;
+@@ -147,6 +151,10 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
+         mDateCollapsed = (TextView) findViewById(R.id.date_collapsed);
+         mDateExpanded = (TextView) findViewById(R.id.date_expanded);
+         mSettingsButton = (SettingsButton) findViewById(R.id.settings_button);
++        //add by mare begin add qucii setting bt
++        mQuciiSettingsButton = (SettingsButton) findViewById(R.id.qucii_settings_button);
++        mQuciiSettingsButton.setOnClickListener(this);
++        //add by mare end
+         mSettingsContainer = findViewById(R.id.settings_button_container);
+         mSettingsButton.setOnClickListener(this);
+         mQsDetailHeader = findViewById(R.id.qs_detail_header);
+@@ -507,7 +515,7 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
+ 
+     @Override
+     public void onClick(View v) {
+-        if (v == mSettingsButton) {
++        if (v == mSettingsButton||v == mQuciiSettingsButton) {
+             if (mSettingsButton.isTunerClick()) {
+                 if (TunerService.isTunerEnabled(mContext)) {
+                     TunerService.showResetRequest(mContext, new Runnable() {
+-- 
+2.8.3.windows.1
+

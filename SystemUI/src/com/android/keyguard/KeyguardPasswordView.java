@@ -39,7 +39,7 @@ import com.android.internal.widget.TextViewInputDisabler;
 
 import java.util.List;
 
-//add by wumin
+//add by mare
 import android.hardware.input.InputManager;
 import android.view.InputDevice;
 import android.view.KeyCharacterMap;
@@ -85,7 +85,7 @@ public class KeyguardPasswordView extends KeyguardAbsKeyInputView
     }
 
     protected void resetState() {
-        mSecurityMessageDisplay.setMessage(getMsgWithCnt(R.string.kg_password_instructions), false);
+        mSecurityMessageDisplay.setMessage(getMsgWithCnt(R.string.kg_password_instructions), true);
         final boolean wasDisabled = mPasswordEntry.isEnabled();
         setPasswordEntryEnabled(true);
         setPasswordEntryInputEnabled(true);
@@ -200,7 +200,7 @@ public class KeyguardPasswordView extends KeyguardAbsKeyInputView
             }
         }
 
-        //add by wumin
+        //add by mare
         Button canclebutton = (Button) findViewById(R.id.cancle_button);
         if(isNavigationEnable()){
                 canclebutton.setVisibility(View.GONE);
@@ -216,7 +216,7 @@ public class KeyguardPasswordView extends KeyguardAbsKeyInputView
 
     }
 
-    //add  by wumin
+    //add  by mare
     private void sendKeyEvent(int keyCode) {
         int eventCode = keyCode;
         long now = SystemClock.uptimeMillis();

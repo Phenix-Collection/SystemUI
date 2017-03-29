@@ -24,17 +24,23 @@ import android.animation.ValueAnimator;
 import android.app.ActivityManager;
 import android.app.StatusBarManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.os.SystemProperties;
+import android.provider.Settings;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.MathUtils;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowInsets;
 import android.view.accessibility.AccessibilityEvent;
@@ -42,6 +48,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
 import android.view.animation.PathInterpolator;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.internal.logging.MetricsLogger;
@@ -52,6 +59,7 @@ import com.android.systemui.EventLogTags;
 import com.android.systemui.R;
 import com.android.systemui.qs.QSContainer;
 import com.android.systemui.qs.QSPanel;
+import com.android.systemui.qs.QSPanel.UpdateIndicator;
 import com.android.systemui.statusbar.ExpandableNotificationRow;
 import com.android.systemui.statusbar.ExpandableView;
 import com.android.systemui.statusbar.FlingAnimationUtils;
@@ -63,19 +71,21 @@ import com.android.systemui.statusbar.policy.HeadsUpManager;
 import com.android.systemui.statusbar.policy.KeyguardUserSwitcher;
 import com.android.systemui.statusbar.stack.NotificationStackScrollLayout;
 import com.android.systemui.statusbar.stack.StackStateAnimator;
+import com.qucii.systemui.statusbar.phone.CirclePageIndicator;
+import com.qucii.systemui.statusbar.phone.NotificationPagerAdapter;
+import com.qucii.systemui.statusbar.phone.NotificationsViewPager;
 
 import java.util.List;
-import android.util.Log;
 
 public class NotificationPanelView extends PanelView implements
         ExpandableView.OnHeightChangedListener, ObservableScrollView.Listener,
         View.OnClickListener, NotificationStackScrollLayout.OnOverscrollTopChangedListener,
         KeyguardAffordanceHelper.Callback, NotificationStackScrollLayout.OnEmptySpaceClickListener,
-        HeadsUpManager.OnHeadsUpChangedListener {
+        HeadsUpManager.OnHeadsUpChangedListener , OnPageChangeListener,UpdateIndicator{
 
-    private static final boolean DEBUG = true;  //weiliji modify
+    private static final boolean DEBUG = false;  //mare modify
     public static final String TAG = NotificationPanelView.class.getSimpleName();
- 
+    public static final boolean QUCII_DISABLE_QS_PANNEL = true ;  //mare add
     // Cap and total height of Roboto font. Needs to be adjusted when font for the big clock is
     // changed.
     private static final int CAP_HEIGHT = 1456;
@@ -96,8 +106,8 @@ public class NotificationPanelView extends PanelView implements
     private StatusBarHeaderView mHeader;
     private KeyguardUserSwitcher mKeyguardUserSwitcher;
     private KeyguardStatusBarView mKeyguardStatusBar;
-    private QSContainer mQsContainer;
-    private QSPanel mQsPanel;
+    private QSContainer mQsContainer,mQsContainer_Qucii;
+    private QSPanel mQsPanel,mQsPanel_Qucii;
     private KeyguardStatusView mKeyguardStatusView;
     private ObservableScrollView mScrollView;
     private TextView mClockView;
@@ -130,7 +140,7 @@ public class NotificationPanelView extends PanelView implements
     private boolean mKeyguardShowing;
     private boolean mDozing;
     private boolean mDozingOnDown;
-    private int mStatusBarState;
+    public  int mStatusBarState;
     private float mInitialHeightOnTouch;
     private float mInitialTouchX;
     private float mInitialTouchY;
@@ -143,7 +153,8 @@ public class NotificationPanelView extends PanelView implements
     private boolean mStackScrollerOverscrolling;
     private boolean mQsExpansionFromOverscroll;
     private float mLastOverscroll;
-    private boolean mQsExpansionEnabled = true;
+    //modify by mare 设置初始值为false，表示不显示QS
+    private boolean mQsExpansionEnabled = false;
     private ValueAnimator mQsExpansionAnimator;
     private FlingAnimationUtils mFlingAnimationUtils;
     private int mStatusBarMinHeight;
@@ -198,15 +209,31 @@ public class NotificationPanelView extends PanelView implements
     private boolean mIsExpansionFromHeadsUp;
     private boolean mListenForHeadsUp;
     private int mNavigationBarBottomHeight;
-    private boolean mExpandingFromHeadsUp;
+    
+    protected View mArrow;
+    protected View mArrowLayout; 
+    protected CirclePageIndicator mIndicator;// added by yangfan 
+    
     private boolean mCollapsedOnDown;
     private int mPositionMinSideMargin;
     private int mLastOrientation = -1;
     private boolean mClosingWithAlphaFadeOut;
     private boolean mHeadsUpAnimatingAway;
     private boolean mLaunchingAffordance;
+    private NotificationsViewPager mNotificationsViewPager;
     private String mLastCameraLaunchSource = KeyguardBottomAreaView.CAMERA_LAUNCH_SOURCE_AFFORDANCE;
-
+    public static final int NOTIFICATION_PAGE_INDEX = 0;
+    public static final int QUICKSETTINGS_PAGE_INDEX = 1;
+    private int mCurPage = NOTIFICATION_PAGE_INDEX;
+    //added by dongwei-17-2-17,add function of double click to go to sleep {start
+    private final String ACTION_DOUBLE_CLICK_GOTOSLEEP = "com.qucii.gotosleep";
+    private long mFirstClickTime = 0;
+    private long mSecondClickTime = 0;
+    //added by dongwei end}
+    
+    
+    
+    private int mBarSize;
     private Runnable mHeadsUpExistenceChangedRunnable = new Runnable() {
         @Override
         public void run() {
@@ -223,6 +250,14 @@ public class NotificationPanelView extends PanelView implements
         super(context, attrs);
         setWillNotDraw(!DEBUG);
     }
+    public NotificationStackScrollLayout getNotificationStackScrollLayout(){
+        return mNotificationStackScroller;
+    }
+
+    public ObservableScrollView getObservableScrollView(){
+        return mScrollView;
+    }
+
 
     public void setStatusBar(PhoneStatusBar bar) {
         mStatusBar = bar;
@@ -233,23 +268,39 @@ public class NotificationPanelView extends PanelView implements
         super.onFinishInflate();
         mHeader = (StatusBarHeaderView) findViewById(R.id.header);
         mHeader.setOnClickListener(this);
-        mKeyguardStatusBar = (KeyguardStatusBarView) findViewById(R.id.keyguard_header);
         mKeyguardStatusView = (KeyguardStatusView) findViewById(R.id.keyguard_status_view);
-        mQsContainer = (QSContainer) findViewById(R.id.quick_settings_container);
-        mQsPanel = (QSPanel) findViewById(R.id.quick_settings_panel);
-        mClockView = (TextView) findViewById(R.id.clock_view);
-        mScrollView = (ObservableScrollView) findViewById(R.id.scroll_view);
-        mScrollView.setListener(this);
-        mScrollView.setFocusable(false);
-        mReserveNotificationSpace = findViewById(R.id.reserve_notification_space);
         mNotificationContainerParent = (NotificationsQuickSettingsContainer)
                 findViewById(R.id.notification_container_parent);
-        mNotificationStackScroller = (NotificationStackScrollLayout)
-                findViewById(R.id.notification_stack_scroller);
+        mKeyguardStatusBar = (KeyguardStatusBarView) mNotificationContainerParent.findViewById(R.id.keyguard_header);
+        mClockView = (TextView) findViewById(R.id.clock_view);
+
+        mNotificationsViewPager=(NotificationsViewPager)mNotificationContainerParent.findViewById(R.id.notification_viewpager);
+        NotificationPagerAdapter mAdapter = (NotificationPagerAdapter) mNotificationsViewPager.getAdapter();
+		mIndicator = (CirclePageIndicator) findViewById(R.id.qucii_indicator);
+		mArrow = findViewById(R.id.qucii_arrow);
+		mArrowLayout =  findViewById(R.id.qucii_arrow_layout);
+		mIndicator.setViewPager(mNotificationsViewPager);
+		mIndicator.setOnPageChangeListener(this);
+        mNotificationsViewPager.setPanelView(this);
+        List<View> views = mAdapter.getViews();
+        mNotificationStackScroller= (NotificationStackScrollLayout) views.get(0);
+        mScrollView = (ObservableScrollView) views.get(1);
+        mScrollView.setNotificationPanelView(this);
+        mQsContainer = (QSContainer) mScrollView.findViewById(R.id.quick_settings_container);
+        mQsContainer_Qucii = (QSContainer) mScrollView.findViewById(R.id.qucii_quick_settings_container);
+        
+        mQsPanel = (QSPanel) mScrollView.findViewById(R.id.quick_settings_panel);
+        mQsPanel_Qucii = (QSPanel) mScrollView.findViewById(R.id.qucii_quick_settings_panel);
+        mQsPanel_Qucii.setExpanded(true);
+		mQsPanel_Qucii.setIndicatorListener(this);// added by yangfan 
+        mScrollView.setListener(this);
+        mScrollView.setFocusable(false);
+        mReserveNotificationSpace = mScrollView.findViewById(R.id.reserve_notification_space);
         mNotificationStackScroller.setOnHeightChangedListener(this);
         mNotificationStackScroller.setOverscrollTopChangedListener(this);
         mNotificationStackScroller.setOnEmptySpaceClickListener(this);
         mNotificationStackScroller.setScrollView(mScrollView);
+        mNotificationStackScroller.setNotificationPanelView(this);
         mFastOutSlowInInterpolator = AnimationUtils.loadInterpolator(getContext(),
                 android.R.interpolator.fast_out_slow_in);
         mFastOutLinearInterpolator = AnimationUtils.loadInterpolator(getContext(),
@@ -273,8 +324,8 @@ public class NotificationPanelView extends PanelView implements
                 }
             }
         });
+        
     }
-
     @Override
     protected void loadDimens() {
         super.loadDimens();
@@ -294,8 +345,10 @@ public class NotificationPanelView extends PanelView implements
                 R.dimen.qs_falsing_threshold);
         mPositionMinSideMargin = getResources().getDimensionPixelSize(
                 R.dimen.notification_panel_min_side_margin);
+        mBarSize = getResources().getDimensionPixelSize(R.dimen.navigation_bar_size);
+        isScreenLand();
     }
-
+    
     public void updateResources() {
         int panelWidth = getResources().getDimensionPixelSize(R.dimen.notification_panel_width);
         int panelGravity = getResources().getInteger(R.integer.notification_panel_layout_gravity);
@@ -307,25 +360,37 @@ public class NotificationPanelView extends PanelView implements
             mHeader.post(mUpdateHeader);
         }
 
-        lp = (FrameLayout.LayoutParams) mNotificationStackScroller.getLayoutParams();
-        if (lp.width != panelWidth) {
-            lp.width = panelWidth;
-            lp.gravity = panelGravity;
-            mNotificationStackScroller.setLayoutParams(lp);
+        ViewGroup.LayoutParams lp1 = (ViewGroup.LayoutParams) mNotificationStackScroller.getLayoutParams();
+        if (lp1 != null && lp1.width != panelWidth) {
+            lp1.width = panelWidth;
+            mNotificationStackScroller.setLayoutParams(lp1);
         }
 
-        lp = (FrameLayout.LayoutParams) mScrollView.getLayoutParams();
-        if (lp.width != panelWidth) {
-            lp.width = panelWidth;
-            lp.gravity = panelGravity;
-            mScrollView.setLayoutParams(lp);
+        ViewGroup.LayoutParams lp2 = (ViewGroup.LayoutParams) mScrollView.getLayoutParams();
+        if (lp2 != null && lp2.width != panelWidth) {
+            lp2.width = panelWidth;
+            mScrollView.setLayoutParams(lp2);
         }
     }
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
-
+//        Log.e("=======onLayout======", "onLayout:mChangedBottom"+mChangedBottom);
+        //add by mare 2017/3/21 begin
+        //========================>
+        //这两个界面在layout时不重新刷新位置,加入条件判断是否时悬浮通知
+        if(is_Qucii_Headup()){
+        	mNotificationContainerParent.layout(left, top, right, bottom);
+    	}else{
+    		if(getIsTouchOrAnimationOrBarState()){
+    			mNotificationContainerParent.layout(left, top, right, noBottom);
+    			mHeader.layout(left, top, right, Math.min(noBottom, mHeader.getMeasuredHeight()));
+    			mArrowLayout.layout(left, noBottom, right, mChangedBottom);
+    		}
+    		
+        }
+ 	   	//add by mare 2017/3/21 end
         // Update Clock Pivot
         mKeyguardStatusView.setPivotX(getWidth() / 2);
         mKeyguardStatusView.setPivotY((FONT_HEIGHT - CAP_HEIGHT) / 2048f * mClockView.getTextSize());
@@ -333,7 +398,11 @@ public class NotificationPanelView extends PanelView implements
         // Calculate quick setting heights.
         int oldMaxHeight = mQsMaxExpansionHeight;
         mQsMinExpansionHeight = mKeyguardShowing ? 0 : mHeader.getCollapsedHeight() + mQsPeekHeight;
-        mQsMaxExpansionHeight = mHeader.getExpandedHeight() + mQsContainer.getDesiredHeight();
+        if(!mQsExpansionEnabled){
+        	 mQsMaxExpansionHeight = mHeader.getCollapsedHeight() + mQsContainer.getDesiredHeight();
+        }else{
+        	 mQsMaxExpansionHeight = mHeader.getExpandedHeight() + mQsContainer.getDesiredHeight();
+        }
         positionClockAndNotifications();
         if (mQsExpanded && mQsFullyExpanded) {
             mQsExpansionHeight = mQsMaxExpansionHeight;
@@ -398,9 +467,14 @@ public class NotificationPanelView extends PanelView implements
         int stackScrollerPadding;
         if (mStatusBarState != StatusBarState.KEYGUARD) {
             int bottom = mHeader.getCollapsedHeight();
-            stackScrollerPadding = mStatusBarState == StatusBarState.SHADE
-                    ? bottom + mQsPeekHeight + mNotificationTopPadding
-                    : mKeyguardStatusBar.getHeight() + mNotificationTopPadding;
+            //modify by mare 2017/03/03
+            //=======================>
+            //这里StatusBarState.SHADE_LOCK状态顶部位置和平常下拉不一样导致顶部上移闪屏bug
+            stackScrollerPadding = /*mStatusBarState == StatusBarState.SHADE
+                    ?*/ bottom + mQsPeekHeight + mNotificationTopPadding
+                    /*: mKeyguardStatusBar.getHeight() + mNotificationTopPadding*/;
+            //<=======================
+            //modify by mare 2017/03/03
             mTopPaddingAdjustment = 0;
         } else {
             mClockPositionAlgorithm.setup(
@@ -470,7 +544,7 @@ public class NotificationPanelView extends PanelView implements
     }
 
     public void setQsExpansionEnabled(boolean qsExpansionEnabled) {
-        //mQsExpansionEnabled = qsExpansionEnabled;   //weiliji remove temp
+        mQsExpansionEnabled = qsExpansionEnabled;  
         mHeader.setClickable(qsExpansionEnabled);
     }
 
@@ -612,6 +686,7 @@ public class NotificationPanelView extends PanelView implements
                     // Already tracking because onOverscrolled was called. We need to update here
                     // so we don't stop for a frame until the next touch event gets handled in
                     // onTouchEvent.
+
                     setQsExpansion(h + mInitialHeightOnTouch);
                     trackMovement(event);
                     mIntercepting = false;
@@ -715,9 +790,11 @@ public class NotificationPanelView extends PanelView implements
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+//    	Log.e("=====onTouchEvent======", "event:"+event.getActionMasked());
         if (mBlockTouches) {
             return false;
         }
+     
         initDownStates(event);
         if (mListenForHeadsUp && !mHeadsUpTouchHelper.isTrackingHeadsUp()
                 && mHeadsUpTouchHelper.onInterceptTouchEvent(event)) {
@@ -733,6 +810,7 @@ public class NotificationPanelView extends PanelView implements
             return true;
         }
         mHeadsUpTouchHelper.onTouchEvent(event);
+        //锁屏解锁卡住使这里截取了event
         if (!mHeadsUpTouchHelper.isTrackingHeadsUp() && handleQsTouch(event)) {
             return true;
         }
@@ -746,6 +824,17 @@ public class NotificationPanelView extends PanelView implements
 
     private boolean handleQsTouch(MotionEvent event) {
         final int action = event.getActionMasked();
+        // screen statusBar animator by yangfan 
+        if(mStatusBarState==StatusBarState.KEYGUARD){
+        	  if(event.getY()<getResources().getDimensionPixelOffset(R.dimen.status_bar_height))
+        		  //modify by mare 2017/3/2
+        		  //=====================>
+        		  //这里之前返回为true会导致上面截取action的传递使锁屏卡住
+        	       return false;
+        	  	  //<=====================
+        	  	  //modify by mare 2017/3/2
+        }
+        // screen statusBar animator by yangfan 
         if (action == MotionEvent.ACTION_DOWN && getExpandedFraction() == 1f
                 && mStatusBar.getBarState() != StatusBarState.KEYGUARD && !mQsExpanded
                 && mQsExpansionEnabled) {
@@ -790,7 +879,8 @@ public class NotificationPanelView extends PanelView implements
     private boolean isInQsArea(float x, float y) {
         return (x >= mScrollView.getX() && x <= mScrollView.getX() + mScrollView.getWidth()) &&
                 (y <= mNotificationStackScroller.getBottomMostNotificationBottom()
-                || y <= mQsContainer.getY() + mQsContainer.getHeight());
+                || y <= mQsContainer.getY() + mQsContainer.getHeight()
+                ||y <= mQsContainer_Qucii.getY() + mQsContainer_Qucii.getHeight());
     }
 
     private boolean isOpenQsEvent(MotionEvent event) {
@@ -807,8 +897,9 @@ public class NotificationPanelView extends PanelView implements
         final boolean mouseButtonClickDrag = action == MotionEvent.ACTION_DOWN
                 && (event.isButtonPressed(MotionEvent.BUTTON_SECONDARY)
                         || event.isButtonPressed(MotionEvent.BUTTON_TERTIARY));
+        boolean isOverride =true;
 
-        return twoFingerDrag || stylusButtonClickDrag || mouseButtonClickDrag;
+        return twoFingerDrag || isOverride || stylusButtonClickDrag || mouseButtonClickDrag;
     }
 
     private void handleQsDown(MotionEvent event) {
@@ -935,7 +1026,6 @@ public class NotificationPanelView extends PanelView implements
     @Override
     public void onOverscrollTopChanged(float amount, boolean isRubberbanded) {
         logf("onOverscrollTopChanged() amount = " + amount + ",  isRubberbanded = " + isRubberbanded );
-        logf("weiliji show the trace info  "+ Log.getStackTraceString(new Throwable()));     
         cancelQsAnimation();
         if (!mQsExpansionEnabled) {
             amount = 0f;
@@ -983,7 +1073,6 @@ public class NotificationPanelView extends PanelView implements
 
     private void setQsExpanded(boolean expanded) {
         logf("setQsExpanded() expanded = " + expanded );
-        logf("weiliji show the trace info  "+ Log.getStackTraceString(new Throwable()));     
         boolean changed = mQsExpanded != expanded;
         if (changed) {
             mQsExpanded = expanded;
@@ -1005,7 +1094,17 @@ public class NotificationPanelView extends PanelView implements
 
         mStatusBarState = statusBarState;
         mKeyguardShowing = keyguardShowing;
-
+	    mNotificationsViewPager.setDisable(keyguardShowing);
+		updateIndicatorVisibility(statusBarState == StatusBarState.KEYGUARD ? INVISIBLE : VISIBLE);// added by yangfan 
+	    //add by mare for viewpager
+        if(keyguardShowing){
+            mNotificationsViewPager.setCurrentItem(0);
+        }
+        //add by mare 在锁屏状态下，不需要截图虚化背景 begin
+		if ((mStatusBarState == StatusBarState.SHADE_LOCKED || mStatusBarState == StatusBarState.KEYGUARD)) {
+			 setBackgroundResource(0); 
+		}
+		//add by mare 在锁屏状态下，不需要截图虚化背景 end
         if (goingToFullShade || (oldState == StatusBarState.KEYGUARD
                 && statusBarState == StatusBarState.SHADE_LOCKED)) {
             animateKeyguardStatusBarOut();
@@ -1260,15 +1359,22 @@ public class NotificationPanelView extends PanelView implements
         mHeader.setVisibility((mQsExpanded || !mKeyguardShowing || mHeaderAnimating)
                 ? View.VISIBLE
                 : View.INVISIBLE);
-        mHeader.setExpanded((mKeyguardShowing && !mHeaderAnimating)
-                || (mQsExpanded && !mStackScrollerOverscrolling));
+        mHeader.setExpanded(((mKeyguardShowing && !mHeaderAnimating)
+                || (mQsExpanded && !mStackScrollerOverscrolling))&&mQsExpansionEnabled);
         mNotificationStackScroller.setScrollingEnabled(
                 mStatusBarState != StatusBarState.KEYGUARD && (!mQsExpanded
                         || mQsExpansionFromOverscroll));
         mQsPanel.setVisibility(expandVisually ? View.VISIBLE : View.INVISIBLE);
-        mQsContainer.setVisibility(
-                mKeyguardShowing && !expandVisually ? View.INVISIBLE : View.VISIBLE);
-        mScrollView.setTouchEnabled(mQsExpanded);
+        /*mQsContainer.setVisibility(
+                mKeyguardShowing && !expandVisually ? View.INVISIBLE : View.VISIBLE);*/
+        //modify by mare begin 这里不需要显示mQsContainer
+        mQsContainer.setVisibility(mQsExpansionEnabled ? View.VISIBLE : View.GONE);
+        //modify by mare end
+        if(QUICKSETTINGS_PAGE_INDEX == mCurPage){
+        	 mScrollView.setTouchEnabled(true);
+        }else if(NOTIFICATION_PAGE_INDEX == mCurPage){
+        	mScrollView.setTouchEnabled(false);
+        }
         updateEmptyShadeView();
         mQsNavbarScrim.setVisibility(mStatusBarState == StatusBarState.SHADE && mQsExpanded
                 && !mStackScrollerOverscrolling && mQsScrimEnabled
@@ -1283,7 +1389,7 @@ public class NotificationPanelView extends PanelView implements
         logf("setQsExpansion() height = " + height );
         height = Math.min(Math.max(height, mQsMinExpansionHeight), mQsMaxExpansionHeight);
         mQsFullyExpanded = height == mQsMaxExpansionHeight;
-        if (height > mQsMinExpansionHeight && !mQsExpanded && !mStackScrollerOverscrolling) {
+        if ((height > mQsMinExpansionHeight && !mQsExpanded && !mStackScrollerOverscrolling)&&mQsExpansionEnabled) {
             setQsExpanded(true);
         } else if (height <= mQsMinExpansionHeight && mQsExpanded) {
             setQsExpanded(false);
@@ -1293,15 +1399,28 @@ public class NotificationPanelView extends PanelView implements
             }
         }
         mQsExpansionHeight = height;
-        mHeader.setExpansion(getHeaderExpansionFraction());
-        setQsTranslation(height);
-        requestScrollerTopPaddingUpdate(false /* animate */);
-        updateNotificationScrim(height);
+        
+        if(mQsExpansionEnabled){
+        	 mHeader.setExpansion(getHeaderExpansionFraction());
+             setQsTranslation(height);
+             requestScrollerTopPaddingUpdate(false /* animate */);
+             updateNotificationScrim(height);
+        }
+        
+        //add by mare 2017/2/24 begin
+        //=========================>
+        //加入设置通知栏page1位置解决显示半屏问题
+        mQsContainer_Qucii.setY(getHeaderTranslation());
+        mQsContainer_Qucii.invalidate();
+        //<=========================
+        //add by mare 2017/2/24 end 
+        
+        
         if (mKeyguardShowing) {
             updateHeaderKeyguard();
         }
-        if (mStatusBarState == StatusBarState.SHADE_LOCKED
-                || mStatusBarState == StatusBarState.KEYGUARD) {
+        if ((mStatusBarState == StatusBarState.SHADE_LOCKED
+                || mStatusBarState == StatusBarState.KEYGUARD)&&mQsExpansionEnabled) {
             updateKeyguardBottomAreaAlpha();
         }
         if (mStatusBarState == StatusBarState.SHADE && mQsExpanded
@@ -1344,11 +1463,16 @@ public class NotificationPanelView extends PanelView implements
     }
 
     private void setQsTranslation(float height) {
-	 logf(" weiliji  setQsTranslation() height    = " + height);
-	 
+	 logf(" mare  setQsTranslation() height    = " + height);
         if (!mHeaderAnimating) {
             mQsContainer.setY(height - mQsContainer.getDesiredHeight() + getHeaderTranslation());
         }
+        //delete by mare 2017/2/24 begin
+        //这里判断有冲突，不可能执行移到了上层
+//        if(mCurPage==QUICKSETTINGS_PAGE_INDEX&&!mQsExpansionEnabled){
+//        	 mQsContainer_Qucii.setY(getHeaderTranslation());
+//        }
+        //delete by mare 2017/2/24 end 
         if (mKeyguardShowing && !mHeaderAnimating) {
             mHeader.setY(interpolate(getQsExpansionFraction(), -mHeader.getHeight(), 0));
         }
@@ -1476,7 +1600,7 @@ public class NotificationPanelView extends PanelView implements
      * @return Whether we should intercept a gesture to open Quick Settings.
      */
     private boolean shouldQuickSettingsIntercept(float x, float y, float yDiff) {
-        if (!mQsExpansionEnabled || mCollapsedOnDown) {
+        if ((!mQsExpansionEnabled || mCollapsedOnDown)&&mQsExpansionEnabled) {
             return false;
         }
         View header = mKeyguardShowing ? mKeyguardStatusBar : mHeader;
@@ -1515,6 +1639,12 @@ public class NotificationPanelView extends PanelView implements
             maxHeight = calculatePanelHeightShade();
         }
         maxHeight = Math.max(maxHeight, min);
+        //add by mare 2017/3/15 begin      3/24 begin
+        //========================>
+        //这里重新定义最高的高度     
+        //3/24重新定义最高高度
+		maxHeight = Math.max(maxHeight, mNotificationContainerParent.getMeasuredHeight());
+		//add by mare 2017/3/15 end
         return maxHeight;
     }
 
@@ -1709,10 +1839,19 @@ public class NotificationPanelView extends PanelView implements
         }
         float stackTranslation = mNotificationStackScroller.getStackTranslation();
         float translation = stackTranslation / HEADER_RUBBERBAND_FACTOR;
-        if (mHeadsUpManager.hasPinnedHeadsUp() || mIsExpansionFromHeadsUp) {
-            translation = mNotificationStackScroller.getTopPadding() + stackTranslation
+        //modify by mare 2017/3/1 begin
+    	//===================>
+        //通知栏上滑时动画不一致问题
+        if(mStatusBarState!=StatusBarState.KEYGUARD){
+        	translation = mNotificationStackScroller.getTopPadding() + stackTranslation
                     - mNotificationTopPadding - mQsMinExpansionHeight;
         }
+//        if (mHeadsUpManager.hasPinnedHeadsUp() || mIsExpansionFromHeadsUp) {
+//            translation = mNotificationStackScroller.getTopPadding() + stackTranslation
+//                    - mNotificationTopPadding - mQsMinExpansionHeight;
+//        }
+        //===================>
+        //modify by mare 2017/3/1 end
         return Math.min(0, translation);
     }
 
@@ -1816,8 +1955,9 @@ public class NotificationPanelView extends PanelView implements
 
     private void setListening(boolean listening) {
         mHeader.setListening(listening);
-        mKeyguardStatusBar.setListening(listening);
+        //mKeyguardStatusBar.setListening(listening);//remove by yangfan
         mQsPanel.setListening(listening);
+        mQsPanel_Qucii.setListening(true);
     }
 
     @Override
@@ -2245,31 +2385,62 @@ public class NotificationPanelView extends PanelView implements
         onEmptySpaceClick(x);
     }
 
-    protected boolean onMiddleClicked() {
-        switch (mStatusBar.getBarState()) {
-            case StatusBarState.KEYGUARD:
-                if (!mDozingOnDown) {
-                    EventLogTags.writeSysuiLockscreenGesture(
-                            EventLogConstants.SYSUI_LOCKSCREEN_GESTURE_TAP_UNLOCK_HINT,
-                            0 /* lengthDp - N/A */, 0 /* velocityDp - N/A */);
-                    startUnlockHintAnimation();
-                }
-                return true;
-            case StatusBarState.SHADE_LOCKED:
-                if (!mQsExpanded) {
-                    mStatusBar.goToKeyguard();
-                }
-                return true;
-            case StatusBarState.SHADE:
+	protected boolean onMiddleClicked() {
+		switch (mStatusBar.getBarState()) {
+		case StatusBarState.KEYGUARD:
+			if (!mDozingOnDown) {
+				EventLogTags
+						.writeSysuiLockscreenGesture(
+								EventLogConstants.SYSUI_LOCKSCREEN_GESTURE_TAP_UNLOCK_HINT,
+								0 /* lengthDp - N/A */, 0 /* velocityDp - N/A */);
+				// hsp 2016-09-27 : If user have open double click go to sleep
+				// settings,
+				// we don't want to show animation
+				boolean isClickToSleep = (Settings.System.getInt(getContext()
+						.getContentResolver(), "dblclick_gotosleep", 0) == 1);
+				if (!isClickToSleep) {
+					startUnlockHintAnimation();
+				}
 
-                // This gets called in the middle of the touch handling, where the state is still
-                // that we are tracking the panel. Collapse the panel after this is done.
-                post(mPostCollapseRunnable);
-                return false;
-            default:
-                return true;
-        }
-    }
+				// added by dongwei-2017-2-17 : Double click to go to sleep, move code from
+				// ViewGroup to here,{start
+				if (isClickToSleep) {
+					if (mFirstClickTime > 0) {
+						mSecondClickTime = System.currentTimeMillis();
+						if (mSecondClickTime - mFirstClickTime < 500) {
+							Intent intent = new Intent(
+									ACTION_DOUBLE_CLICK_GOTOSLEEP);
+							// Send broadcast to PhoneWindowManager to go to
+							// sleep
+							mContext.sendBroadcast(intent);
+							mFirstClickTime = 0;
+							Log.d("zolen",
+									"Intercept the key Double click for go to sleep");
+						}
+					}
+					mFirstClickTime = System.currentTimeMillis();
+				}
+				// added by dongwei-17-2-17,end}
+
+			}
+			return true;
+		case StatusBarState.SHADE_LOCKED:
+			if (!mQsExpanded) {
+				mStatusBar.goToKeyguard();
+			}
+			return true;
+		case StatusBarState.SHADE:
+
+			// This gets called in the middle of the touch handling, where the
+			// state is still
+			// that we are tracking the panel. Collapse the panel after this is
+			// done.
+			post(mPostCollapseRunnable);
+			return false;
+		default:
+			return true;
+		}
+	}
 
     @Override
     protected void dispatchDraw(Canvas canvas) {
@@ -2300,9 +2471,28 @@ public class NotificationPanelView extends PanelView implements
     @Override
     public void onHeadsUpPinnedModeChanged(final boolean inPinnedMode) {
         if (inPinnedMode) {
-            mHeadsUpExistenceChangedRunnable.run();
+        	//add by mare 在锁屏状态下，不需要截图虚化背景 begin
+    		if (mStatusBarState != StatusBarState.KEYGUARD) {
+    			 if(!mPanelExpanded){
+    				 setBackground(null); 
+    				 updateIndicatorVisibility(GONE);// gone indicator by yangfan
+    			 }else{
+    				 mHeadsUpManager.unpinAll();
+    			 }
+    		}
+    		//add by mare 在锁屏状态下，不需要截图虚化背景 end
+//        	setBackgroundResource(0); // clear bg by yangfan
+            mHeadsUpExistenceChangedRunnable.run();	
             updateNotificationTranslucency();
         } else {
+        	//add by mare 在锁屏状态下，不需要截图虚化背景 begin
+        	//remove by mare
+//    		if (mStatusBarState != StatusBarState.KEYGUARD) {
+//    			mStatusBar.blurPanelBg();// blurred bg by yangfan 
+//    		}
+    		//remove by mare
+    		//add by mare 在锁屏状态下，不需要截图虚化背景 end
+        	
             mHeadsUpAnimatingAway = true;
             mNotificationStackScroller.runAfterAnimationFinished(
                     mHeadsUpExistenceChangedRunnable);
@@ -2321,6 +2511,11 @@ public class NotificationPanelView extends PanelView implements
     @Override
     public void onHeadsUpStateChanged(NotificationData.Entry entry, boolean isHeadsUp) {
         mNotificationStackScroller.generateHeadsUpAnimation(entry.row, isHeadsUp);
+    	//add by mare 2017/3/22 begin
+        //========================>
+        //浮动通知高度
+        mHeadUpLayoutHeight=entry.row.getIntrinsicHeight();
+      //add by mare 2017/3/22 end
     }
 
     @Override
@@ -2466,5 +2661,143 @@ public class NotificationPanelView extends PanelView implements
         List<ActivityManager.RunningTaskInfo> tasks = am.getRunningTasks(1);
         return !tasks.isEmpty() && pkgName.equals(tasks.get(0).topActivity.getPackageName());
     }
+	@Override
+	public void onPageScrollStateChanged(int arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void onPageScrolled(int arg0, float arg1, int arg2) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+    public void onPageSelected(int pageIndex) {
+        mCurPage = pageIndex;
+        updateQsState();
+    }
+    public boolean isNotificationView(){
+    	return (mCurPage!=QUICKSETTINGS_PAGE_INDEX);
+    }
+    
+// added by yangfan 		
+    @Override
+    public void updateIndicatorVisibility(int vis) {
+        if (mIndicator.getVisibility() == vis) {
+            return;
+        }
+        mIndicator.setVisibility(vis);
+        //add by mare 2017/3/15 begin
+        //=========================>
+        //显示箭头
+        mArrowLayout.setVisibility(vis);
+        //add by mare 2017/3/15 end
+    }
+// added by yangfan 	end
+    
+    
+    //add by mare 2017/3/15 begin
+    //=========================>
+    //改变后的高度缓存，这里是修改状态栏layout的方法即是移动状态栏
+    int mChangedBottom;
+    int noBottom;
+    public int getChangedBottom(){
+    	return mChangedBottom;
+    }
+
+    protected void qucii_TouchMove_resetLayout(float newHeight) {
+    	
+		if (mStatusBar.getBarState() == StatusBarState.KEYGUARD) {
+			mChangedBottom=mNotificationContainerParent.getMeasuredHeight();
+			noBottom=mChangedBottom;
+			if(getBottom()!=mChangedBottom){
+				setBottom(mChangedBottom);
+				mNotificationContainerParent.setBottom(mChangedBottom);
+			}
+		} else {
+			int mPanelHeight = Math.max(0, (int) newHeight);
+			mPanelHeight = Math.min(mPanelHeight, getMaxPanelHeight());
+			if(SystemProperties.getBoolean("persist.sys.navg_bar_visible",false)&&!isScreenLand()){
+				mPanelHeight=Math.min(mPanelHeight, getMaxPanelHeight()-mBarSize);
+			}
+			changeIndicatorVisable(mPanelHeight);
+			setBottom(mPanelHeight);
+			mChangedBottom = mPanelHeight;
+			int arrowHeight = mArrowLayout.getMeasuredHeight();
+			noBottom = Math.max(-arrowHeight, mPanelHeight - arrowHeight);
+			mNotificationContainerParent.setBottom(noBottom);
+			mHeader.setBottom(Math.min(noBottom, mHeader.getMeasuredHeight()));
+			mArrowLayout.layout(mArrowLayout.getLeft(), noBottom, mArrowLayout.getRight(), noBottom+arrowHeight);
+		}
+    }
+    //add by mare 2017/3/15 end
+    
+    
+	//modify by mare 2017/3/24 begin
+    //========================>
+    //根据通知栏高度判断是否显示两点和底部横杠的方法
+    public void changeIndicatorVisable(int mPanelHeight){
+    	boolean isMax=(mPanelHeight==getMaxPanelHeight());
+    	if(SystemProperties.getBoolean("persist.sys.navg_bar_visible",false)&&!isScreenLand()){
+    		isMax=(mPanelHeight==getMaxPanelHeight()-mBarSize);
+		}
+    	
+    	if(isMax){
+    		if(mArrow.getVisibility()==View.INVISIBLE){
+    			return;
+    		}
+    		mIndicator.setVisibility(View.VISIBLE);
+    		mArrow.setVisibility(View.INVISIBLE);
+    	}else{
+    		if(mArrow.getVisibility()==View.VISIBLE){
+    			return;
+    		}
+    		mIndicator.setVisibility(View.INVISIBLE);
+    		mArrow.setVisibility(View.VISIBLE);
+    	}
+    }
+	//modify by mare 2017/3/24 end
+    
+	public void collapseAllPanels() {
+		mStatusBar.animateCollapsePanels();
+	}
+	
+	public void dismissKeyguard(float vel) {
+		fling(vel, false);
+	}
+
+//added by yangfan begin
+	public boolean isQsExpansionEnabled(){
+		return mQsExpansionEnabled;
+	}
+	
+	public void showPage(int page){
+		mNotificationsViewPager.setCurrentItem(page);
+		onPageSelected(page);
+	}
+//added by yangfan end
+	
+	//modify by mare 2017/3/24 begin
+    //========================>
+    //判断是否横屏
+	public boolean isScreenLand() {
+
+		Configuration mConfiguration = null;
+		if(mConfiguration==null){
+			mConfiguration= this.getResources().getConfiguration(); // 获取设置的配置信息
+		}
+		int ori = mConfiguration.orientation; // 获取屏幕方向
+
+		if (ori == mConfiguration.ORIENTATION_LANDSCAPE) {
+			// 横屏
+			return true;
+		} else if (ori == mConfiguration.ORIENTATION_PORTRAIT) {
+			// 竖屏
+			return false;
+		}
+		return false;
+	}
+	//modify by mare 2017/3/24 end
+	
 }
 

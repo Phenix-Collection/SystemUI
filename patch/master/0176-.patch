@@ -1,0 +1,429 @@
+From 297a05d498de1940c13a711067a23887574d73ca Mon Sep 17 00:00:00 2001
+From: mare <yangfan@qucii.com>
+Date: Fri, 24 Mar 2017 15:33:31 +0800
+Subject: [PATCH 176/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E7=A6=81=E6=AD=A2=E9=94=81=E5=B1=8F=E7=8A=B6=E6=80=81=E4=B8=8A?=
+ =?UTF-8?q?=E6=8B=89=E9=81=AE=E6=8C=A1=E5=8A=A8=E7=94=BB=EF=BC=8C=E5=8A=A0?=
+ =?UTF-8?q?=E5=85=A5=E5=BA=95=E9=83=A8=E8=A7=A6=E6=91=B8=E6=9D=A1=EF=BC=8C?=
+ =?UTF-8?q?=E8=BF=99=E9=87=8C=E4=B8=A4=E7=82=B9=E6=9C=AA=E6=94=B9=E5=8F=98?=
+ =?UTF-8?q?=E5=A4=A7=E5=B0=8F?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/res/drawable-xhdpi/arrow_qucii_2.png      | Bin 1494 -> 1051 bytes
+ SystemUI/res/layout/status_bar_expanded.xml        |  49 ++++++-----
+ .../statusbar/phone/NotificationPanelView.java     |  92 +++++++++++++--------
+ .../android/systemui/statusbar/phone/PanelBar.java |   5 ++
+ .../systemui/statusbar/phone/PanelHolder.java      |   2 +-
+ .../systemui/statusbar/phone/PanelView.java        |  24 ++++--
+ .../statusbar/phone/StatusBarWindowView.java       |  13 +++
+ 7 files changed, 123 insertions(+), 62 deletions(-)
+
+diff --git a/SystemUI/res/drawable-xhdpi/arrow_qucii_2.png b/SystemUI/res/drawable-xhdpi/arrow_qucii_2.png
+index 78f95a0fd775b55aa049b989bcb91c7ef2ac843e..476758b328df7ad241d76eaaef32f38e44f50c3e 100644
+GIT binary patch
+delta 336
+zcmcb{J)2{KI2RWO8v_Fa%c_Vg8x^&g6bxO=9bGM5%?%Aqj0_E3%^gimO<hbaEzB&8
+z4NP3j%qHhB$-op@;8e7N$pEIv6sMve2$RfkDl%bqsz0!_Jq75-PEQxdkcwMRrrGj2
+zI0&?+Z?WLpJI|KeRCTQ_kLli0Df_Qg%F!0hl_#hBY^#npo0<6Dwl!n{qol`+`8yk!
+zm1jI{Y;KU-vP7Htg^NRHqS9PLrG$e48loGz8kn6|g&dHa_-+Ho4N>j_r2|@G35z!{
+zvb8>4`uWIwXSEXzQco2AWxkZod3b&Q>i>cX4DbJ|DQt}E{tR>#gQu&X%Q~loCIIq1
+BZJ_`F
+
+delta 782
+zcmbQuagBR|IF}j+8v_GF$&tA;H!5l~DHyo97`d1`85<ZGn;IIrnmd^r8Cx1SI$Ic8
+zni@G;8c)t)l7T5Q!Kr8klL1VTAx=d<5GEPnRAj>JRPWGGH-&+L$;H#fF{I+wn_0FV
+zhXVwTOGmE~(6HbrD|`_oz<zP5UTM*b2O;XKC(pLB>WCF(aX)&}^UBg)B_+WJ{kkqV
+z%8HZ(6bOhoF1h-{-ct40v!&N=OkdwD|K#z#>hk}4_AHsMHEUVxpB!Dq`OyjvK-gf?
+z-N>t^rp@7csXkbN)y%Q!yZ%85jmlcK7DqXm7nAruezTj;U0upn(pYMc@zC9=r#V~y
+zY=e%)O6AH;CcpbC92rE{H0ECT*Io7``oXqU(fN&b8(1f)J&!-Alz*P<-QQvZuD<`O
+zUP1@bJg!K7STystsKk}6o}Ueks~_5l?tZ-0`lsK9)t$N0Tdvn<cpv8y%U$_?M=+}d
+zTY1xi`3GEN|N3lLKlAR#h(5suygJS1ju+e&es<eUzH{tM#u`z%=v5513vvWs2xa6h
+zc(1Wtlr#F7#4J4qUAN!|kpg#gB{n6t1<IQ@6>7A-bQ3?}#`KE8wfpF*6Ln>4_5YhK
+zTfDBVC-V7<-xr^is%K4SsP~PYm}*lg^VMhC$9IWkPN$+Hn~(he@GUZ!A@luH-+zBU
+zIyZ34U=MXvPhW7~u~YixV~MkCPFcG3FsU3^c+@0{c~$e||1M7>T*DsCv1d8a$lmzb
+zR-(}Hk=rJj-7^EvS+3$pWl7Ckb^dFS>+#%ehc~|GJoQO3NQ+I6=T(S<TuW?9#navv
+z%jsQ;$GuPey{x&kSiz9ZX2On%Q{Fj+SNxCmE#NC@_WbbTqJE;u+wg;$5e8zeqFRE#
+yo=koazV6qi9rOQbE@X{wXJ%vq!V~vcB^VC(oCr!taoYq;_Y9t{elF{r5}E*^(?4hc
+
+diff --git a/SystemUI/res/layout/status_bar_expanded.xml b/SystemUI/res/layout/status_bar_expanded.xml
+index 0593b1b..ea137c4 100644
+--- a/SystemUI/res/layout/status_bar_expanded.xml
++++ b/SystemUI/res/layout/status_bar_expanded.xml
+@@ -73,31 +73,38 @@
+         
+     </com.android.systemui.statusbar.phone.NotificationsQuickSettingsContainer>
+ 	
+-    <com.qucii.systemui.statusbar.phone.CirclePageIndicator
++    <include layout="@layout/status_bar_expanded_header" />
++    
++    <RelativeLayout
++        android:id="@+id/qucii_arrow_layout"
++        android:layout_width="match_parent"
++        android:layout_height="@dimen/qucii_arrow_height"
++        android:layout_gravity="bottom|center_horizontal"
++        android:orientation="vertical" >
++
++        <View
++            android:layout_width="fill_parent"
++            android:layout_height="1px"
++            android:layout_alignParentTop="true"
++            android:background="?android:attr/listDivider" />
++
++        <com.qucii.systemui.statusbar.phone.CirclePageIndicator
+             android:id="@+id/qucii_indicator"
+-            android:layout_width="wrap_content"
++            android:layout_width="200dp"
++            android:paddingTop="1dp"
+             android:layout_height="wrap_content"
+-            android:layout_gravity="bottom|center_horizontal"
+-            android:layout_marginBottom="@dimen/pager_indicator_bottom" />
+-        <include layout="@layout/status_bar_expanded_header" />
+-    
+-    <LinearLayout
+-            android:id="@+id/qucii_arrow_layout"
+-            android:layout_width="match_parent"
+-            android:orientation="vertical"
+-            android:layout_gravity="bottom|center_horizontal"
+-            android:layout_height="@dimen/qucii_arrow_height"
+-            android:padding="4dp">
++            android:layout_centerInParent="true" />
++
+         <ImageView
+             android:id="@+id/qucii_arrow"
+-            android:layout_width="@dimen/qucii_arrow_height"
+-            android:layout_height="12dp"
+-            android:layout_gravity="center_horizontal"
+-            android:src="@drawable/arrow_qucii_2"
+-            />
+-    </LinearLayout>
+-    
+-    
++            android:layout_width="match_parent"
++            android:layout_height="match_parent"
++            android:scaleType="centerInside"
++            android:layout_centerInParent="true"
++            android:visibility="invisible"
++            android:background="#66333333"
++            android:src="@drawable/arrow_qucii_2" />
++    </RelativeLayout>
+     
+     <include
+             layout="@layout/keyguard_bottom_area"
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+index 225466b..330229b 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+@@ -31,6 +31,7 @@ import android.graphics.Canvas;
+ import android.graphics.Color;
+ import android.graphics.Paint;
+ import android.graphics.Rect;
++import android.os.SystemProperties;
+ import android.provider.Settings;
+ import android.support.v4.view.ViewPager.OnPageChangeListener;
+ import android.util.AttributeSet;
+@@ -218,19 +219,16 @@ public class NotificationPanelView extends PanelView implements
+     private CirclePageIndicator mIndicator;// added by yangfan 
+     private NotificationsViewPager mNotificationsViewPager;
+     private String mLastCameraLaunchSource = KeyguardBottomAreaView.CAMERA_LAUNCH_SOURCE_AFFORDANCE;
+-    private boolean mIndicatorVisible = false;// added by yangfan 
+     public static final int NOTIFICATION_PAGE_INDEX = 0;
+     public static final int QUICKSETTINGS_PAGE_INDEX = 1;
+     private int mCurPage = NOTIFICATION_PAGE_INDEX;
+-    
+     //added by dongwei-17-2-17,add function of double click to go to sleep {start
+     private final String ACTION_DOUBLE_CLICK_GOTOSLEEP = "com.qucii.gotosleep";
+     private long mFirstClickTime = 0;
+     private long mSecondClickTime = 0;
+     //added by dongwei end}
+-    private ImageView mArrow; 
+-    private View mArrowLayout; 
+-    private int marginIndicatorBottom;
++    
++    private int mBarSize;
+     private Runnable mHeadsUpExistenceChangedRunnable = new Runnable() {
+         @Override
+         public void run() {
+@@ -274,7 +272,7 @@ public class NotificationPanelView extends PanelView implements
+         mNotificationsViewPager=(NotificationsViewPager)mNotificationContainerParent.findViewById(R.id.notification_viewpager);
+         NotificationPagerAdapter mAdapter = (NotificationPagerAdapter) mNotificationsViewPager.getAdapter();
+ 		mIndicator = (CirclePageIndicator) findViewById(R.id.qucii_indicator);
+-		mArrow = (ImageView)findViewById(R.id.qucii_arrow);
++		mArrow = findViewById(R.id.qucii_arrow);
+ 		mArrowLayout =  findViewById(R.id.qucii_arrow_layout);
+ 		mIndicator.setViewPager(mNotificationsViewPager);
+ 		mIndicator.setOnPageChangeListener(this);
+@@ -323,7 +321,6 @@ public class NotificationPanelView extends PanelView implements
+         });
+         
+     }
+-    private int mIndicatorBottom;
+     @Override
+     protected void loadDimens() {
+         super.loadDimens();
+@@ -343,10 +340,10 @@ public class NotificationPanelView extends PanelView implements
+                 R.dimen.qs_falsing_threshold);
+         mPositionMinSideMargin = getResources().getDimensionPixelSize(
+                 R.dimen.notification_panel_min_side_margin);
+-        marginIndicatorBottom = getResources().getDimensionPixelSize(
+-        		R.dimen.pager_indicator_bottom);
++        mBarSize = getResources().getDimensionPixelSize(R.dimen.navigation_bar_size);
++        isScreenLand();
+     }
+-
++    
+     public void updateResources() {
+         int panelWidth = getResources().getDimensionPixelSize(R.dimen.notification_panel_width);
+         int panelGravity = getResources().getInteger(R.integer.notification_panel_layout_gravity);
+@@ -381,14 +378,12 @@ public class NotificationPanelView extends PanelView implements
+         if(is_Qucii_Headup()){
+         	mNotificationContainerParent.layout(left, top, right, bottom);
+     	}else{
+-    		if(getIsTouchOrAnimation()){
++    		if(getIsTouchOrAnimationOrBarState()){
+     			mNotificationContainerParent.layout(left, top, right, noBottom);
+     			mArrowLayout.layout(left, noBottom, right, mChangedBottom);
+     		}
+     		
+         }
+-        int mIndictorBottom=mNotificationContainerParent.getMeasuredHeight()-marginIndicatorBottom;
+-        mIndicator.layout(left, mIndictorBottom-mIndicator.getMeasuredHeight(), right, mIndictorBottom);
+  	   	//add by mare 2017/3/21 end
+         // Update Clock Pivot
+         mKeyguardStatusView.setPivotX(getWidth() / 2);
+@@ -626,13 +621,6 @@ public class NotificationPanelView extends PanelView implements
+         if (mBlockTouches) {
+             return false;
+         }
+-    	//add by mare 2017/3/16 begin
+-        //========================>
+-        //标记点击为down是触摸状态
+-        if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
+-        	isTouch=true;
+-        }
+-        //add by mare 2017/3/16 end
+         initDownStates(event);
+         if (mHeadsUpTouchHelper.onInterceptTouchEvent(event)) {
+             mIsExpansionFromHeadsUp = true;
+@@ -800,9 +788,7 @@ public class NotificationPanelView extends PanelView implements
+         if (mBlockTouches) {
+             return false;
+         }
+-        if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
+-        	isTouch=true;
+-        }
++     
+         initDownStates(event);
+         if (mListenForHeadsUp && !mHeadsUpTouchHelper.isTrackingHeadsUp()
+                 && mHeadsUpTouchHelper.onInterceptTouchEvent(event)) {
+@@ -1647,10 +1633,11 @@ public class NotificationPanelView extends PanelView implements
+             maxHeight = calculatePanelHeightShade();
+         }
+         maxHeight = Math.max(maxHeight, min);
+-        //add by mare 2017/3/15 begin
++        //add by mare 2017/3/15 begin      3/24 begin
+         //========================>
+-        //这里重新定义最高的高度
+-		maxHeight = Math.max(maxHeight, mNotificationStackScroller.getHeight());
++        //这里重新定义最高的高度     
++        //3/24重新定义最高高度
++		maxHeight = Math.max(maxHeight, mNotificationContainerParent.getMeasuredHeight());
+ 		//add by mare 2017/3/15 end
+         return maxHeight;
+     }
+@@ -2713,15 +2700,27 @@ public class NotificationPanelView extends PanelView implements
+     }
+ 
+     protected void qucii_TouchMove_resetLayout(float newHeight) {
+-//    	Log.e("========qucii_TouchMove_resetLayout=========", "qucii_TouchMove_resetLayout"+newHeight);
+-    	int mPanelHeight=Math.max(0, (int) newHeight);
+-    	mPanelHeight=Math.min(mPanelHeight, getMaxPanelHeight());
+-    	setBottom(mPanelHeight);
+-    	mChangedBottom=mPanelHeight;
+- 	   	int arrowHeight=mArrowLayout.getMeasuredHeight();
+- 	   	noBottom=Math.max(-arrowHeight, mPanelHeight-arrowHeight);
+- 	   	mNotificationContainerParent.setBottom(noBottom);
+- 	   	mArrowLayout.layout(mArrowLayout.getLeft(), noBottom, mArrowLayout.getRight(), mPanelHeight);
++    	
++		if (mStatusBar.getBarState() == StatusBarState.KEYGUARD) {
++			mChangedBottom=mNotificationContainerParent.getMeasuredHeight();
++			noBottom=mChangedBottom;
++			if(getBottom()!=mChangedBottom){
++				setBottom(mChangedBottom);
++				mNotificationContainerParent.setBottom(mChangedBottom);
++			}
++		} else {
++			int mPanelHeight = Math.max(0, (int) newHeight);
++			mPanelHeight = Math.min(mPanelHeight, getMaxPanelHeight());
++			if(SystemProperties.getBoolean("persist.sys.navg_bar_visible",false)&&!isScreenLand()){
++				mPanelHeight=Math.min(mPanelHeight, getMaxPanelHeight()-mBarSize);
++			}
++			setBottom(mPanelHeight);
++			mChangedBottom = mPanelHeight;
++			int arrowHeight = mArrowLayout.getMeasuredHeight();
++			noBottom = Math.max(-arrowHeight, mPanelHeight - arrowHeight);
++			mNotificationContainerParent.setBottom(noBottom);
++			mArrowLayout.layout(mArrowLayout.getLeft(), noBottom, mArrowLayout.getRight(), noBottom+arrowHeight);
++		}
+     }
+     //add by mare 2017/3/15 end
+     
+@@ -2744,5 +2743,28 @@ public class NotificationPanelView extends PanelView implements
+ 		onPageSelected(page);
+ 	}
+ //added by yangfan end
++	
++	//modify by mare 2017/3/24 begin
++    //========================>
++    //判断是否横屏
++	public boolean isScreenLand() {
++
++		Configuration mConfiguration = null;
++		if(mConfiguration==null){
++			mConfiguration= this.getResources().getConfiguration(); // 获取设置的配置信息
++		}
++		int ori = mConfiguration.orientation; // 获取屏幕方向
++
++		if (ori == mConfiguration.ORIENTATION_LANDSCAPE) {
++			// 横屏
++			return true;
++		} else if (ori == mConfiguration.ORIENTATION_PORTRAIT) {
++			// 竖屏
++			return false;
++		}
++		return false;
++	}
++	//modify by mare 2017/3/24 end
++	
+ }
+ 
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/PanelBar.java b/SystemUI/src/com/android/systemui/statusbar/phone/PanelBar.java
+index 1e0ccc3..322d8cc 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/PanelBar.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/PanelBar.java
+@@ -56,6 +56,11 @@ public abstract class PanelBar extends FrameLayout {
+         mState = state;
+     }
+ 
++    public int getState(){
++    	return mState;
++    }
++    
++    
+     public PanelBar(Context context, AttributeSet attrs) {
+         super(context, attrs);
+     }
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/PanelHolder.java b/SystemUI/src/com/android/systemui/statusbar/phone/PanelHolder.java
+index c535299..205436e 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/PanelHolder.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/PanelHolder.java
+@@ -97,7 +97,7 @@ public class PanelHolder extends FrameLayout {
+     	super.onLayout(changed, left, top, right, bottom);
+     	if(mNotificationPanel!=null&&mNotificationPanel.is_Qucii_Headup()){
+     		mNotificationPanel.layout(left, top, right, bottom);
+-    	}else if(mNotificationPanel!=null&&mNotificationPanel.getIsTouchOrAnimation()){
++    	}else if(mNotificationPanel!=null&&mNotificationPanel.getIsTouchOrAnimationOrBarState()){
+     		mNotificationPanel.layout(left, top, right, mNotificationPanel.getChangedBottom());
+     	}
+     }
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/PanelView.java b/SystemUI/src/com/android/systemui/statusbar/phone/PanelView.java
+index 8102417..94b3ef3 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/PanelView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/PanelView.java
+@@ -32,6 +32,7 @@ import android.view.ViewTreeObserver;
+ import android.view.animation.AnimationUtils;
+ import android.view.animation.Interpolator;
+ import android.widget.FrameLayout;
++import android.widget.ImageView;
+ 
+ import com.android.systemui.EventLogConstants;
+ import com.android.systemui.EventLogTags;
+@@ -40,6 +41,8 @@ import com.android.systemui.doze.DozeLog;
+ import com.android.systemui.statusbar.FlingAnimationUtils;
+ import com.android.systemui.statusbar.StatusBarState;
+ import com.android.systemui.statusbar.policy.HeadsUpManager;
++import com.qucii.systemui.statusbar.phone.CirclePageIndicator;
++
+ import android.util.BoostFramework;
+ 
+ import java.io.FileDescriptor;
+@@ -245,11 +248,24 @@ public abstract class PanelView extends FrameLayout {
+         mTouchDisabled = disabled;
+     }
+ 
++	//modify by mare 2017/3/24 begin
++    //========================>
++    //这里加入并不是通知栏关闭状态，和设置底部横条的显示方法
++    protected boolean isTouch=false,isAnimation=false;
++    protected View mArrow;
++    protected View mArrowLayout; 
++    //判断是否在layout读取缓存位置的判断方法
++    public boolean getIsTouchOrAnimationOrBarState(){
++    	return isTouch||isAnimation||mBar.getState()!=mBar.STATE_CLOSED;
++    }
+     
+-    public boolean isTouch=false,isAnimation=false;
+-    public boolean getIsTouchOrAnimation(){
+-    	return isTouch||isAnimation;
++    public void setIsTouch(boolean istouch){
++    	isTouch=istouch;
++    	if(!is_Qucii_Headup()&&mArrow!=null){
++    		mArrow.setVisibility(istouch?View.VISIBLE:View.INVISIBLE);
++    	}
+     }
++    //modify by mare 2017/3/24 end
+     
+     @Override
+     public boolean onTouchEvent(MotionEvent event) {
+@@ -287,7 +303,6 @@ public abstract class PanelView extends FrameLayout {
+ 
+         switch (event.getActionMasked()) {
+             case MotionEvent.ACTION_DOWN:
+-            	isTouch=true;
+                 startExpandMotion(x, y, false /* startTracking */, mExpandedHeight);
+                 mJustPeeked = false;
+                 mPanelClosedOnDown = isFullyCollapsed();
+@@ -373,7 +388,6 @@ public abstract class PanelView extends FrameLayout {
+ 
+             case MotionEvent.ACTION_UP:
+             case MotionEvent.ACTION_CANCEL:
+-            	isTouch=false;
+                 trackMovement(event);
+                 endMotionEvent(event, x, y, false /* forceCancel */);
+                 break;
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/StatusBarWindowView.java b/SystemUI/src/com/android/systemui/statusbar/phone/StatusBarWindowView.java
+index b4fcb26..b921046 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/StatusBarWindowView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/StatusBarWindowView.java
+@@ -27,6 +27,7 @@ import android.graphics.Rect;
+ import android.media.session.MediaSessionLegacyHelper;
+ import android.os.IBinder;
+ import android.util.AttributeSet;
++import android.util.Log;
+ import android.view.KeyEvent;
+ import android.view.MotionEvent;
+ import android.view.View;
+@@ -198,6 +199,18 @@ public class StatusBarWindowView extends FrameLayout {
+ 
+     @Override
+     public boolean dispatchTouchEvent(MotionEvent ev) {
++    	//modify by mare 2017/3/24 begin
++        //========================>
++        //mNotificationPanel触摸状态放到最顶层
++    	if (ev.getActionMasked() == MotionEvent.ACTION_DOWN) {
++    		mNotificationPanel.setIsTouch(true);
++        }
++        if(ev.getActionMasked() == MotionEvent.ACTION_CANCEL||ev.getActionMasked() == MotionEvent.ACTION_UP){
++        	mNotificationPanel.setIsTouch(false);
++        }
++        //modify by mare 2017/3/24 end
++        
++        
+         if (mBrightnessMirror != null && mBrightnessMirror.getVisibility() == VISIBLE) {
+             // Disallow new pointers while the brightness mirror is visible. This is so that you
+             // can't touch anything other than the brightness slider while the mirror is showing
+-- 
+2.8.3.windows.1
+

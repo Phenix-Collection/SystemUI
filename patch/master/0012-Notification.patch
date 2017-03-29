@@ -1,0 +1,52 @@
+From aa5b6a39584f21464a1a9db349fddcf1bb0b9780 Mon Sep 17 00:00:00 2001
+From: mare <yangfan@qucci.com>
+Date: Tue, 7 Feb 2017 13:42:54 +0800
+Subject: [PATCH 012/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E6=B7=BB=E5=8A=A0Notification=E4=B8=8B=E6=8B=89=E7=8A=B6?=
+ =?UTF-8?q?=E6=80=81=E6=A0=8F=E9=80=9A=E7=9F=A5=E7=AE=A1=E7=90=86=E4=BA=8B?=
+ =?UTF-8?q?=E4=BB=B6?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../android/systemui/statusbar/phone/StatusBarHeaderView.java    | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/StatusBarHeaderView.java b/SystemUI/src/com/android/systemui/statusbar/phone/StatusBarHeaderView.java
+index d330c69..eb2f58f 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/StatusBarHeaderView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/StatusBarHeaderView.java
+@@ -135,6 +135,7 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
+     private float mCurrentT;
+     private boolean mShowingDetail;
+     private boolean mDetailTransitioning;
++    private TextView mNotificationManager;
+ 
+     public StatusBarHeaderView(Context context, AttributeSet attrs) {
+         super(context, attrs);
+@@ -160,6 +161,10 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
+         mQuciiSettingsButton.setOnClickListener(this);
+         //add by mare end
+         mSettingsContainer = findViewById(R.id.settings_button_container);
++        //add by mare begin add qucii NotificationManager bt
++        mNotificationManager = (TextView) findViewById(R.id.qucii_notification_manage);
++        mNotificationManager.setOnClickListener(this);
++        //add by mare begin add qucii NotificationManager bt
+         mSettingsButton.setOnClickListener(this);
+         mClock.setOnClickListener(this);
+         mDateGroup.setOnClickListener(this);
+@@ -544,6 +549,10 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
+             if (showIntent != null) {
+                 mActivityStarter.startPendingIntentDismissingKeyguard(showIntent);
+             }
++        } else if (v == mNotificationManager) {
++        	 Intent intent = new Intent();
++             intent.setClassName("com.android.settings", "com.android.settings.Settings$NotificationAppListActivity");
++             mActivityStarter.startActivity(intent, true /* dismissShade */);
+         } else if (v == mClock) {
+             startClockActivity();
+         } else if (v == mDateGroup) {
+-- 
+2.8.3.windows.1
+

@@ -1,0 +1,83 @@
+From f124887286878bc941932b29b83d094eeec35887 Mon Sep 17 00:00:00 2001
+From: LRH <yangfan@qucci.com>
+Date: Mon, 13 Mar 2017 15:02:03 +0800
+Subject: [PATCH 138/185] =?UTF-8?q?[=E6=95=85=E9=9A=9C]=E5=9B=9E=E6=BB=9A?=
+ =?UTF-8?q?=E4=B9=8B=E5=89=8D=E4=BF=AE=E6=94=B9=E7=9A=84=E8=93=9D=E7=89=99?=
+ =?UTF-8?q?=E6=A6=82=E7=8E=87=E6=80=A7=E6=89=93=E5=BC=80=E7=9A=84=E9=97=AE?=
+ =?UTF-8?q?=E9=A2=98?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/src/com/android/systemui/qs/QSTile.java                 | 2 --
+ SystemUI/src/com/android/systemui/qs/tiles/AirplaneModeTile.java | 8 ++------
+ SystemUI/src/com/android/systemui/qs/tiles/BluetoothTile.java    | 5 -----
+ 3 files changed, 2 insertions(+), 13 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/qs/QSTile.java b/SystemUI/src/com/android/systemui/qs/QSTile.java
+index 793d906..ae8cc8d 100644
+--- a/SystemUI/src/com/android/systemui/qs/QSTile.java
++++ b/SystemUI/src/com/android/systemui/qs/QSTile.java
+@@ -66,8 +66,6 @@ public abstract class QSTile<TState extends State> implements Listenable {
+     protected TState mState = newTileState();
+     private TState mTmpState = newTileState();
+     private boolean mAnnounceNextStateChange;
+-    public static boolean needCloseBt = false;
+-    public static boolean isAirplanMode = false;
+     abstract protected TState newTileState();
+     abstract protected void handleClick();
+     abstract protected void handleUpdateState(TState state, Object arg);
+diff --git a/SystemUI/src/com/android/systemui/qs/tiles/AirplaneModeTile.java b/SystemUI/src/com/android/systemui/qs/tiles/AirplaneModeTile.java
+index 1858168..8da5691 100644
+--- a/SystemUI/src/com/android/systemui/qs/tiles/AirplaneModeTile.java
++++ b/SystemUI/src/com/android/systemui/qs/tiles/AirplaneModeTile.java
+@@ -25,11 +25,11 @@ import android.net.ConnectivityManager;
+ import android.provider.Settings;
+ import android.provider.Settings.Global;
+ 
++
+ import com.android.internal.logging.MetricsLogger;
+ import com.android.systemui.R;
+ import com.android.systemui.qs.GlobalSetting;
+ import com.android.systemui.qs.QSTile;
+-import com.android.systemui.qs.QSTile.ResourceIcon;
+ 
+ /** Quick settings tile: Airplane mode **/
+ public class AirplaneModeTile extends QSTile<QSTile.BooleanState> {
+@@ -88,15 +88,11 @@ public class AirplaneModeTile extends QSTile<QSTile.BooleanState> {
+         state.value = airplaneMode;
+         state.visible = true;
+         state.label = mContext.getString(R.string.airplane_mode);
+-        isAirplanMode = airplaneMode;
++
+         if (airplaneMode) {
+             state.icon = ResourceIcon.get(mAirEnable);
+             state.contentDescription =  mContext.getString(
+                     R.string.accessibility_quick_settings_airplane_on);
+-            if(needCloseBt){
+-            	 turnOffBluetooth();
+-            	 needCloseBt = false;
+-            }
+         } else {
+             state.icon = ResourceIcon.get(mAirDisable);
+             state.contentDescription =  mContext.getString(
+diff --git a/SystemUI/src/com/android/systemui/qs/tiles/BluetoothTile.java b/SystemUI/src/com/android/systemui/qs/tiles/BluetoothTile.java
+index 304f161..734d99d 100644
+--- a/SystemUI/src/com/android/systemui/qs/tiles/BluetoothTile.java
++++ b/SystemUI/src/com/android/systemui/qs/tiles/BluetoothTile.java
+@@ -137,11 +137,6 @@ public class BluetoothTile extends QSTile<QSTile.BooleanState>  {
+                     R.string.accessibility_bluetooth_name, state.label);
+         }
+         state.dualLabelContentDescription = bluetoothName;
+-        if(isAirplanMode){
+-            needCloseBt = true;
+-        }else{
+-        	needCloseBt = false;
+-        }
+     }
+ 
+     @Override
+-- 
+2.8.3.windows.1
+

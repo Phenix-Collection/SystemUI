@@ -39,6 +39,7 @@ import com.android.systemui.statusbar.policy.KeyguardMonitor;
 import com.android.systemui.statusbar.policy.Listenable;
 import com.android.systemui.statusbar.policy.LocationController;
 import com.android.systemui.statusbar.policy.NetworkController;
+import com.android.systemui.statusbar.policy.ProfilesController;
 import com.android.systemui.statusbar.policy.RotationLockController;
 import com.android.systemui.statusbar.policy.ZenModeController;
 
@@ -65,7 +66,6 @@ public abstract class QSTile<TState extends State> implements Listenable {
     protected TState mState = newTileState();
     private TState mTmpState = newTileState();
     private boolean mAnnounceNextStateChange;
-
     abstract protected TState newTileState();
     abstract protected void handleClick();
     abstract protected void handleUpdateState(TState state, Object arg);
@@ -186,6 +186,12 @@ public abstract class QSTile<TState extends State> implements Listenable {
     protected void handleClearState() {
         mTmpState = newTileState();
         mState = newTileState();
+        //add by mare 2017/2/24 start
+        //================>
+        //新建tile时清空ResourceIcon里数据
+        ResourceIcon.clearICONS();
+        //add by mare 2017/2/24 end
+        //<================
     }
 
     protected void handleRefreshState(Object arg) {
@@ -336,6 +342,7 @@ public abstract class QSTile<TState extends State> implements Listenable {
         HotspotController getHotspotController();
         CastController getCastController();
         FlashlightController getFlashlightController();
+        ProfilesController getProfilesController();//added by yangfan 
         KeyguardMonitor getKeyguardMonitor();
 
         public interface Callback {
@@ -361,8 +368,25 @@ public abstract class QSTile<TState extends State> implements Listenable {
             mResId = resId;
         }
 
-        public static Icon get(int resId) {
+        //add by mare 2017/2/24 start
+        //================>
+        //清空缓存（数据混乱）
+        public static void clearICONS(){
+        	if(ICONS!=null&&ICONS.size()>0)
+        		ICONS.clear();
+        }
+        //<================
+        //add by mare 2017/2/24 end
+        
+        
+        //add by mare 2017/2/28 begin
+        //================>
+        //由于是静态类这里加锁
+        public synchronized static Icon get(int resId) {
+        //<================
+        //add by mare 2017/2/28 end
             Icon icon = ICONS.get(resId);
+//            Log.e("====ResourceIcon.get==zqs==", "icon!=null:"+String.valueOf(icon!=null)+",resId:"+resId);
             if (icon == null) {
                 icon = new ResourceIcon(resId);
                 ICONS.put(resId, icon);
@@ -436,6 +460,7 @@ public abstract class QSTile<TState extends State> implements Listenable {
         public String contentDescription;
         public String dualLabelContentDescription;
         public boolean autoMirrorDrawable = true;
+        public boolean enableClick = true;//added by yangfan 
 
         public boolean copyTo(State other) {
             if (other == null) throw new IllegalArgumentException();
@@ -446,13 +471,16 @@ public abstract class QSTile<TState extends State> implements Listenable {
                     || !Objects.equals(other.contentDescription, contentDescription)
                     || !Objects.equals(other.autoMirrorDrawable, autoMirrorDrawable)
                     || !Objects.equals(other.dualLabelContentDescription,
-                    dualLabelContentDescription);
+                    dualLabelContentDescription)
+                    || !Objects.equals(other.enableClick,
+                            enableClick);//added by yangfan
             other.visible = visible;
             other.icon = icon;
             other.label = label;
             other.contentDescription = contentDescription;
             other.dualLabelContentDescription = dualLabelContentDescription;
             other.autoMirrorDrawable = autoMirrorDrawable;
+            other.enableClick = enableClick;//added by yangfan 
             return changed;
         }
 
@@ -469,6 +497,7 @@ public abstract class QSTile<TState extends State> implements Listenable {
             sb.append(",contentDescription=").append(contentDescription);
             sb.append(",dualLabelContentDescription=").append(dualLabelContentDescription);
             sb.append(",autoMirrorDrawable=").append(autoMirrorDrawable);
+            sb.append(",enableClick=").append(enableClick);//added by yangfan 
             return sb.append(']');
         }
     }

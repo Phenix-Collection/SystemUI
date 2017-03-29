@@ -1,0 +1,29 @@
+From 4770f4645a86efcb46130508250315ea5c7d5662 Mon Sep 17 00:00:00 2001
+From: mare <yangfan@qucii.com>
+Date: Wed, 22 Mar 2017 16:46:24 +0800
+Subject: [PATCH 172/185] =?UTF-8?q?=E3=80=90bug=E3=80=91=E4=B8=A4=E7=82=B9?=
+ =?UTF-8?q?=E4=BD=8D=E7=BD=AE=E6=B7=B7=E4=B9=B1=E9=97=AE=E9=A2=98?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../src/com/android/systemui/statusbar/phone/NotificationPanelView.java | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+index f414b96..c0947d4 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+@@ -387,7 +387,7 @@ public class NotificationPanelView extends PanelView implements
+     		}
+     		
+         }
+-        mIndicator.layout(left, bottom-marginIndicatorBottom-mIndicator.getMeasuredHeight(), right, bottom-marginIndicatorBottom);
++        mIndicator.layout(left, bottom-marginIndicatorBottom-mIndicator.getMeasuredHeight(), right, mNotificationContainerParent.getMeasuredHeight()-marginIndicatorBottom);
+  	   	//add by mare 2017/3/21 end
+         // Update Clock Pivot
+         mKeyguardStatusView.setPivotX(getWidth() / 2);
+-- 
+2.8.3.windows.1
+

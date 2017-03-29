@@ -1,0 +1,53 @@
+From 624f1cb9974fb3ca24efe18006f005bc7581eaf0 Mon Sep 17 00:00:00 2001
+From: yangfan <yangfan@qucii.com>
+Date: Fri, 24 Feb 2017 10:13:34 +0800
+Subject: [PATCH 062/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E4=BF=AE=E5=A4=8D=E7=82=B9=E5=87=BB=E5=A4=B4=E9=83=A8=E8=AE=BE?=
+ =?UTF-8?q?=E7=BD=AE=E6=B2=A1=E8=B7=B3=E8=BD=AC?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../src/com/android/systemui/statusbar/phone/StatusBarHeaderView.java | 4 ++--
+ .../com/android/systemui/statusbar/policy/MobileSignalController.java | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/StatusBarHeaderView.java b/SystemUI/src/com/android/systemui/statusbar/phone/StatusBarHeaderView.java
+index c98283a..dc2c85c 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/StatusBarHeaderView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/StatusBarHeaderView.java
+@@ -175,7 +175,7 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
+         mNotificationManager = (TextView) findViewById(R.id.qucii_notification_manage);
+         mNotificationManager.setOnClickListener(this);
+         //add by mare begin add qucii NotificationManager bt
+-        mSettingsButton.setOnClickListener(this);
++        //mSettingsButton.setOnClickListener(this);
+         mClock.setOnClickListener(this);
+         mDateGroup.setOnClickListener(this);
+         mQsDetailHeader = findViewById(R.id.qs_detail_header);
+@@ -541,7 +541,7 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
+     public void onClick(View v) {
+ // modified by yangfan 
+         //if (v == mSettingsButton||v == mQuciiSettingsButton) {
+-		    if (v == mSettingsButton) {
++		    if (v == /*mSettingsButton*/ mQuciiSettingsButton) {
+ //            if (mSettingsButton.isTunerClick()) {
+ //                if (TunerService.isTunerEnabled(mContext)) {
+ //                    TunerService.showResetRequest(mContext, new Runnable() {
+diff --git a/SystemUI/src/com/android/systemui/statusbar/policy/MobileSignalController.java b/SystemUI/src/com/android/systemui/statusbar/policy/MobileSignalController.java
+index 4cfa90e..1d2ff08 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/policy/MobileSignalController.java
++++ b/SystemUI/src/com/android/systemui/statusbar/policy/MobileSignalController.java
+@@ -623,7 +623,7 @@ public class MobileSignalController extends SignalController<
+         } else {
+             mCurrentState.networkNameData = mNetworkNameDefault;
+         }
+-        Log.e(mTag, " yangfan networkname: " + mCurrentState.networkNameData );
++        Log.e(mTag, "networkname: " + mCurrentState.networkNameData );
+     }
+ 
+     /**
+-- 
+2.8.3.windows.1
+

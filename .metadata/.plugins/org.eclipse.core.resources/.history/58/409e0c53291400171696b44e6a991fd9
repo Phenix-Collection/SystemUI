@@ -1,0 +1,30 @@
+From 2d0480cc3e7221302ec8a849f1d9dd5931fbf450 Mon Sep 17 00:00:00 2001
+From: mare <yangfan@qucci.com>
+Date: Tue, 7 Mar 2017 21:31:00 +0800
+Subject: [PATCH 118/185] =?UTF-8?q?=E3=80=90=E6=95=85=E9=9A=9C=E3=80=91?=
+ =?UTF-8?q?=E4=BF=AE=E6=94=B9=E9=94=81=E5=B1=8F=E6=97=B6=E9=92=9F=E9=AB=98?=
+ =?UTF-8?q?=E5=BA=A6?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../systemui/statusbar/phone/KeyguardClockPositionAlgorithm.java        | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/KeyguardClockPositionAlgorithm.java b/SystemUI/src/com/android/systemui/statusbar/phone/KeyguardClockPositionAlgorithm.java
+index af8a45d..03f470f 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/KeyguardClockPositionAlgorithm.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/KeyguardClockPositionAlgorithm.java
+@@ -103,7 +103,7 @@ public class KeyguardClockPositionAlgorithm {
+         //固定锁屏界面时间高度为120
+ //        int y = (int) (getClockY() - /*mKeyguardStatusHeight / 2*/mKeyguardStatusHeight);
+ //        y = y <= 120 ? 120 : y;
+-        int y = 120;
++        int y = 160;
+         //modify by zqs 2017/3/4 end
+         Log.i(this.getClass().getSimpleName(), "getClockY() : " + getClockY() + " , mKeyguardStatusHeight : " + mKeyguardStatusHeight );
+         float clockAdjustment = getClockYExpansionAdjustment();
+-- 
+2.8.3.windows.1
+

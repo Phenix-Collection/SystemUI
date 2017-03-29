@@ -29,6 +29,7 @@ public class PanelHolder extends FrameLayout {
 
     private int mSelectedPanelIndex = -1;
     private PanelBar mBar;
+    NotificationPanelView mNotificationPanel;
 
     public PanelHolder(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -39,6 +40,11 @@ public class PanelHolder extends FrameLayout {
     protected void onFinishInflate() {
         super.onFinishInflate();
         setChildrenDrawingOrderEnabled(true);
+        //add by mare 2017/3/15 begin
+        //========================>
+        //获得mNotificationPanel
+        mNotificationPanel = (NotificationPanelView) getChildAt(0);
+        //add by mare 2017/3/15 end
     }
 
     public int getPanelIndex(PanelView pv) {
@@ -83,4 +89,17 @@ public class PanelHolder extends FrameLayout {
     public void setBar(PanelBar panelBar) {
         mBar = panelBar;
     }
+    //add by mare 2017/3/21 begin
+    //========================>
+    //这里刷新layout时不改变mNotificationPanel的位置，加入悬浮通知状况
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+    	super.onLayout(changed, left, top, right, bottom);
+    	if(mNotificationPanel!=null&&mNotificationPanel.is_Qucii_Headup()){
+    		mNotificationPanel.layout(left, top, right, bottom);
+    	}else if(mNotificationPanel!=null&&mNotificationPanel.getIsTouchOrAnimationOrBarState()){
+    		mNotificationPanel.layout(left, top, right, mNotificationPanel.getChangedBottom());
+    	}
+    }
+    //add by mare 2017/3/21 end
 }

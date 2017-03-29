@@ -100,6 +100,7 @@ import com.android.systemui.recents.Recents;
 import com.android.systemui.statusbar.NotificationData.Entry;
 import com.android.systemui.statusbar.phone.NavigationBarView;
 import com.android.systemui.statusbar.phone.NotificationGroupManager;
+import com.android.systemui.statusbar.phone.ObservableScrollView;
 import com.android.systemui.statusbar.phone.StatusBarKeyguardViewManager;
 import com.android.systemui.statusbar.policy.HeadsUpManager;
 import com.android.systemui.statusbar.policy.PreviewInflater;
@@ -110,7 +111,7 @@ import java.util.List;
 import java.util.Locale;
 
 import static com.android.keyguard.KeyguardHostView.OnDismissAction;
-//add by wumin
+//add by mare
 import android.hardware.input.InputManager;
 import android.view.KeyEvent;
 import android.os.SystemClock;
@@ -161,6 +162,7 @@ public abstract class BaseStatusBar extends SystemUI implements
     // all notifications
     protected NotificationData mNotificationData;
     protected NotificationStackScrollLayout mStackScroller;
+    protected ObservableScrollView mScrollView;
 
     protected NotificationGroupManager mGroupManager = new NotificationGroupManager();
 
@@ -1071,7 +1073,7 @@ public abstract class BaseStatusBar extends SystemUI implements
         mHandler.sendEmptyMessage(msg);
     }
 
-    //add by wumin
+    //add by mare
     public void dispatchFingerprintBack() {
        sendKeyEvent(4);
         Vibrator vibrator = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
@@ -2126,11 +2128,11 @@ public abstract class BaseStatusBar extends SystemUI implements
             }
             return false;
         }
-
+        
         if (isSnoozedPackage(sbn)) {
             return false;
         }
-
+        
         Notification notification = sbn.getNotification();
         // some predicates to make the boolean logic legible
         boolean isNoisy = (notification.defaults & Notification.DEFAULT_SOUND) != 0

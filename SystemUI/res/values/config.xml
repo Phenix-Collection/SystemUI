@@ -108,6 +108,8 @@
     <!-- The number of columns in the QuickSettings -->
     <integer name="quick_settings_num_columns">3</integer>
 
+    <!-- The number of columns in the QuickSettings -->
+    <integer name="quick_settings_num_columns_landscreen">4</integer>
     <!-- The maximum number of rows in the QuickSettings -->
     <integer name="quick_settings_max_rows">4</integer>
 
@@ -119,7 +121,7 @@
 
     <!-- The default tiles to display in QuickSettings -->
     <string name="quick_settings_tiles_default" translatable="false">
-        wifi,bt,inversion,dnd,cell,airplane,rotation,flashlight,location,cast,hotspot
+        cell,wifi,bt<!-- ,inversion -->,dnd,airplane,rotation,flashlight,profile,location
     </string>
 
     <!-- The tiles to display in QuickSettings -->
@@ -171,7 +173,7 @@
     <integer name="status_bar_style_extended">4</integer>
 
     <!-- Control whether status bar should fetch mobile signal icons from xml file dynamically -->
-    <bool name="config_read_icons_from_xml">false</bool>
+    <bool name="config_read_icons_from_xml">true</bool>
 
     <!-- milliseconds before the heads up notification auto-dismisses. -->
     <integer name="heads_up_notification_decay">5000</integer>
@@ -354,4 +356,7 @@
 
     <!-- When true, show charging animation -->
     <bool name="config_show_battery_charging_anim">true</bool>
+    
+    <!-- only show USB ADB Notifications -->
+    <bool name="config_only_show_usb_adb">true</bool>
 </resources>

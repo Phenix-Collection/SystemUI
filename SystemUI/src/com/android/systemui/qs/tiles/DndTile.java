@@ -23,7 +23,9 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.provider.Settings;
+import android.media.AudioManager;
 import android.provider.Settings.Global;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnAttachStateChangeListener;
@@ -35,6 +37,7 @@ import com.android.systemui.Prefs;
 import com.android.systemui.R;
 import com.android.systemui.SysUIToast;
 import com.android.systemui.qs.QSTile;
+import com.android.systemui.statusbar.policy.ProfilesController;
 import com.android.systemui.statusbar.policy.ZenModeController;
 import com.android.systemui.volume.ZenModePanel;
 import android.util.Log;
@@ -50,16 +53,17 @@ public class DndTile extends QSTile<QSTile.BooleanState> {
 
     private static final String ACTION_SET_VISIBLE = "com.android.systemui.dndtile.SET_VISIBLE";
     private static final String EXTRA_VISIBLE = "visible";
-
-    private static final QSTile.Icon TOTAL_SILENCE =
-            ResourceIcon.get(R.drawable.ic_qs_dnd_on_total_silence);
-
+    //delete by mare 2017/2/24 begin
+//    private static final QSTile.Icon TOTAL_SILENCE =
+//            ResourceIcon.get(R.drawable.ic_qs_dnd_on_total_silence);
+    //delete by mare 2017/2/24 end
     private final AnimationIcon mDisable =
             new AnimationIcon(R.drawable.ic_dnd_disable_animation);
     private final AnimationIcon mDisableTotalSilence =
             new AnimationIcon(R.drawable.ic_dnd_total_silence_disable_animation);
 
     private final ZenModeController mController;
+    private final ProfilesController mProfilesController;// added by yangfan 
     private final DndDetailAdapter mDetailAdapter;
 
     private boolean mListening;
@@ -67,11 +71,31 @@ public class DndTile extends QSTile<QSTile.BooleanState> {
 
     public DndTile(Host host) {
         super(host);
-	 Log.d("weiliji" , "yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy weiliji show the trace info  "+ Log.getStackTraceString(new Throwable()));     
         mController = host.getZenModeController();
+        mProfilesController = host.getProfilesController();// added by yangfan 
         mDetailAdapter = new DndDetailAdapter();
         mContext.registerReceiver(mReceiver, new IntentFilter(ACTION_SET_VISIBLE));
+
+        //mare add
+        switchSlientByProfile();
     }
+
+    //mare add for switch slient by customer begin
+    private void switchSlientByProfile(){
+        mContext.registerReceiver(mReceiverSlient, new IntentFilter("com.qucci.switch_slient"));
+    }
+
+    private final BroadcastReceiver mReceiverSlient = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final boolean visible = intent.getBooleanExtra("qucci_switch_slient", false);
+            Log.d("mare", TAG + "BroadcastReceiver () visible = " + visible);
+            if(visible){
+                 mController.setZen(Global.ZEN_MODE_OFF, null, TAG);
+            }
+        }
+    };
+    //mare add for switch slient by customer end
 
     public static void setVisible(Context context, boolean visible) {
         Prefs.putBoolean(context, Prefs.Key.DND_TILE_VISIBLE, visible);
@@ -113,20 +137,61 @@ public class DndTile extends QSTile<QSTile.BooleanState> {
         mDisable.setAllowAnimation(true);
         mDisableTotalSilence.setAllowAnimation(true);
         MetricsLogger.action(mContext, getMetricsCategory(), !mState.value);
+        // added by hsp
+        boolean oldState = mState.value; 
+        mState.value = !oldState;
         if (mState.value) {
             mController.setZen(Global.ZEN_MODE_OFF, null, TAG);
         } else {
-            int zen = Prefs.getInt(mContext, Prefs.Key.DND_FAVORITE_ZEN, Global.ZEN_MODE_ALARMS);
+            //hsp : Don't need to show detail
+            //int zen = Prefs.getInt(mContext, Prefs.Key.DND_FAVORITE_ZEN, Global.ZEN_MODE_ALARMS);  //mare modify the defualt value
+            int zen = Prefs.getInt(mContext, Prefs.Key.DND_FAVORITE_ZEN, Global.ZEN_MODE_NO_INTERRUPTIONS);
             mController.setZen(zen, null, TAG);
-            showDetail(true);
+            //showDetail(true);
+            // mController.setZen(Global.ZEN_MODE_IMPORTANT_INTERRUPTIONS, null, TAG);
         }
+
+        Intent i = new Intent("action_dnd_update");
+        // i.putExtra("off", zenOff);
+        mContext.sendBroadcast(i);
+		// added by hsp end
     }
+
+// added by yangfan 
+    @Override
+    protected void handleSecondaryClick() {
+        handleClick();
+    }
+
+    @Override
+    public void handleLongClick() {
+        mHost.startActivityDismissingKeyguard(ZEN_SETTINGS);
+    }
+// added by yangfan 
 
     @Override
     protected void handleUpdateState(BooleanState state, Object arg) {
         final int zen = arg instanceof Integer ? (Integer) arg : mController.getZen();
-        final boolean newValue = zen != Global.ZEN_MODE_OFF;
-        final boolean valueChanged = state.value != newValue;
+        state.visible = /*isVisible(mContext)*/ true;
+        final boolean newValue = zen == Global.ZEN_MODE_OFF;
+        final boolean oldValue = state.value;
+        // modified by mare
+        boolean valueChanged = oldValue != newValue;
+        state.value = newValue;
+        
+        if (newValue) {
+            state.icon = ResourceIcon.get(R.drawable.ic_qs_dnd_off);
+            state.contentDescription = mContext.getString(R.string.accessibility_quick_settings_dnd_off);
+        }else {
+            state.icon = ResourceIcon.get(R.drawable.ic_qs_dnd_on);
+            state.contentDescription = mContext.getString(R.string.accessibility_quick_settings_dnd_priority_on);
+        }
+        state.label = mContext.getString(R.string.quick_settings_dnd_label);
+		// modified by mare
+		
+		// modified by 
+        /**final boolean newValue = zen != Global.ZEN_MODE_OFF;
+		final boolean valueChanged = state.value != newValue;
         state.value = newValue;
         state.visible = isVisible(mContext);
         switch (zen) {
@@ -154,7 +219,9 @@ public class DndTile extends QSTile<QSTile.BooleanState> {
                 state.contentDescription =  mContext.getString(
                         R.string.accessibility_quick_settings_dnd_off);
                 break;
-        }
+        }**/ // modified by yangfan 
+		
+		
         if (mShowingDetail && !state.value) {
             showDetail(false);
         }

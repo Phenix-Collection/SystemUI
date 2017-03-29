@@ -121,7 +121,7 @@ public class ZenFooter extends LinearLayout {
     }
 
     public void update() {
-        mIcon.setImageResource(isZenNone() ? R.drawable.ic_dnd_total_silence : R.drawable.ic_dnd);
+        mIcon.setImageResource(/**isZenNone() ? R.drawable.ic_dnd_total_silence : R.drawable.ic_dnd*/R.drawable.qucii_ic_dnd);//modified by yangfan
         final String line1 =
                 isZenPriority() ? mContext.getString(R.string.interruption_level_priority)
                 : isZenAlarms() ? mContext.getString(R.string.interruption_level_alarms)

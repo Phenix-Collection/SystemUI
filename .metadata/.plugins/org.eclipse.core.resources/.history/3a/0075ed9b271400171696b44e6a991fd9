@@ -1,0 +1,46 @@
+From 64fb892cecc9017723afba939e95e63afc7969ea Mon Sep 17 00:00:00 2001
+From: LRH <yangfan@qucci.com>
+Date: Thu, 9 Mar 2017 16:48:29 +0800
+Subject: [PATCH 128/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E7=8A=B6=E6=80=81=E6=A0=8F=E5=AD=97=E4=BD=93=E4=B8=8D=E8=B7=9F?=
+ =?UTF-8?q?=E9=9A=8F=E7=B3=BB=E7=BB=9F=E5=AD=97=E4=BD=93=E6=94=B9=E5=8F=98?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/src/com/android/systemui/BatteryLevelTextView.java           | 4 ++--
+ .../com/android/systemui/statusbar/phone/StatusBarIconController.java | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/BatteryLevelTextView.java b/SystemUI/src/com/android/systemui/BatteryLevelTextView.java
+index e628649..5784673 100644
+--- a/SystemUI/src/com/android/systemui/BatteryLevelTextView.java
++++ b/SystemUI/src/com/android/systemui/BatteryLevelTextView.java
+@@ -62,8 +62,8 @@ public class BatteryLevelTextView extends TextView implements
+         super.onConfigurationChanged(newConfig);
+ 
+         // Respect font size setting.
+-        setTextSize(TypedValue.COMPLEX_UNIT_PX,
+-                getResources().getDimensionPixelSize(R.dimen.battery_level_text_size));
++       //setTextSize(TypedValue.COMPLEX_UNIT_PX,
++       //         getResources().getDimensionPixelSize(R.dimen.battery_level_text_size));
+     }
+ 
+     @Override
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/StatusBarIconController.java b/SystemUI/src/com/android/systemui/statusbar/phone/StatusBarIconController.java
+index 11ca8e1..dbb35db 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/StatusBarIconController.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/StatusBarIconController.java
+@@ -172,7 +172,7 @@ public class StatusBarIconController implements Tunable  {
+                 com.android.internal.R.dimen.status_bar_icon_size);
+         mIconHPadding = mContext.getResources().getDimensionPixelSize(
+                 R.dimen.status_bar_icon_padding);
+-        mClockController.updateFontSize();//modified  by yangfan
++        //mClockController.updateFontSize();//modified  by yangfan
+     }
+ 
+     public void addSystemIcon(String slot, int index, int viewIndex, StatusBarIcon icon) {
+-- 
+2.8.3.windows.1
+

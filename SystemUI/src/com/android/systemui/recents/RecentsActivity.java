@@ -16,7 +16,13 @@
 
 package com.android.systemui.recents;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.ActivityOptions;
 import android.app.SearchManager;
 import android.appwidget.AppWidgetManager;
@@ -25,12 +31,23 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.os.*;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.SystemClock;
 import android.os.UserHandle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewStub;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.Animation;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.internal.logging.MetricsLogger;
@@ -48,8 +65,20 @@ import com.android.systemui.recents.views.DebugOverlayView;
 import com.android.systemui.recents.views.RecentsView;
 import com.android.systemui.recents.views.SystemBarScrimViews;
 import com.android.systemui.recents.views.ViewAnimation;
+import com.android.systemui.recents.views.CircularProgressDrawable;
+import com.android.systemui.ProcessUtils;
 
+import java.lang.*;
+import java.lang.Long;
+import java.lang.Math;
+import java.lang.Override;
+import java.lang.Runnable;
+import java.lang.Runtime;
+import java.lang.String;
+import java.lang.Thread;
 import java.lang.ref.WeakReference;
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -68,6 +97,19 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
     ViewStub mEmptyViewStub;
     ViewStub mDebugOverlayStub;
     View mEmptyView;
+
+    // hsp 2016-09-12 : Add for clear all task @{
+    final String ACTION_KILL_PROCESS = "clear.all.task.kill.process";
+    ActivityManager mAM;
+    Animator mCurrentAnimation;
+    CircularProgressDrawable mDrawable;
+    View mClearAllTask;
+    TextView mClearAllText;
+    double mCurrentMem;
+    long mReleasedMem;
+    List<String> mNeedToKillProcess;
+    // @}
+
     DebugOverlayView mDebugOverlay;
 
     // Resize task debug
@@ -260,6 +302,46 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
             }
         }
 
+        // hsp 2016-09-12 : Add for clear all task @{
+
+        int taskSize = mRecentsView.getTaskSize();
+        if (taskSize > 0) {
+            mClearAllText.setVisibility(View.VISIBLE);
+            mClearAllTask.setVisibility(View.VISIBLE);
+            int duration = 500;
+            if (taskSize > 15) {
+                duration = 1000;
+            }
+            mCurrentAnimation = prepareClearAllAnimation(duration);
+
+            mClearAllTask.bringToFront();
+            mClearAllTask.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mReleasedMem = ProcessUtils.killProcess(RecentsActivity.this, false);
+
+                            Message message = new Message();
+                            message.what = 1;
+                            mHandler.sendMessage(message);
+                        }
+                    }).start();
+
+                    mRecentsView.onClearAllTask();
+
+                    mCurrentAnimation.start();
+                }
+            });
+        } else {
+            mClearAllText.setVisibility(View.GONE);
+            mClearAllTask.setVisibility(View.GONE);
+        }
+
+        updateMemoryText();
+        // @}
+
         // Animate the SystemUI scrims into view
         mScrimViews.prepareEnterRecentsAnimation();
 
@@ -285,6 +367,102 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
         }
         MetricsLogger.histogram(this, "overview_task_count", taskCount);
     }
+
+    public void updateMemoryText() {
+        //double totalMemory = (double)getTotalMemory();
+        mCurrentMem = getAvaiMemory();
+        BigDecimal bd = new BigDecimal(mCurrentMem/1000);
+        bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
+        String memText = RecentsActivity.this.getString(
+                R.string.clear_all_task_memory_text, bd.toString());
+        mClearAllText.setText(memText);
+    }
+
+    public static final int ALL_TASKVIEW_DISMISSED = 2;
+
+    Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 1:
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            //mReleasedMem = Math.abs(Math.round(getAvaiMemory() - mCurrentMem));
+                            String toastText = RecentsActivity.this.getString(
+                                    R.string.clear_all_task_memory_release_text, mReleasedMem);
+                            if (mReleasedMem > 10) {
+                                Toast.makeText(RecentsActivity.this, toastText, Toast.LENGTH_SHORT).show();
+                            } else {
+                                String best = RecentsActivity.this.getString(
+                                        R.string.no_need_to_clear);
+                                Toast.makeText(RecentsActivity.this, best, Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }, 1000);
+                    break;
+                /*added by dubin*/
+                case ALL_TASKVIEW_DISMISSED:
+                    RecentsActivity.this.onBackPressed();
+                    break;
+            }
+            super.handleMessage(msg);
+        }
+    };
+
+    public double getAvaiMemory() {
+        ActivityManager.MemoryInfo info = new ActivityManager.MemoryInfo();
+        mAM.getMemoryInfo(info);
+        return (double)info.availMem / (1024 * 1024);
+    }
+
+    // hsp 2016-09-12 : Add for clear all task @{
+    private Animator prepareClearAllAnimation(int duration) {
+        AnimatorSet animation = new AnimatorSet();
+        ObjectAnimator progressAnimation = ObjectAnimator.ofFloat(mDrawable,
+                CircularProgressDrawable.PROGRESS_PROPERTY, 0f, 1f);
+        progressAnimation.setDuration(duration);
+        progressAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
+
+        //Has no effect
+        ObjectAnimator colorAnimation = ObjectAnimator.ofInt(mDrawable,
+                CircularProgressDrawable.RING_COLOR_PROPERTY,
+                getResources().getColor(android.R.color.holo_red_dark),
+                getResources().getColor(android.R.color.holo_green_light));
+        colorAnimation.setEvaluator(new ArgbEvaluator());
+        colorAnimation.setDuration(duration);
+
+        animation.playTogether(progressAnimation, colorAnimation);
+        return animation;
+    }
+
+    // Didn't use
+    private Animator prepareStyle1Animation() {
+        AnimatorSet animation = new AnimatorSet();
+
+        final Animator indeterminateAnimation = ObjectAnimator.ofFloat(mDrawable, CircularProgressDrawable.PROGRESS_PROPERTY, 0, 3600);
+        indeterminateAnimation.setDuration(3600);
+
+        Animator innerCircleAnimation = ObjectAnimator.ofFloat(mDrawable, CircularProgressDrawable.CIRCLE_SCALE_PROPERTY, 0f, 0.75f);
+        innerCircleAnimation.setDuration(3600);
+        innerCircleAnimation.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                mDrawable.setIndeterminate(true);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                indeterminateAnimation.end();
+                mDrawable.setIndeterminate(false);
+                mDrawable.setProgress(0);
+            }
+        });
+
+        animation.playTogether(innerCircleAnimation, indeterminateAnimation);
+        return animation;
+    }
+    // @}
 
     /** Dismisses recents if we are already visible and the intent is to toggle the recents view */
     boolean dismissRecentsToFocusedTaskOrHome(boolean checkFilteredStackState) {
@@ -359,6 +537,24 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
                 View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
                 View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
         mEmptyViewStub = (ViewStub) findViewById(R.id.empty_view_stub);
+
+        // hsp 2016-09-12 : Add for clear all task @{
+        mClearAllTask = (ImageView) findViewById(R.id.clear_all_recents);
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_clear_all_task);
+        mDrawable = new CircularProgressDrawable.Builder()
+                .setBitmap(bitmap)
+                .setRingWidth(getResources().getDimensionPixelSize(R.dimen.clear_all_ring_size))
+                .setRingColor(getResources().getColor(android.R.color.white))
+                .create();
+        mClearAllTask.setBackground(mDrawable);
+
+        mAM = (ActivityManager) RecentsActivity.this.getSystemService(Context.ACTIVITY_SERVICE);
+
+        mClearAllText = (TextView) findViewById(R.id.clear_all_recents_text);
+
+//        mClearAllText.setText(R.string.clear_all_tasks);
+        // @}
+
         mDebugOverlayStub = (ViewStub) findViewById(R.id.debug_overlay_stub);
         mScrimViews = new SystemBarScrimViews(this, mConfig);
         inflateDebugOverlay();
@@ -625,7 +821,11 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
 
     @Override
     public void onAllTaskViewsDismissed() {
-        mFinishLaunchHomeRunnable.run();
+        // hsp 2016-09-12 : Add for clear all task @{
+        /* change another way to exit RecentsActivity @dubin*/
+        // mFinishLaunchHomeRunnable.run();
+        mHandler.sendEmptyMessage(ALL_TASKVIEW_DISMISSED);
+        // @}
     }
 
     @Override

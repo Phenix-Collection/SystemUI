@@ -1,0 +1,56 @@
+From 0185e815eedd33c81f12da9a49b95c289537c98f Mon Sep 17 00:00:00 2001
+From: LRH <yangfan@qucci.com>
+Date: Mon, 27 Feb 2017 18:30:33 +0800
+Subject: [PATCH 071/185] =?UTF-8?q?=E3=80=90=E6=95=85=E9=9A=9C=E3=80=91?=
+ =?UTF-8?q?=E6=9D=A5=E4=BF=A1=E6=81=AF=E9=80=9A=E7=9F=A5=EF=BC=8C=E4=B8=8D?=
+ =?UTF-8?q?=E7=82=B9=E5=87=BB=E6=9F=A5=E7=9C=8B=EF=BC=8C=E4=BC=9A=E4=B8=80?=
+ =?UTF-8?q?=E7=9B=B4=E6=98=BE=E7=A4=BA=E5=9C=A8=E7=8A=B6=E6=80=81=E6=A0=8F?=
+ =?UTF-8?q?=EF=BC=8C=E7=82=B9=E5=87=BB=E9=94=81=E5=B1=8F=E5=90=8E=EF=BC=8C?=
+ =?UTF-8?q?=E9=94=81=E5=B1=8F=E8=83=8C=E6=99=AF=E6=98=BE=E7=A4=BA=E4=B8=BA?=
+ =?UTF-8?q?=E9=BB=91=E8=89=B2=EF=BC=8C=E8=A7=A3=E9=94=81=E5=90=8E=E4=BC=9A?=
+ =?UTF-8?q?=E8=87=AA=E5=8A=A8=E8=B7=B3=E5=88=B0=E6=9F=A5=E7=9C=8B=E4=BF=A1?=
+ =?UTF-8?q?=E6=81=AF=E7=95=8C=E9=9D=A2=EF=BC=8C=E6=9F=A5=E7=9C=8B=E5=AE=8C?=
+ =?UTF-8?q?=E5=90=8E=EF=BC=8C=E9=80=9A=E7=9F=A5=E6=A0=8F=E4=BB=8D=E6=9C=89?=
+ =?UTF-8?q?=E4=BF=A1=E6=81=AF=E9=80=9A=E7=9F=A5=E6=98=BE=E7=A4=BA?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../systemui/statusbar/phone/NotificationPanelView.java  | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+index aca1960..fdc0b22 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+@@ -2421,13 +2421,23 @@ public class NotificationPanelView extends PanelView implements
+     @Override
+     public void onHeadsUpPinnedModeChanged(final boolean inPinnedMode) {
+         if (inPinnedMode) {
+-        	setBackground(null);// clear bg by yangfan
++        	//add by lrh 在锁屏状态下，不需要截图虚化背景 begin
++    		if (mStatusBarState != StatusBarState.KEYGUARD) {
++    			 setBackgroundResource(0); 
++    		}
++    		//add by lrh 在锁屏状态下，不需要截图虚化背景 end
++        	setBackgroundResource(0); // clear bg by yangfan
+         	updateIndicatorVisibility(GONE);// gone indicator by yangfan
+             mHeadsUpExistenceChangedRunnable.run();
+             updateNotificationTranslucency();
+         } else {
+-        	mStatusBar.blurPanelBg();// blurred bg by yangfan
+-        	updateIndicatorVisibility(VISIBLE);// visible indicator by yangfan
++        	//add by lrh 在锁屏状态下，不需要截图虚化背景 begin
++    		if (mStatusBarState != StatusBarState.KEYGUARD) {
++    			mStatusBar.blurPanelBg();// blurred bg by yangfan 
++    		}
++    		//add by lrh 在锁屏状态下，不需要截图虚化背景 end
++        	
++        	updateIndicatorVisibility(mStatusBarState != StatusBarState.KEYGUARD?VISIBLE:GONE);// visible indicator by yangfan
+             mHeadsUpAnimatingAway = true;
+             mNotificationStackScroller.runAfterAnimationFinished(
+                     mHeadsUpExistenceChangedRunnable);
+-- 
+2.8.3.windows.1
+

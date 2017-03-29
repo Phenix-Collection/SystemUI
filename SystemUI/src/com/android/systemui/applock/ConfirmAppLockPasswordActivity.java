@@ -606,7 +606,7 @@ public class ConfirmAppLockPasswordActivity extends Activity implements OnClickL
         String cls = getIntent().getStringExtra("classname");
         ComponentName mComponentName = new ComponentName(pkg, cls);
         if(am != null){
-       	    am.removeActivityRecord(mComponentName);
+		am.removeActivityRecord(mComponentName);
         }	
     }
 

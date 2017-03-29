@@ -1,0 +1,44 @@
+From 5219372042231bfd6934bdd9029b562759e18613 Mon Sep 17 00:00:00 2001
+From: mare <yangfan@qucii.com>
+Date: Sun, 5 Feb 2017 09:42:19 +0800
+Subject: [PATCH 003/185] =?UTF-8?q?=E3=80=90=E4=BF=AE=E6=94=B9=E3=80=91?=
+ =?UTF-8?q?=E6=B7=BB=E5=8A=A0=E5=B7=A5=E7=A8=8B=E5=AF=BC=E5=85=A5=E8=AF=B4?=
+ =?UTF-8?q?=E6=98=8E?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/README.md | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
+
+diff --git a/SystemUI/README.md b/SystemUI/README.md
+index ae0a362..78f50f2 100644
+--- a/SystemUI/README.md
++++ b/SystemUI/README.md
+@@ -1,5 +1,18 @@
+-# SystemUI Documentation
++#mare add begin
+ 
+----
++1.ʹ��eclipse ������������SystemUI��SettingsLib��Keyguard
++   a.ʹ��import�е� existing project into workspace
++   b.SettingsLib��Keyguard���뵼�룬��SystemUI�й����������Դ�������src�����Ѿ����뵽systemUI��srcĿ¼��
++   c.�����ϵͳ���ļ�ȫ����ext_libs�У����apk push��ϵͳ��������ش��󣬿��������ڵ�ǰϵͳ��¼������汾
++   �͵�ǰ���̵İ���һ�µ��£�ִ��copy�Լ�outĿ¼��jar���滻���ɡ�
+ 
+- * [Demo Mode](/packages/SystemUI/docs/demo_mode.md)
++2.���루ʹ�� ant ���룩
++   a.build_windows--֪ͨ��.xml =�� �Ҽ�  =�� run as ��ant build��
++   b.���ܲ���ϵͳ <property name="sdk-folder" value="${env.Android_SDK_HOME}" />�����뵱ǰeclipse��һ�£�����뱨��
++   �����޸ļ��ɣ�as�� <property name="sdk-folder" value="D:/Tools/Android/adt-bundle-windows-x86_64-20140702/sdk" />  ��
++   c.����Ҳ����ֱ���Ҽ� run as ��Android Application��,����eclipse��������Ϊjdk�����������
++   erro��com/android/dx/command/dexer/Main : Unsupported major.minor version 52.0 ������ֱ�Ӻ��ԣ�ʹ��ANT���뼴�ɡ�
++
++3.���ӣ�eclipseһ��Ĭ�ϼ���ant���������û�еĻ��������ant�������ɡ�
++
++#mare add end
+\ No newline at end of file
+-- 
+2.8.3.windows.1
+

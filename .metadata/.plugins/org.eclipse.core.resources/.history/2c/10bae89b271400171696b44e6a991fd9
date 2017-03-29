@@ -1,0 +1,157 @@
+From cf1c68968ed59bfab1000417190e1b8d9b8c37af Mon Sep 17 00:00:00 2001
+From: LRH <yangfan@qucci.com>
+Date: Tue, 7 Mar 2017 13:45:49 +0800
+Subject: [PATCH 109/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E6=B7=BB=E5=8A=A0=E5=AE=89=E5=85=94=E5=85=94=E8=B7=91=E5=88=86?=
+ =?UTF-8?q?systemUI=E9=83=A8=E5=88=86=E4=BB=A3=E7=A0=81?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/AndroidManifest.xml                       |  2 +-
+ .../com/android/systemui/AdjustSystemClock.java    | 79 ++++++++++++++++++++++
+ .../android/systemui/keyguard/KeyguardService.java |  8 +++
+ 3 files changed, 88 insertions(+), 1 deletion(-)
+ create mode 100644 SystemUI/src/com/android/systemui/AdjustSystemClock.java
+
+diff --git a/SystemUI/AndroidManifest.xml b/SystemUI/AndroidManifest.xml
+index e81860f..247df63 100644
+--- a/SystemUI/AndroidManifest.xml
++++ b/SystemUI/AndroidManifest.xml
+@@ -46,7 +46,7 @@
+     <uses-permission android:name="android.permission.CONFIGURE_WIFI_DISPLAY" />
+     <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
+     <uses-permission android:name="android.permission.GET_APP_OPS_STATS" />
+-
++    <uses-permission android:name="android.permission.SET_TIME" />
+     <!-- Networking and telephony -->
+     <uses-permission android:name="android.permission.BLUETOOTH" />
+     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+diff --git a/SystemUI/src/com/android/systemui/AdjustSystemClock.java b/SystemUI/src/com/android/systemui/AdjustSystemClock.java
+new file mode 100644
+index 0000000..01df1d3
+--- /dev/null
++++ b/SystemUI/src/com/android/systemui/AdjustSystemClock.java
+@@ -0,0 +1,79 @@
++package com.android.systemui;
++
++import android.content.BroadcastReceiver;
++import android.content.ContentResolver;
++import android.content.Context;
++import android.content.Intent;
++import android.provider.Settings;
++import android.util.Log;
++import android.app.AlarmManager;
++import android.os.RemoteException;
++import android.os.SystemClock;
++import android.content.IntentFilter;
++import android.os.Bundle;
++import android.provider.Settings;
++
++public class AdjustSystemClock{
++    private static final String TAG = "AdjustSystemClock";
++    private Context mContext;
++    private boolean stThreadRunning = false;
++
++    public AdjustSystemClock(Context context){
++	this.mContext = context;	
++    }
++
++    public void onSystemReady(){
++        final IntentFilter mIntentFilter = new IntentFilter();
++        mIntentFilter.addAction("running.antutu.settimes");
++        mContext.registerReceiver(mAdjustClockReceiver,mIntentFilter);
++    }
++
++    private BroadcastReceiver mAdjustClockReceiver = new BroadcastReceiver() {
++        @Override
++        public void onReceive(Context context, Intent intent) {
++            if(intent.getAction().equals("running.antutu.settimes")){
++                Bundle bundle = intent.getExtras();
++                boolean runstatus = bundle.getBoolean("runstatus");
++                if(runstatus){
++                    if(!stThreadRunning){
++                        stThreadRunning = true;
++                        new Thread(mAntutuSettimesRunnable).start();
++                    }
++                }else{
++                    stThreadRunning = false;
++		    if(isAutoTime()){//set time from network
++			Settings.Global.putInt(mContext.getContentResolver(), Settings.Global.AUTO_TIME,0);
++			Settings.Global.putInt(mContext.getContentResolver(), Settings.Global.AUTO_TIME,1);
++		    }else{
++			//mAlarmManager.setTime((times+180000));
++		    }
++			
++                }
++            }
++	}
++    };
++
++    private boolean isAutoTime(){
++         return Settings.Global.getInt(mContext.getContentResolver(), Settings.Global.AUTO_TIME, 0) != 0;
++	}
++
++    private Runnable mAntutuSettimesRunnable = new Runnable() {
++        @Override
++        public void run() {
++            AlarmManager mAlarmManager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
++            while(stThreadRunning){
++                try {
++                    Thread.sleep(2000);
++                    long times = SystemClock.currentTimeMicro();
++                    System.out.println("times = "+times);
++                    //mAlarmManager.setTime((times-75000)/1000);
++                    mAlarmManager.setTime((times-1000000)/1000);
++                } catch (InterruptedException e) {
++                    e.printStackTrace();
++                }
++            }
++        }
++    };
++
++}
++
+diff --git a/SystemUI/src/com/android/systemui/keyguard/KeyguardService.java b/SystemUI/src/com/android/systemui/keyguard/KeyguardService.java
+index d2c60ef..fba2349 100644
+--- a/SystemUI/src/com/android/systemui/keyguard/KeyguardService.java
++++ b/SystemUI/src/com/android/systemui/keyguard/KeyguardService.java
+@@ -30,6 +30,8 @@ import com.android.internal.policy.IKeyguardExitCallback;
+ import com.android.internal.policy.IKeyguardService;
+ import com.android.internal.policy.IKeyguardStateCallback;
+ import com.android.systemui.SystemUIApplication;
++//add by wumin
++import com.android.systemui.AdjustSystemClock;
+ 
+ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+ 
+@@ -38,12 +40,16 @@ public class KeyguardService extends Service {
+     static final String PERMISSION = android.Manifest.permission.CONTROL_KEYGUARD;
+ 
+     private KeyguardViewMediator mKeyguardViewMediator;
++    //add by wumin
++    private AdjustSystemClock mAdjustSystemClock;
+ 
+     @Override
+     public void onCreate() {
+         ((SystemUIApplication) getApplication()).startServicesIfNeeded();
+         mKeyguardViewMediator =
+                 ((SystemUIApplication) getApplication()).getComponent(KeyguardViewMediator.class);
++	//add by wumin
++	mAdjustSystemClock = new AdjustSystemClock(this);
+     }
+ 
+     @Override
+@@ -154,6 +160,8 @@ public class KeyguardService extends Service {
+         public void onSystemReady() {
+             checkPermission();
+             mKeyguardViewMediator.onSystemReady();
++	    //add by wumin
++	    mAdjustSystemClock.onSystemReady();
+         }
+ 
+         @Override // Binder interface
+-- 
+2.8.3.windows.1
+

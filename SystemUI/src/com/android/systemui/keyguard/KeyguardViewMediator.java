@@ -68,6 +68,7 @@ import com.android.keyguard.KeyguardUpdateMonitor;
 import com.android.keyguard.KeyguardUpdateMonitorCallback;
 import com.android.keyguard.ViewMediatorCallback;
 import com.android.systemui.SystemUI;
+import com.android.systemui.statusbar.StatusBarState;
 import com.android.systemui.statusbar.phone.FingerprintUnlockController;
 import com.android.systemui.statusbar.phone.PhoneStatusBar;
 import com.android.systemui.statusbar.phone.ScrimController;
@@ -81,6 +82,14 @@ import java.util.List;
 
 import static android.provider.Settings.System.SCREEN_OFF_TIMEOUT;
 
+//add by mare
+import java.io.FileOutputStream;
+import java.io.FileInputStream;
+import java.io.File;
+import android.content.ComponentName;
+import com.android.internal.statusbar.IStatusBarService;
+import android.os.ServiceManager;
+//add end
 /**
  * Mediates requests related to the keyguard.  This includes queries about the
  * state of the keyguard, power management events that effect whether the keyguard
@@ -134,7 +143,13 @@ public class KeyguardViewMediator extends SystemUI {
 
     private static final String DELAYED_KEYGUARD_ACTION =
         "com.android.internal.policy.impl.PhoneWindowManager.DELAYED_KEYGUARD";
-
+    //add by mare
+    private static final String PERSIST_NAVIGATION_BAR = "persist.sys.navg_bar_visible";
+    private static final String GF_MODE = "/sys/bus/spi/devices/spi0.0/gf_mode/gf_mode";
+    private static final String SETTINGS_NEEDLOCK_APP_GLOBAL_PACKAGENAMES = "global_needlock_app_packagenames";
+    private static final String SETTINGS_NEEDLOCK_APP_PACKAGENAMES = "needlock_app_packagenames";
+    private static final String FINGERPRINT_UNLOCK_SCREEN = "persist.sys.fingerprint_unlock";
+    //add end
     // used for handler messages
     private static final int SHOW = 2;
     private static final int HIDE = 3;
@@ -287,7 +302,15 @@ public class KeyguardViewMediator extends SystemUI {
     private int mUnlockSoundId;
     private int mTrustedSoundId;
     private int mLockSoundStreamId;
-
+    //add by mare
+    
+    private boolean StartLockAppActivity = false;
+    private String LockClassName = null;
+    private String LockPackName = null;
+    private String LockRunMode = null;
+    private boolean LockResumeFromUS = false;
+    private IStatusBarService mStatusBarService; 
+    //add end
     /**
      * The animation used for hiding keyguard. This is used to fetch the animation timings if
      * WindowManager is not providing us with them.
@@ -557,7 +580,13 @@ public class KeyguardViewMediator extends SystemUI {
         mShowKeyguardWakeLock.setReferenceCounted(false);
 
         mContext.registerReceiver(mBroadcastReceiver, new IntentFilter(DELAYED_KEYGUARD_ACTION));
-
+    	//add by mare
+        final IntentFilter mIntentFilter = new IntentFilter();
+        mIntentFilter.addAction("start.applockactivity.delay");
+        mContext.registerReceiver(mLunchAppLockReceiver,mIntentFilter);
+	    mStatusBarService = IStatusBarService.Stub.asInterface(
+               ServiceManager.getService("statusbar"));
+	//add end
         mKeyguardDisplayManager = new KeyguardDisplayManager(mContext);
 
         mAlarmManager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
@@ -628,6 +657,17 @@ public class KeyguardViewMediator extends SystemUI {
             mSystemReady = true;
             doKeyguardLocked(null);
             mUpdateMonitor.registerCallback(mUpdateCallback);
+            
+    	    //4 lines add by mare
+	    /*
+    	    if(!isNavigationEnable()){
+                	writeFile(GF_MODE,"0");
+    	    }
+	    */
+    	    Settings.System.putString(mContext.getContentResolver(), SETTINGS_NEEDLOCK_APP_PACKAGENAMES,null);
+            String appString = Settings.System.getString(mContext.getContentResolver(), SETTINGS_NEEDLOCK_APP_GLOBAL_PACKAGENAMES);
+            Settings.System.putString(mContext.getContentResolver(), SETTINGS_NEEDLOCK_APP_PACKAGENAMES,appString);
+    	    //add end
         }
         // Most services aren't available until the system reaches the ready state, so we
         // send it here when the device first boots.
@@ -785,11 +825,36 @@ public class KeyguardViewMediator extends SystemUI {
     public void onScreenTurnedOn() {
         notifyScreenTurnedOn();
         mUpdateMonitor.dispatchScreenTurnedOn();
+        
+        //this log add by mare
+	Log.d(TAG,"onScreenTurnedOn");
+	if(mLockPatternUtils.isLockScreenDisabled(
+                KeyguardUpdateMonitor.getCurrentUser()) || shouldWaitForProvisioning() || (!mShowing)){
+	    if(!isNavigationEnable()){
+                writeFile(GF_MODE,"0");
+	    }
+	}else if(mLockPatternUtils.isSecure(KeyguardUpdateMonitor.getCurrentUser()) && mShowing && mOccluded){
+                writeFile(GF_MODE,"0");
+	}
     }
 
     public void onScreenTurnedOff() {
         notifyScreenTurnedOff();
         mUpdateMonitor.dispatchScreenTurnedOff();
+        
+    	String mode = readFile(GF_MODE).substring(20,21);
+    	//add by mare
+    	Log.d(TAG,"onScreenTurnedOff");
+            StartLockAppActivity = false;
+    	if(!isNavigationEnable()){
+    		writeFile(GF_MODE,"1");
+    	}else if(mode.equals("0")){
+    		writeFile(GF_MODE,"1");
+    	}
+            Settings.System.putString(mContext.getContentResolver(), SETTINGS_NEEDLOCK_APP_PACKAGENAMES,null);
+            String appString = Settings.System.getString(mContext.getContentResolver(), SETTINGS_NEEDLOCK_APP_GLOBAL_PACKAGENAMES);
+            Settings.System.putString(mContext.getContentResolver(), SETTINGS_NEEDLOCK_APP_PACKAGENAMES,appString);
+            //add end
     }
 
     private void maybeSendUserPresentBroadcast() {
@@ -960,6 +1025,11 @@ public class KeyguardViewMediator extends SystemUI {
         mHandler.removeMessages(SET_OCCLUDED);
         Message msg = mHandler.obtainMessage(SET_OCCLUDED, (isOccluded ? 1 : 0), 0);
         mHandler.sendMessage(msg);
+		if (isOccluded) {
+			mStatusBarKeyguardViewManager.mPhoneStatusBar.blurPanelBg();// blurred bg by yangfan 
+	    }else{
+	    	mStatusBarKeyguardViewManager.mPhoneStatusBar.mNotificationPanel.setBackground(null);
+	    }
     }
 
     /**
@@ -978,6 +1048,12 @@ public class KeyguardViewMediator extends SystemUI {
                 mStatusBarKeyguardViewManager.setOccluded(isOccluded);
                 updateActivityLockScreenState();
                 adjustStatusBarLocked();
+        		//add by mare
+				if (!isNavigationEnable() && isOccluded) {
+					writeFile(GF_MODE, "0");
+				} else if (!isNavigationEnable() && !isOccluded) {
+					writeFile(GF_MODE, "1");
+				}
             }
         }
     }
@@ -1212,6 +1288,8 @@ public class KeyguardViewMediator extends SystemUI {
         EventLog.writeEvent(70000, 2);
         Message msg = mHandler.obtainMessage(KEYGUARD_DONE, authenticated ? 1 : 0);
         mHandler.sendMessage(msg);
+	//add by mare
+	mUpdateMonitor.keyguardDone();
     }
 
     /**
@@ -1509,6 +1587,21 @@ public class KeyguardViewMediator extends SystemUI {
             updateActivityLockScreenState();
             adjustStatusBarLocked();
             sendUserPresentBroadcast();
+			// add by mare
+			if (!isNavigationEnable()) {
+				writeFile(GF_MODE, "0");
+			}
+
+			if (StartLockAppActivity) {
+				startAct(
+						"com.android.systemui",
+						"com.android.systemui.applock.ConfirmAppLockPasswordActivity",
+						LockPackName, LockClassName, LockRunMode,
+						LockResumeFromUS);
+				StartLockAppActivity = false;
+			}
+
+			// add end         
         }
     }
 
@@ -1739,4 +1832,136 @@ public class KeyguardViewMediator extends SystemUI {
             }
         }
     }
+
+    //add by mare
+	public void writeFile(String fileName, String write_str) {
+		File file = new File(fileName);
+		try {
+			FileOutputStream fos = new FileOutputStream(file);
+			byte[] bytes = write_str.getBytes();
+			fos.write(bytes);
+			fos.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private BroadcastReceiver mLunchAppLockReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if (intent.getAction().equals("start.applockactivity.delay")) {
+				Bundle bundle = intent.getExtras();
+				LockPackName = bundle.getString("packname");
+				LockClassName = bundle.getString("classname");
+				LockRunMode = bundle.getString("runmode");
+				LockResumeFromUS = bundle.getBoolean("resumefromUS");
+				if (mShowing) {
+					StartLockAppActivity = true;
+				} else {
+					if (!StartLockAppActivity) {
+						startAct(
+								"com.android.systemui",
+								"com.android.systemui.applock.ConfirmAppLockPasswordActivity",
+								LockPackName, LockClassName, LockRunMode,
+								LockResumeFromUS);
+					}
+				}
+			}
+		}
+	};
+
+	private void startAct(String packageName, String className,
+			String extraPackageString, String extraClassname, String runmode,
+			boolean resumefromUS) {
+		ActivityManager am = (ActivityManager) mContext
+				.getSystemService(Context.ACTIVITY_SERVICE);
+		int stackSize = am.getStacksSize();
+		List<ComponentName> mcomponentNameList = null;
+		mcomponentNameList = am.getHistTaskActivity(stackSize);
+		if (mcomponentNameList != null && mcomponentNameList.size() > 0) {
+			// if(mcomponentNameList.get(0).getPackageName().equals(LockPackName)
+			// &&
+			// mcomponentNameList.get(0).getClassName().equals(LockClassName)){
+			if (mcomponentNameList.get(0).getPackageName().equals(LockPackName)) {
+				Intent intent = new Intent(Intent.ACTION_MAIN);
+				// intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK |
+				// Intent.FLAG_ACTIVITY_NEW_TASK |
+				// Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
+						| Intent.FLAG_ACTIVITY_NEW_TASK);
+				ComponentName cn = new ComponentName(packageName, className);
+				intent.setComponent(cn);
+				intent.putExtra("packagename", extraPackageString);
+				intent.putExtra("classname", extraClassname);
+				intent.putExtra("runmode", runmode);
+				intent.putExtra("resumefromUS", resumefromUS);
+				mContext.startActivity(intent);
+			}
+		}
+	}
+
+	private boolean isNavigationEnable() {
+		if (SystemProperties.getBoolean(PERSIST_NAVIGATION_BAR, false)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	private boolean isFingerprintUnlockEnable() {
+		return SystemProperties.getBoolean(FINGERPRINT_UNLOCK_SCREEN, false) ? true
+				: false;
+	}
+
+	public void makeExpandedInvisible() {
+		try {
+			if (mStatusBarService != null)
+				mStatusBarService.makeExpandedInvisible();
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		Log.d("mare", "makeExpandedInvisible ... ");
+		if (mLockPatternUtils.isSecure(KeyguardUpdateMonitor.getCurrentUser())
+				&& mShowing && (!isFingerprintUnlockEnable())) {
+			if (!isNavigationEnable()) {
+				writeFile(GF_MODE, "0");
+			}
+		}
+	}
+
+	public void makeExpandedVisible() {
+		try {
+			if (mStatusBarService != null)
+				mStatusBarService.makeExpandedVisible();
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		Log.d("mare", " makeExpandedVisible... ");
+		if (mLockPatternUtils.isSecure(KeyguardUpdateMonitor.getCurrentUser())
+				&& mShowing && (!isFingerprintUnlockEnable())) {
+			if (!isNavigationEnable()) {
+				writeFile(GF_MODE, "1");
+			}
+		}
+	}
+
+	private String readFile(String fileName) {
+		String res = "";
+		File file = new File(fileName);
+		try {
+			FileInputStream fis = new FileInputStream(file);
+			int length = fis.available();
+			byte[] buffer = new byte[length];
+			fis.read(buffer);
+			res = new String(buffer);
+			// res = EncodingUtils.getString(buffer, "UTF-8");
+			fis.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return res;
+	}
+
+	// add by end
 }

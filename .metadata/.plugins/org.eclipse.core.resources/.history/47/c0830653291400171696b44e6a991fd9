@@ -1,0 +1,46 @@
+From afc2ee696d85fc8c1b5d87f90cd0f30581ddac6d Mon Sep 17 00:00:00 2001
+From: mare <yangfan@qucii.com>
+Date: Thu, 2 Mar 2017 09:24:06 +0800
+Subject: [PATCH 088/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E8=A7=A3=E5=86=B3=E9=80=9A=E7=9F=A5=E6=A0=8F=E4=B8=8A=E9=83=A8?=
+ =?UTF-8?q?=E5=92=8C=E9=80=9A=E7=9F=A5=E6=A0=8F=E4=B8=8B=E9=83=A8=E4=B8=8A?=
+ =?UTF-8?q?=E6=BB=91=E5=8A=A8=E7=94=BB=E4=B8=8D=E4=B8=80=E8=87=B4=E9=97=AE?=
+ =?UTF-8?q?=E9=A2=98?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../systemui/statusbar/phone/NotificationPanelView.java    | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+index 8be05ce..2af667f 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+@@ -1798,10 +1798,20 @@ public class NotificationPanelView extends PanelView implements
+         }
+         float stackTranslation = mNotificationStackScroller.getStackTranslation();
+         float translation = stackTranslation / HEADER_RUBBERBAND_FACTOR;
+-        if (mHeadsUpManager.hasPinnedHeadsUp() || mIsExpansionFromHeadsUp) {
+-            translation = mNotificationStackScroller.getTopPadding() + stackTranslation
++        //modify by zqs 2017/3/1 begin
++    	//弹出悬浮框时选择page 0
++    	//===================>
++        if(mStatusBarState!=StatusBarState.KEYGUARD){
++        	translation = mNotificationStackScroller.getTopPadding() + stackTranslation
+                     - mNotificationTopPadding - mQsMinExpansionHeight;
+         }
++//        if (mHeadsUpManager.hasPinnedHeadsUp() || mIsExpansionFromHeadsUp) {
++//            translation = mNotificationStackScroller.getTopPadding() + stackTranslation
++//                    - mNotificationTopPadding - mQsMinExpansionHeight;
++//        }
++        //===================>
++        //modify by zqs 2017/3/1 end
++    	//弹出悬浮框时选择page 0
+         return Math.min(0, translation);
+     }
+ 
+-- 
+2.8.3.windows.1
+

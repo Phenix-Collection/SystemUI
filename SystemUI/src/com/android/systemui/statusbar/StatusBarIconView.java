@@ -72,8 +72,11 @@ public class StatusBarIconView extends AnimatedImageView {
             final int outerBounds = res.getDimensionPixelSize(R.dimen.status_bar_icon_size);
             final int imageBounds = res.getDimensionPixelSize(R.dimen.status_bar_icon_drawing_size);
             final float scale = (float)imageBounds / (float)outerBounds;
-            setScaleX(scale);
-            setScaleY(scale);
+            // 禁止图标缩放 by yangfan===========
+            Log.d(TAG, "0 notification icon scale : " + scale);
+//            setScaleX(scale);
+//            setScaleY(scale);
+            // 禁止图标缩放 by yangfan ===================
         }
 
         setScaleType(ImageView.ScaleType.CENTER);
@@ -91,8 +94,10 @@ public class StatusBarIconView extends AnimatedImageView {
         final int outerBounds = res.getDimensionPixelSize(R.dimen.status_bar_icon_size);
         final int imageBounds = res.getDimensionPixelSize(R.dimen.status_bar_icon_drawing_size);
         final float scale = (float)imageBounds / (float)outerBounds;
-        setScaleX(scale);
-        setScaleY(scale);
+        Log.d(TAG, "1 notification icon scale : " + scale);
+        //setScaleX(scale);
+        //setScaleY(scale);
+        // 禁止缩放通知图标
     }
 
     private static boolean streq(String a, String b) {
@@ -292,4 +297,5 @@ public class StatusBarIconView extends AnimatedImageView {
     public String getSlot() {
         return mSlot;
     }
+    
 }

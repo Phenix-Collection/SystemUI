@@ -59,7 +59,7 @@ public class WifiTile extends QSTile<QSTile.SignalState> {
 
     @Override
     public boolean supportsDualTargets() {
-        return true;
+        return /*true*/false;// remove Large Cell by yangfan 
     }
 
     @Override
@@ -90,10 +90,11 @@ public class WifiTile extends QSTile<QSTile.SignalState> {
         return mDetailAdapter;
     }
 
-    @Override
-    public QSTileView createTileView(Context context) {
-        return new SignalTileView(context);
-    }
+    // @Override
+    // public QSTileView createTileView(Context context) {
+    //     return new SignalTileView(context);
+    // } 
+	// modified by yangfan
 
     @Override
     protected void handleClick() {
@@ -116,14 +117,23 @@ public class WifiTile extends QSTile<QSTile.SignalState> {
     }
 
     @Override
+    protected void handleLongClick() {
+        // handleSecondaryClick();
+        mHost.startActivityDismissingKeyguard(WIFI_SETTINGS);
+    }// added by yangfan
+    
+    @Override
     protected void handleUpdateState(SignalState state, Object arg) {
         state.visible = true;
         if (DEBUG) Log.d(TAG, "handleUpdateState arg=" + arg);
-        CallbackInfo cb = (CallbackInfo) arg;
-        if (cb == null) {
+// modified by yangfan
+        final CallbackInfo cb;
+        if (arg == null) {
             cb = mSignalCallback.mInfo;
+        } else {
+            cb = (CallbackInfo) arg;
         }
-
+// modified by yangfan
         boolean wifiConnected = cb.enabled && (cb.wifiSignalIconId > 0) && (cb.enabledDesc != null);
         boolean wifiNotConnected = (cb.wifiSignalIconId > 0) && (cb.enabledDesc == null);
         boolean enabledChanging = state.enabled != cb.enabled;
@@ -139,19 +149,19 @@ public class WifiTile extends QSTile<QSTile.SignalState> {
         final String signalContentDescription;
         final Resources r = mContext.getResources();
         if (!state.enabled) {
-            state.icon = ResourceIcon.get(R.drawable.ic_qs_wifi_disabled);
+            state.icon = ResourceIcon.get(R.drawable.ic_qs_wifi_off);
             state.label = r.getString(R.string.quick_settings_wifi_label);
             signalContentDescription = r.getString(R.string.accessibility_wifi_off);
         } else if (wifiConnected) {
-            state.icon = ResourceIcon.get(cb.wifiSignalIconId);
+            state.icon = ResourceIcon.get(/*cb.wifiSignalIconId*/R.drawable.ic_qs_wifi_on);// modified by yangfan
             state.label = removeDoubleQuotes(cb.enabledDesc);
             signalContentDescription = cb.wifiSignalContentDescription;
         } else if (wifiNotConnected) {
-            state.icon = ResourceIcon.get(R.drawable.ic_qs_wifi_full_0);
+            state.icon = ResourceIcon.get(/*R.drawable.ic_qs_wifi_full_0*/R.drawable.ic_qs_wifi_on);// modified by yangfan
             state.label = r.getString(R.string.quick_settings_wifi_label);
             signalContentDescription = r.getString(R.string.accessibility_no_wifi);
         } else {
-            state.icon = ResourceIcon.get(R.drawable.ic_qs_wifi_no_network);
+            state.icon = ResourceIcon.get(/**R.drawable.ic_qs_wifi_no_network**/R.drawable.ic_qs_wifi_on);// modified by yangfan
             state.label = r.getString(R.string.quick_settings_wifi_label);
             signalContentDescription = r.getString(R.string.accessibility_wifi_off);
         }

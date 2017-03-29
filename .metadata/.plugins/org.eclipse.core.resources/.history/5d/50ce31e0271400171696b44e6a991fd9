@@ -1,0 +1,29 @@
+From a95f7152d041dda6787628bec42a014a72e5691b Mon Sep 17 00:00:00 2001
+From: weiliji <yangfan@qucii.com>
+Date: Sun, 5 Feb 2017 09:24:51 +0800
+Subject: [PATCH 002/185] =?UTF-8?q?=E3=80=90=E4=BF=AE=E6=94=B9=E3=80=91?=
+ =?UTF-8?q?=E4=BF=AE=E6=94=B9=E9=A1=B9=E7=9B=AE=E5=9C=A8eclipse=E4=B8=AD?=
+ =?UTF-8?q?=E7=9A=84=E5=B7=A5=E7=A8=8B=E5=90=8D?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/.project | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/SystemUI/.project b/SystemUI/.project
+index d842e16..2a6a119 100644
+--- a/SystemUI/.project
++++ b/SystemUI/.project
+@@ -1,6 +1,6 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <projectDescription>
+-	<name>UsbStorageActivity</name>
++	<name>SystemUI</name>
+ 	<comment></comment>
+ 	<projects>
+ 	</projects>
+-- 
+2.8.3.windows.1
+

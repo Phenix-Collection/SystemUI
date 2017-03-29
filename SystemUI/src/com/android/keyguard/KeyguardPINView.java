@@ -20,6 +20,7 @@ import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.RenderNode;
 import android.view.RenderNodeAnimator;
 import android.view.View;
@@ -30,7 +31,8 @@ import com.android.settingslib.animation.AppearAnimationUtils;
 import com.android.settingslib.animation.DisappearAnimationUtils;
 
 
-//add by wumin
+
+//add by mare
 import android.hardware.input.InputManager;
 import android.view.InputDevice;
 import android.view.KeyCharacterMap;
@@ -74,7 +76,7 @@ public class KeyguardPINView extends KeyguardPinBasedInputView {
 
     protected void resetState() {
         super.resetState();
-        mSecurityMessageDisplay.setMessage(getMsgWithCnt(R.string.kg_pin_instructions), false);
+        mSecurityMessageDisplay.setMessage(getMsgWithCnt(R.string.kg_pin_instructions), true);
     }
 
     @Override
@@ -115,7 +117,7 @@ public class KeyguardPINView extends KeyguardPinBasedInputView {
                         null, mEcaView, null
                 }};
 
-	//add by wumin
+	//add by mare
         Button canclebutton = (Button) findViewById(R.id.cancle_button);
         if(isNavigationEnable()){
                 canclebutton.setVisibility(View.GONE);
@@ -130,7 +132,7 @@ public class KeyguardPINView extends KeyguardPinBasedInputView {
         });
     }
 
-    //add  by wumin
+    //add  by mare
     private void sendKeyEvent(int keyCode) {
         int eventCode = keyCode;
         long now = SystemClock.uptimeMillis();
@@ -206,5 +208,10 @@ public class KeyguardPINView extends KeyguardPinBasedInputView {
     @Override
     public boolean hasOverlappingRendering() {
         return false;
+    }
+    
+    @Override
+    public boolean isPinView() {
+    	return true;
     }
 }

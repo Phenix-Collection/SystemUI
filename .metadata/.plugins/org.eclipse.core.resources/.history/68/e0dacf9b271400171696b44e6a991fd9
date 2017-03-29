@@ -1,0 +1,1221 @@
+From a86fe0a8d755d57a6b6c8902db53d8859a42daee Mon Sep 17 00:00:00 2001
+From: LRH <yangfan@qucci.com>
+Date: Mon, 13 Feb 2017 17:33:11 +0800
+Subject: [PATCH 033/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E6=B7=BB=E5=8A=A0Recent=E4=B8=80=E9=94=AE=E6=B8=85=E9=99=A4?=
+ =?UTF-8?q?=E5=8A=9F=E8=83=BD?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/AndroidManifest.xml                       |   3 +-
+ SystemUI/res/drawable-xhdpi/ic_clear_all_task.png  | Bin 0 -> 1762 bytes
+ SystemUI/res/layout/recents.xml                    |  27 ++
+ SystemUI/res/values-zh-rCN/strings.xml             |   6 +
+ SystemUI/res/values/dimens.xml                     |   2 +
+ SystemUI/res/values/strings.xml                    |   1 +
+ .../src/com/android/systemui/ProcessUtils.java     |  74 ++++
+ .../android/systemui/recents/RecentsActivity.java  | 204 +++++++++-
+ .../com/android/systemui/recents/model/Task.java   |   4 +-
+ .../recents/views/CircularProgressDrawable.java    | 428 +++++++++++++++++++++
+ .../systemui/recents/views/RecentsView.java        |  66 +++-
+ .../systemui/recents/views/TaskStackView.java      |  32 +-
+ .../android/systemui/recents/views/TaskView.java   |   2 +-
+ .../systemui/recents/views/TaskViewHeader.java     |  14 +-
+ 14 files changed, 846 insertions(+), 17 deletions(-)
+ create mode 100644 SystemUI/res/drawable-xhdpi/ic_clear_all_task.png
+ create mode 100644 SystemUI/src/com/android/systemui/ProcessUtils.java
+ create mode 100644 SystemUI/src/com/android/systemui/recents/views/CircularProgressDrawable.java
+
+diff --git a/SystemUI/AndroidManifest.xml b/SystemUI/AndroidManifest.xml
+index 854d08e..8420b17 100644
+--- a/SystemUI/AndroidManifest.xml
++++ b/SystemUI/AndroidManifest.xml
+@@ -139,7 +139,8 @@
+     <uses-permission android:name="com.android.systemui.permission.SELF" />
+     
+     <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" /> 
+-    
++    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
++    <uses-permission android:name="android.permission.FORCE_STOP_PACKAGES" />
+     <application
+         android:name=".SystemUIApplication"
+         android:persistent="true"
+diff --git a/SystemUI/res/drawable-xhdpi/ic_clear_all_task.png b/SystemUI/res/drawable-xhdpi/ic_clear_all_task.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..303f377c280111160747e27e9e60e27d44707951
+GIT binary patch
+literal 1762
+zcmeAS@N?(olHy`uVBq!ia0vp^1|ZDA1|-9oezpTC$r9IylHmNblJdl&R0hYC{G?O`
+z&)mfH)S%SFl*+=BsWuD@%u1Od5hW46K32*3xq68pHF_1f1wh>l3^w)^1&PVosU-?Y
+zsp*+{wo31J?^jaDOtDo8H}y5}EpSfF$n>ZxN)4{^3rViZPPR-@vbR&PsjvbXkegbP
+zs8ErclUHn2VXFi-*9yo63F|8<fR&VF+bTgE72zA8;GAESs$i;Tteb3LXsBRjre|nk
+zYG!7rqhMrUXryldL}t2%CRV0qRz~IuP@n{~ttchUD#*nRY8Q}atCUevQedU8UtV6W
+zS8lAAUzDzIXlZE)GQ-G77pOwFxH7LKu|hYmSQ%!5OKNd)QD#9&W`3Rm$i&2?{L&Iz
+zC7??oUdSzg8=F@Q4JKfK=~pBc=o{)8fV>1#=<ADLX>KlDb#X~hD#E>34K5C;EJ)Q4
+zN-fSWElLJPT$(b-ssbzLqSVBa{GyQj{2W*)24v)y<QHe;7brLfn<;37XXd5kmltb-
+z)%*HddFB<DB<3Zjdb-#u0Zq`$%uKN|ax*Y<H8!y{w{QZ6x~rL!i<z;Txq-2nfupON
+zrKuxKuS<S%X>Mv>2~2MaLa!rEy`ZF!TL84#CABECEH%ZgC_h&L>}9J=+-@<)X&zK>
+z3U0Sp;MA)Rbc{YIVv!;mCIn19ASOK70y*%6pPC0u?M1+3y>wgnRbXxj^K@|xskrrK
+zmT!izqsZ~}$+Mzz*RH*GUhP)Le2%S3A~qg@7Zxw*aQfKHk@S9^i`I>14%Z98{Bj~9
+zN8+jkHg+sp(8P7AiCw=gq*-2LYL=*}@1y?{!!MjY^Dbrc$u%4J>!zQ1ckWO6y>olM
+zn}ylU7q^QRDQS)~5cm1`UhG6e_X7SupB5XhW?~9!XisQdG?(QqqjOz}nBc!?<r(iU
+z#4%6%eKk^*<;jiEIXc2AjG<ct95fU}1h_a@S^OHl?&qGtlE-*0f4|l0j|JzQF09Hp
+z-85B7crwdt$F(V6J^o1icvEg-B`m|NX%Jn=YpcUHD`wu;-f*o|8UMN14pd&>(aDnG
+z;Pm_R)$MWHH@;lwV7-G=EVOd6qWLR^mql?&pHA;(W7D@-ZxQv*`U2a#X4STBzpf{6
+zSG+D|<&&1#^Wcr{)2ppwn;9;<>Fv4F-Jsl7b3ZTp;JP5z3Abf90&Yy6B+9L%w{Jer
+zga+P(?duvWZipXvu-QG_!B*I0^>tfz4Y!*o^!t|z#)jQm=KMv_;FakNZsSc}GyLov
+z7JgQ|H_?dgSOojLhSPD$3&jl11TNI9<|;ceNk&%uRMDrzOVc`?Zr;0W?Qs2!flh*)
+zM}?@sWA+)_LgQFXRw_9%Czb*o<Y%DGz@)J;OCywFZo^&1o1Y$U>MRj<XntR`Q*Awm
+z=_$)csppqG$@0@=+SXV%J$uFELf6|Z0rg&gPrlW97$UwY{Jm7l$*EZd)(1@kR~)ju
+zS?;$>_vB5(W6V=;x_|II@p^^*0d3c4C-(zV1$-viI$t@?Pg^tTgOkW~zU4=4i!EgC
+zf8J}jo~i1`lgk?wk7`|Pf2Y4Fpl{1<_5%OHZ4-V6Fy?w)j1O`@P<Hm9{WAsayx()#
+z>|ShW+I~P<QC}c<O>w9Q*M6hytAYZTC2IQOKcsn1E14U+#QEX<^nYGc-jq#KPndhy
+z`nlGF#x{ncM(Kprxe6hrcC2CAX%!9W`-3li6N+J&-SSKMWWmPEqTw~S9d9j6vf<q2
+zAkuT|mft7iUn<{i*>xB2`rNp+>4Cz1>lH7)^JQ%551)1+;M`96InN@`+z5LkwBxj%
+zlkwDNM_vf-c93n~_r5~E|HHZBIor>j-Ltpv^WUv+%EDb9_A7D5EtT1R`S13FoOag#
+dHrg}sFsxYk^Fpcs`w393<LT<>vd$@?2>?dnr*Z%Q
+
+literal 0
+HcmV?d00001
+
+diff --git a/SystemUI/res/layout/recents.xml b/SystemUI/res/layout/recents.xml
+index bdda527..9974a05 100644
+--- a/SystemUI/res/layout/recents.xml
++++ b/SystemUI/res/layout/recents.xml
+@@ -31,6 +31,7 @@
+         android:id="@+id/recents_view"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
++        android:layout_marginTop="10dp"
+         android:focusable="true">
+     </com.android.systemui.recents.views.RecentsView>
+ 
+@@ -54,4 +55,30 @@
+         android:layout_gravity="center_horizontal|bottom"
+         android:scaleType="fitXY"
+         android:src="@drawable/recents_lower_gradient" />
++
++    <!-- hsp 2016-09-12 : Add for clear all task @{-->
++     <LinearLayout
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content"
++        android:orientation="vertical"
++        android:gravity="center_horizontal"
++        android:layout_gravity="center_horizontal|bottom"
++        android:paddingBottom="45dip"
++        android:background="@drawable/recents_lower_gradient"
++        >
++        <TextView
++            android:id="@+id/clear_all_recents_text"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:layout_marginBottom="5dp"
++            android:textColor="@android:color/white" />
++        <ImageView
++            android:id="@+id/clear_all_recents"
++            android:layout_width="52dp"
++            android:layout_height="52dp"
++            android:layout_marginTop="5dp"
++            />
++    </LinearLayout>
++    <!-- @} -->
++
+ </FrameLayout>
+\ No newline at end of file
+diff --git a/SystemUI/res/values-zh-rCN/strings.xml b/SystemUI/res/values-zh-rCN/strings.xml
+index 3fddac4..7bc6c3f 100644
+--- a/SystemUI/res/values-zh-rCN/strings.xml
++++ b/SystemUI/res/values-zh-rCN/strings.xml
+@@ -441,4 +441,10 @@
+     <string name="qs_tile_silent">静音</string>
+     <string name="gotocalling">轻触此处返回通话</string>
+     <string name="mobile_network_namae_filter">中国</string>
++    
++        <string name="clear_all_tasks">关闭全部</string>
++
++    <string name="clear_all_task_memory_text"><xliff:g id="number">%s</xliff:g>G 可用 | 4G</string>
++    <string name="clear_all_task_memory_release_text">释放了 <xliff:g id="number">%d</xliff:g>M 内存</string>
++    <string name="no_need_to_clear">已经清理至最佳状态</string>
+ </resources>
+diff --git a/SystemUI/res/values/dimens.xml b/SystemUI/res/values/dimens.xml
+index 376c0d5..8793409 100644
+--- a/SystemUI/res/values/dimens.xml
++++ b/SystemUI/res/values/dimens.xml
+@@ -599,4 +599,6 @@
+     <dimen name="assist_disclosure_shadow_thickness">1.5dp</dimen>
+     <!-- added by mare  -->
+     <dimen name="pager_indicator_bottom">15dp</dimen> <!-- close_handle_height + qsPaddingBottom -->
++    
++     <dimen name="clear_all_ring_size">1dp</dimen>
+ </resources>
+diff --git a/SystemUI/res/values/strings.xml b/SystemUI/res/values/strings.xml
+index 31c778b..e0425fc 100644
+--- a/SystemUI/res/values/strings.xml
++++ b/SystemUI/res/values/strings.xml
+@@ -1178,4 +1178,5 @@
+     <!-- Path data for circle battery -->
+     <string name="battery_circle_path" translatable="false">M 12 3.5 C 16.6944203736 3.5 20.5 7.30557962644 20.5 12 C 20.5 16.6944203736 16.6944203736 20.5 12 20.5 C 7.30557962644 20.5 3.5 16.6944203736 3.5 12 C 3.5 7.30557962644 7.30557962644 3.5 12 3.5 Z</string>
+     <string name="mobile_network_namae_filter">China</string>
++    <string name="clear_all_tasks">Clear all</string>
+ </resources>
+diff --git a/SystemUI/src/com/android/systemui/ProcessUtils.java b/SystemUI/src/com/android/systemui/ProcessUtils.java
+new file mode 100644
+index 0000000..54e25fc
+--- /dev/null
++++ b/SystemUI/src/com/android/systemui/ProcessUtils.java
+@@ -0,0 +1,74 @@
++/*
++ * Copyright (C) 2015 The Android Open Source Project
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ *      http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License
++ */
++
++package com.android.systemui;
++
++import android.app.ActivityManager;
++import android.content.Context;
++import android.util.Log;
++
++import java.lang.Override;
++import java.lang.Runnable;
++import java.lang.Thread;
++import java.util.List;
++
++// hsp 2016-06-24 : Kill third part app's processes when memory is low
++
++public class ProcessUtils {
++    private static final String TAG = "ProcessUtils";
++
++    public static long killProcess(Context context, boolean restarted) {
++        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
++        long availMem = getAvaiMemory(am);
++
++        kill(am, ActivityManager.RunningAppProcessInfo.IMPORTANCE_BACKGROUND, restarted);
++
++        Log.d(TAG, "zolen tag : Has release " + (getAvaiMemory(am) - availMem) + "M memory");
++        return getAvaiMemory(am) - availMem;
++    }
++
++    private static void kill(ActivityManager am, int important, boolean restarted) {
++        List<ActivityManager.RunningAppProcessInfo> infoList = am.getRunningAppProcesses();
++        if (infoList != null && infoList.size() > 0) {
++            for (int i = 0; i < infoList.size(); i++) {
++                ActivityManager.RunningAppProcessInfo processInfo = infoList.get(i);
++                if (processInfo.importance >= important) {
++                    String[] pkgList = processInfo.pkgList;
++                    for (int j = 0; j < pkgList.length; j++) {
++                        String packageName = pkgList[j];
++                        // Don't kill system process
++                        if (!packageName.contains("android") && !packageName.contains("launcher") && am != null) {
++                            Log.d(TAG, "zolen tag : kill :" + packageName + ", restarted : " + restarted);
++                            if (restarted) {
++                                //Kill process but can restart
++                                am.killBackgroundProcesses(packageName);
++                            } else {
++                                //Kill process but can not restart
++                                am.forceStopPackage(packageName);
++                            }
++                        }
++                    }
++                }
++            }
++        }
++    }
++
++    public static long getAvaiMemory(ActivityManager am) {
++        ActivityManager.MemoryInfo info = new ActivityManager.MemoryInfo();
++        am.getMemoryInfo(info);
++        return info.availMem / (1024 * 1024);
++    }
++}
+\ No newline at end of file
+diff --git a/SystemUI/src/com/android/systemui/recents/RecentsActivity.java b/SystemUI/src/com/android/systemui/recents/RecentsActivity.java
+index d0876fa..e58c831 100644
+--- a/SystemUI/src/com/android/systemui/recents/RecentsActivity.java
++++ b/SystemUI/src/com/android/systemui/recents/RecentsActivity.java
+@@ -16,7 +16,13 @@
+ 
+ package com.android.systemui.recents;
+ 
++import android.animation.Animator;
++import android.animation.AnimatorListenerAdapter;
++import android.animation.AnimatorSet;
++import android.animation.ArgbEvaluator;
++import android.animation.ObjectAnimator;
+ import android.app.Activity;
++import android.app.ActivityManager;
+ import android.app.ActivityOptions;
+ import android.app.SearchManager;
+ import android.appwidget.AppWidgetManager;
+@@ -25,12 +31,23 @@ import android.content.BroadcastReceiver;
+ import android.content.Context;
+ import android.content.Intent;
+ import android.content.IntentFilter;
++import android.graphics.Bitmap;
++import android.graphics.BitmapFactory;
++import android.graphics.drawable.Drawable;
++import android.os.*;
+ import android.os.Bundle;
++import android.os.Handler;
++import android.os.Message;
+ import android.os.SystemClock;
+ import android.os.UserHandle;
++import android.util.Log;
+ import android.view.KeyEvent;
+ import android.view.View;
+ import android.view.ViewStub;
++import android.view.animation.AccelerateDecelerateInterpolator;
++import android.view.animation.Animation;
++import android.widget.ImageView;
++import android.widget.TextView;
+ import android.widget.Toast;
+ 
+ import com.android.internal.logging.MetricsLogger;
+@@ -48,8 +65,20 @@ import com.android.systemui.recents.views.DebugOverlayView;
+ import com.android.systemui.recents.views.RecentsView;
+ import com.android.systemui.recents.views.SystemBarScrimViews;
+ import com.android.systemui.recents.views.ViewAnimation;
+-
++import com.android.systemui.recents.views.CircularProgressDrawable;
++import com.android.systemui.ProcessUtils;
++
++import java.lang.*;
++import java.lang.Long;
++import java.lang.Math;
++import java.lang.Override;
++import java.lang.Runnable;
++import java.lang.Runtime;
++import java.lang.String;
++import java.lang.Thread;
+ import java.lang.ref.WeakReference;
++import java.math.BigDecimal;
++import java.util.List;
+ import java.util.ArrayList;
+ 
+ /**
+@@ -68,6 +97,19 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
+     ViewStub mEmptyViewStub;
+     ViewStub mDebugOverlayStub;
+     View mEmptyView;
++
++    // hsp 2016-09-12 : Add for clear all task @{
++    final String ACTION_KILL_PROCESS = "clear.all.task.kill.process";
++    ActivityManager mAM;
++    Animator mCurrentAnimation;
++    CircularProgressDrawable mDrawable;
++    View mClearAllTask;
++    TextView mClearAllText;
++    double mCurrentMem;
++    long mReleasedMem;
++    List<String> mNeedToKillProcess;
++    // @}
++
+     DebugOverlayView mDebugOverlay;
+ 
+     // Resize task debug
+@@ -260,6 +302,46 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
+             }
+         }
+ 
++        // hsp 2016-09-12 : Add for clear all task @{
++
++        int taskSize = mRecentsView.getTaskSize();
++        if (taskSize > 0) {
++            mClearAllText.setVisibility(View.VISIBLE);
++            mClearAllTask.setVisibility(View.VISIBLE);
++            int duration = 500;
++            if (taskSize > 15) {
++                duration = 1000;
++            }
++            mCurrentAnimation = prepareClearAllAnimation(duration);
++
++            mClearAllTask.bringToFront();
++            mClearAllTask.setOnClickListener(new View.OnClickListener() {
++                @Override
++                public void onClick(View view) {
++                    new Thread(new Runnable() {
++                        @Override
++                        public void run() {
++                            mReleasedMem = ProcessUtils.killProcess(RecentsActivity.this, false);
++
++                            Message message = new Message();
++                            message.what = 1;
++                            mHandler.sendMessage(message);
++                        }
++                    }).start();
++
++                    mRecentsView.onClearAllTask();
++
++                    mCurrentAnimation.start();
++                }
++            });
++        } else {
++            mClearAllText.setVisibility(View.GONE);
++            mClearAllTask.setVisibility(View.GONE);
++        }
++
++        updateMemoryText();
++        // @}
++
+         // Animate the SystemUI scrims into view
+         mScrimViews.prepareEnterRecentsAnimation();
+ 
+@@ -286,6 +368,102 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
+         MetricsLogger.histogram(this, "overview_task_count", taskCount);
+     }
+ 
++    public void updateMemoryText() {
++        //double totalMemory = (double)getTotalMemory();
++        mCurrentMem = getAvaiMemory();
++        BigDecimal bd = new BigDecimal(mCurrentMem/1000);
++        bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
++        String memText = RecentsActivity.this.getString(
++                R.string.clear_all_task_memory_text, bd.toString());
++        mClearAllText.setText(memText);
++    }
++
++    public static final int ALL_TASKVIEW_DISMISSED = 2;
++
++    Handler mHandler = new Handler() {
++        @Override
++        public void handleMessage(Message msg) {
++            switch (msg.what) {
++                case 1:
++                    new Handler().postDelayed(new Runnable() {
++                        @Override
++                        public void run() {
++                            //mReleasedMem = Math.abs(Math.round(getAvaiMemory() - mCurrentMem));
++                            String toastText = RecentsActivity.this.getString(
++                                    R.string.clear_all_task_memory_release_text, mReleasedMem);
++                            if (mReleasedMem > 10) {
++                                Toast.makeText(RecentsActivity.this, toastText, Toast.LENGTH_SHORT).show();
++                            } else {
++                                String best = RecentsActivity.this.getString(
++                                        R.string.no_need_to_clear);
++                                Toast.makeText(RecentsActivity.this, best, Toast.LENGTH_SHORT).show();
++                            }
++                        }
++                    }, 1000);
++                    break;
++                /*added by dubin*/
++                case ALL_TASKVIEW_DISMISSED:
++                    RecentsActivity.this.onBackPressed();
++                    break;
++            }
++            super.handleMessage(msg);
++        }
++    };
++
++    public double getAvaiMemory() {
++        ActivityManager.MemoryInfo info = new ActivityManager.MemoryInfo();
++        mAM.getMemoryInfo(info);
++        return (double)info.availMem / (1024 * 1024);
++    }
++
++    // hsp 2016-09-12 : Add for clear all task @{
++    private Animator prepareClearAllAnimation(int duration) {
++        AnimatorSet animation = new AnimatorSet();
++        ObjectAnimator progressAnimation = ObjectAnimator.ofFloat(mDrawable,
++                CircularProgressDrawable.PROGRESS_PROPERTY, 0f, 1f);
++        progressAnimation.setDuration(duration);
++        progressAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
++
++        //Has no effect
++        ObjectAnimator colorAnimation = ObjectAnimator.ofInt(mDrawable,
++                CircularProgressDrawable.RING_COLOR_PROPERTY,
++                getResources().getColor(android.R.color.holo_red_dark),
++                getResources().getColor(android.R.color.holo_green_light));
++        colorAnimation.setEvaluator(new ArgbEvaluator());
++        colorAnimation.setDuration(duration);
++
++        animation.playTogether(progressAnimation, colorAnimation);
++        return animation;
++    }
++
++    // Didn't use
++    private Animator prepareStyle1Animation() {
++        AnimatorSet animation = new AnimatorSet();
++
++        final Animator indeterminateAnimation = ObjectAnimator.ofFloat(mDrawable, CircularProgressDrawable.PROGRESS_PROPERTY, 0, 3600);
++        indeterminateAnimation.setDuration(3600);
++
++        Animator innerCircleAnimation = ObjectAnimator.ofFloat(mDrawable, CircularProgressDrawable.CIRCLE_SCALE_PROPERTY, 0f, 0.75f);
++        innerCircleAnimation.setDuration(3600);
++        innerCircleAnimation.addListener(new AnimatorListenerAdapter() {
++            @Override
++            public void onAnimationStart(Animator animation) {
++                mDrawable.setIndeterminate(true);
++            }
++
++            @Override
++            public void onAnimationEnd(Animator animation) {
++                indeterminateAnimation.end();
++                mDrawable.setIndeterminate(false);
++                mDrawable.setProgress(0);
++            }
++        });
++
++        animation.playTogether(innerCircleAnimation, indeterminateAnimation);
++        return animation;
++    }
++    // @}
++
+     /** Dismisses recents if we are already visible and the intent is to toggle the recents view */
+     boolean dismissRecentsToFocusedTaskOrHome(boolean checkFilteredStackState) {
+         SystemServicesProxy ssp = RecentsTaskLoader.getInstance().getSystemServicesProxy();
+@@ -359,6 +537,24 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
+                 View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
+                 View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+         mEmptyViewStub = (ViewStub) findViewById(R.id.empty_view_stub);
++
++        // hsp 2016-09-12 : Add for clear all task @{
++        mClearAllTask = (ImageView) findViewById(R.id.clear_all_recents);
++        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_clear_all_task);
++        mDrawable = new CircularProgressDrawable.Builder()
++                .setBitmap(bitmap)
++                .setRingWidth(getResources().getDimensionPixelSize(R.dimen.clear_all_ring_size))
++                .setRingColor(getResources().getColor(android.R.color.white))
++                .create();
++        mClearAllTask.setBackground(mDrawable);
++
++        mAM = (ActivityManager) RecentsActivity.this.getSystemService(Context.ACTIVITY_SERVICE);
++
++        mClearAllText = (TextView) findViewById(R.id.clear_all_recents_text);
++
++//        mClearAllText.setText(R.string.clear_all_tasks);
++        // @}
++
+         mDebugOverlayStub = (ViewStub) findViewById(R.id.debug_overlay_stub);
+         mScrimViews = new SystemBarScrimViews(this, mConfig);
+         inflateDebugOverlay();
+@@ -625,7 +821,11 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
+ 
+     @Override
+     public void onAllTaskViewsDismissed() {
+-        mFinishLaunchHomeRunnable.run();
++        // hsp 2016-09-12 : Add for clear all task @{
++        /* change another way to exit RecentsActivity @dubin*/
++        // mFinishLaunchHomeRunnable.run();
++        mHandler.sendEmptyMessage(ALL_TASKVIEW_DISMISSED);
++        // @}
+     }
+ 
+     @Override
+diff --git a/SystemUI/src/com/android/systemui/recents/model/Task.java b/SystemUI/src/com/android/systemui/recents/model/Task.java
+index c14adf4..b938c48 100644
+--- a/SystemUI/src/com/android/systemui/recents/model/Task.java
++++ b/SystemUI/src/com/android/systemui/recents/model/Task.java
+@@ -44,7 +44,7 @@ public class Task {
+     /** The ComponentNameKey represents the unique primary key for a component
+      * belonging to a specified user. */
+     public static class ComponentNameKey {
+-        final ComponentName component;
++        public final ComponentName component;
+         final int userId;
+ 
+         public ComponentNameKey(ComponentName cn, int user) {
+@@ -69,7 +69,7 @@ public class Task {
+ 
+     /* The Task Key represents the unique primary key for the task */
+     public static class TaskKey {
+-        final ComponentNameKey mComponentNameKey;
++        public final ComponentNameKey mComponentNameKey;
+         public final int id;
+         public int stackId;
+         public final Intent baseIntent;
+diff --git a/SystemUI/src/com/android/systemui/recents/views/CircularProgressDrawable.java b/SystemUI/src/com/android/systemui/recents/views/CircularProgressDrawable.java
+new file mode 100644
+index 0000000..c5fbb93
+--- /dev/null
++++ b/SystemUI/src/com/android/systemui/recents/views/CircularProgressDrawable.java
+@@ -0,0 +1,428 @@
++/*
++ * Copyright (C) 2014 Saúl Díaz
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ *      http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package com.android.systemui.recents.views;
++
++import android.graphics.Bitmap;
++import android.graphics.BitmapFactory;
++import android.graphics.Canvas;
++import android.graphics.ColorFilter;
++import android.graphics.Paint;
++import android.graphics.Rect;
++import android.graphics.RectF;
++import android.graphics.drawable.Drawable;
++
++// hsp 2016-09-12 : Add for clear all task
++
++
++/**
++ * Circular Progress Drawable.
++ * <p/>
++ * This drawable will produce a circular shape with a ring surrounding it. The ring can appear
++ * both filled and give a little cue when it is empty.
++ * <p/>
++ * The inner circle size, the progress of the outer ring and if it is loading parameters can be
++ * controlled, as well the different colors for the three components.
++ *
++ * @author Saul Diaz <sefford@gmail.com>
++ */
++public class CircularProgressDrawable extends Drawable {
++    /**
++     * Factor to convert the factor to paint the arc.
++     * <p/>
++     * In this way the developer can use a more user-friendly [0..1f] progress
++     */
++    public static final int PROGRESS_FACTOR = -360;
++    /**
++     * Property Inner Circle Scale.
++     * <p/>
++     * The inner ring is supposed to defaults stay 3/4 radius off the outer ring at (75% scale), but this
++     * property can make it grow or shrink via this equation: OuterRadius * Scale.
++     * <p/>
++     * A 100% scale will make the inner circle to be the same radius as the outer ring.
++     */
++    public static final String CIRCLE_SCALE_PROPERTY = "circleScale";
++    /**
++     * Property Progress of the outer circle.
++     * <p/>
++     * The progress of the circle. If {@link #setIndeterminate(boolean) indeterminate flag} is set
++     * to FALSE, this property will be used to indicate the completion of the outer circle [0..1f].
++     * <p/>
++     * If set to TRUE, the drawable will activate the loading mode, where the drawable will
++     * show a 90º arc which will be spinning around the outer circle as much as progress goes.
++     */
++    public static final String PROGRESS_PROPERTY = "progress";
++    /**
++     * Property Ring color.
++     * <p/>
++     * Changes the ring filling color
++     */
++    public static final String RING_COLOR_PROPERTY = "ringColor";
++    /**
++     * Property circle color.
++     * <p/>
++     * Changes the inner circle color
++     */
++    public static final String CIRCLE_COLOR_PROPERTY = "circleColor";
++    /**
++     * Property outline color.
++     * <p/>
++     * Changes the outline of the ring color.
++     */
++    public static final String OUTLINE_COLOR_PROPERTY = "outlineColor";
++    /**
++     * Logger Tag for Logging purposes.
++     */
++    public static final String TAG = "CircularProgressDrawable";
++
++    private Bitmap mBitmap;
++    /**
++     * Paint object to draw the element.
++     */
++    private final Paint paint;
++    /**
++     * Ring progress.
++     */
++    protected float progress;
++    /**
++     * Color for the empty outer ring.
++     */
++    protected int outlineColor;
++    /**
++     * Color for the completed ring.
++     */
++    protected int ringColor;
++    /**
++     * Color for the inner circle.
++     */
++    protected int centerColor;
++    /**
++     * Rectangle where the filling ring will be drawn into.
++     */
++    protected final RectF arcElements;
++    /**
++     * Width of the filling ring.
++     */
++    protected final int ringWidth;
++    /**
++     * Scale of the inner circle. It will affect the inner circle size on this equation:
++     * ([Biggest length of the Drawable] / 2) - (ringWidth / 2) * scale.
++     */
++    protected float circleScale;
++    /**
++     * Set if it is an indeterminate
++     */
++    protected boolean indeterminate;
++
++    /**
++     * Creates a new CouponDrawable.
++     *
++     * @param ringWidth    Width of the filled ring
++     * @param circleScale  Scale difference between the outer ring and the inner circle
++     * @param outlineColor Color for the outline color
++     * @param ringColor    Color for the filled ring
++     * @param centerColor  Color for the center element
++     */
++    CircularProgressDrawable(Bitmap bitmap, int ringWidth, float circleScale, int outlineColor, int ringColor, int centerColor) {
++        this.mBitmap = bitmap;
++        this.progress = 0;
++        this.outlineColor = outlineColor;
++        this.ringColor = ringColor;
++        this.centerColor = centerColor;
++        this.paint = new Paint();
++        this.paint.setAntiAlias(true);
++        this.ringWidth = ringWidth;
++        this.arcElements = new RectF();
++        this.circleScale = circleScale;
++        this.indeterminate = false;
++    }
++
++    @Override
++    public void draw(Canvas canvas) {
++        final Rect bounds = getBounds();
++
++        // Calculations on the different components sizes
++        int size = Math.min(bounds.height(), bounds.width());
++        float outerRadius = (size / 2) - (ringWidth / 2);
++        float innerRadius = outerRadius * circleScale;
++        float offsetX = (bounds.width() - outerRadius * 2) / 2;
++        float offsetY = (bounds.height() - outerRadius * 2) / 2;
++
++        // Inner image
++        canvas.drawBitmap(mBitmap, 40, 40, paint);
++
++        // Outer Circle
++        int halfRingWidth = ringWidth / 2;
++        float arcX0 = offsetX + halfRingWidth;
++        float arcY0 = offsetY + halfRingWidth;
++        float arcX = offsetX + outerRadius * 2 - halfRingWidth;
++        float arcY = offsetY + outerRadius * 2 - halfRingWidth;
++
++        paint.setColor(ringColor);
++        paint.setStyle(Paint.Style.STROKE);
++        paint.setStrokeWidth(ringWidth);
++        paint.setStrokeCap(Paint.Cap.ROUND);
++        arcElements.set(arcX0, arcY0, arcX, arcY);
++        if (indeterminate) {
++            canvas.drawArc(arcElements, progress, 90, false, paint);
++        } else {
++            canvas.drawArc(arcElements, 89, progress, false, paint);
++        }
++    }
++
++    @Override
++    public void setAlpha(int alpha) {
++        paint.setAlpha(alpha);
++    }
++
++    @Override
++    public void setColorFilter(ColorFilter cf) {
++        paint.setColorFilter(cf);
++    }
++
++    @Override
++    public int getOpacity() {
++        return 1 - paint.getAlpha();
++    }
++
++
++    /**
++     * Returns the progress of the outer ring.
++     * <p/>
++     * Will output a correct value only when the indeterminate mode is set to FALSE.
++     *
++     * @return Progress of the outer ring.
++     */
++    public float getProgress() {
++        return progress / PROGRESS_FACTOR;
++    }
++
++    /**
++     * Sets the progress [0..1f]
++     *
++     * @param progress Sets the progress
++     */
++    public void setProgress(float progress) {
++        if (indeterminate) {
++            this.progress = progress;
++        } else {
++            this.progress = PROGRESS_FACTOR * progress;
++        }
++        invalidateSelf();
++    }
++
++    /**
++     * Returns the inner circle scale.
++     *
++     * @return Inner circle scale in float multiplier.
++     */
++    public float getCircleScale() {
++        return circleScale;
++    }
++
++    /**
++     * Sets the inner circle scale.
++     *
++     * @param circleScale Inner circle scale.
++     */
++    public void setCircleScale(float circleScale) {
++        this.circleScale = circleScale;
++        invalidateSelf();
++    }
++
++    /**
++     * Get the indeterminate status of the Drawable
++     *
++     * @return TRUE if the Drawable is in indeterminate mode or FALSE if it is in progress mode.
++     */
++    public boolean isIndeterminate() {
++        return indeterminate;
++    }
++
++    /**
++     * Sets the indeterminate parameter.
++     * <p/>
++     * The indeterminate parameter will change the behavior of the Drawable. If the indeterminate
++     * mode is set to FALSE, the outer ring will be able to be filled by using {@link #setProgress(float) setProgress}.
++     * <p/>
++     * Otherwise the drawable will enter "loading mode" and a 90º arc will be able to be spinned around
++     * the inner circle.
++     * <p/>
++     * <b>By default, indeterminate mode is set to FALSE.</b>
++     *
++     * @param indeterminate TRUE to activate loading mode. FALSE to activate progress mode.
++     */
++    public void setIndeterminate(boolean indeterminate) {
++        this.indeterminate = indeterminate;
++    }
++
++    /**
++     * Gets the outline color.
++     *
++     * @return Outline color of the empty ring.
++     */
++    public int getOutlineColor() {
++        return outlineColor;
++    }
++
++    /**
++     * Gets the filled ring color.
++     *
++     * @return Returns the filled ring color.
++     */
++    public int getRingColor() {
++        return ringColor;
++    }
++
++    /**
++     * Gets the color of the inner circle.
++     *
++     * @return Inner circle color.
++     */
++    public int getCenterColor() {
++        return centerColor;
++    }
++
++    /**
++     * Sets the empty progress outline color.
++     *
++     * @param outlineColor Outline color in #AARRGGBB format.
++     */
++    public void setOutlineColor(int outlineColor) {
++        this.outlineColor = outlineColor;
++        invalidateSelf();
++    }
++
++    /**
++     * Sets the progress ring  color.
++     *
++     * @param ringColor Ring color in #AARRGGBB format.
++     */
++    public void setRingColor(int ringColor) {
++        this.ringColor = ringColor;
++        invalidateSelf();
++    }
++
++    /**
++     * Sets the inner circle color.
++     *
++     * @param centerColor Inner circle color in #AARRGGBB format.
++     */
++    public void setCenterColor(int centerColor) {
++        this.centerColor = centerColor;
++        invalidateSelf();
++    }
++
++    /**
++     * Helper class to manage the creation of a CircularProgressDrawable
++     *
++     * @author Saul Diaz <sefford@gmail.com>
++     */
++    public static class Builder {
++
++        Bitmap bitmap;
++        /**
++         * Witdh of the stroke of the filled ring
++         */
++        int ringWidth;
++        /**
++         * Color of the outline of the empty ring in #AARRGGBB mode.
++         */
++        int outlineColor;
++        /**
++         * Color of the filled ring in #AARRGGBB mode.
++         */
++        int ringColor;
++        /**
++         * Color of the inner circle in #AARRGGBB mode.
++         */
++        int centerColor;
++        /**
++         * Scale between the outer ring and the inner circle
++         */
++        float circleScale = 0.75f;
++
++        public Builder setBitmap(Bitmap bitmap) {
++            this.bitmap = bitmap;
++            return this;
++        }
++
++        /**
++         * Sets the ring width.
++         *
++         * @param ringWidth Default ring width
++         * @return This builder
++         */
++        public Builder setRingWidth(int ringWidth) {
++            this.ringWidth = ringWidth;
++            return this;
++        }
++
++        /**
++         * Sets the default empty outer ring outline color.
++         *
++         * @param outlineColor Outline color in #AARRGGBB format.
++         * @return
++         */
++        public Builder setOutlineColor(int outlineColor) {
++            this.outlineColor = outlineColor;
++            return this;
++        }
++
++        /**
++         * Sets the progress ring color.
++         *
++         * @param ringColor Ring color in #AARRGGBB format.
++         * @returns This Builder
++         */
++        public Builder setRingColor(int ringColor) {
++            this.ringColor = ringColor;
++            return this;
++        }
++
++
++        /**
++         * Sets the inner circle color.
++         *
++         * @param centerColor Inner circle color in #AARRGGBB format.
++         * @return This builder
++         */
++        public Builder setCenterColor(int centerColor) {
++            this.centerColor = centerColor;
++            return this;
++        }
++
++        /**
++         * Sets the inner circle scale. Defaults to 0.75.
++         *
++         * @param circleScale Inner circle scale.
++         * @return This builder
++         */
++        public Builder setInnerCircleScale(float circleScale) {
++            this.circleScale = circleScale;
++            return this;
++        }
++
++        /**
++         * Creates a new CircularProgressDrawable with the requested parameters
++         *
++         * @return New CircularProgressDrawableInstance
++         */
++        public CircularProgressDrawable create() {
++            return new CircularProgressDrawable(bitmap, ringWidth, circleScale, outlineColor, ringColor, centerColor);
++        }
++
++    }
++}
+\ No newline at end of file
+diff --git a/SystemUI/src/com/android/systemui/recents/views/RecentsView.java b/SystemUI/src/com/android/systemui/recents/views/RecentsView.java
+index 947c19c..3b60d30 100644
+--- a/SystemUI/src/com/android/systemui/recents/views/RecentsView.java
++++ b/SystemUI/src/com/android/systemui/recents/views/RecentsView.java
+@@ -16,6 +16,7 @@
+ 
+ package com.android.systemui.recents.views;
+ 
++import android.app.ActivityManager;
+ import android.app.ActivityOptions;
+ import android.app.TaskStackBuilder;
+ import android.content.Context;
+@@ -81,6 +82,8 @@ public class RecentsView extends FrameLayout implements TaskStackView.TaskStackV
+     RecentsAppWidgetHostView mSearchBar;
+     RecentsViewCallbacks mCb;
+ 
++    ActivityManager mAM;
++
+     public RecentsView(Context context) {
+         super(context);
+     }
+@@ -98,6 +101,8 @@ public class RecentsView extends FrameLayout implements TaskStackView.TaskStackV
+         mConfig = RecentsConfiguration.getInstance();
+         mInflater = LayoutInflater.from(context);
+         mLayoutAlgorithm = new RecentsViewLayoutAlgorithm(mConfig);
++
++        mAM = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
+     }
+ 
+     /** Sets the callbacks */
+@@ -254,6 +259,28 @@ public class RecentsView extends FrameLayout implements TaskStackView.TaskStackV
+         return false;
+     }
+ 
++    // hsp 2016-09-12 : Add for clear all task @{
++    public void onClearAllTask() {
++        List<TaskStackView> stackViews = getTaskStackViews();
++        int count = stackViews.size();
++        for (int i = 0; i < count; i++) {
++            TaskStackView stackView = stackViews.get(i);
++            stackView.onClearAllTask();
++        }
++    }
++
++    public int getTaskSize() {
++        List<TaskStackView> stackViews = getTaskStackViews();
++        int size = 0;
++        int count = stackViews.size();
++        for (int i = 0; i < count; i++) {
++            TaskStackView stackView = stackViews.get(i);
++            size += stackView.getTaskSize();
++        }
++        return size;
++    }
++    // @}
++
+     /** Requests all task stacks to start their enter-recents animation */
+     public void startEnterRecentsAnimation(ViewAnimation.TaskViewEnterContext ctx) {
+         // We have to increment/decrement the post animation trigger in case there are no children
+@@ -642,25 +669,56 @@ public class RecentsView extends FrameLayout implements TaskStackView.TaskStackV
+         RecentsTaskLoader loader = RecentsTaskLoader.getInstance();
+         loader.deleteTaskData(t, false);
+ 
++        //hsp , Kill process when task dismissed
++        killProcess(t);
++
+         // Remove the old task from activity manager
+         loader.getSystemServicesProxy().removeTask(t.key.id);
+     }
+ 
+     @Override
+     public void onAllTaskViewsDismissed(ArrayList<Task> removedTasks) {
++        /*modified by dubin - BEGIN*/
++        mCb.onAllTaskViewsDismissed();
++
++        Task[] tasks = null;
+         if (removedTasks != null) {
+             int taskCount = removedTasks.size();
+-            for (int i = 0; i < taskCount; i++) {
+-                onTaskViewDismissed(removedTasks.get(i));
++            tasks = new Task[taskCount];
++            for (int i = taskCount - 1; i >= 0; i--) {
++                tasks[i] = (removedTasks.get(i));
+             }
+         }
+ 
+-        mCb.onAllTaskViewsDismissed();
+-
++        new android.os.AsyncTask<Task, String, Void>() {
++            @Override
++            protected Void doInBackground(Task... params) {
++                for(Task task : params)
++                    onTaskViewDismissed(task);
++                return null;
++            }
++        }.executeOnExecutor(android.os.AsyncTask.THREAD_POOL_EXECUTOR, tasks != null ? tasks : new Task[]{});
++        /*modified by dubin - END*/
++        
+         // Keep track of all-deletions
+         MetricsLogger.count(getContext(), "overview_task_all_dismissed", 1);
+     }
+ 
++    public void killProcess(Task task) {
++        if (mAM != null && task != null) {
++            String pkname = task.key.mComponentNameKey.component.getPackageName().toString();
++            // ansen 170114 ignore WeChat QQ @{
++            if (!pkname.contains("com.android")) {
++                if("com.tencent.mm".equals(pkname)||"com.tencent.mobileqq".equals(pkname)){
++                    mAM.killBackgroundProcesses(pkname);
++                }else{
++                    mAM.forceStopPackage(pkname);
++                }
++            }
++            // @}
++        }
++    }
++
+     /** Final callback after Recents is finally hidden. */
+     public void onRecentsHidden() {
+         // Notify each task stack view
+diff --git a/SystemUI/src/com/android/systemui/recents/views/TaskStackView.java b/SystemUI/src/com/android/systemui/recents/views/TaskStackView.java
+index 0068f84..323daf8 100644
+--- a/SystemUI/src/com/android/systemui/recents/views/TaskStackView.java
++++ b/SystemUI/src/com/android/systemui/recents/views/TaskStackView.java
+@@ -23,6 +23,7 @@ import android.graphics.Canvas;
+ import android.graphics.Matrix;
+ import android.graphics.Rect;
+ import android.os.Bundle;
++import android.util.Log;
+ import android.view.LayoutInflater;
+ import android.view.MotionEvent;
+ import android.view.View;
+@@ -43,6 +44,8 @@ import com.android.systemui.recents.model.Task;
+ import com.android.systemui.recents.model.TaskStack;
+ import com.android.systemui.statusbar.DismissView;
+ 
++import java.lang.Override;
++import java.lang.Runnable;
+ import java.util.ArrayList;
+ import java.util.Collections;
+ import java.util.HashMap;
+@@ -979,8 +982,10 @@ public class TaskStackView extends FrameLayout implements TaskStack.TaskStackCal
+     public void startDismissAllAnimation(final Runnable postAnimationRunnable) {
+         // Clear the focused task
+         resetFocusedTask();
++        //hsp 2016-10-12 Don't need to use dismiss all button @{
++
+         // Animate the dismiss-all button
+-        hideDismissAllButton(new Runnable() {
++        /*hideDismissAllButton(new Runnable() {
+             @Override
+             public void run() {
+                 List<TaskView> taskViews = getTaskViews();
+@@ -988,11 +993,21 @@ public class TaskStackView extends FrameLayout implements TaskStack.TaskStackCal
+                 int count = 0;
+                 for (int i = taskViewCount - 1; i >= 0; i--) {
+                     TaskView tv = taskViews.get(i);
+-                    tv.startDeleteTaskAnimation(i > 0 ? null : postAnimationRunnable, count * 50);
++                    tv.startDeleteTaskAnimation(i > 0 ? null : postAnimationRunnable, count * 100);
+                     count++;
+                 }
+             }
+-        });
++        });*/
++
++        List<TaskView> taskViews = getTaskViews();
++        int taskViewCount = taskViews.size();
++        int count = 0;
++        for (int i = taskViewCount - 1; i >= 0; i--) {
++            TaskView tv = taskViews.get(i);
++            tv.startDeleteTaskAnimation(i > 0 ? null : postAnimationRunnable, count * 100);
++            count++;
++        }
++        // @}
+     }
+ 
+     /** Animates a task view in this stack as it launches. */
+@@ -1076,6 +1091,17 @@ public class TaskStackView extends FrameLayout implements TaskStack.TaskStackCal
+         }
+     }
+ 
++    // hsp 2016-09-12 : Add for clear all task @{
++    public void onClearAllTask() {
++        mStack.removeAllTasks();
++    }
++
++    public int getTaskSize() {
++        ArrayList<Task> tasks = mStack.getTasks();
++        return tasks.size();
++    }
++    // @}
++
+     /** Final callback after Recents is finally hidden. */
+     void onRecentsHidden() {
+         reset();
+diff --git a/SystemUI/src/com/android/systemui/recents/views/TaskView.java b/SystemUI/src/com/android/systemui/recents/views/TaskView.java
+index cbfe842..91279a7 100644
+--- a/SystemUI/src/com/android/systemui/recents/views/TaskView.java
++++ b/SystemUI/src/com/android/systemui/recents/views/TaskView.java
+@@ -443,7 +443,7 @@ public class TaskView extends FrameLayout implements Task.TaskCallbacks,
+             .alpha(0f)
+             .setStartDelay(delay)
+             .setUpdateListener(null)
+-            .setInterpolator(mConfig.fastOutSlowInInterpolator)
++            .setInterpolator(mConfig.fastOutLinearInInterpolator)
+             .setDuration(mConfig.taskViewRemoveAnimDuration)
+             .withEndAction(new Runnable() {
+                 @Override
+diff --git a/SystemUI/src/com/android/systemui/recents/views/TaskViewHeader.java b/SystemUI/src/com/android/systemui/recents/views/TaskViewHeader.java
+index 6db4020..a99fa45 100644
+--- a/SystemUI/src/com/android/systemui/recents/views/TaskViewHeader.java
++++ b/SystemUI/src/com/android/systemui/recents/views/TaskViewHeader.java
+@@ -275,23 +275,29 @@ public class TaskViewHeader extends FrameLayout {
+     /** Animates this task bar if the user does not interact with the stack after a certain time. */
+     void startNoUserInteractionAnimation() {
+         if (mDismissButton.getVisibility() != View.VISIBLE) {
+-            mDismissButton.setVisibility(View.VISIBLE);
++            // hsp 2016-09-12 : Add for clear all task @{
++            // Didn't nedd this button
++
++            /*mDismissButton.setVisibility(View.VISIBLE);
+             mDismissButton.setAlpha(0f);
+             mDismissButton.animate()
+                     .alpha(1f)
+                     .setStartDelay(0)
+                     .setInterpolator(mConfig.fastOutLinearInInterpolator)
+                     .setDuration(mConfig.taskViewEnterFromAppDuration)
+-                    .start();
++                    .start();*/
+         }
+     }
+ 
+     /** Mark this task view that the user does has not interacted with the stack after a certain time. */
+     void setNoUserInteractionState() {
+         if (mDismissButton.getVisibility() != View.VISIBLE) {
+-            mDismissButton.animate().cancel();
++            // hsp 2016-09-12 : Add for clear all task @{
++            // Didn't nedd this button
++
++            /*mDismissButton.animate().cancel();
+             mDismissButton.setVisibility(View.VISIBLE);
+-            mDismissButton.setAlpha(1f);
++            mDismissButton.setAlpha(1f);*/
+         }
+     }
+ 
+-- 
+2.8.3.windows.1
+

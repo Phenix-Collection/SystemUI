@@ -1,0 +1,81 @@
+From e873acf252761c083bb64e608b66b8b9bb0e9c6b Mon Sep 17 00:00:00 2001
+From: LRH <yangfan@qucci.com>
+Date: Tue, 28 Feb 2017 13:50:31 +0800
+Subject: [PATCH 075/185] =?UTF-8?q?=E3=80=90=E6=95=85=E9=9A=9C=E3=80=91?=
+ =?UTF-8?q?=E6=89=8B=E7=94=B5=E7=AD=92=E5=85=B3=E9=97=AD=20=E6=89=8B?=
+ =?UTF-8?q?=E7=94=B5=E7=AD=92=E5=85=89=E4=BC=9A=E9=97=AA=E4=B8=80=E4=B8=8B?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../systemui/statusbar/policy/FlashlightController.java  | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/policy/FlashlightController.java b/SystemUI/src/com/android/systemui/statusbar/policy/FlashlightController.java
+index 2715f30..5b32c5a 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/policy/FlashlightController.java
++++ b/SystemUI/src/com/android/systemui/statusbar/policy/FlashlightController.java
+@@ -23,6 +23,7 @@ import android.hardware.camera2.CameraManager;
+ import android.os.Handler;
+ import android.os.HandlerThread;
+ import android.os.Process;
++import android.os.PowerManager;
+ import android.text.TextUtils;
+ import android.util.Log;
+ 
+@@ -41,7 +42,11 @@ public class FlashlightController {
+     private static final int DISPATCH_CHANGED = 1;
+     private static final int DISPATCH_AVAILABILITY_CHANGED = 2;
+ 
++    private static final int TORCH_ON = 255;
++    private static final int TORCH_OFF = 0;
++
+     private final CameraManager mCameraManager;
++    private final PowerManager mPowerManager;
+     /** Call {@link #ensureHandler()} before using */
+     private Handler mHandler;
+ 
+@@ -56,6 +61,7 @@ public class FlashlightController {
+ 
+     public FlashlightController(Context mContext) {
+         mCameraManager = (CameraManager) mContext.getSystemService(Context.CAMERA_SERVICE);
++        mPowerManager = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);
+ 
+         String cameraId = null;
+         try {
+@@ -79,8 +85,10 @@ public class FlashlightController {
+             if (mFlashlightEnabled != enabled) {
+                 mFlashlightEnabled = enabled;
+                 try {
+-                    mCameraManager.setTorchMode(mCameraId, enabled);
+-                } catch (CameraAccessException e) {
++                    // mCameraManager.setTorchMode(mCameraId, enabled);
++                    mPowerManager.setTorchBrightness(enabled ? TORCH_ON : TORCH_OFF);
++                    mFlashlightEnabled = enabled;
++                } catch (Exception e) {
+                     Log.e(TAG, "Couldn't set torch mode", e);
+                     mFlashlightEnabled = false;
+                     pendingError = true;
+@@ -199,6 +207,7 @@ public class FlashlightController {
+             if (TextUtils.equals(cameraId, mCameraId)) {
+                 setCameraAvailable(false);
+                 setCameraOpen(true);
++				 setFlashlight(false);
+             }
+         }
+ 
+@@ -206,8 +215,9 @@ public class FlashlightController {
+         public void onTorchModeChanged(String cameraId, boolean enabled) {
+             if (TextUtils.equals(cameraId, mCameraId)) {
+                 setCameraAvailable(true);
+-                setTorchMode(enabled);
++               // setTorchMode(enabled);
+                 setCameraOpen(false);
++				 setFlashlight(enabled);
+             }
+         }
+ 
+-- 
+2.8.3.windows.1
+

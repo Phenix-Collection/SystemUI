@@ -1,0 +1,55 @@
+From 0b2a2518a6e86a8681a2d582386e9c04b3d71b60 Mon Sep 17 00:00:00 2001
+From: zengqingshuai <yangfan@qucii.com>
+Date: Tue, 28 Feb 2017 11:38:33 +0800
+Subject: [PATCH 074/185] =?UTF-8?q?=E3=80=90=E6=95=85=E9=9A=9C=E3=80=91?=
+ =?UTF-8?q?=E4=BF=AE=E6=94=B9=E5=BF=AB=E6=8D=B7=E5=9B=BE=E6=A0=87=E9=9D=A2?=
+ =?UTF-8?q?=E6=9D=BF=E5=8F=AF=E4=BB=A5=E6=BB=91=E5=8A=A8=E9=97=AE=E9=A2=98?=
+ =?UTF-8?q?,=E8=A7=A3=E5=86=B3=E6=A6=82=E7=8E=87=E6=80=A7=E6=98=BE?=
+ =?UTF-8?q?=E7=A4=BA=E5=8D=8A=E5=B1=8F=E9=97=AE=E9=A2=98?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../statusbar/stack/NotificationStackScrollLayout.java | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/stack/NotificationStackScrollLayout.java b/SystemUI/src/com/android/systemui/statusbar/stack/NotificationStackScrollLayout.java
+index 367c380..7051ad4 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/stack/NotificationStackScrollLayout.java
++++ b/SystemUI/src/com/android/systemui/statusbar/stack/NotificationStackScrollLayout.java
+@@ -532,8 +532,16 @@ public class NotificationStackScrollLayout extends ViewGroup
+             updateAlgorithmHeightAndPadding();
+             requestChildrenUpdate();//禁止通知在当前container内滚动
+         }
+-        setStackTranslation(paddingOffset);//允许通知和头部一起滚动
+-        
++        //modify by zqs 2017/02/28 begin
++        //=============================>
++        //这里修改快捷图标面板显示半屏可以滑动问题
++        if(!panelView.isNotificationView()&&!trackingHeadsUp){
++        	setStackTranslation(0);//不允许通知和头部一起滚动
++        }else{
++        	setStackTranslation(paddingOffset);//允许通知和头部一起滚动
++        }
++        //<=============================
++        //modify by zqs 2017/02/28 end
+         
+     }
+ 
+@@ -543,9 +551,9 @@ public class NotificationStackScrollLayout extends ViewGroup
+ 
+     private void setStackTranslation(float stackTranslation) {
+         if (stackTranslation != mStackTranslation) {
+-            mStackTranslation = stackTranslation;
+-            mAmbientState.setStackTranslation(stackTranslation);
+-            requestChildrenUpdate();
++        	mStackTranslation = stackTranslation;
++        	mAmbientState.setStackTranslation(stackTranslation);
++        	requestChildrenUpdate();
+         }
+     }
+ 
+-- 
+2.8.3.windows.1
+

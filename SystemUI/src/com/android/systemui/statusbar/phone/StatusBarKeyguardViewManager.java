@@ -29,10 +29,13 @@ import android.view.WindowManagerGlobal;
 
 import com.android.internal.widget.LockPatternUtils;
 import com.android.keyguard.KeyguardUpdateMonitor;
+//add by mare
+import com.android.keyguard.KeyguardUpdateMonitor.FingerprintVerifyCallback;
 import com.android.keyguard.ViewMediatorCallback;
 import com.android.systemui.statusbar.CommandQueue;
 
 import static com.android.keyguard.KeyguardHostView.OnDismissAction;
+import android.util.Log;
 
 /**
  * Manages creating, showing, hiding and resetting the keyguard within the status bar. Calls back
@@ -57,7 +60,7 @@ public class StatusBarKeyguardViewManager {
 
     private LockPatternUtils mLockPatternUtils;
     private ViewMediatorCallback mViewMediatorCallback;
-    private PhoneStatusBar mPhoneStatusBar;
+    public PhoneStatusBar mPhoneStatusBar;
     private ScrimController mScrimController;
     private FingerprintUnlockController mFingerprintUnlockController;
 
@@ -78,12 +81,18 @@ public class StatusBarKeyguardViewManager {
     private OnDismissAction mAfterKeyguardGoneAction;
     private boolean mDeviceWillWakeUp;
     private boolean mDeferScrimFadeOut;
+    //add by mare
+    private KeyguardUpdateMonitor mKeyguardUpdateMonitor;
+    private LockIcon mLockIcon = null;
 
     public StatusBarKeyguardViewManager(Context context, ViewMediatorCallback callback,
             LockPatternUtils lockPatternUtils) {
         mContext = context;
         mViewMediatorCallback = callback;
         mLockPatternUtils = lockPatternUtils;
+    	//add by mare
+    	mKeyguardUpdateMonitor = KeyguardUpdateMonitor.getInstance(mContext);
+	mKeyguardUpdateMonitor.setFreshLockIconListener(mFingerprintVerifyCallback);
     }
 
     public void registerStatusBar(PhoneStatusBar phoneStatusBar,
@@ -105,6 +114,9 @@ public class StatusBarKeyguardViewManager {
      */
     public void show(Bundle options) {
         mShowing = true;
+	//add by mare
+	mKeyguardUpdateMonitor.keyguardShow();
+
         mStatusBarWindowManager.setKeyguardShowing(true);
         mScrimController.abortKeyguardFadingOut();
         reset();
@@ -224,6 +236,8 @@ public class StatusBarKeyguardViewManager {
                             @Override
                             public void run() {
                                 mStatusBarWindowManager.setKeyguardOccluded(mOccluded);
+                				//add by mare
+                				mKeyguardUpdateMonitor.setKeyguardOccluded(mOccluded);
                                 reset();
                             }
                         });
@@ -232,6 +246,8 @@ public class StatusBarKeyguardViewManager {
         }
         mOccluded = occluded;
         mStatusBarWindowManager.setKeyguardOccluded(occluded);
+    	//add by mare
+    	mKeyguardUpdateMonitor.setKeyguardOccluded(mOccluded);
         reset();
     }
 
@@ -247,11 +263,15 @@ public class StatusBarKeyguardViewManager {
      *                       no action should be run
      */
     public void startPreHideAnimation(Runnable finishRunnable) {
-        if (mBouncer.isShowing()) {
-            mBouncer.startPreHideAnimation(finishRunnable);
-        } else if (finishRunnable != null) {
-            finishRunnable.run();
-        }
+    	//modified by mare
+    	/*
+            if (mBouncer.isShowing()) {
+                mBouncer.startPreHideAnimation(finishRunnable);
+            } else if (finishRunnable != null) {
+    	*/
+            if (finishRunnable != null) {
+                finishRunnable.run();
+            }
     }
 
     /**
@@ -259,6 +279,8 @@ public class StatusBarKeyguardViewManager {
      */
     public void hide(long startTime, final long fadeoutDuration) {
         mShowing = false;
+	//add by mare
+	mKeyguardUpdateMonitor.keyguardHide();
 
         long uptimeMillis = SystemClock.uptimeMillis();
         long delay = Math.max(0, startTime + HIDE_TIMING_CORRECTION_MS - uptimeMillis);
@@ -419,7 +441,9 @@ public class StatusBarKeyguardViewManager {
     private Runnable mMakeNavigationBarVisibleRunnable = new Runnable() {
         @Override
         public void run() {
-            mPhoneStatusBar.getNavigationBarView().setVisibility(View.VISIBLE);
+            if(mPhoneStatusBar.getNavigationBarView() != null){
+                mPhoneStatusBar.getNavigationBarView().setVisibility(View.VISIBLE);
+            }
         }
     };
 
@@ -522,9 +546,25 @@ public class StatusBarKeyguardViewManager {
         mPhoneStatusBar.keyguardGoingAway();
     }
 
+    //add by mare
+	public void keyguardDone() {
+		mViewMediatorCallback.keyguardDone(false);
+	}
+
+    public void setLockIcon(LockIcon lockIcon){
+	mLockIcon = lockIcon;
+    }
+    //add end
+ 
     public void animateCollapsePanels(float speedUpFactor) {
         mPhoneStatusBar.animateCollapsePanels(CommandQueue.FLAG_EXCLUDE_NONE, true /* force */,
                 false /* delayed */, speedUpFactor);
+    }
+
+    //this method add by mare
+    public void animateCollapsePanels(float speedUpFactor,boolean animate) {
+        mPhoneStatusBar.animateCollapsePanels(CommandQueue.FLAG_EXCLUDE_NONE, true /* force */,
+                false /* delayed */, speedUpFactor,animate);
     }
 
     /**
@@ -542,4 +582,15 @@ public class StatusBarKeyguardViewManager {
     public ViewRootImpl getViewRootImpl() {
         return mPhoneStatusBar.getStatusBarView().getViewRootImpl();
     }
+
+    //add by mare
+    private KeyguardUpdateMonitor.FingerprintVerifyCallback mFingerprintVerifyCallback = new FingerprintVerifyCallback(){
+
+	@Override
+	public void freshLockIcon(){
+	    if(mLockIcon != null){
+	        mLockIcon.update();	
+	    }
+	}
+    };
 }

@@ -1,0 +1,94 @@
+From 8e66d350a23ac61725356f98fe8f69f2b1ff92b6 Mon Sep 17 00:00:00 2001
+From: zengqingshuai <yangfan@qucii.com>
+Date: Thu, 23 Mar 2017 16:06:34 +0800
+Subject: [PATCH 175/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E7=A6=81=E6=AD=A2=E9=94=81=E5=B1=8F=E9=80=9A=E7=9F=A5=E6=8B=89?=
+ =?UTF-8?q?=E5=8A=A8=E6=89=A9=E5=A4=A7=E5=8C=BA=E5=9F=9F=EF=BC=8C=E9=87=8D?=
+ =?UTF-8?q?=E6=96=B0=E6=89=93=E5=BC=806=E7=A7=92=E5=86=85=E6=9D=A5?=
+ =?UTF-8?q?=E5=90=8C=E4=B8=AA=E5=BA=94=E7=94=A8=E6=98=BE=E7=A4=BA=E9=80=9A?=
+ =?UTF-8?q?=E7=9F=A5=E7=9A=84=E9=80=89=E9=A1=B9?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../src/com/android/systemui/statusbar/BaseStatusBar.java    |  6 +++---
+ .../src/com/android/systemui/statusbar/DragDownHelper.java   | 12 +++++++++---
+ .../statusbar/stack/NotificationStackScrollLayout.java       |  2 +-
+ 3 files changed, 13 insertions(+), 7 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/BaseStatusBar.java b/SystemUI/src/com/android/systemui/statusbar/BaseStatusBar.java
+index fa9ce11..5415278 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/BaseStatusBar.java
++++ b/SystemUI/src/com/android/systemui/statusbar/BaseStatusBar.java
+@@ -2129,9 +2129,9 @@ public abstract class BaseStatusBar extends SystemUI implements
+             return false;
+         }
+         
+-//        if (isSnoozedPackage(sbn)) {
+-//            return false;
+-//        }
++        if (isSnoozedPackage(sbn)) {
++            return false;
++        }
+         
+         Notification notification = sbn.getNotification();
+         // some predicates to make the boolean logic legible
+diff --git a/SystemUI/src/com/android/systemui/statusbar/DragDownHelper.java b/SystemUI/src/com/android/systemui/statusbar/DragDownHelper.java
+index 15a092c..5a61f4c 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/DragDownHelper.java
++++ b/SystemUI/src/com/android/systemui/statusbar/DragDownHelper.java
+@@ -109,7 +109,11 @@ public class DragDownHelper implements Gefingerpoken {
+                 mLastHeight = y - mInitialTouchY;
+                 captureStartingChild(mInitialTouchX, mInitialTouchY);
+                 if (mStartingChild != null) {
+-                    handleExpansion(mLastHeight, mStartingChild);
++                	//modify by zqs 2017/3/22 begin
++                    //========================>
++                    //这块方法是锁屏界面通知拉动扩大区域的方法
++//                    handleExpansion(mLastHeight, mStartingChild);
++                	//modify by zqs 2017/3/22 end
+                 } else {
+                     mDragDownCallback.setEmptyDragAmount(mLastHeight);
+                 }
+@@ -152,7 +156,9 @@ public class DragDownHelper implements Gefingerpoken {
+             }
+         }
+     }
+-
++	//modify by zqs 2017/3/22 begin
++    //========================>
++    //这块方法是锁屏界面通知拉动扩大区域的方法
+     private void handleExpansion(float heightDelta, ExpandableView child) {
+         if (heightDelta < 0) {
+             heightDelta = 0;
+@@ -169,7 +175,7 @@ public class DragDownHelper implements Gefingerpoken {
+         }
+         child.setContentHeight((int) (child.getMinHeight() + rubberband));
+     }
+-
++    //modify by zqs 2017/3/22 end
+     private void cancelExpansion(final ExpandableView child) {
+         if (child.getContentHeight() == child.getMinHeight()) {
+             return;
+diff --git a/SystemUI/src/com/android/systemui/statusbar/stack/NotificationStackScrollLayout.java b/SystemUI/src/com/android/systemui/statusbar/stack/NotificationStackScrollLayout.java
+index a901483..3ca9b1f 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/stack/NotificationStackScrollLayout.java
++++ b/SystemUI/src/com/android/systemui/statusbar/stack/NotificationStackScrollLayout.java
+@@ -501,12 +501,12 @@ public class NotificationStackScrollLayout extends ViewGroup
+     	//add by zqs 2017/3/16 begin
+         //========================>
+         //通知组的滑动效果上升高度多一个底部箭头高度
++    	mLastSetStackHeight = height;
+     	if(mPhoneStatusBar.getBarState()!=StatusBarState.KEYGUARD){
+     		height=height-mArrowHeight;
+     	}
+     	boolean trackingHeadsUp = mTrackingHeadsUp || mHeadsUpManager.hasPinnedHeadsUp();
+ 
+-        mLastSetStackHeight = height;
+         setIsExpanded(height > 0.0f);
+         int newStackHeight = (int) height;
+         int minStackHeight = getMinStackHeight();
+-- 
+2.8.3.windows.1
+

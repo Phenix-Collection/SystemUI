@@ -109,7 +109,11 @@ public class DragDownHelper implements Gefingerpoken {
                 mLastHeight = y - mInitialTouchY;
                 captureStartingChild(mInitialTouchX, mInitialTouchY);
                 if (mStartingChild != null) {
-                    handleExpansion(mLastHeight, mStartingChild);
+                	//modify by mare 2017/3/22 begin
+                    //========================>
+                    //这块方法是锁屏界面通知拉动扩大区域的方法
+//                    handleExpansion(mLastHeight, mStartingChild);
+                	//modify by mare 2017/3/22 end
                 } else {
                     mDragDownCallback.setEmptyDragAmount(mLastHeight);
                 }
@@ -152,7 +156,9 @@ public class DragDownHelper implements Gefingerpoken {
             }
         }
     }
-
+	//modify by mare 2017/3/22 begin
+    //========================>
+    //这块方法是锁屏界面通知拉动扩大区域的方法
     private void handleExpansion(float heightDelta, ExpandableView child) {
         if (heightDelta < 0) {
             heightDelta = 0;
@@ -169,7 +175,7 @@ public class DragDownHelper implements Gefingerpoken {
         }
         child.setContentHeight((int) (child.getMinHeight() + rubberband));
     }
-
+    //modify by mare 2017/3/22 end
     private void cancelExpansion(final ExpandableView child) {
         if (child.getContentHeight() == child.getMinHeight()) {
             return;

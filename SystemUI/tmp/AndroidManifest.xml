@@ -404,7 +404,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        	<!-- add by wumin -->
+        	<!-- add by mare -->
         <activity 
             android:name=".applock.ConfirmAppLockPasswordActivity"
             android:screenOrientation="portrait" 

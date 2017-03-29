@@ -1,0 +1,608 @@
+From e035def8857301799ff24145f68d6a8576d8fdee Mon Sep 17 00:00:00 2001
+From: LRH <yangfan@qucci.com>
+Date: Mon, 6 Feb 2017 11:34:10 +0800
+Subject: [PATCH 006/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E4=BF=AE=E6=94=B9=E7=8A=B6=E6=80=81=E6=A0=8F=E4=B8=8B=E6=8B=89?=
+ =?UTF-8?q?=E8=83=8C=E6=99=AF=E8=99=9A=E5=8C=96?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ SystemUI/src/com/android/keyguard/CarrierText.java |   1 -
+ .../src/com/android/systemui/SystemUIService.java  |  37 +++-
+ .../statusbar/phone/NotificationPanelView.java     |   6 +-
+ .../systemui/statusbar/phone/PhoneStatusBar.java   |  33 +++-
+ .../statusbar/phone/PhoneStatusBarView.java        | 122 +++++++++++-
+ .../src/com/qucci/systemui/utils/FastBlur.java     | 219 +++++++++++++++++++++
+ 6 files changed, 403 insertions(+), 15 deletions(-)
+ create mode 100644 SystemUI/src/com/qucci/systemui/utils/FastBlur.java
+
+diff --git a/SystemUI/src/com/android/keyguard/CarrierText.java b/SystemUI/src/com/android/keyguard/CarrierText.java
+index ae0bb22..a5b83de 100644
+--- a/SystemUI/src/com/android/keyguard/CarrierText.java
++++ b/SystemUI/src/com/android/keyguard/CarrierText.java
+@@ -42,7 +42,6 @@ import com.android.internal.telephony.IccCardConstants.State;
+ import com.android.internal.telephony.TelephonyIntents;
+ import com.android.settingslib.WirelessUtils;
+ 
+-@SuppressLint("NewApi")
+ public class CarrierText extends TextView {
+     private static final boolean DEBUG = KeyguardConstants.DEBUG;
+     private static final String TAG = "CarrierText";
+diff --git a/SystemUI/src/com/android/systemui/SystemUIService.java b/SystemUI/src/com/android/systemui/SystemUIService.java
+index 05e5f6b..9a442ed 100644
+--- a/SystemUI/src/com/android/systemui/SystemUIService.java
++++ b/SystemUI/src/com/android/systemui/SystemUIService.java
+@@ -16,12 +16,14 @@
+ 
+ package com.android.systemui;
+ 
++import android.annotation.SuppressLint;
+ import android.app.Service;
+ import android.content.Intent;
+ import android.os.IBinder;
+-
++import android.view.OrientationEventListener;
+ import java.io.FileDescriptor;
+ import java.io.PrintWriter;
++import com.android.systemui.statusbar.phone.PhoneStatusBarView;
+ 
+ public class SystemUIService extends Service {
+ 
+@@ -29,6 +31,11 @@ public class SystemUIService extends Service {
+     public void onCreate() {
+         super.onCreate();
+         ((SystemUIApplication) getApplication()).startServicesIfNeeded();
++        //add by lrh begin 这里是调用的android.view.OrientationEventListener这个监听屏幕转换方向的类，
++        //获取到屏幕的转换的度数之后就可以判断是否左旋还是右旋，并将布尔数值赋给PhoneStatusBarView类中的属性，
++        //用户在点击状态栏就会将Bitmap旋转为合适的度数
++        startOrientationChangeListener();
++        //add by lrh end
+     }
+ 
+     @Override
+@@ -54,5 +61,33 @@ public class SystemUIService extends Service {
+             }
+         }
+     }
++    //add by lrh 取到的Bitmap会被旋转，这里需要考虑到将获取到的Bitmap转换方向，
++    //此处还必须的考虑是左旋还是右旋到的横屏，转屏的方向不一样的话，那么得到的Bitmap也不一样
++	private OrientationEventListener mOrientationListener;
++	private boolean mScreenProtrait = true;
++	private boolean mCurrentOrient = false;
++
++	private final void startOrientationChangeListener() {
++		mOrientationListener = new OrientationEventListener(this) {
++			@Override
++			public void onOrientationChanged(int rotation) {
++				if ((rotation >= 0) && (rotation <= 180)) {// portrait
++					mCurrentOrient = true;
++					if (mCurrentOrient != mScreenProtrait) {
++						mScreenProtrait = mCurrentOrient;
++						PhoneStatusBarView.leftOrRightLandscape = true;
++					}
++				} else if ((rotation > 180) && (rotation < 360)) {// landscape
++					mCurrentOrient = false;
++					if (mCurrentOrient != mScreenProtrait) {
++						mScreenProtrait = mCurrentOrient;
++						PhoneStatusBarView.leftOrRightLandscape = false;
++					}
++				}
++			}
++		};
++		mOrientationListener.enable();
++	}
++	//add by lrh end
+ }
+ 
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+index 2f097cf..7e11361 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+@@ -1005,7 +1005,11 @@ public class NotificationPanelView extends PanelView implements
+ 
+         mStatusBarState = statusBarState;
+         mKeyguardShowing = keyguardShowing;
+-
++        //add by lrh 在锁屏状态下，不需要截图虚化背景 begin
++		if ((mStatusBarState == StatusBarState.SHADE_LOCKED || mStatusBarState == StatusBarState.KEYGUARD)) {
++			 setBackgroundResource(0); 
++		}
++		//add by lrh 在锁屏状态下，不需要截图虚化背景 end
+         if (goingToFullShade || (oldState == StatusBarState.KEYGUARD
+                 && statusBarState == StatusBarState.SHADE_LOCKED)) {
+             animateKeyguardStatusBarOut();
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
+index 0d554ca..eedfb4e 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
+@@ -20,6 +20,7 @@ package com.android.systemui.statusbar.phone;
+ import android.animation.Animator;
+ import android.animation.AnimatorListenerAdapter;
+ import android.annotation.NonNull;
++import android.annotation.SuppressLint;
+ import android.app.ActivityManager;
+ import android.app.ActivityManagerNative;
+ import android.app.IActivityManager;
+@@ -44,6 +45,8 @@ import android.graphics.PointF;
+ import android.graphics.PorterDuff;
+ import android.graphics.PorterDuffXfermode;
+ import android.graphics.Rect;
++import android.graphics.Shader.TileMode;
++import android.graphics.drawable.BitmapDrawable;
+ import android.graphics.drawable.ColorDrawable;
+ import android.graphics.drawable.Drawable;
+ import android.inputmethodservice.InputMethodService;
+@@ -96,7 +99,6 @@ import android.view.animation.LinearInterpolator;
+ import android.view.animation.PathInterpolator;
+ import android.widget.ImageView;
+ import android.widget.TextView;
+-
+ import com.android.internal.logging.MetricsLogger;
+ import com.android.internal.statusbar.NotificationVisibility;
+ import com.android.internal.statusbar.StatusBarIcon;
+@@ -160,7 +162,6 @@ import com.android.systemui.statusbar.stack.NotificationStackScrollLayout.OnChil
+ import com.android.systemui.statusbar.stack.StackStateAnimator;
+ import com.android.systemui.statusbar.stack.StackViewState;
+ import com.android.systemui.volume.VolumeComponent;
+-
+ import java.io.FileDescriptor;
+ import java.io.PrintWriter;
+ import java.util.ArrayList;
+@@ -171,7 +172,6 @@ import java.util.HashSet;
+ import java.util.List;
+ import java.util.Map;
+ import java.util.TreeSet;
+-
+ import static android.app.StatusBarManager.NAVIGATION_HINT_BACK_ALT;
+ import static android.app.StatusBarManager.NAVIGATION_HINT_IME_SHOWN;
+ import static android.app.StatusBarManager.WINDOW_STATE_HIDDEN;
+@@ -1456,8 +1456,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
+      * the user intends to use the lock screen user switcher, QS in not needed.
+      */
+     private void updateQsExpansionEnabled() {
+-        Log.d(TAG, "weiliji updateQsExpansionEnabled()" );
+-        Log.d(TAG, "weiliji show the trace info  "+ Log.getStackTraceString(new Throwable()));     
+         mNotificationPanel.setQsExpansionEnabled(isDeviceProvisioned()
+                 && (mUserSetup || mUserSwitcherController == null
+                         || !mUserSwitcherController.isSimpleUserSwitcher())
+@@ -2318,15 +2316,31 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
+ 
+     Animator mScrollViewAnim, mClearButtonAnim;
+ 
+-    @Override
++	@Override
+     public void animateExpandNotificationsPanel() {
+         if (SPEW) Log.d(TAG, "animateExpand: mExpandedVisible=" + mExpandedVisible);
+         if (!panelsEnabled()) {
+             return ;
+         }
+-
++        /**
++         * add by lrh 滑动桌面弹出状态栏，此时需要更新状态栏背景
++         * 
++         */
++        final Context context = mContext;
++        Resources res = context.getResources();
++        BitmapDrawable mBitmapDrawable;
++        if (res.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
++			mBitmapDrawable = new BitmapDrawable(res,
++					mStatusBarView.darkBitmap(mStatusBarView.fastBlur(mStatusBarView.shot())));
++		} else {
++			mBitmapDrawable = new BitmapDrawable(res,
++					mStatusBarView.darkBitmap(mStatusBarView.fastBlur(
++							mStatusBarView.rotateBitmap(mStatusBarView.shot()))));
++		}
++		mBitmapDrawable.setTileModeXY(TileMode.REPEAT, TileMode.REPEAT);
++		mNotificationPanel.setBackground(mBitmapDrawable);
++		//add by lrh end
+         mNotificationPanel.expand();
+-
+         if (false) postStartTracing();
+     }
+ 
+@@ -3095,6 +3109,9 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
+         mIconController.updateResources();
+         mScreenPinningRequest.onConfigurationChanged();
+         mNetworkController.onConfigurationChanged();
++        //屏幕方向转换时，将展开的状态栏退回  add by lrh 
++        animateCollapsePanels();
++        //屏幕方向转换时，将展开的状态栏退回 add by lrh
+     }
+ 
+     @Override
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarView.java b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarView.java
+index c0887ca..d28e374 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarView.java
+@@ -16,17 +16,32 @@
+ 
+ package com.android.systemui.statusbar.phone;
+ 
++import android.annotation.SuppressLint;
+ import android.content.Context;
++import android.content.res.Configuration;
+ import android.content.res.Resources;
++import android.graphics.Bitmap;
++import android.graphics.Bitmap.Config;
++import android.graphics.Canvas;
++import android.graphics.ColorMatrix;
++import android.graphics.ColorMatrixColorFilter;
++import android.graphics.Matrix;
++import android.graphics.Paint;
++import android.graphics.Shader.TileMode;
++import android.graphics.drawable.BitmapDrawable;
+ import android.util.AttributeSet;
++import android.util.DisplayMetrics;
+ import android.util.EventLog;
++import android.util.Log;
+ import android.view.MotionEvent;
++import android.view.SurfaceControl;
+ import android.view.View;
+ import android.view.accessibility.AccessibilityEvent;
+ 
+ import com.android.systemui.DejankUtils;
+ import com.android.systemui.EventLogTags;
+ import com.android.systemui.R;
++import com.qucci.systemui.utils.FastBlur;
+ 
+ public class PhoneStatusBarView extends PanelBar {
+     private static final String TAG = "PhoneStatusBarView";
+@@ -85,7 +100,7 @@ public class PhoneStatusBarView extends PanelBar {
+         return mBar.panelsEnabled();
+     }
+ 
+-    @Override
++	@Override
+     public boolean onRequestSendAccessibilityEventInternal(View child, AccessibilityEvent event) {
+         if (super.onRequestSendAccessibilityEventInternal(child, event)) {
+             // The status bar is very small so augment the view that the user is touching
+@@ -126,7 +141,7 @@ public class PhoneStatusBarView extends PanelBar {
+         DejankUtils.removeCallbacks(mHideExpandedRunnable);
+     }
+ 
+-    @Override
++	@Override
+     public void onPanelFullyOpened(PanelView openPanel) {
+         super.onPanelFullyOpened(openPanel);
+         if (openPanel != mLastFullyOpenedPanel) {
+@@ -134,9 +149,108 @@ public class PhoneStatusBarView extends PanelBar {
+         }
+         mLastFullyOpenedPanel = openPanel;
+     }
++    /**
++     * *add by lrh 截取桌面图片并且做虚化处理 begin
++     */
++	public static boolean leftOrRightLandscape = true;
+ 
+-    @Override
+-    public boolean onTouchEvent(MotionEvent event) {
++	protected Bitmap shot() {
++		DisplayMetrics dm = getResources().getDisplayMetrics();
++		int width, height;
++		int navigationHeight = 100;
++		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
++			width = dm.widthPixels;
++			height = dm.heightPixels;
++		} else {
++			width = dm.heightPixels;
++			height = dm.widthPixels;
++		}
++		Log.e("brice", "width=="+width+",height=="+height);
++		Bitmap mBitmap = SurfaceControl.screenshot(width, height);
++		return mBitmap;
++	}
++
++	protected Bitmap fastBlur(Bitmap bkg) {
++		float scaleFactor = 7;
++		float radius = 10;
++
++		Bitmap overlay = Bitmap.createBitmap(
++				(int) (bkg.getWidth() / scaleFactor),
++				(int) (bkg.getHeight() / scaleFactor), Bitmap.Config.ARGB_8888);
++		Canvas canvas = new Canvas(overlay);
++		canvas.translate(0, 0);
++		canvas.scale(1 / scaleFactor, 1 / scaleFactor);
++		Paint paint = new Paint();
++		paint.setFlags(Paint.FILTER_BITMAP_FLAG);
++		canvas.drawBitmap(bkg, 0, 0, paint);
++
++		overlay = FastBlur.doBlur(overlay, (int) radius, true);
++		DisplayMetrics dm = getResources().getDisplayMetrics();
++		int width = bkg.getWidth();
++		int height = bkg.getHeight();
++		Bitmap mBitmap = overlay.createScaledBitmap(overlay, width, height,
++				true);
++		return mBitmap;
++	}
++
++	protected Bitmap darkBitmap(Bitmap srcBitmap) {
++		int imgHeight, imgWidth;
++		imgHeight = srcBitmap.getHeight();
++		imgWidth = srcBitmap.getWidth();
++
++		Bitmap dstBitmap = Bitmap.createBitmap(imgWidth, imgHeight,
++				Config.ARGB_8888);
++		Bitmap bmp = Bitmap.createBitmap(imgWidth, imgHeight, Config.ARGB_8888);
++		float contrast = (float) (35 / 100.0);
++		ColorMatrix cMatrix = new ColorMatrix();
++		cMatrix.set(new float[] { contrast, 0, 0, 0, 0, 0, contrast, 0, 0, 0,
++				0, 0, contrast, 0, 0, 0, 0, 0, 1, 0 });
++
++		Paint paint = new Paint();
++		paint.setColorFilter(new ColorMatrixColorFilter(cMatrix));
++
++		Canvas canvas = new Canvas(bmp);
++		canvas.drawBitmap(srcBitmap, 0, 0, paint);
++		return bmp;
++	}
++
++	protected Bitmap rotateBitmap(Bitmap bmp) {
++		Bitmap mbmp = Bitmap.createBitmap(bmp.getWidth(), bmp.getHeight(),
++				Config.ARGB_8888);
++		Canvas canvas = new Canvas(mbmp);
++		canvas.drawBitmap(bmp, 0, 0, null);
++		Matrix matrix = new Matrix();
++		matrix.postScale(1f, 1f);
++		if (leftOrRightLandscape == true) {
++			matrix.postRotate(90);
++		} else {
++			matrix.postRotate(-90);
++		}
++		Bitmap dstbmp = Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(),
++				bmp.getHeight(), matrix, true);
++		canvas.drawBitmap(dstbmp, 0, 0, null);
++		return dstbmp;
++	}
++	 /**
++     * *add by lrh 截取桌面图片并且做虚化处理 end
++     */
++	@Override
++    public boolean onTouchEvent(MotionEvent event) {	
++		// add by lrh 当用户点击最上面的状态栏时就会触发事件，而我们获取到这个事件，并在这时截取屏幕
++		if (event.getAction() == MotionEvent.ACTION_DOWN) {
++			Log.e("brice","shot");
++			BitmapDrawable mBitmapDrawable;
++			if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
++				mBitmapDrawable = new BitmapDrawable(getResources(),
++						darkBitmap(fastBlur(shot())));
++			} else {
++				mBitmapDrawable = new BitmapDrawable(getResources(),
++						darkBitmap(fastBlur(rotateBitmap(shot()))));
++			}
++			mBitmapDrawable.setTileModeXY(TileMode.REPEAT, TileMode.REPEAT);
++			mBar.mNotificationPanel.setBackground(mBitmapDrawable);
++		}
++		// add by lrh
+         boolean barConsumedEvent = mBar.interceptTouchEvent(event);
+ 
+         if (DEBUG_GESTURES) {
+diff --git a/SystemUI/src/com/qucci/systemui/utils/FastBlur.java b/SystemUI/src/com/qucci/systemui/utils/FastBlur.java
+new file mode 100644
+index 0000000..bdd2a0a
+--- /dev/null
++++ b/SystemUI/src/com/qucci/systemui/utils/FastBlur.java
+@@ -0,0 +1,219 @@
++package com.qucci.systemui.utils;
++
++import android.graphics.Bitmap;
++/****
++ * 
++ * @author lrh
++ * 这个类是处理状态栏下拉截图高斯模糊工具类
++ *
++ */
++public class FastBlur {
++	public static Bitmap doBlur(Bitmap sentBitmap, int radius,
++			boolean canReuseInBitmap) {
++
++		Bitmap bitmap;
++		if (canReuseInBitmap) {
++			bitmap = sentBitmap;
++		} else {
++			bitmap = sentBitmap.copy(sentBitmap.getConfig(), true);
++		}
++
++		if (radius < 1) {
++			return (null);
++		}
++
++		int w = bitmap.getWidth();
++		int h = bitmap.getHeight();
++
++		int[] pix = new int[w * h];
++		bitmap.getPixels(pix, 0, w, 0, 0, w, h);
++
++		int wm = w - 1;
++		int hm = h - 1;
++		int wh = w * h;
++		int div = radius + radius + 1;
++
++		int r[] = new int[wh];
++		int g[] = new int[wh];
++		int b[] = new int[wh];
++		int rsum, gsum, bsum, x, y, i, p, yp, yi, yw;
++		int vmin[] = new int[Math.max(w, h)];
++
++		int divsum = (div + 1) >> 1;
++		divsum *= divsum;
++		int dv[] = new int[256 * divsum];
++		for (i = 0; i < 256 * divsum; i++) {
++			dv[i] = (i / divsum);
++		}
++
++		yw = yi = 0;
++
++		int[][] stack = new int[div][3];
++		int stackpointer;
++		int stackstart;
++		int[] sir;
++		int rbs;
++		int r1 = radius + 1;
++		int routsum, goutsum, boutsum;
++		int rinsum, ginsum, binsum;
++
++		for (y = 0; y < h; y++) {
++			rinsum = ginsum = binsum = routsum = goutsum = boutsum = rsum = gsum = bsum = 0;
++			for (i = -radius; i <= radius; i++) {
++				p = pix[yi + Math.min(wm, Math.max(i, 0))];
++				sir = stack[i + radius];
++				sir[0] = (p & 0xff0000) >> 16;
++				sir[1] = (p & 0x00ff00) >> 8;
++				sir[2] = (p & 0x0000ff);
++				rbs = r1 - Math.abs(i);
++				rsum += sir[0] * rbs;
++				gsum += sir[1] * rbs;
++				bsum += sir[2] * rbs;
++				if (i > 0) {
++					rinsum += sir[0];
++					ginsum += sir[1];
++					binsum += sir[2];
++				} else {
++					routsum += sir[0];
++					goutsum += sir[1];
++					boutsum += sir[2];
++				}
++			}
++			stackpointer = radius;
++
++			for (x = 0; x < w; x++) {
++
++				r[yi] = dv[rsum];
++				g[yi] = dv[gsum];
++				b[yi] = dv[bsum];
++
++				rsum -= routsum;
++				gsum -= goutsum;
++				bsum -= boutsum;
++
++				stackstart = stackpointer - radius + div;
++				sir = stack[stackstart % div];
++
++				routsum -= sir[0];
++				goutsum -= sir[1];
++				boutsum -= sir[2];
++
++				if (y == 0) {
++					vmin[x] = Math.min(x + radius + 1, wm);
++				}
++				p = pix[yw + vmin[x]];
++
++				sir[0] = (p & 0xff0000) >> 16;
++				sir[1] = (p & 0x00ff00) >> 8;
++				sir[2] = (p & 0x0000ff);
++
++				rinsum += sir[0];
++				ginsum += sir[1];
++				binsum += sir[2];
++
++				rsum += rinsum;
++				gsum += ginsum;
++				bsum += binsum;
++
++				stackpointer = (stackpointer + 1) % div;
++				sir = stack[(stackpointer) % div];
++
++				routsum += sir[0];
++				goutsum += sir[1];
++				boutsum += sir[2];
++
++				rinsum -= sir[0];
++				ginsum -= sir[1];
++				binsum -= sir[2];
++
++				yi++;
++			}
++			yw += w;
++		}
++		for (x = 0; x < w; x++) {
++			rinsum = ginsum = binsum = routsum = goutsum = boutsum = rsum = gsum = bsum = 0;
++			yp = -radius * w;
++			for (i = -radius; i <= radius; i++) {
++				yi = Math.max(0, yp) + x;
++
++				sir = stack[i + radius];
++
++				sir[0] = r[yi];
++				sir[1] = g[yi];
++				sir[2] = b[yi];
++
++				rbs = r1 - Math.abs(i);
++
++				rsum += r[yi] * rbs;
++				gsum += g[yi] * rbs;
++				bsum += b[yi] * rbs;
++
++				if (i > 0) {
++					rinsum += sir[0];
++					ginsum += sir[1];
++					binsum += sir[2];
++				} else {
++					routsum += sir[0];
++					goutsum += sir[1];
++					boutsum += sir[2];
++				}
++
++				if (i < hm) {
++					yp += w;
++				}
++			}
++			yi = x;
++			stackpointer = radius;
++			for (y = 0; y < h; y++) {
++				// Preserve alpha channel: ( 0xff000000 & pix[yi] )
++				pix[yi] = (0xff000000 & pix[yi]) | (dv[rsum] << 16)
++						| (dv[gsum] << 8) | dv[bsum];
++
++				rsum -= routsum;
++				gsum -= goutsum;
++				bsum -= boutsum;
++
++				stackstart = stackpointer - radius + div;
++				sir = stack[stackstart % div];
++
++				routsum -= sir[0];
++				goutsum -= sir[1];
++				boutsum -= sir[2];
++
++				if (x == 0) {
++					vmin[y] = Math.min(y + r1, hm) * w;
++				}
++				p = x + vmin[y];
++
++				sir[0] = r[p];
++				sir[1] = g[p];
++				sir[2] = b[p];
++
++				rinsum += sir[0];
++				ginsum += sir[1];
++				binsum += sir[2];
++
++				rsum += rinsum;
++				gsum += ginsum;
++				bsum += binsum;
++
++				stackpointer = (stackpointer + 1) % div;
++				sir = stack[stackpointer];
++
++				routsum += sir[0];
++				goutsum += sir[1];
++				boutsum += sir[2];
++
++				rinsum -= sir[0];
++				ginsum -= sir[1];
++				binsum -= sir[2];
++
++				yi += w;
++			}
++		}
++
++		bitmap.setPixels(pix, 0, w, 0, 0, w, h);
++
++		return (bitmap);
++	}
++}
+-- 
+2.8.3.windows.1
+

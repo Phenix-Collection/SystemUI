@@ -1,0 +1,72 @@
+From 0010568ac5d2d11db3782e1ea4527f6f69ddedd4 Mon Sep 17 00:00:00 2001
+From: mare <yangfan@qucii.com>
+Date: Fri, 24 Feb 2017 17:04:14 +0800
+Subject: [PATCH 066/185] =?UTF-8?q?=E3=80=90=E6=95=85=E9=9A=9C=E3=80=91?=
+ =?UTF-8?q?=E6=9D=A5=E6=B6=88=E6=81=AF=E9=80=9A=E7=9F=A5=E6=A1=866s?=
+ =?UTF-8?q?=E5=90=8E=E8=87=AA=E5=8A=A8=E6=B6=88=E5=A4=B1=E6=97=B6=EF=BC=8C?=
+ =?UTF-8?q?=E5=B1=8F=E5=B9=95=E7=95=8C=E9=9D=A2=E4=BC=9A=E9=97=AA=E4=B8=80?=
+ =?UTF-8?q?=E4=B8=8B?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../android/systemui/statusbar/phone/NotificationPanelView.java  | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+index ce21695..5196aac 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+@@ -2407,13 +2407,14 @@ public class NotificationPanelView extends PanelView implements
+ 
+     @Override
+     public void onHeadsUpPinnedModeChanged(final boolean inPinnedMode) {
++        Log.d("TAG","NotificationPanelView===>onHeadsUpPinnedModeChanged()");
+         if (inPinnedMode) {
+         	setBackground(null);// clear bg by yangfan
+         	updateIndicatorVisibility(GONE);// gone indicator by yangfan
+             mHeadsUpExistenceChangedRunnable.run();
+             updateNotificationTranslucency();
+         } else {
+-        	mStatusBar.blurPanelBg();// blurred bg by yangfan
++        	//mStatusBar.blurPanelBg();// blurred bg by yangfan
+         	updateIndicatorVisibility(VISIBLE);// visible indicator by yangfan
+             mHeadsUpAnimatingAway = true;
+             mNotificationStackScroller.runAfterAnimationFinished(
+@@ -2423,26 +2424,32 @@ public class NotificationPanelView extends PanelView implements
+ 
+     @Override
+     public void onHeadsUpPinned(ExpandableNotificationRow headsUp) {
++        Log.d("TAG","NotificationPanelView===>onHeadsUpPinned()");
+         mNotificationStackScroller.generateHeadsUpAnimation(headsUp, true);
+     }
+ 
+     @Override
+     public void onHeadsUpUnPinned(ExpandableNotificationRow headsUp) {
++        Log.d("TAG","NotificationPanelView===>onHeadsUpUnPinned()");
+     }
+ 
+     @Override
+     public void onHeadsUpStateChanged(NotificationData.Entry entry, boolean isHeadsUp) {
++        Log.d("TAG","NotificationPanelView===>onHeadsUpStateChanged()");
+         mNotificationStackScroller.generateHeadsUpAnimation(entry.row, isHeadsUp);
+     }
+ 
+     @Override
+     public void setHeadsUpManager(HeadsUpManager headsUpManager) {
++        Log.d("TAG","NotificationPanelView===>setHeadsUpManager()");
+         super.setHeadsUpManager(headsUpManager);
+         mHeadsUpTouchHelper = new HeadsUpTouchHelper(headsUpManager, mNotificationStackScroller,
+                 this);
+     }
+ 
+     public void setTrackingHeadsUp(boolean tracking) {
++       Log.d("TAG","NotificationPanelView===>setTrackingHeadsUp()");
++	 mStatusBar.blurPanelBg();// blurred bg by yangfan
+         if (tracking) {
+             mNotificationStackScroller.setTrackingHeadsUp(true);
+             mExpandingFromHeadsUp = true;
+-- 
+2.8.3.windows.1
+

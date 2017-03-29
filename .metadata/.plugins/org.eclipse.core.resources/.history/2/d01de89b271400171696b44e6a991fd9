@@ -1,0 +1,96 @@
+From 1d3bc3bce59e002c50daa2af57985e4debe6fcd5 Mon Sep 17 00:00:00 2001
+From: LRH <yangfan@qucci.com>
+Date: Tue, 7 Mar 2017 13:42:17 +0800
+Subject: [PATCH 108/185] =?UTF-8?q?=E3=80=90=E6=95=85=E9=9A=9C=E3=80=91?=
+ =?UTF-8?q?=E4=BF=AE=E6=94=B94G=E7=94=B5=E4=BF=A1=E5=9B=BE=E6=A0=87?=
+ =?UTF-8?q?=E6=98=BE=E7=A4=BA=E9=97=AE=E9=A2=98?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../statusbar/phone/KeyguardBottomAreaView.java      |  1 -
+ .../statusbar/policy/MobileSignalController.java     | 20 ++++++++++++++++++++
+ .../statusbar/policy/NetworkControllerImpl.java      |  2 ++
+ 3 files changed, 22 insertions(+), 1 deletion(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/KeyguardBottomAreaView.java b/SystemUI/src/com/android/systemui/statusbar/phone/KeyguardBottomAreaView.java
+index 5381f27..8ebc206 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/KeyguardBottomAreaView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/KeyguardBottomAreaView.java
+@@ -200,7 +200,6 @@ public class KeyguardBottomAreaView extends FrameLayout implements View.OnClickL
+         mCameraImageView = (KeyguardAffordanceView) findViewById(R.id.camera_button);
+         //add by zqs 2017/3/4 begin
+         //========================>
+-        //让锁屏相机图片不能改变
+         mCameraImageView.setImageChangeEnable(false);
+         //<========================
+         //add by zqs 2017/3/4 end
+diff --git a/SystemUI/src/com/android/systemui/statusbar/policy/MobileSignalController.java b/SystemUI/src/com/android/systemui/statusbar/policy/MobileSignalController.java
+index 5e53ad5..25aa093 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/policy/MobileSignalController.java
++++ b/SystemUI/src/com/android/systemui/statusbar/policy/MobileSignalController.java
+@@ -73,6 +73,7 @@ public class MobileSignalController extends SignalController<
+     private boolean mLastShowPlmn;
+     private String mLastPlmn;
+     private boolean mIsDataSignalControlEnabled;
++    private boolean mReadPlmnForwardly;
+ 
+     // Since some pieces of the phone state are interdependent we store it locally,
+     // this could potentially become part of MobileState for simplification/complication
+@@ -111,6 +112,7 @@ public class MobileSignalController extends SignalController<
+         mPhone = phone;
+         mDefaults = defaults;
+         mSubscriptionInfo = info;
++        Log.d(mTag, "machao---mSubscriptionInfo=" + info);
+         mPhoneStateListener = new MobilePhoneStateListener(info.getSubscriptionId(),
+                 receiverLooper);
+         mNetworkNameSeparator = getStringIfExists(R.string.status_bar_network_name_separator);
+@@ -966,6 +968,24 @@ public class MobileSignalController extends SignalController<
+                         + " dataState=" + state.getDataRegState());
+             }
+             mServiceState = state;
++
++            if(!mReadPlmnForwardly) {
++                mReadPlmnForwardly = true;
++                mLastPlmn = state.getOperatorAlphaLong();
++                mLastDataSpn = state.getDataOperatorAlphaLong();
++                int voiceClass = state.getRilVoiceRadioTechnology();
++                int dataClass = state.getRilDataRadioTechnology();
++                mLastShowPlmn =  true;
++                //mLastShowSpn =  true;
++                Log.d(mTag, "machao---onServiceStateChanged mLastPlmn=" + mLastPlmn
++                            + " mLastDataSpn=" + mLastDataSpn
++                            + " voiceClass=" + dataClass
++                            + " dataClass=" + dataClass
++                            + " mLastShowPlmn=" + mLastShowPlmn
++                            + " mLastShowSpn=" + mLastShowSpn
++                            );
++            }
++
+             updateNetworkName(mLastShowSpn, mLastSpn, mLastDataSpn, mLastShowPlmn, mLastPlmn);
+             updateTelephony();
+         }
+diff --git a/SystemUI/src/com/android/systemui/statusbar/policy/NetworkControllerImpl.java b/SystemUI/src/com/android/systemui/statusbar/policy/NetworkControllerImpl.java
+index ebeed59..360daaa 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/policy/NetworkControllerImpl.java
++++ b/SystemUI/src/com/android/systemui/statusbar/policy/NetworkControllerImpl.java
+@@ -508,6 +508,7 @@ public class NetworkControllerImpl extends BroadcastReceiver
+                         this, subscriptions.get(i), mSubDefaults, mReceiverHandler.getLooper());
+                 mMobileSignalControllers.put(subId, controller);
+ 
++/*
+                 String iccId = subscriptions.get(i).getIccId();
+                 Log.d(TAG, "machao---BROCAST_SPN_FORCE---IccId:"+iccId);
+ 
+@@ -527,6 +528,7 @@ public class NetworkControllerImpl extends BroadcastReceiver
+                 } else {
+                     Log.e(TAG, "@@@ERROR: iccId is NULL !!!");
+                 }
++*/
+ 
+                 if (subscriptions.get(i).getSimSlotIndex() == 0) {
+                     mDefaultSignalController = controller;
+-- 
+2.8.3.windows.1
+

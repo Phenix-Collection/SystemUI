@@ -1,0 +1,308 @@
+From 870a3a7b8be7dd0fc2beed31369e12ff3d712b03 Mon Sep 17 00:00:00 2001
+From: mare <yangfan@qucii.com>
+Date: Wed, 22 Mar 2017 15:05:50 +0800
+Subject: [PATCH 171/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E7=A6=81=E6=AD=A2=E8=BF=9B=E5=85=A5LockShade=E6=A8=A1=E5=BC=8F?=
+ =?UTF-8?q?=EF=BC=8C=E6=B5=AE=E5=8A=A8=E9=80=9A=E7=9F=A5=E5=8A=A8=E7=94=BB?=
+ =?UTF-8?q?=E5=A4=84=E7=90=86?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../systemui/statusbar/phone/PanelView.java        | 95 ++++++++++++++++++++--
+ .../systemui/statusbar/phone/PhoneStatusBar.java   | 12 ++-
+ .../systemui/statusbar/policy/HeadsUpManager.java  | 28 +++++--
+ .../stack/NotificationStackScrollLayout.java       | 19 +++--
+ .../statusbar/stack/StackStateAnimator.java        |  7 +-
+ 5 files changed, 137 insertions(+), 24 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/PanelView.java b/SystemUI/src/com/android/systemui/statusbar/phone/PanelView.java
+index 7237380..7c82f8e 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/PanelView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/PanelView.java
+@@ -54,7 +54,6 @@ public abstract class PanelView extends FrameLayout {
+         //Log.v(TAG, (mViewName != null ? (mViewName + ": ") : "") + String.format(fmt, args));
+         Log.v("mare", (mViewName != null ? (mViewName + ": ") : "") + String.format(fmt, args));
+     }
+-
+     protected PhoneStatusBar mStatusBar;
+     protected HeadsUpManager mHeadsUpManager;
+ 
+@@ -438,12 +437,27 @@ public abstract class PanelView extends FrameLayout {
+                                 EventLogConstants.SYSUI_LOCKSCREEN_GESTURE_SWIPE_UP_UNLOCK,
+                                 heightDp, velocityDp);
+                     }
+-           if(is_Qucii_Headup()){
+-                 isTouch=false;
+-                 expand=false;
+-            }
+-            fling(vel, expand, isFalseTouch(x, y));
+-            	
++                    
++          
++			// modify by mare 2017/3/22 begin
++			// ========================>
++			//在浮动通知时不论手指在哪都回滚通知
++			if (is_Qucii_Headup()) {
++				isTouch = false;
++				expand = false;
++				qucii_flingTop(0);
++				// if(y<260){
++				// }else{
++				//// mBar.startOpeningPanel(this);
++				//// notifyExpandingStarted();
++				//// fling(0, true /* expand */);
++				// qucii_flingTop(0);
++				// }
++			} else {
++
++				fling(vel, expand, isFalseTouch(x, y));
++			}
++			// modify by mare 2017/3/22 end
+            
+             onTrackingStopped(expand);
+             mUpdateFlingOnLayout = expand && mPanelClosedOnDown && !mHasLayoutedSinceDown;
+@@ -462,6 +476,73 @@ public abstract class PanelView extends FrameLayout {
+         mPeekTouching = false;
+     }
+ 
++	// modify by mare 2017/3/22 begin
++	// ========================>
++	// 浮动通知回滚动画
++
++	ValueAnimator mFlingBackAnimator;
++	
++	protected void qucii_flingReset() {
++		if (mFlingBackAnimator != null) {
++			mFlingBackAnimator.cancel();
++			mFlingBackAnimator = null;
++		}
++	}
++
++	protected void qucii_flingTop(long startDelay) {
++		// Hack to make the expand transition look nice when clear all button is
++		// visible - we make
++		// the animation only to the last notification, and then jump to the
++		// maximum panel height so
++		// clear all just fades in and the decelerating motion is towards the
++		// last notification.
++		ValueAnimator animator = createHeightAnimator(0);
++		mFlingAnimationUtils.applyDismissing(animator, mExpandedHeight, 0, 0, getHeight());
++		animator.setDuration(250);
++		if (mPerf != null) {
++			mPerf.perfLockAcquire(0, mBoostParamVal);
++		}
++		animator.addListener(new AnimatorListenerAdapter() {
++			@Override
++			public void onAnimationStart(Animator animation) {
++				// Log.e("======onAnimationStart=======", "onAnimationStart");
++				isAnimation = true;
++				super.onAnimationStart(animation);
++			}
++
++			@Override
++			public void onAnimationCancel(Animator animation) {
++				if (mPerf != null) {
++					mPerf.perfLockRelease();
++				}
++				isAnimation = false;
++			}
++
++			@Override
++			public void onAnimationEnd(Animator animation) {
++				if (mPerf != null) {
++					mPerf.perfLockRelease();
++				}
++				isAnimation = false;
++				mHeadsUpManager.releaseAllImmediately();
++				notifyExpandingFinished();
++				notifyBarPanelExpansionChanged();
++			}
++		});
++		animator.setStartDelay(startDelay);
++		qucii_flingReset();
++		mFlingBackAnimator = animator;
++		mFlingBackAnimator.start();
++	}
++
++	// modify by mare 2017/3/22 end
++    
++    
++    
++    
++    
++    
++    
+     private int getFalsingThreshold() {
+         float factor = mStatusBar.isWakeUpComingFromTouch() ? 1.5f : 1.0f;
+         return (int) (mUnlockFalsingThreshold * factor);
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
+index 7ff630a..f9e8ff6 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
+@@ -665,7 +665,11 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
+     private final View.OnClickListener mOverflowClickListener = new View.OnClickListener() {
+         @Override
+         public void onClick(View v) {
+-            goToLockedShade(null);
++        	//modify by mare 2017/3/22 begin
++            //========================>
++            //禁止进入LockedShade模式
++//            goToLockedShade(null);
++        	//modify by mare 2017/3/22 end
+         }
+     };
+     private HashMap<ExpandableNotificationRow, List<ExpandableNotificationRow>> mTmpChildOrderMap
+@@ -1415,6 +1419,11 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
+         	mNotificationPanel.showPage(0);// show Notification by yangfan 
+             mHeadsUpManager.showNotification(shadeEntry);
+             // Mark as seen immediately
++            // modify by mare 2017/3/22 begin
++ 			// ========================>
++ 			//取消浮动通知回滚动画
++            mNotificationPanel.qucii_flingReset();
++            // modify by mare 2017/3/22 end
+             setNotificationShown(notification);
+         }
+ 
+@@ -4300,6 +4309,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
+             mDraggedDownRow = row;
+         } else {
+             mNotificationPanel.animateToFullShade(0 /* delay */);
++            
+             setBarState(StatusBarState.SHADE_LOCKED);
+             updateKeyguardState(false /* goingToFullShade */, false /* fromShadeLocked */);
+             if (row != null) {
+diff --git a/SystemUI/src/com/android/systemui/statusbar/policy/HeadsUpManager.java b/SystemUI/src/com/android/systemui/statusbar/policy/HeadsUpManager.java
+index 4a95d3a..55cf876 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/policy/HeadsUpManager.java
++++ b/SystemUI/src/com/android/systemui/statusbar/policy/HeadsUpManager.java
+@@ -228,15 +228,25 @@ public class HeadsUpManager implements ViewTreeObserver.OnComputeInternalInsetsL
+     }
+ 
+     private void removeHeadsUpEntry(NotificationData.Entry entry) {
+-        HeadsUpEntry remove = mHeadsUpEntries.remove(entry.key);
+-        mSortedEntries.remove(remove);
+-        entry.row.sendAccessibilityEvent(AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED);
+-        entry.row.setHeadsUp(false);
+-        setEntryPinned(remove, false /* isPinned */);
+-        for (OnHeadsUpChangedListener listener : mListeners) {
+-            listener.onHeadsUpStateChanged(entry, false);
+-        }
+-        mEntryPool.release(remove);
++		//modify by mare 2017/3/22 begin
++        //========================>
++        //��ָ��
++        try {
++			
++
++			HeadsUpEntry remove = mHeadsUpEntries.remove(entry.key);
++			mSortedEntries.remove(remove);
++			entry.row.sendAccessibilityEvent(AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED);
++			entry.row.setHeadsUp(false);
++			setEntryPinned(remove, false /* isPinned */);
++			for (OnHeadsUpChangedListener listener : mListeners) {
++			    listener.onHeadsUpStateChanged(entry, false);
++			}
++			mEntryPool.release(remove);
++		} catch (Exception e) {
++			e.printStackTrace();
++		}
++		//modify by mare 2017/3/22 end
+     }
+ 
+     private void updatePinnedMode() {
+diff --git a/SystemUI/src/com/android/systemui/statusbar/stack/NotificationStackScrollLayout.java b/SystemUI/src/com/android/systemui/statusbar/stack/NotificationStackScrollLayout.java
+index 4c0973d..cf8e7ed 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/stack/NotificationStackScrollLayout.java
++++ b/SystemUI/src/com/android/systemui/statusbar/stack/NotificationStackScrollLayout.java
+@@ -184,7 +184,7 @@ public class NotificationStackScrollLayout extends ViewGroup
+     private int mIntrinsicPadding;
+     private int mNotificationTopPadding;
+     ///////////////////////////
+-    private int mArrowHeight;
++    private int mArrowHeight,mMarginBottom;
+     private float mStackTranslation;
+     private float mTopPaddingOverflow;
+     private boolean mDontReportNextOverScroll;
+@@ -321,6 +321,8 @@ public class NotificationStackScrollLayout extends ViewGroup
+                 R.dimen.notification_collapse_second_card_padding);
+         mArrowHeight = getResources().getDimensionPixelSize(
+         		R.dimen.qucii_arrow_height);
++        mMarginBottom = getResources().getDimensionPixelSize(
++        		R.dimen.notification_min_height);
+     }
+ 
+     private void updatePadding(boolean dimmed) {
+@@ -363,7 +365,11 @@ public class NotificationStackScrollLayout extends ViewGroup
+                     (int) (centerX + width / 2.0f),
+                     (int) height);
+         }
+-        setMaxLayoutHeight(getHeight());
++    	//modify by mare 2017/3/22 begin
++        //========================>
++        //上移通知组位置使它不和底部重叠
++        setMaxLayoutHeight(getHeight()-mMarginBottom);
++        //modify by mare 2017/3/22 end
+         updateContentHeight();
+         clampScrollPosition();
+         if (mRequestViewResizeAnimationOnLayout) {
+@@ -492,7 +498,6 @@ public class NotificationStackScrollLayout extends ViewGroup
+      * @param height the new height of the stack
+      */
+     public void setStackHeight(float height) {
+-//    	Log.e("==setStackHeight====", "height"+height,new Throwable());
+     	//add by mare 2017/3/16 begin
+         //========================>
+         //通知组的滑动效果上升高度多一个底部箭头高度
+@@ -504,6 +509,7 @@ public class NotificationStackScrollLayout extends ViewGroup
+         //========================>
+         //浮动通知时，这个值固定
+     	if(trackingHeadsUp){
++//    		Log.e("==setStackHeight====", "height:"+height+"mLastSetStackHeight"+mLastSetStackHeight+",getScrollY()"+getScrollY()+"mHeadsUpManager.getTopHeadsUpHeight()"+h);
+     		height=0;
+     	}
+     	//add by mare 2017/3/21 end
+@@ -554,8 +560,8 @@ public class NotificationStackScrollLayout extends ViewGroup
+         if(!panelView.isNotificationView()&&!trackingHeadsUp){
+         	setStackTranslation(0);//
+         }else{
+-//        	Log.e("=======paddingOffset======", "trackingHeadsUp"+trackingHeadsUp+"paddingOffset:"+paddingOffset+"height:"+height+",mHeadsUpManager.getTopHeadsUpHeight()"+mHeadsUpManager.getTopHeadsUpHeight());
+-        	setStackTranslation(paddingOffset);//
++//        	Log.e("=======paddingOffset======", "paddingOffset:"+paddingOffset);
++        		setStackTranslation(paddingOffset);//
+         }
+         //<=============================
+         //modify by mare 2017/02/28 end
+@@ -3065,7 +3071,8 @@ public class NotificationStackScrollLayout extends ViewGroup
+                         .animateHeight()
+                         .animateTopInset()
+                         .animateY()
+-                        .animateZ(),
++                        .animateZ()
++                        ,
+ 
+                 // ANIMATION_TYPE_HEADS_UP_DISAPPEAR
+                 new AnimationFilter()
+diff --git a/SystemUI/src/com/android/systemui/statusbar/stack/StackStateAnimator.java b/SystemUI/src/com/android/systemui/statusbar/stack/StackStateAnimator.java
+index b4ab48a..302856e 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/stack/StackStateAnimator.java
++++ b/SystemUI/src/com/android/systemui/statusbar/stack/StackStateAnimator.java
+@@ -665,7 +665,12 @@ public class StackStateAnimator {
+         Interpolator interpolator = mHeadsUpAppearChildren.contains(child) ?
+                 mHeadsUpAppearInterpolator :mFastOutSlowInInterpolator;
+         animator.setInterpolator(interpolator);
+-        long newDuration = cancelAnimatorAndGetNewDuration(duration, previousAnimator);
++        
++    	//modify by mare 2017/3/22 begin
++        //========================>
++        //减少浮动通知出现的动画持续时间
++        long newDuration = mHeadsUpAppearChildren.contains(child)?200:cancelAnimatorAndGetNewDuration(duration, previousAnimator);
++        //modify by mare 2017/3/22 end
+         animator.setDuration(newDuration);
+         if (delay > 0 && (previousAnimator == null || !previousAnimator.isRunning())) {
+             animator.setStartDelay(delay);
+-- 
+2.8.3.windows.1
+

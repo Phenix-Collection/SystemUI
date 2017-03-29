@@ -22,6 +22,7 @@ import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.DecelerateInterpolator;
@@ -115,9 +116,10 @@ public class ScrimController implements ViewTreeObserver.OnPreDrawListener,
     }
 
     public void setPanelExpansion(float fraction) {
+//    	Log.e("=======setPanelExpansion======", "fraction"+fraction);
         if (mFraction != fraction) {
             mFraction = fraction;
-            scheduleUpdate();
+//            scheduleUpdate();
             if (mPinnedHeadsUpCount != 0) {
                 updateHeadsUpScrim(false);
             }
@@ -191,11 +193,12 @@ public class ScrimController implements ViewTreeObserver.OnPreDrawListener,
 
     private void scheduleUpdate() {
         if (mUpdatePending) return;
-
+        
         // Make sure that a frame gets scheduled.
         mScrimBehind.invalidate();
         mScrimBehind.getViewTreeObserver().addOnPreDrawListener(this);
         mUpdatePending = true;
+        Log.e("======scheduleUpdate========", "scheduleUpdate");
     }
 
     private void updateScrims() {
@@ -310,11 +313,28 @@ public class ScrimController implements ViewTreeObserver.OnPreDrawListener,
     }
 
     private void updateScrimColor(View scrim) {
+    	//add by mare 2017/3/16 begin
+        //========================>
+        //mScrimInFront始终为透明
+    	if(scrim==mScrimInFront){
+    		scrim.setAlpha(1f);
+    		return;
+    	}
+    	//add by mare 2017/3/16 end
         float alpha1 = getCurrentScrimAlpha(scrim);
         if (scrim instanceof ScrimView) {
             float alpha2 = getDozeAlpha(scrim);
             float alpha = 1 - (1 - alpha1) * (1 - alpha2);
-            ((ScrimView) scrim).setScrimColor(Color.argb((int) (alpha * 255), 0, 0, 0));
+            //add by mare 2017/3/10 begin
+            //=========================>
+            //这里锁屏界面不加蒙层
+            //if(mKeyguardShowing){
+            	scrim.setAlpha(1f);
+           // }else{
+            //	scrim.setAlpha(1f);
+            //	((ScrimView) scrim).setScrimColor(Color.argb((int) (alpha * 255), 0, 0, 0));
+            //}
+            //add by mare 2017/3/10 end
         } else {
             scrim.setAlpha(alpha1);
         }
@@ -410,7 +430,7 @@ public class ScrimController implements ViewTreeObserver.OnPreDrawListener,
     @Override
     public void onHeadsUpPinned(ExpandableNotificationRow headsUp) {
         mPinnedHeadsUpCount++;
-        updateHeadsUpScrim(true);
+//        updateHeadsUpScrim(true);
     }
 
     @Override
@@ -420,7 +440,7 @@ public class ScrimController implements ViewTreeObserver.OnPreDrawListener,
             mDraggedHeadsUpView = null;
             mTopHeadsUpDragAmount = 0.0f;
         }
-        updateHeadsUpScrim(true);
+//        updateHeadsUpScrim(true);
     }
 
     @Override
@@ -428,6 +448,7 @@ public class ScrimController implements ViewTreeObserver.OnPreDrawListener,
     }
 
     private void updateHeadsUpScrim(boolean animate) {
+    	Log.e("======updateHeadsUpScrim=======", "animate"+animate);
         float alpha = calculateHeadsUpAlpha();
         ValueAnimator previousAnimator = StackStateAnimator.getChildTag(mHeadsUpScrim,
                 TAG_KEY_ANIM);

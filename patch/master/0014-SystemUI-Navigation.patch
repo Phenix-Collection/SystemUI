@@ -1,0 +1,75 @@
+From 3a76fe4345cdeef8f79527c66935eade354109d9 Mon Sep 17 00:00:00 2001
+From: mare <yangfan@qucci.com>
+Date: Tue, 7 Feb 2017 17:35:50 +0800
+Subject: [PATCH 014/185] =?UTF-8?q?=E3=80=90=E9=9C=80=E6=B1=82=E3=80=91?=
+ =?UTF-8?q?=E6=B7=BB=E5=8A=A0SystemUI=E5=9C=A8=E6=9C=89Navigation=E8=83=8C?=
+ =?UTF-8?q?=E6=99=AF=E8=99=9A=E5=8C=96=E4=B8=8D=E5=85=A8=E5=B1=8F=E9=97=AE?=
+ =?UTF-8?q?=E9=A2=98?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../statusbar/phone/PhoneStatusBarView.java        | 25 ++++++++++++++++------
+ 1 file changed, 19 insertions(+), 6 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarView.java b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarView.java
+index f0436ee..70a7448 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarView.java
+@@ -16,7 +16,6 @@
+ 
+ package com.android.systemui.statusbar.phone;
+ 
+-import android.annotation.SuppressLint;
+ import android.content.Context;
+ import android.content.res.Configuration;
+ import android.content.res.Resources;
+@@ -29,6 +28,7 @@ import android.graphics.Matrix;
+ import android.graphics.Paint;
+ import android.graphics.Shader.TileMode;
+ import android.graphics.drawable.BitmapDrawable;
++import android.os.SystemProperties;
+ import android.util.AttributeSet;
+ import android.util.DisplayMetrics;
+ import android.util.EventLog;
+@@ -154,18 +154,31 @@ public class PhoneStatusBarView extends PanelBar {
+      */
+ 	public static boolean leftOrRightLandscape = true;
+ 
++	private boolean isNavigationEnable() {
++		if (SystemProperties.getBoolean("persist.sys.navg_bar_visible", false)) {
++			return true;
++		} else {
++			return false;
++		}
++	}
++	
+ 	protected Bitmap shot() {
+ 		DisplayMetrics dm = getResources().getDisplayMetrics();
+ 		int width, height;
+-		int navigationHeight = 100;
++		int navigationHeight = 108;
+ 		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+ 			width = dm.widthPixels;
+-			height = dm.heightPixels;
++			height = dm.heightPixels+navigationHeight;
+ 		} else {
+-			width = dm.heightPixels;
+-			height = dm.widthPixels;
++			if(isNavigationEnable()){
++				width = dm.heightPixels;
++				height = dm.widthPixels+navigationHeight;
++			}else{
++				width = dm.heightPixels;
++				height = dm.widthPixels;
++			}
++			
+ 		}
+-		Log.e("brice", "width=="+width+",height=="+height);
+ 		Bitmap mBitmap = SurfaceControl.screenshot(width, height);
+ 		return mBitmap;
+ 	}
+-- 
+2.8.3.windows.1
+

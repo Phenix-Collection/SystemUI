@@ -1,0 +1,137 @@
+From 5b7bcd75c571f5669baac65bac6e76b03fa7349f Mon Sep 17 00:00:00 2001
+From: DW <498396352@qq.com>
+Date: Fri, 17 Feb 2017 15:50:31 +0800
+Subject: [PATCH 043/185] =?UTF-8?q?=E6=B7=BB=E5=8A=A0=E9=94=81=E5=B1=8F?=
+ =?UTF-8?q?=E7=95=8C=E9=9D=A2=E5=8F=8C=E5=87=BB=E7=81=AD=E5=B1=8F=E5=8A=9F?=
+ =?UTF-8?q?=E8=83=BD?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../statusbar/phone/NotificationPanelView.java     | 95 +++++++++++++++-------
+ 1 file changed, 64 insertions(+), 31 deletions(-)
+
+diff --git a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+index 7a0e9bb..e046143 100644
+--- a/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
++++ b/SystemUI/src/com/android/systemui/statusbar/phone/NotificationPanelView.java
+@@ -24,6 +24,7 @@ import android.animation.ValueAnimator;
+ import android.app.ActivityManager;
+ import android.app.StatusBarManager;
+ import android.content.Context;
++import android.content.Intent;
+ import android.content.pm.ResolveInfo;
+ import android.content.res.Configuration;
+ import android.graphics.Canvas;
+@@ -220,6 +221,13 @@ public class NotificationPanelView extends PanelView implements
+     private static final int NOTIFICATION_PAGE_INDEX = 0;
+     private static final int QUICKSETTINGS_PAGE_INDEX = 1;
+     private int mCurPage = NOTIFICATION_PAGE_INDEX;
++    
++    //added by dongwei-17-2-17,add function of double click to go to sleep {start
++    private final String ACTION_DOUBLE_CLICK_GOTOSLEEP = "com.qucii.gotosleep";
++    private long mFirstClickTime = 0;
++    private long mSecondClickTime = 0;
++    //added by dongwei end}
++    
+     private Runnable mHeadsUpExistenceChangedRunnable = new Runnable() {
+         @Override
+         public void run() {
+@@ -2308,37 +2316,62 @@ public class NotificationPanelView extends PanelView implements
+         onEmptySpaceClick(x);
+     }
+ 
+-    protected boolean onMiddleClicked() {
+-        switch (mStatusBar.getBarState()) {
+-            case StatusBarState.KEYGUARD:
+-                if (!mDozingOnDown) {
+-                    EventLogTags.writeSysuiLockscreenGesture(
+-                            EventLogConstants.SYSUI_LOCKSCREEN_GESTURE_TAP_UNLOCK_HINT,
+-                            0 /* lengthDp - N/A */, 0 /* velocityDp - N/A */);
+-                    //hsp 2016-09-27 : If user have open double click go to sleep settings,
+-                    //we don't want to show animation
+-                    boolean isClickToSleep = (Settings.System.getInt(getContext().getContentResolver(),
+-                            "dblclick_gotosleep", 0) == 1);
+-                    if (!isClickToSleep) {
+-                        startUnlockHintAnimation();
+-                    }
+-                }
+-                return true;
+-            case StatusBarState.SHADE_LOCKED:
+-                if (!mQsExpanded) {
+-                    mStatusBar.goToKeyguard();
+-                }
+-                return true;
+-            case StatusBarState.SHADE:
+-
+-                // This gets called in the middle of the touch handling, where the state is still
+-                // that we are tracking the panel. Collapse the panel after this is done.
+-                post(mPostCollapseRunnable);
+-                return false;
+-            default:
+-                return true;
+-        }
+-    }
++	protected boolean onMiddleClicked() {
++		switch (mStatusBar.getBarState()) {
++		case StatusBarState.KEYGUARD:
++			if (!mDozingOnDown) {
++				EventLogTags
++						.writeSysuiLockscreenGesture(
++								EventLogConstants.SYSUI_LOCKSCREEN_GESTURE_TAP_UNLOCK_HINT,
++								0 /* lengthDp - N/A */, 0 /* velocityDp - N/A */);
++				// mare 2016-09-27 : If user have open double click go to sleep
++				// settings,
++				// we don't want to show animation
++				boolean isClickToSleep = (Settings.System.getInt(getContext()
++						.getContentResolver(), "dblclick_gotosleep", 0) == 1);
++				if (!isClickToSleep) {
++					startUnlockHintAnimation();
++				}
++
++				// added by dongwei-2017-2-17 : Double click to go to sleep, move code from
++				// ViewGroup to here,{start
++				if (isClickToSleep) {
++					if (mFirstClickTime > 0) {
++						mSecondClickTime = System.currentTimeMillis();
++						if (mSecondClickTime - mFirstClickTime < 500) {
++							Intent intent = new Intent(
++									ACTION_DOUBLE_CLICK_GOTOSLEEP);
++							// Send broadcast to PhoneWindowManager to go to
++							// sleep
++							mContext.sendBroadcast(intent);
++							mFirstClickTime = 0;
++							Log.d("mare",
++									"Intercept the key Double click for go to sleep");
++						}
++					}
++					mFirstClickTime = System.currentTimeMillis();
++				}
++				// added by dongwei-17-2-17,end}
++
++			}
++			return true;
++		case StatusBarState.SHADE_LOCKED:
++			if (!mQsExpanded) {
++				mStatusBar.goToKeyguard();
++			}
++			return true;
++		case StatusBarState.SHADE:
++
++			// This gets called in the middle of the touch handling, where the
++			// state is still
++			// that we are tracking the panel. Collapse the panel after this is
++			// done.
++			post(mPostCollapseRunnable);
++			return false;
++		default:
++			return true;
++		}
++	}
+ 
+     @Override
+     protected void dispatchDraw(Canvas canvas) {
+-- 
+2.8.3.windows.1
+
